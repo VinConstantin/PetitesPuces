@@ -6,7 +6,6 @@
     <title>@ViewBag.Title - Les Petites Puces</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -21,9 +20,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Catalogue", "Catalogue", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @RenderSection("navbar", true)
                 </ul>
             </div>
         </div>
