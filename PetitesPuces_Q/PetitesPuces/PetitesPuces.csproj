@@ -163,6 +163,7 @@
     <Compile Include="Controllers\GestionnaireController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\VendeurController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -220,6 +221,7 @@
     <Content Include="Views\Gestionnaire\Inactivite.cshtml" />
     <Content Include="Views\Gestionnaire\Redevances.cshtml" />
     <Content Include="Views\Gestionnaire\Statistiques.cshtml" />
+    <Content Include="Views\Vendeur\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

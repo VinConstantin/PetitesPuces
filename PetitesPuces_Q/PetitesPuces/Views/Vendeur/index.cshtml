@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Page d'accueil";
+}
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-3">@ViewBag.Title</h1>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Commandes non traitées</div>
+    <div class="panel-body">
+        <li class="list-group-item">Commande d'Antoinette</li>
+        <li class="list-group-item">Commande de Simon</li>
+        <li class="list-group-item">Commande de Vincent</li>
+    </div>
+    <div class="panel-footer">
+        <button class="btn btn-outline-primary" onclick="">Gérer les commandes</button>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Paniers courants</div>
+    <div class="panel-body">
+        <li class="list-group-item">Panier d'Antoinette</li>
+        <li class="list-group-item">Panier de Simon</li>
+        <li class="list-group-item">Panier de Vincent</li>
+    </div>
+    <div class="panel-footer">
+        <button class="btn btn-outline-primary" onclick="">Gérer les paniers</button>
+    </div>
+</div>
+
+<h4>Nombre de visiteurs: 0</h4>
