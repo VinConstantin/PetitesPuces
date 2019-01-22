@@ -2,14 +2,20 @@
     ViewBag.Title = "Inactivite - Gestionnaire";
 }
 
+@section navbar {
+    <li>@Html.ActionLink("Accueil", "Index", "Gestionnaire")</li>
+    <li>@Html.ActionLink("Demandes de compte vendeur", "DemandesVendeur", "Gestionnaire")</li>
+    <li>@Html.ActionLink("Redevances des vendeurs", "Redevances", "Gestionnaire")</li>
+    <li>@Html.ActionLink("Statistiques et rapports", "Statistiques", "Gestionnaire")</li>
+}
+
+
 <h2 class="text-center">Utilisateurs inactifs</h2>
 
 <div class="jumbotron">
     <h3>Période</h3>
     <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default">
-
-        </button>
+        <button type="button" class="btn btn-default"></button>
     </div>
 </div>
 

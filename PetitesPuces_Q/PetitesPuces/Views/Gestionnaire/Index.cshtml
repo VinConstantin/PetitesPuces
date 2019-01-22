@@ -2,6 +2,12 @@
     ViewBag.Title = "Accueil - Gestionnaire";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section navbar {
+    <li>@Html.ActionLink("Demandes de vendeur", "DemandesVendeur", "Gestionnaire")</li>
+    <li>@Html.ActionLink("Utilisateurs inactifs", "Inactivite", "Gestionnaire")</li>
+    <li>@Html.ActionLink("Redevances des vendeurs", "Redevances", "Gestionnaire")</li>
+    <li>@Html.ActionLink("Statistiques et rapports", "Statistiques", "Gestionnaire")</li>
+}
 <h1 class="row text-center">
     Bienvenue "Gestionnaire"
 </h1>
@@ -28,11 +34,10 @@
         </div>
     </div>
     <div class="col-xs-10 col-xs-offset-1 text-center">
-        @Html.ActionLink("Visualiser toutes les statistiques et rapports", "Statistiques", "Gestionnaire", null, new  { @class = "btn btn-primary btn-large center-block"})
+        @Html.ActionLink("Visualiser toutes les statistiques et rapports", "Statistiques", "Gestionnaire", null, new { @class = "btn btn-primary btn-large center-block" })
     </div>
-    
-    @section scripts {
-        @Scripts.Render("~/bundles/chart");
-        <script type="text/javascript" src="@Url.Content("/Scripts/Gestionnaire/Index.js")"></script>
-    }
 </div>
+@section scripts {
+    @Scripts.Render("~/bundles/chart");
+    <script type="text/javascript" src="@Url.Content("/Scripts/Gestionnaire/Index.js")"></script>
+}
