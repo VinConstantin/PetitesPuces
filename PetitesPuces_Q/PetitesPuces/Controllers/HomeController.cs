@@ -48,6 +48,5 @@ namespace PetitesPuces.Controllers
 
             return View(viewModel);
         }
-        
     }
 }

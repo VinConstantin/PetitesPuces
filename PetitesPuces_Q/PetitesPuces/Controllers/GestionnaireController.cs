@@ -4,8 +4,27 @@ namespace PetitesPuces.Controllers
 {
     public class GestionnaireController : Controller
     {
-        // GET
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult Redevances()
+        {
+            return View();
+        }
+
+        public ActionResult DemandesVendeur()
+        {
+            return View();
+        }
+
+        public ActionResult Inactivite()
+        {
+            return View();
+        }
+
+        public ActionResult Statistiques()
         {
             return View();
         }
