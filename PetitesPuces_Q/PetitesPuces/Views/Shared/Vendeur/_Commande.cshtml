@@ -1,0 +1,17 @@
+﻿@using PetitesPuces.Utilities
+@model PetitesPuces.Models.Commande
+<tr>
+    <th>@Model.NoCommande</th>
+    <td>@Model.NomClient</td>
+    <td>@Model.DateCommande</td>
+    <td>@Model.Type</td>
+    <td>@Formatter.Money(@Model.TotalAvantTaxes)</td>
+    <td>
+        <button type="button" value="@Model.NoCommande" class="btn btn-default">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </button>
+        <button type="button" value="@Model.NoCommande" class="btn btn-default">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+    </td>
+</tr>

@@ -1,10 +1,13 @@
-﻿@{
+﻿@model PetitesPuces.ViewModels.VMVendeur.CommandesViewModel
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Page d'accueil";
 }
 
 @section navbar {
-    
+    <li>@Html.ActionLink("Accueil", "Index", "Vendeur")</li>
+    <li>@Html.ActionLink("Commandes", "Commandes", "Vendeur")</li>
+    <li>@Html.ActionLink("Mes Paniers", "Paniers", "Vendeur")</li>
 }
 
 <div class="jumbotron jumbotron-fluid">
@@ -24,51 +27,10 @@
             <th>Total avant taxes</th>
             <th>Actions</th>
         </tr>
-        <tr>
-            <td>1</td>
-            <td>Antoinette</td>
-            <td>29/12/2018</td>
-            <td>Express</td>
-            <td>99,00 $</td>
-            <td>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </button>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Vincent</td>
-            <td>05/01/2019</td>
-            <td>Standard</td>
-            <td>49,99 $</td>
-            <td>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </button>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Simon</td>
-            <td>09/01/2019</td>
-            <td>Express</td>
-            <td>199,99 $</td>
-            <td>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </button>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
-            </td>
-        </tr>
+        @foreach (var commande in Model.Commandes)
+        {
+            @Html.Partial("Vendeur/_Commande", commande)
+        }
     </table>
     <div class="panel-footer">
         <button class="btn btn-outline-primary" onclick="">Gérer les commandes</button>
