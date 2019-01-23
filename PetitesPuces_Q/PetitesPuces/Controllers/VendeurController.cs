@@ -25,6 +25,7 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 14.99,
                         Type = "Express",
                         PoidsTotal = 25.33,
+                        Statut = 'P',
                         TotalAvantTaxes = 99.00
                     },
                     new Commande
@@ -35,6 +36,7 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 4.99,
                         Type = "Standard",
                         PoidsTotal = 99.33,
+                        Statut = 'P',
                         TotalAvantTaxes = 49.99
                     },
                     new Commande
@@ -45,6 +47,7 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 24.99,
                         Type = "Express",
                         PoidsTotal = 12.90,
+                        Statut = 'P',
                         TotalAvantTaxes = 199.99
                     },
                     new Commande
@@ -55,6 +58,7 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 4.99,
                         Type = "Standard",
                         PoidsTotal = 18.72,
+                        Statut = 'P',
                         TotalAvantTaxes = 39.00
                     },
                     new Commande
@@ -65,6 +69,7 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 9.99,
                         Type = "Standard",
                         PoidsTotal = 49.39,
+                        Statut = 'P',
                         TotalAvantTaxes = 79.99
                     },
                     new Commande
@@ -75,6 +80,7 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 14.99,
                         Type = "Express",
                         PoidsTotal = 46.15,
+                        Statut = 'P',
                         TotalAvantTaxes = 189.99
                     }
                 },
@@ -84,13 +90,13 @@ namespace PetitesPuces.Controllers
                     new Panier
                     {
                         NomClient = "Antoinette",
-                        DateCreation = new DateTime(2018, 12, 26),
+                        DateCreation = new DateTime(2018, 03, 26),
                         NbItems = 7
                     },
                     new Panier
                     {
                         NomClient = "Vincent",
-                        DateCreation = new DateTime(2019, 01, 02),
+                        DateCreation = new DateTime(2018, 12, 02),
                         NbItems = 5
                     },
                     new Panier
@@ -136,6 +142,7 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 14.99,
                         Type = "Express",
                         PoidsTotal = 25.33,
+                        Statut = 'L',
                         TotalAvantTaxes = 99.00
                     },
                     new Commande
@@ -146,6 +153,7 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 4.99,
                         Type = "Standard",
                         PoidsTotal = 99.33,
+                        Statut = 'L',
                         TotalAvantTaxes = 49.99
                     },
                     new Commande
@@ -156,6 +164,7 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 24.99,
                         Type = "Express",
                         PoidsTotal = 12.90,
+                        Statut = 'L',
                         TotalAvantTaxes = 199.99
                     },
                     new Commande
@@ -166,6 +175,7 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 4.99,
                         Type = "Standard",
                         PoidsTotal = 18.72,
+                        Statut = 'P',
                         TotalAvantTaxes = 39.00
                     },
                     new Commande
@@ -176,6 +186,7 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 9.99,
                         Type = "Standard",
                         PoidsTotal = 49.39,
+                        Statut = 'P',
                         TotalAvantTaxes = 79.99
                     },
                     new Commande
@@ -186,10 +197,61 @@ namespace PetitesPuces.Controllers
                         CoutLivraison = 14.99,
                         Type = "Express",
                         PoidsTotal = 46.15,
+                        Statut = 'P',
                         TotalAvantTaxes = 189.99
                     }
             };
             return View(viewModel);
+        } 
+
+        public ActionResult GestionPaniers()
+        {
+            List<Panier> viewModel = new List<Panier>
+                {
+                    new Panier
+                    {
+                        NomClient = "Antoinette",
+                        DateCreation = new DateTime(2018, 03, 26),
+                        NbItems = 7
+                    },
+                    new Panier
+                    {
+                        NomClient = "Vincent",
+                        DateCreation = new DateTime(2018, 08, 02),
+                        NbItems = 5
+                    },
+                    new Panier
+                    {
+                        NomClient = "Simon",
+                        DateCreation = new DateTime(2018, 10, 06),
+                        NbItems = 3
+                    },
+                    new Panier
+                    {
+                        NomClient = "Alain",
+                        DateCreation = new DateTime(2018, 11, 10),
+                        NbItems = 4
+                    },
+                    new Panier
+                    {
+                        NomClient = "Raph",
+                        DateCreation = new DateTime(2019, 01, 13),
+                        NbItems = 15
+                    },
+                    new Panier
+                    {
+                        NomClient = "Samuel",
+                        DateCreation = new DateTime(2019, 01, 16),
+                        NbItems = 9
+                    }
+                };
+            return View(viewModel);
+        }
+
+        public ActionResult InfoCommande(string No)
+        {
+            ViewBag.No = No;
+            return View();
         }
     }
 }

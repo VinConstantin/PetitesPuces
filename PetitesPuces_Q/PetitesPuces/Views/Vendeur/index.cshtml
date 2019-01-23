@@ -7,60 +7,100 @@
 @section navbar {
     <li>@Html.ActionLink("Accueil", "Index", "Vendeur")</li>
     <li>@Html.ActionLink("Mon catalogue", "Catalogue", "Vendeur")</li>
-    <li>@Html.ActionLink("Commandes", "Commandes", "Vendeur")</li>
-    <li>@Html.ActionLink("Mes Paniers", "Paniers", "Vendeur")</li>
+    <li>@Html.ActionLink("Commandes", "GestionCommandes", "Vendeur")</li>
+    <li>@Html.ActionLink("Mes Paniers", "GestionPaniers", "Vendeur")</li>
 }
 
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1 class="display-3">@ViewBag.Title</h1>
+        <h4>Nombre de visiteurs: @Model.NbVisites</h4>
     </div>
 </div>
 
-<div class="container">
-    <div class="panel panel-primary">
-        <div class="panel-heading">Commandes non traitées</div>
-        <div style="max-height:25vh; overflow:auto">
-            <table class="table table-hover" style="max-height:25vh; overflow:auto">
-                <tr>
-                    <th># de commande</th>
-                    <th>Nom du client</th>
-                    <th>Date</th>
-                    <th>Type de livraison</th>
-                    <th>Total avant taxes</th>
-                    <th>Actions</th>
-                </tr>
-                @foreach (var commande in Model.Commandes)
-                {
-                    @Html.Partial("Vendeur/_Commande", commande)
-                }
-            </table>
-        </div>
-        <div class="panel-footer">
-            <button class="btn btn-outline-primary" onclick="">Gérer les commandes</button>
-        </div>
-    </div>
+<h3 class="text-center col-xs-12">Commandes non traitées</h3>
 
-    <div class="panel panel-primary">
-        <div class="panel-heading">Paniers courants</div>
-        <div style="max-height:25vh; overflow:auto">
-            <table class="table table-hover">
-                <tr>
-                    <th>Nom du client</th>
-                    <th>Date de création</th>
-                    <th>Nombre d'items</th>
-                    <th>Actions</th>
-                </tr>
-                @foreach (var panier in Model.Paniers)
-                {
-                    @Html.Partial("Vendeur/_Panier", panier)
-                }
-            </table>
-        </div>
-        <div class="panel-footer">
-            <button class="btn btn-outline-primary" onclick="">Gérer les paniers</button>
-        </div>
-    </div>
+<div class="well text-center col-xs-10 col-xs-offset-1">
+    <table class="table lst-vendeurs mt-2">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().NoCommande)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().NomClient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().DateCommande)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().CoutLivraison)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().PoidsTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().TotalAvantTaxes)
+            </th>
+            <th>
 
-    <h4>Nombre de visiteurs: @Model.NbVisites</h4>
+            </th>
+        </tr>
+        @foreach (var commande in Model.Commandes.Skip(3))
+        {
+            if (commande.Statut == 'P')
+            {
+                @Html.Partial("Vendeur/_Commande", commande)
+            }
+        }
+        <tr>
+            <td class="text-left">
+                <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("GestionCommandes", "Vendeur")'">Gérer les commandes</button>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+
+<br />
+
+<h3 class="text-center col-xs-12">Paniers</h3>
+
+<div class="well text-center col-xs-10 col-xs-offset-1">
+    <table class="table lst-vendeurs mt-2">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Paniers.FirstOrDefault().NomClient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Paniers.FirstOrDefault().DateCreation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Paniers.FirstOrDefault().NbItems)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+        @foreach (var panier in Model.Paniers)
+        {
+            @Html.Partial("Vendeur/_Panier", panier)
+        }
+        <tr>
+            <td class="text-left">
+                <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("GestionPaniers", "Vendeur")'">Gérer les paniers</button>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
 </div>

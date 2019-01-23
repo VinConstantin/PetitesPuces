@@ -26,6 +26,9 @@ namespace PetitesPuces.Models
         [DisplayName("Poids total")]
         public double PoidsTotal { get; set; }
 
+        [DisplayName("Statut de livraison")]
+        public char Statut { get; set; }
+
         [DisplayName("Total avant taxes")]
         public double TotalAvantTaxes { get; set; }
     }
