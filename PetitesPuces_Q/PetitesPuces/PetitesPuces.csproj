@@ -161,6 +161,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\ConnexionController.cs" />
     <Compile Include="Controllers\GestionnaireController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -210,6 +211,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\register.js" />
     <Content Include="Scripts\Shared\Carousel.js" />
     <Content Include="Views\Client\Catalogue.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
@@ -241,6 +243,7 @@
     <Content Include="Views\Gestionnaire\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Client.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Vendeur.cshtml" />
+    <Content Include="Views\Connexion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
