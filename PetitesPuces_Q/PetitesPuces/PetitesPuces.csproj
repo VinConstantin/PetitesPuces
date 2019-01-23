@@ -173,6 +173,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Commande.cs" />
+    <Compile Include="Models\IPersonne.cs" />
+    <Compile Include="Models\Panier.cs" />
     <Compile Include="Models\Vendeur.cs" />
     <Compile Include="ViewModels\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
@@ -181,6 +184,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Formatter.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
+    <Compile Include="ViewModels\VMVendeur\AccueilVendeurViewModel.cs" />
+    <Compile Include="ViewModels\VMVendeur\CommandesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -249,8 +254,15 @@
     <Content Include="Views\Gestionnaire\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Client.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Vendeur.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_Commande.cshtml" />
     <Content Include="Views\Connexion\Index.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_DemandeVendeur.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_Panier.cshtml" />
+    <Content Include="Views\Vendeur\GestionCommandes.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_Commande.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\_ListeDisablePersonne.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\_ListeDisableVendeur.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\_ListeDisableClient.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\OubliMDP\Index.cshtml" />
     <Content Include="Views\ProfilPersonnel\Index.cshtml" />

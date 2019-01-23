@@ -1,0 +1,26 @@
+﻿@model List<PetitesPuces.Models.Client>
+
+<table class="table lst-utils">
+    <tr>
+        <th scope="col">No Client</th>
+        <th scope="col" class="text-left">Adresse Courriel</th>
+        <th scope="col" class="text-left">Prénom</th>
+        <th scope="col" class="text-left">Nom</th>
+        <td>
+        </td>
+    </tr>
+    @foreach (var client in Model)
+    {
+        <tr class="v-align-baseline">
+            <th scope="row">@client.NoClient</th>
+            <td class="text-left">@client.AdresseEmail</td>
+            <td class="text-left">@client.Prenom</td>
+            <td class="text-left">@client.Nom</td>
+            <td>
+                <button class="btn btn-warning v-align-baseline">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                </button>
+            </td>
+        </tr>
+    }
+</table>

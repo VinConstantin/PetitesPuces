@@ -16,7 +16,7 @@
         @foreach (var image in Directory.GetFiles(Url.Content("images/carouselPublicite")))
         {
             <div class="item">
-                <img src="@image" alt="">
+                <img src="@image" alt="@image">
             </div>
         }
     </div>

@@ -1,0 +1,26 @@
+﻿@using PetitesPuces.Utilities
+@model PetitesPuces.Models.Commande
+
+@{
+    ViewBag.Title = "_Commande";
+}
+
+<tr class="v-align-middle">
+    <th>@Model.NoCommande</th>
+    <td>@Model.NomClient</td>
+    <td>@Model.DateCommande</td>
+    <td>@Formatter.Money(Model.CoutLivraison)</td>
+    <td>@Model.Type</td>
+    <td>@Model.PoidsTotal</td>
+    <td>@Formatter.Money(@Model.TotalAvantTaxes)</td>
+    <td class="text-right">
+        <form class="form-inline">
+            <button type="button" title="Livrer" value="@Model.NoCommande" class="btn btn-success">
+                <span class="glyphicon glyphicon-send"></span>
+            </button>
+            <button type="button" title="Visualiser" value="@Model.NoCommande" class="btn btn-info">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </button>
+        </form>
+    </td>
+</tr>

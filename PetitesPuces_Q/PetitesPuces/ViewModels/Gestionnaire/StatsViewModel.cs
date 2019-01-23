@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using PetitesPuces.Models;
 
 namespace PetitesPuces.ViewModels.Gestionnaire
 {
     public class StatsViewModel
     {
-        public Dictionary<TimeSpan, int> TotalVendeurs { get; set; }
-        public Dictionary<TimeSpan, int> NouveauClients { get; set; }
+        public int TotalVendeurs { get; set; }
+        public Dictionary<TimeSpan, int> NouveauxVendeurs { get; set; }
+        public Dictionary<TimeSpan, int> ClientsActifs { get; set; }
+        public Dictionary<TimeSpan, int> ClientsPotentiels { get; set; }
+        public Dictionary<TimeSpan, int> ClientsVisiteurs { get; set; }
+        public Dictionary<Client, int> NombreConnexionClients { get; set; }
+        public List<Client> DernieresConnexions { get; set; }
     }
 }

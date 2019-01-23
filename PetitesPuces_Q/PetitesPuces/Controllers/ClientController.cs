@@ -17,9 +17,10 @@ namespace PetitesPuces.Controllers
         }
         
 
-        public ActionResult Catalogue()
+        public ActionResult Catalogue(string Vendeur)
         {
             ViewBag.Message = "Catalogue";
+            ViewBag.Vendeur = Vendeur;
             
             /**
              * Créer des produits bidons
@@ -42,10 +43,16 @@ namespace PetitesPuces.Controllers
 
             return View(viewModel);
         }
-        public ActionResult MonPanier()
+        public ActionResult MonPanier(string No)
         {
-            ViewBag.Message = "Votre panier";
-
+            ViewBag.Message = "Votre panier No. "+No;
+            
+            return View();
+        }
+        public ActionResult Commande()
+        {
+            
+            
             return View();
         }
         
