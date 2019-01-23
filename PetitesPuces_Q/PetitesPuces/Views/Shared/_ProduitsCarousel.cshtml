@@ -1,0 +1,12 @@
+﻿@using System.Globalization
+@using PetitesPuces.Utilities
+@model int
+
+<div class="item">
+    <div class="pad15">
+        <p class="lead">Produit @Model</p>
+        <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width: 100%" alt="Image">
+        <br/>
+        <h3>@Formatter.Money(432.23)</h3>
+    </div>
+</div>

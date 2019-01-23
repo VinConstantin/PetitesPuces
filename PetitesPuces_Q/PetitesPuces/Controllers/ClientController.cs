@@ -12,8 +12,10 @@ namespace PetitesPuces.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.Utilisateur = "Client";
             return View();
         }
+        
 
         public ActionResult Catalogue()
         {
