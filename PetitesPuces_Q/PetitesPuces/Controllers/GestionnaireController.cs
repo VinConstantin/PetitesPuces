@@ -20,7 +20,19 @@ namespace PetitesPuces.Controllers
 
         public ActionResult DemandesVendeur()
         {
-            return View();
+            var viewmodel = new List<Vendeur>()
+            {
+                new Vendeur
+                {
+                    NoVendeur = 1,
+                    Nom = "Nom",
+                    NomAffaires = "Magasin",
+                    Prenom = "Prenom",
+                    DateCreation = DateTime.Today,
+                }
+            };
+
+            return View(viewmodel);
         }
 
         public ActionResult Inactivite()

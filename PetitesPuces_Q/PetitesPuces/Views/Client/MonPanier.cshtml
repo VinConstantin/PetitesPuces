@@ -2,7 +2,7 @@
 @model PetitesPuces.Models.CatalogueViewModel
 
 @{
-    ViewBag.Title = "Votre panier";
+    ViewBag.Title = "Vos paniers";
     ViewBag.SousTotal = 323.45;
     ViewBag.FraisLivraison = 23.00;
 }
@@ -18,23 +18,35 @@
     }
     function moinsQuantite(id) {
         if($("#" + id).val()>=1)
-        $("#" + id).val(parseInt($("#" + id).val())-1);
+            $("#" + id).val(parseInt($("#" + id).val())-1);
     }
 </script>
+<style>
+    .pagination>li>a, .pagination>li>span { border-radius: 50% !important;margin: 0 5px;}
+</style>
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1 class="display-3">@ViewBag.Title</h1>
+        <h1 class="display-3">@ViewBag.Message</h1>
+        <ul class="pagination">
+            <li class="disabled"><a href="#">«</a></li>
+            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">»</a></li>
+        </ul>
     </div>
 </div>
-
+<div class="container">
 <div class="row">
     <div class="col-md-8" style="height: 70vh;
-                                      overflow: auto;">
+                                       overflow: auto;">
         <table class="table table-hover">
             <tbody>
             @for (var i = 10; i < 40; i++)
             {
-                @Html.Partial("_ProduitsPanier", i)
+                @Html.Partial("Client/_ProduitsPanier", i)
             }
             </tbody>
         </table>
@@ -63,7 +75,7 @@
                 </div>
                 
                 <hr/>
-                <button class="btn btn-primary">Passer la commande</button>
+                <button class="btn btn-primary" onclick="location.href='@Url.Action("Commande", "Client")'">Passer la commande</button>
             </div>
         </div>
         <div class="panel panel-success">
@@ -80,4 +92,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

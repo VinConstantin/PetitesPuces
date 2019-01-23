@@ -1,6 +1,56 @@
-﻿@{
+﻿@model List<PetitesPuces.Models.Vendeur>
+
+@{
     ViewBag.Title = "DemandesVendeur";
 }
 
-<h2>DemandesVendeur</h2>
+@section styles {
+    <link rel="stylesheet" type="text/css" href="~/Content/Gestionnaire/DemandesVendeur.css"/>
+}
+
+<h2 class="text-center">Demandes d'inscription en tant que vendeur</h2>
+
+<div class="well">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 text-center">
+            <form class="form-inline">
+                <div class="input-group">
+                    <input type="search" class="form-control">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">
+                            <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                            </span>
+                        </button>    
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <table class="table lst-vendeurs mt-2">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().NoVendeur)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().NomAffaires)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Prenom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().DateCreation)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+        @foreach (var vendeur in Model)
+        {
+            @Html.Partial("Gestionnaire/_DemandeVendeur", vendeur);
+        }
+    </table>
+</div>
 
