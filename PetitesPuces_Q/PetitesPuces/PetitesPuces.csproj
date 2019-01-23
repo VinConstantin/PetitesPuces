@@ -160,6 +160,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\GestionnaireController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="ViewModels\Gestionnaire\InactiviteViewModel.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\Formatter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -205,8 +207,11 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Views\Home\Catalogue.cshtml" />
+    <Content Include="Views\Client\Catalogue.cshtml" />
+    <Content Include="Views\Client\Index.cshtml" />
+    <Content Include="Views\Client\MonPanier.cshtml" />
     <Content Include="Views\Shared\_Produits.cshtml" />
+    <Content Include="Views\Shared\_ProduitsPanier.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

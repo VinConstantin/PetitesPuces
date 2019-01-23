@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using PetitesPuces.Utilities
 @model PetitesPuces.Models.Product
 
 <div class="col-sm-4"> 
@@ -7,7 +8,7 @@
         <div class="panel-body">
             <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width: 100%" alt="Image">
             <div class="h3">
-                <strong>@Model.Price.ToString("0")</strong><sup>@Model.Price.ToString("1.00").Split('.')[1]</sup> <strong>$</strong>
+                @Formatter.Money(@Model.Price)
             </div>
             <button class="btn btn-outline-primary" onclick="ajouterAuPanier(@Model.Id)">Ajouter au panier</button>
 

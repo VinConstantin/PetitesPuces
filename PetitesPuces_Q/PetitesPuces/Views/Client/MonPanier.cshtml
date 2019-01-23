@@ -1,0 +1,82 @@
+﻿@using PetitesPuces.Utilities
+@model PetitesPuces.Models.CatalogueViewModel
+
+@{
+    ViewBag.Title = "Votre panier";
+    ViewBag.SousTotal = 323.45;
+    ViewBag.FraisLivraison = 23.00;
+}
+
+@section navbar {
+    <li>@Html.ActionLink("Catalogue", "Catalogue", "Client")</li>
+    <li>@Html.ActionLink("Mon Panier", "MonPanier", "Client")</li>
+}
+<script>
+    function plusQuantite(id) {
+        $("#" + id).val(parseInt($("#" + id).val())+1);
+    }
+    function moinsQuantite(id) {
+        if($("#" + id).val()>=1)
+        $("#" + id).val(parseInt($("#" + id).val())-1);
+    }
+</script>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-3">@ViewBag.Title</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8" style="height: 70vh;
+                                      overflow: auto;">
+        <table class="table table-hover">
+            <tbody>
+            @for (var i = 10; i < 40; i++)
+            {
+                @Html.Partial("_ProduitsPanier", i)
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Récapitulaif (2 articles): </div>
+            <div class="panel-body">
+                <div class="h4">
+                    <p class="row"><div class="col-xs-6">Articles :</div><div class="col-xs-6">@Formatter.Money(ViewBag.SousTotal)</div></p>
+                    <p class="row"><div class="col-xs-6">Livraison :</div><div class="col-xs-6">  @Formatter.Money(ViewBag.FraisLivraison)</div></p>
+                    
+                    <div class="row">
+                        <br/><hr/>
+                    </div>
+                
+                    <p class="row"><div class="col-xs-6">Sous total:</div><div class="col-xs-6">  @Formatter.Money(ViewBag.SousTotal+ViewBag.FraisLivraison)</div></p>
+                    <p class="row"><div class="col-xs-6">TPS       :</div><div class="col-xs-6">  @Formatter.Money((ViewBag.SousTotal+ViewBag.FraisLivraison)*0.05)</div></p>
+                    <p class="row"><div class="col-xs-6">tvq       :</div><div class="col-xs-6">  @Formatter.Money((ViewBag.SousTotal+ViewBag.FraisLivraison)*0.09975)</div></p>
+                    
+                    <div class="row">
+                        <br/><hr/>
+                    </div>
+                    
+                    <p>Montant total:  @Formatter.Money(ViewBag.SousTotal+ViewBag.FraisLivraison + (ViewBag.SousTotal+ViewBag.FraisLivraison)*0.05 + (ViewBag.SousTotal+ViewBag.FraisLivraison)*0.09975)</p>
+                </div>
+                
+                <hr/>
+                <button class="btn btn-primary">Passer la commande</button>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">Informations sur le vendeur: </div>
+            <div class="panel-body">
+                <div class="h4">
+                    <p>Vincent Constanin</p>
+                    <p>Membre depuis 2015</p>
+                    
+                    <hr/>
+                    
+                    <p>...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
