@@ -11,7 +11,7 @@
 
 <h3 class="text-center">Clients Inactifs</h3>
 
-<div class="well text-center">
+<div class="well text-center col-xs-10 col-xs-offset-1">
     <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
         <strong class="text-bold mx-1">Inactif depuis:</strong>
         <div class="btn-group d-flex align-items-baseline">
@@ -73,8 +73,8 @@
     <button class="btn btn-danger btn-large center-block">Supprimer les clients inactifs visibles</button>
 </div>
 
-<h3 class="text-center">Vendeurs Inactifs</h3>
-<div class="well text-center">
+<h3 class="text-center col-xs-12">Vendeurs Inactifs</h3>
+<div class="well text-center col-xs-10 col-xs-offset-1">
     <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
         <strong class="text-bold mx-1">Inactif depuis:</strong>
         <div class="btn-group d-flex align-items-baseline">
@@ -116,4 +116,36 @@
         }
     </table>
     <button class="btn btn-danger btn-large center-block">Supprimer les vendeurs inactifs visibles</button>
+</div>
+
+<h3 class="text-center col-xs-12">Rendre un utilisateur inactif</h3>
+
+<div class="well text-center col-xs-10 col-xs-offset-1">
+    <form class="form-inline">
+        <div class="input-group">
+            <input type="search" class="form-control">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button">
+                    <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                    </span>
+                </button>    
+            </span>
+        </div>
+        <div class="btn-group" data-toggle="buttons" role="group">
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="critereInactivite" value="V" autocomplete="off" /> Vendeur
+            </label>
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="critereInactivite" value="C" autocomplete="off" /> Client
+            </label>
+            <label type="button" class="btn btn-default active">
+                <input type="radio" name="critereInactivite" value="T" autocomplete="off" checked /> Tous
+            </label>
+        </div>
+    </form>
+    @Html.Partial("Gestionnaire/_ListeDisablePersonne", Model.UtilsRecherche);
+</div>
+
+<div class="col-xs-12"> 
+    <p>&copy; @DateTime.Now.Year - Les petites puces</p>
 </div>

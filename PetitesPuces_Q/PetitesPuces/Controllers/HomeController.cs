@@ -10,7 +10,6 @@ namespace TestMVC.Controllers
     {
         public ActionResult Index()
         {
-
             return View();
         }
     }

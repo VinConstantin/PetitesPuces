@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PetitesPuces.Models
 {
-    public class Client
+    public class Client: IPersonne
     {
         [DisplayName("No Client")]
         public int NoClient { get; set; }
@@ -22,5 +22,18 @@ namespace PetitesPuces.Models
 
         [DisplayName("Date de dernière connexion")]
         public DateTime DateDerniereConnexion { get; set; }
+
+        public string Rue { get; }
+        public string Ville { get; }
+        public string Province { get; }
+        public string CodePostal { get; }
+        public string Pays { get; }
+        public DateTime DateCreation { get; }
+        public DateTime DateMAJ { get; }
+
+        public string Role
+        {
+            get { return "Client"; }
+        }
     }
 }
