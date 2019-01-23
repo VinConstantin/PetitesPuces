@@ -1,0 +1,52 @@
+﻿@using PetitesPuces.Utilities
+@{
+    ViewBag.Title = "Accueil";
+}
+
+@section navbar {
+    <li>@Html.ActionLink("Accueil", "Index", "Client")</li>
+    <li>@Html.ActionLink("Catalogue", "Catalogue", "Client")</li>
+    <li>@Html.ActionLink("Mon Panier", "MonPanier", "Client")</li>
+}
+
+@section scripts {
+    <link href="@Url.Content("/Content/Shared/Carousel.css")" rel="stylesheet" id="Carousel-css">
+    <link href="@Url.Content("/Content/Shared/Hover.css")" rel="stylesheet" id="Carousel-css">
+    <script type="text/javascript" src="@Url.Content("/Scripts/Shared/Carousel.js")"></script>
+}
+<br/>
+<br/>
+<div class="container" on>
+    @Html.Partial("_CarouselPublicitaire")
+    <div class="row">
+        <h2>Produits en vedette</h2>
+        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="5" id="CarouselProduits" data-interval="1000">
+            <div class="MultiCarousel-inner">
+                @for (var i = 0; i <= 25; i++)
+                {
+                    @Html.Partial("_ProduitsCarousel", i)
+                }
+
+            </div>
+            <button class="btn btn-primary leftLst"><</button>
+            <button class="btn btn-primary rightLst">></button>
+        </div>
+
+        <br/>
+        <hr/>
+
+        <h2>Vos paniers</h2>
+        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="5" id="CarouselPaniers" data-interval="1000">
+            <div class="MultiCarousel-inner">
+                @for (var i = 0; i <= 25; i++)
+                {
+                    @Html.Partial("_PaniersCarousel", i)
+                }
+
+            </div>
+            <button class="btn btn-primary leftLst"><</button>
+            <button class="btn btn-primary rightLst">></button>
+        </div>
+
+    </div>
+</div>

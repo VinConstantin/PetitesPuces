@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Accueil - Gestionnaire";
+}
+
+<h1 class="row text-center">
+    Bienvenue "Gestionnaire"
+</h1>
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <h3 class="row text-center">Nouvelles demandes de vendeurs</h3>
+        <div class="row jumbotron">
+            <canvas id="cvDemandesVendeur" style="width: 100%"></canvas>
+            @Html.ActionLink("Gérer les demandes", "DemandesVendeur", "Gestionnaire", null, new { @class = "btn btn-primary btn-large center-block" })
+        </div>
+    </div>
+    <div class="col-xs-10 col-xs-offset-1">
+        <h3 class="row text-center">Utilisateurs inactifs</h3>
+        <div class="row jumbotron">
+            <canvas id="cvInactivite" style="width: 100%"></canvas>
+            @Html.ActionLink("Gérer les utilisateurs inactifs", "Inactivite", "Gestionnaire", null, new { @class = "btn btn-primary btn-large center-block" })
+        </div>
+    </div>
+    <div class="col-xs-10 col-xs-offset-1">
+        <h3 class="row text-center">Redevances</h3>
+        <div class="row jumbotron">
+            <canvas id="cvRedevances" style="width: 100%"></canvas>
+            @Html.ActionLink("Gérer les redevances", "Redevances", "Gestionnaire", null, new { @class = "btn btn-primary btn-large center-block" })
+        </div>
+    </div>
+    <div class="col-xs-10 col-xs-offset-1 text-center">
+        @Html.ActionLink("Visualiser toutes les statistiques et rapports", "Statistiques", "Gestionnaire", null, new { @class = "btn btn-primary btn-large center-block" })
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/chart");
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Gestionnaire/Index.js")"></script>
+}

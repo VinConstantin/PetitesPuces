@@ -3,6 +3,13 @@
 @{
     ViewBag.Title = "Catalogue";
 }
+
+@section navbar {
+    <li>@Html.ActionLink("Accueil", "Index", "Client")</li>
+    <li>@Html.ActionLink("Catalogue", "Catalogue", "Client")</li>
+    <li>@Html.ActionLink("Mon Panier", "MonPanier", "Client")</li>
+}
+
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1 class="display-3">@ViewBag.Title</h1>

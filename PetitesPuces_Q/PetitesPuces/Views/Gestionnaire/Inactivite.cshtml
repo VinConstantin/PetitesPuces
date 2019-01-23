@@ -1,0 +1,164 @@
+﻿@model PetitesPuces.ViewModels.Gestionnaire.InactiviteViewModel
+@{
+    ViewBag.Title = "Inactivite - Gestionnaire";
+}
+
+@section styles {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Gestionnaire/Inactivite.css")" />
+}
+
+<h2 class="text-center">Gestion des comptes inactifs</h2><br />
+
+<h3 class="text-center">Clients Inactifs</h3>
+
+<div class="well text-center">
+    <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
+        <strong class="text-bold mx-1">Inactif depuis:</strong>
+        <div class="btn-group d-flex align-items-baseline">
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeClient" value="1" autocomplete="off" /> 1
+            </label>
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeClient" value="2" autocomplete="off" /> 2
+            </label>
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeClient" value="3" autocomplete="off" /> 3
+            </label>
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeClient" value="6" autocomplete="off" /> 6
+            </label>
+            <strong class="mx-1">Mois</strong>
+        </div>
+        <div class="btn-group d-flex align-items-baseline">
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeClient" value="1" autocomplete="off" /> 1
+            </label>
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeClient" value="2" autocomplete="off" /> 2
+            </label>
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeClient" value="3" autocomplete="off" /> 3
+            </label>
+            <strong class="mx-1">Ans</strong>
+        </div>
+        <div class="btn-group d-flex align-items-baseline">
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Toujours
+            </label>
+        </div>
+    </div>
+    <table class="table lst-utils">
+        <tr>
+            <th scope="col" class="text-left">
+                No Client
+            </th>
+            <th scope="col">
+                Adresse Courriel
+            </th>
+            <th scope="col">
+                Prénom
+            </th>
+            <th scope="col">
+                Nom
+            </th>
+            <th scope="col">
+                Date dernière activité
+            </th>
+        </tr>
+        @foreach (var client in Model.ClientsInactifs)
+        {
+            @Html.Partial("Gestionnaire/_Client", client);
+        }
+    </table>
+    <button class="btn btn-danger btn-large center-block">Supprimer les clients inactifs visibles</button>
+</div>
+
+<h3 class="text-center">Vendeurs Inactifs</h3>
+<div class="well text-center">
+    <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
+        <strong class="text-bold mx-1">Inactif depuis:</strong>
+        <div class="btn-group d-flex align-items-baseline">
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeVendeur" value="1" autocomplete="off" /> 1
+            </label>
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeVendeur" value="2" autocomplete="off" /> 2
+            </label>
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeVendeur" value="3" autocomplete="off" /> 3
+            </label>
+            <strong class="mx-1">Ans</strong>
+        </div>
+        <div class="btn-group d-flex align-items-baseline">
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeVendeur" value="99" autocomplete="off" /> Toujours
+            </label>
+        </div>
+    </div>
+    <table class="table lst-utils mt-2">
+        <tr>
+            <th scope="col" class="text-left">
+                No Client
+            </th>
+            <th scope="col">
+                Nom d'affaires
+            </th>
+            <th scope="col">
+                Prénom
+            </th>
+            <th scope="col">
+                Nom
+            </th>
+        </tr>
+        @foreach (var vendeur in Model.VendeursInactifs)
+        {
+            @Html.Partial("Gestionnaire/_Vendeur", vendeur);
+        }
+    </table>
+    <button class="btn btn-danger btn-large center-block">Supprimer les vendeurs inactifs visibles</button>
+</div>
+
+<h3 class="text-center">Vendeurs Inactifs</h3>
+<div class="well text-center">
+    <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
+        <strong class="text-bold mx-1">Inactif depuis:</strong>
+        <div class="btn-group d-flex align-items-baseline">
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeVendeur" value="1" autocomplete="off" /> 1
+            </label>
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeVendeur" value="2" autocomplete="off" /> 2
+            </label>
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeVendeur" value="3" autocomplete="off" /> 3
+            </label>
+            <strong class="mx-1">Ans</strong>
+        </div>
+        <div class="btn-group d-flex align-items-baseline">
+            <label type="button" class="btn btn-default">
+                <input type="radio" name="periodeVendeur" value="99" autocomplete="off" /> Toujours
+            </label>
+        </div>
+    </div>
+    <table class="table lst-utils mt-2">
+        <tr>
+            <th scope="col" class="text-left">
+                No Client
+            </th>
+            <th scope="col">
+                Nom d'affaires
+            </th>
+            <th scope="col">
+                Prénom
+            </th>
+            <th scope="col">
+                Nom
+            </th>
+        </tr>
+        @foreach (var vendeur in Model.VendeursInactifs)
+        {
+            @Html.Partial("Gestionnaire/_Vendeur", vendeur);
+        }
+    </table>
+    <button class="btn btn-danger btn-large center-block">Supprimer les vendeurs inactifs visibles</button>
+</div>
