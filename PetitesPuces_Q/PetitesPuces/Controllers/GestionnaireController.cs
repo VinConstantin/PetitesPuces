@@ -74,7 +74,12 @@ namespace PetitesPuces.Controllers
 
         public ActionResult Statistiques()
         {
-            return View();
+            var viewModel = new StatsViewModel
+            {
+                TotalVendeurs = 10,
+            };
+
+            return View(viewModel);
         }
     }
 }
