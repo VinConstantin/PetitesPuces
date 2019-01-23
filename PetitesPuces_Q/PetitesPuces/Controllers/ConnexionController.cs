@@ -4,13 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace TestMVC.Controllers
+namespace PetitesPuces.Controllers
 {
-    public class HomeController : Controller
+    public class ConnexionController : Controller
     {
+        // GET: Connexion
         public ActionResult Index()
         {
-
             return View();
         }
     }
