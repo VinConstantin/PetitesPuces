@@ -33,15 +33,25 @@
     </div>
     
     <div class="row">
-   
 
         <div class="col-md-2" style="border-right: 1px solid #333; ">
             <div style="position: static;">
                 <div class="item">
                     <div class="panel-footer"><h4>Recherche :</h4></div>
                     <div class="panel-body">
-                        <input class="form-control"/>
+                        <input class="form-control" style="width: 100%" type="text" name="search">
                     </div>
+                    
+                    <div class="panel-footer"><h4>Tri :</h4></div>
+                    <div class="panel-body">
+                        <select class="form-control">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                <option value="@i">Option @i</option>
+                            }
+                        </select>
+                    </div>
+                    
                     <div class="panel-footer">
                         <h4>Catégories :</h4></div>
                     <div class="panel-body" style="height: 40vh; overflow: auto;">
