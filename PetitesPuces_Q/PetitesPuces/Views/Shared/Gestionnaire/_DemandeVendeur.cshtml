@@ -1,0 +1,38 @@
+﻿@model PetitesPuces.Models.Vendeur
+
+@{
+    ViewBag.Title = "_DemandeVendeur";
+}
+
+
+<tr class="v-align-middle">
+    <th >
+        @Html.DisplayFor(model => model.NoVendeur)
+    </th>
+
+    <td>
+        @Html.DisplayFor(model => model.NomAffaires)
+    </td>
+
+    <td>
+        @Html.DisplayFor(model => model.Prenom)
+    </td>
+
+    <td>
+        @Html.DisplayFor(model => model.Nom)
+    </td>
+
+    <td>
+        @Html.DisplayFor(model => model.DateCreation)
+    </td>
+    <td class="text-right">
+        <form class="form-inline">
+            <button class="btn btn-success">
+                <i class="glyphicon glyphicon-ok v-align-middle"></i>
+            </button>
+            <button class="btn btn-danger">
+                <i class="glyphicon glyphicon-remove v-align-middle"></i>
+            </button>
+        </form>
+    </td>
+</tr>
