@@ -1,0 +1,87 @@
+@model List<PetitesPuces.Models.Categorie>
+
+
+<h1>Categories 
+    <button class="btn btn-success btn-md v-align-baseline" data-toggle="modal" data-target="#modalAjoutCategorie">
+        <i class="glyphicon glyphicon-plus"></i>
+    </button>
+</h1> 
+
+<table class="table lst-utils table-hover">
+    <tr>
+        <th style="width: 5vh" scope="col">No</th>
+        <th scope="col" class="text-left">Description</th>
+        <th scope="col" class="text-left">Details</th>
+        <td></td>
+        <td></td>
+    </tr>
+    @foreach (var categorie in Model)
+    {
+        <tr class="v-align-baseline">
+            <td contenteditable="false" scope="row">@categorie.No</td>
+            <td contenteditable="false" class="text-left">@categorie.Description</td>
+            <td contenteditable="false" class="text-left">@categorie.Details</td>
+            <td>
+                <button class="btn btn-danger v-align-baseline">
+                    <i class="glyphicon glyphicon-remove"></i>
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-warning v-align-baseline editbtn">
+                    Modifier
+                </button>
+            </td>
+        </tr>
+    }
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAjoutCategorie" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCategorie" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ajout de catégorie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputEmail4">Description</label>
+                    <input type="text" class="form-control" placeholder="Titre">
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail4">Détails</label>
+                    <input type="text" class="form-control" id="inputEmail4" placeholder="Details">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        $('.editbtn').click(function () {
+                                          var td = $(this).parents('tr').find('td');
+            if ($(this).html() == 'Modifier') {                  
+            $.each(td, function () {
+                $(this).prop('contenteditable', true);
+                td.css('background-color', 'rgba(241, 166, 166, .1) ');
+            });
+            } else {
+            $.each(td, function () {
+                $(this).prop('contenteditable', false);
+                td.css('background-color', '');
+            });
+        }
+    
+        $(this).html($(this).html() == 'Modifier' ? 'Enregistrer' : 'Modifier')
+    
+        });
+
+    };
+</script>

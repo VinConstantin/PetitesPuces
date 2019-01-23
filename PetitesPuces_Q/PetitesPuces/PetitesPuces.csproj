@@ -169,6 +169,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Commande.cs" />
     <Compile Include="Models\IPersonne.cs" />
@@ -198,6 +199,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\carouselPublicite\puces.jpg" />
+    <Content Include="images\carouselPublicite\retour.jpg" />
+    <Content Include="images\carouselPublicite\sante.jpg" />
+    <Content Include="images\carouselPublicite\ste.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -232,6 +237,7 @@
     <Content Include="Views\Shared\Client\_Produits.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
     <Content Include="Views\Shared\_ModalConfirmation.cshtml" />
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
@@ -268,10 +274,11 @@
     <Content Include="Views\Shared\Vendeur\_Panier.cshtml" />
     <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
     <Content Include="Views\Vendeur\GestionCommandes.cshtml" />
-    <Content Include="Views\Shared\Vendeur\_Commande.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_ListeDisablePersonne.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_ListeDisableVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_ListeDisableClient.cshtml" />
+    <Content Include="Views\Vendeur\InfoCommande.cshtml" />
+    <Content Include="Views\Vendeur\GestionPaniers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

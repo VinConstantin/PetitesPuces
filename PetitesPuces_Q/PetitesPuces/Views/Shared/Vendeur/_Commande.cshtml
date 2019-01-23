@@ -6,21 +6,25 @@
 }
 
 <tr class="v-align-middle">
-    <th>@Model.NoCommande</th>
-    <td>@Model.NomClient</td>
-    <td>@Model.DateCommande</td>
-    <td>@Formatter.Money(Model.CoutLivraison)</td>
-    <td>@Model.Type</td>
-    <td>@Model.PoidsTotal</td>
-    <td>@Formatter.Money(@Model.TotalAvantTaxes)</td>
+    <th scope="row">@Model.NoCommande</th>
+    <td class="text-left">@Model.NomClient</td>
+    <td class="text-left">@Model.DateCommande</td>
+    <td class="text-left">@Formatter.Money(Model.CoutLivraison)</td>
+    <td class="text-left">@Model.Type</td>
+    <td class="text-left">@Model.PoidsTotal</td>
+    <td class="text-left">@Formatter.Money(@Model.TotalAvantTaxes)</td>
     <td class="text-right">
         <form class="form-inline">
-            <button type="button" title="Livrer" value="@Model.NoCommande" class="btn btn-success">
-                <span class="glyphicon glyphicon-send"></span>
-            </button>
-            <button type="button" title="Visualiser" value="@Model.NoCommande" class="btn btn-info">
+            @if (Model.Statut != 'L')
+            {
+                <button type="button" title="Livrer" value="@Model.NoCommande" class="btn btn-success">
+                    <span class="glyphicon glyphicon-send"></span>
+                </button>
+            }
+            <button type="button" title="Visualiser" onclick="location.href='@Url.Action("InfoCommande", "Vendeur", new RouteValueDictionary(new { No = Model.NoCommande }))'" class="btn btn-info">
                 <span class="glyphicon glyphicon-info-sign"></span>
             </button>
+
         </form>
     </td>
 </tr>
