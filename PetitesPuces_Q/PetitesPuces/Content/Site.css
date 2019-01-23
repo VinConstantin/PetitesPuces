@@ -40,10 +40,32 @@ textarea {
     margin-right: 1rem !important;
 }
 
-mt-2 {
-    margin-top: 2rem;
+.mt-2 {
+    margin-top: 2rem !important;
+}
+
+.v-align-middle {
+    vertical-align: middle;
+}
+
+.v-align-middle > th,
+.v-align-middle > td {
+    vertical-align: middle !important;
+}
+
+.v-align-baseline {
+    vertical-align: baseline;
+}
+
+.v-align-baseline > th,
+.v-align-baseline > td {
+    vertical-align: baseline !important;
 }
 
 .p-auto {
     padding: auto;
+}
+
+.border-none {
+    border: none !important;
 }
