@@ -9,6 +9,6 @@ namespace PetitesPuces.ViewModels.Gestionnaire
     public class InactiviteViewModel
     {
         public List<Vendeur> VendeursInactifs { get; set; }
-        public List<Client> ClientsInactifs { get; set; }
+        public List<Models.Client> ClientsInactifs { get; set; }
     }
 }

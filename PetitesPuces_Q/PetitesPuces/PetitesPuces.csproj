@@ -223,12 +223,17 @@
     <Content Include="Views\Client\Commande.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_Confirmation.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_Information.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_Produits.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
+    <Content Include="Views\Shared\_ModalConfirmation.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -257,6 +262,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ViewModels\Client" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
