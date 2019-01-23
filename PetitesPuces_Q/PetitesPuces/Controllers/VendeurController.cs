@@ -248,9 +248,32 @@ namespace PetitesPuces.Controllers
             return View(viewModel);
         }
 
+        public ActionResult GestionCatalogue()
+        {
+            /**
+             * Créer des produits bidons
+             */
+            Random random = new Random();
+            var produits = new List<Product>();
+            for (int i = 1; i <= 20; i++)
+            {
+                var next = random.NextDouble();
+
+                var prix = 5.00 + (next * (1000.00 - 5.00));
+                produits.Add(new Product(i, "Produit No." + i) { Price = prix });
+            }
+
+            return View(produits);
+        }
+
         public ActionResult InfoCommande(string No)
         {
             ViewBag.No = No;
+            return View();
+        }
+
+        public ActionResult Profil()
+        {
             return View();
         }
     }
