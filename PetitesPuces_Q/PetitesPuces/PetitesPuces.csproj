@@ -266,7 +266,6 @@
     <Content Include="Views\Shared\Gestionnaire\_LayoutGestionnaire.cshtml" />
     <Content Include="Views\Gestionnaire\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Client.cshtml" />
-    <Content Include="Views\Vendeur\index.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Vendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Commande.cshtml" />
     <Content Include="Views\Connexion\Index.cshtml" />
@@ -279,10 +278,11 @@
     <Content Include="Views\Shared\Gestionnaire\_ListeDisableClient.cshtml" />
     <Content Include="Views\Vendeur\InfoCommande.cshtml" />
     <Content Include="Views\Vendeur\GestionPaniers.cshtml" />
+    <Content Include="Views\Vendeur\GestionCatalogue.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="ViewModels\Client" />
+    <Folder Include="ViewModels\Client\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -5,10 +5,11 @@
 }
 
 @section navbar {
-    <li>@Html.ActionLink("Accueil", "Index", "Vendeur")</li>
-    <li>@Html.ActionLink("Mon catalogue", "Catalogue", "Vendeur")</li>
-    <li>@Html.ActionLink("Commandes", "GestionCommandes", "Vendeur")</li>
-    <li>@Html.ActionLink("Mes Paniers", "GestionPaniers", "Vendeur")</li>
+<li>@Html.ActionLink("Accueil", "Index", "Vendeur")</li>
+<li>@Html.ActionLink("Catalogue", "GestionCatalogue", "Vendeur")</li>
+<li>@Html.ActionLink("Commandes", "GestionCommandes", "Vendeur")</li>
+<li>@Html.ActionLink("Paniers", "GestionPaniers", "Vendeur")</li>
+<li>@Html.ActionLink("Profil", "Profil", "Vendeur")</li>
 }
 
 <div class="jumbotron jumbotron-fluid">
@@ -50,14 +51,14 @@
         </tr>
         @foreach (var commande in Model.Commandes.Skip(3))
         {
-            if (commande.Statut == 'P')
-            {
-                @Html.Partial("Vendeur/_Commande", commande)
-            }
+        if (commande.Statut == 'P')
+        {
+        @Html.Partial("Vendeur/_Commande", commande)
+        }
         }
         <tr>
             <td class="text-left">
-                <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("GestionCommandes", "Vendeur")'">Gérer les commandes</button>
+                <button class="btn btn-outline-primary" onclick="location.href='@Url.Action(" GestionCommandes", "Vendeur" )'">Gérer les commandes</button>
             </td>
             <td></td>
             <td></td>
@@ -92,11 +93,11 @@
         </tr>
         @foreach (var panier in Model.Paniers)
         {
-            @Html.Partial("Vendeur/_Panier", panier)
+        @Html.Partial("Vendeur/_Panier", panier)
         }
         <tr>
             <td class="text-left">
-                <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("GestionPaniers", "Vendeur")'">Gérer les paniers</button>
+                <button class="btn btn-outline-primary" onclick="location.href='@Url.Action(" GestionPaniers", "Vendeur" )'">Gérer les paniers</button>
             </td>
             <td></td>
             <td></td>

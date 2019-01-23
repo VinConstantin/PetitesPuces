@@ -7,9 +7,10 @@
 
 @section navbar {
     <li>@Html.ActionLink("Accueil", "Index", "Vendeur")</li>
-    <li>@Html.ActionLink("Mon catalogue", "Catalogue", "Vendeur")</li>
+    <li>@Html.ActionLink("Catalogue", "GestionCatalogue", "Vendeur")</li>
     <li>@Html.ActionLink("Commandes", "GestionCommandes", "Vendeur")</li>
-    <li>@Html.ActionLink("Mes Paniers", "Paniers", "Vendeur")</li>
+    <li>@Html.ActionLink("Paniers", "GestionPaniers", "Vendeur")</li>
+    <li>@Html.ActionLink("Profil", "Profil", "Vendeur")</li>
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
