@@ -1,4 +1,4 @@
-﻿@model PetitesPuces.ViewModels.VMVendeur.CommandesViewModel
+﻿@model PetitesPuces.ViewModels.VMVendeur.AccueilVendeurViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Page d'accueil";
@@ -6,6 +6,7 @@
 
 @section navbar {
     <li>@Html.ActionLink("Accueil", "Index", "Vendeur")</li>
+    <li>@Html.ActionLink("Mon catalogue", "Catalogue", "Vendeur")</li>
     <li>@Html.ActionLink("Commandes", "Commandes", "Vendeur")</li>
     <li>@Html.ActionLink("Mes Paniers", "Paniers", "Vendeur")</li>
 }
@@ -16,79 +17,50 @@
     </div>
 </div>
 
-<div class="panel panel-primary">
-    <div class="panel-heading">Commandes non traitées</div>
-    <table class="table table-hover">
-        <tr>
-            <th># de commande</th>
-            <th>Nom du client</th>
-            <th>Date</th>
-            <th>Type de livraison</th>
-            <th>Total avant taxes</th>
-            <th>Actions</th>
-        </tr>
-        @foreach (var commande in Model.Commandes)
-        {
-            @Html.Partial("Vendeur/_Commande", commande)
-        }
-    </table>
-    <div class="panel-footer">
-        <button class="btn btn-outline-primary" onclick="">Gérer les commandes</button>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Commandes non traitées</div>
+        <div style="max-height:25vh; overflow:auto">
+            <table class="table table-hover" style="max-height:25vh; overflow:auto">
+                <tr>
+                    <th># de commande</th>
+                    <th>Nom du client</th>
+                    <th>Date</th>
+                    <th>Type de livraison</th>
+                    <th>Total avant taxes</th>
+                    <th>Actions</th>
+                </tr>
+                @foreach (var commande in Model.Commandes)
+                {
+                    @Html.Partial("Vendeur/_Commande", commande)
+                }
+            </table>
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-outline-primary" onclick="">Gérer les commandes</button>
+        </div>
     </div>
-</div>
 
-<div class="panel panel-primary">
-    <div class="panel-heading">Paniers courants</div>
-    <table class="table table-hover">
-        <tr>
-            <th>Nom du client</th>
-            <th>Date de création</th>
-            <th>Nombre d'items</th>
-            <th>Actions</th>
-        </tr>
-        <tr>
-            <td>Antoinette</td>
-            <td>26/12/2018</td>
-            <td>7</td>
-            <td>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </button>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>Vincent</td>
-            <td>02/01/2019</td>
-            <td>5</td>
-            <td>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </button>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>Simon</td>
-            <td>06/01/2019</td>
-            <td>3</td>
-            <td>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </button>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
-            </td>
-        </tr>
-    </table>
-    <div class="panel-footer">
-        <button class="btn btn-outline-primary" onclick="">Gérer les paniers</button>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Paniers courants</div>
+        <div style="max-height:25vh; overflow:auto">
+            <table class="table table-hover">
+                <tr>
+                    <th>Nom du client</th>
+                    <th>Date de création</th>
+                    <th>Nombre d'items</th>
+                    <th>Actions</th>
+                </tr>
+                @foreach (var panier in Model.Paniers)
+                {
+                    @Html.Partial("Vendeur/_Panier", panier)
+                }
+            </table>
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-outline-primary" onclick="">Gérer les paniers</button>
+        </div>
     </div>
-</div>
 
-<h4>Nombre de visiteurs: 3</h4>
+    <h4>Nombre de visiteurs: @Model.NbVisites</h4>
+</div>

@@ -58,8 +58,15 @@ namespace PetitesPuces.Controllers
                         Nom = "Nom",
                         NomAffaires =  "Magasin",
                         Prenom = "Prenom",
+                        AdresseEmail = "vendeur@company.ca"
                     }
                 }
+            };
+
+            viewModel.UtilsRecherche = new List<IPersonne>
+            {
+                viewModel.ClientsInactifs[0],
+                viewModel.VendeursInactifs[0],
             };
 
             return View(viewModel);
