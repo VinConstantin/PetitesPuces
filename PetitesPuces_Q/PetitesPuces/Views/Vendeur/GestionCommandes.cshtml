@@ -1,0 +1,51 @@
+﻿@model List<PetitesPuces.Models.Commande>
+
+@{
+    ViewBag.Title = "Gestion des commandes";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+<div class="well">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 text-center">
+            <h4>Commandes non traitées</h4>
+        </div>
+    </div>
+    <table class="table lst-vendeurs mt-2">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().NoCommande)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().NomClient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().DateCommande)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().CoutLivraison)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().PoidsTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().TotalAvantTaxes)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+        @foreach (var commande in Model)
+        {
+            @Html.Partial("Vendeur/_Commande", commande);
+        }
+    </table>
+</div>
