@@ -1,0 +1,194 @@
+﻿
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@section styles {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/Content/ProfilPersonnel/Profilpersonnel.css")" />
+}
+@section scripts {
+    <script type="text/javascript" src="@Url.Content("/Scripts/profilPersonnel.js")"></script>\
+}
+<div class="jumbotron">
+
+    <h2 style="text-align: center">Profil Personnel</h2>
+    <br/>
+</div>
+
+<form id="card-form" method="post" role="form" style="display: block"; class="text-center">
+    <div class="container">
+    <div class="row">
+    <div class="col-md-6 col-lg-offset-3">
+        <div class="well">
+
+           
+                <div class="row">
+                 
+                    <div class="col-md-6 text-center col-lg-offset-3">
+                        <h1 id="prenom" class="text-secondary">Simon Guo</h1>
+                    </div>
+                </div>
+                <br/>
+                
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <h4>Numéro civique:</h4>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <h4 id="noCivique" class="text-secondary">777</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <h4>Rue:</h4>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <h4 id="rue" class="text-secondary">Samuel</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <h4>Appartement:</h4>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <h4 id="appartement" class="text-secondary">443</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <h4>Ville:</h4>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <h4 id="ville" class="text-secondary">Montreal</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <h4>Province:</h4>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <h4 id="province" class="text-secondary">Quebec</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <h4>Pays:</h4>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <h4 id="pays" class="text-secondary">Canada</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <h4>Code postal:</h4>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <h4 id="codePostal" class="text-secondary">j7T2D2</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <h4>Téléphone:</h4>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <h4 id="telephone" class="text-secondary">514-666-8888</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <h4>Cellulaire:</h4>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <h4 id="cellulaire" class="text-secondary">514-222-2222</h4>
+                    </div>
+                </div>
+
+        
+            <br/>
+          
+            <a href="@Url.Action("modificationMDP","Client")" class="text-white bg-dark">Modifier Mot de passe</a>
+            <br/><br />
+            <p><button id="btnModifier" class="btn btn-lg btn-primary btn-block">Modifier mon profil</button></p>
+        </div>
+    </div>
+      
+    </div>
+    </div>
+</form>
+<form id="modifierProfil-form" method="post" role="form" style="display: none;" class="text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-offset-3">
+                <div class="well">
+                    <br/>
+                    <h2 id="title" class="title">Modification du profil personnel</h2>
+                   
+                    <br/>
+                    
+                   
+                    <div class="row"><div class="col-md-4 text-right"><h4>Nom:</h4></div>
+                        <div class="col-md-8 text-left"><input id="nom" type="text" class="form-control center-block" placeholder="Entrez le nom"></input>
+                            </div></div>
+                   
+                    <div class="row"><div class="col-md-4 text-right"><h4>Prénom:</h4></div>
+                        <div class="col-md-8 text-left"><input id="prenom" type="text" class="form-control center-block" placeholder="Entrez le prénom"></input>
+                            </div></div>
+
+                    <div class="row"><div class="col-md-4 text-right"><h4>No de civique:</h4></div>
+                        <div class="col-md-8 text-left"><input id="noCivique" type="text" class="form-control center-block" placeholder="Entrez le numéro de civique"></input>
+                            </div></div>
+
+                    <div class="row"><div class="col-md-4 text-right"><h4>Rue:</h4></div>
+                        <div class="col-md-8 text-left"> <input id="rue" type="text" class="form-control center-block" placeholder="Entrez le nom de votre rue"></input>
+                            </div></div>
+
+                    <div class="row"><div class="col-md-4 text-right"><h4>Appartement:</h4></div>
+                        <div class="col-md-8 text-left"> <input id="appartement" type="text" class="form-control center-block" placeholder="Entrez le numéro d'appartement"></input>
+                            </div></div>
+
+                    <div class="row"><div class="col-md-4 text-right"><h4>Ville:</h4></div>
+                        <div class="col-md-8 text-left">  <input id="ville" type="text" class="form-control center-block" placeholder="Entrez votre ville"></input>
+                            </div></div>
+
+                    <div class="row"><div class="col-md-4 text-right"><h4>Province:</h4></div>
+                        <div class="col-md-8 text-left"> <input id="province" type="text" class="form-control center-block" placeholder="Entrez la province"></input>
+                            </div></div>
+
+                    <div class="row"><div class="col-md-4 text-right"><h4>Pays:</h4></div>
+                        <div class="col-md-8 text-left"> <input id="pays" type="text" class="form-control center-block" placeholder="Entrez le pays"></input>
+                            </div></div>
+
+                    <div class="row"><div class="col-md-4 text-right"><h4>Code Postal:</h4></div>
+                        <div class="col-md-8 text-left"><input id="codePostal" type="text" class="form-control center-block" placeholder="Entrez le code postal"></input>
+                            </div></div>
+
+                    <div class="row"><div class="col-md-4 text-right"><h4>Téléphone:</h4></div>
+                        <div class="col-md-8 text-left">   <input id="telephone" type="text" class="form-control center-block" placeholder="Entrez le numéro de téléphone"></input>
+                            </div></div>
+
+                    <div class="row"><div class="col-md-4 text-right"><h4>Cellulaire:</h4></div>
+                        <div class="col-md-8 text-left"><input id="cellulaire" type="text" class="form-control center-block" placeholder="Entrez le numéro de cellulaire"></input>
+                            </div></div>
+
+                    
+                  
+                   
+                   
+                  
+                   
+                   
+                    
+                 
+                    
+                    <br/>
+
+
+                    <p><button id="btnRetour" class="btn btn-lg btn-primary btn-block">Modifier</button></p>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+  
+</form>

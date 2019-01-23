@@ -4,12 +4,6 @@
     ViewBag.Title = "Catalogue";
 }
 
-@section navbar {
-    <li>@Html.ActionLink("Accueil", "Index", "Client")</li>
-    <li>@Html.ActionLink("Catalogue", "Catalogue", "Client")</li>
-    <li>@Html.ActionLink("Mon Panier", "MonPanier", "Client")</li>
-}
-
 @section scripts {
     <link href="@Url.Content("/Content/Shared/Carousel.css")" rel="stylesheet" id="Carousel-css">
     <script type="text/javascript" src="@Url.Content("/Scripts/Shared/Carousel.js")"></script>

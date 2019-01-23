@@ -7,11 +7,6 @@
     ViewBag.FraisLivraison = 23.00;
 }
 
-@section navbar {
-    <li>@Html.ActionLink("Accueil", "Index", "Client")</li>
-    <li>@Html.ActionLink("Catalogue", "Catalogue", "Client")</li>
-    <li>@Html.ActionLink("Mon Panier", "MonPanier", "Client")</li>
-}
 <script>
     function plusQuantite(id) {
         $("#" + id).val(parseInt($("#" + id).val())+1);

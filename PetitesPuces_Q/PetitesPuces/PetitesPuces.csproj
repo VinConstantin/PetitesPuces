@@ -164,10 +164,7 @@
     <Compile Include="Controllers\ConnexionController.cs" />
     <Compile Include="Controllers\GestionnaireController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ModificationMDPController.cs" />
-    <Compile Include="Controllers\OubliMDPController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
-    <Compile Include="Controllers\ProfilPersonnelController.cs" />
     <Compile Include="Controllers\VendeurController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -194,7 +191,6 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Gestionnaire\DemandesVendeur.css" />
     <Content Include="Content\Connexion\Index.css" />
-    <Content Include="Content\ProfilPersonnel\Profilpersonnel.css" />
     <Content Include="Content\Shared\Carousel.css" />
     <Content Include="Content\Shared\Hover.css" />
     <Content Include="Content\Gestionnaire\Inactivite.css" />
@@ -202,6 +198,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\carouselPublicite\puces.jpg" />
+    <Content Include="images\carouselPublicite\retour.jpg" />
+    <Content Include="images\carouselPublicite\sante.jpg" />
+    <Content Include="images\carouselPublicite\ste.jpg" />
+    <Content Include="images\ProfilImage.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -255,7 +256,7 @@
     <Content Include="Views\Shared\Gestionnaire\_Client.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Vendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Commande.cshtml" />
-    <Content Include="Views\Connexion\Index.cshtml" />
+    <Content Include="Views\Home\Connexion.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_DemandeVendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Panier.cshtml" />
     <Content Include="Views\Vendeur\GestionCommandes.cshtml" />
@@ -263,10 +264,17 @@
     <Content Include="Views\Shared\Gestionnaire\_ListeDisablePersonne.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_ListeDisableVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_ListeDisableClient.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\OubliMDP\Index.cshtml" />
-    <Content Include="Views\ProfilPersonnel\Index.cshtml" />
-    <Content Include="Views\ModificationMDP\Index.cshtml" />
+    <Content Include="Views\Home\OubliMDP.cshtml" />
+    <Content Include="Views\Client\Profil.cshtml" />
+    <Content Include="Views\Client\modificationMDP.cshtml" />
+    <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
+    <Content Include="Views\Shared\Client\_Produits.cshtml" />
+    <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
+    <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
+    <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
+    <Content Include="Views\Shared\Client\_LayoutClient.cshtml" />
+    <Content Include="Views\Client\_ViewStart.cshtml" />
+    <Content Include="Views\Home\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

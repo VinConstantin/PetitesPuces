@@ -13,11 +13,17 @@
 <div id="myCarousel" class="carousel" data-ride="carousel">
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
-        @foreach (var image in Directory.GetFiles(Url.Content("images/carouselPublicite")))
-        {
-            <div class="item">
-                <img src="@image" alt="@image">
-            </div>
+        @{
+            const string IMG_DIR = "/images/carouselPublicite";
+
+            foreach (var img in Directory.GetFiles(Server.MapPath(IMG_DIR)))
+            {
+                var path = IMG_DIR +"/" + img.Split(new char[] { '/', '\\' }).Last();
+
+                <div class="item">
+                    <img src="@Url.Content(path)"/>
+                </div>
+            }
         }
     </div>
     <!-- Left and right controls -->
