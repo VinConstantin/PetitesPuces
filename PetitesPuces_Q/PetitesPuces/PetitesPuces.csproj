@@ -169,6 +169,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Commande.cs" />
     <Compile Include="Models\IPersonne.cs" />
@@ -231,6 +232,7 @@
     <Content Include="Views\Shared\Client\_Produits.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
     <Content Include="Views\Shared\_ModalConfirmation.cshtml" />
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
