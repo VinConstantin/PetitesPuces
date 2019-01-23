@@ -1,0 +1,25 @@
+﻿@model List<PetitesPuces.Models.Vendeur>
+
+<table class="table lst-utils">
+    <tr>
+        <th scope="col">No Vendeur</th>
+        <th scope="col" class="text-left">Adresse Courriel</th>
+        <th scope="col" class="text-left">Prénom</th>
+        <th scope="col" class="text-left">Nom</th>
+        <td></td>
+    </tr>
+    @foreach (var vendeur in Model)
+    {
+        <tr class="v-align-baseline">
+            <th scope="row">@vendeur.NoVendeur</th>
+            <td class="text-left">@vendeur.AdresseEmail</td>
+            <td class="text-left">@vendeur.Prenom</td>
+            <td class="text-left">@vendeur.Nom</td>
+            <td>
+                <button class="btn btn-warning v-align-middle">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                </button>
+            </td>
+        </tr>
+    }
+</table>
