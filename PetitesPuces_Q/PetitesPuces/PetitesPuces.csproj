@@ -169,6 +169,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Commande.cs" />
     <Compile Include="Models\IPersonne.cs" />
@@ -212,6 +213,7 @@
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
+    <Content Include="Scripts\Gestionnaire\Statistiques.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -227,10 +229,20 @@
     <Content Include="Views\Client\Catalogue.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_Confirmation.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_Information.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
+    <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
+    <Content Include="Views\Shared\Client\_Produits.cshtml" />
+    <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
+    <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
+    <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
+    <Content Include="Views\Shared\_ModalConfirmation.cshtml" />
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\_Produits.cshtml" />
-    <Content Include="Views\Shared\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\_ProduitsPanier.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -244,6 +256,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Client\Commande.cshtml" />
     <Content Include="Views\Gestionnaire\Index.cshtml" />
     <Content Include="Views\Gestionnaire\DemandesVendeur.cshtml" />
     <Content Include="Views\Gestionnaire\Inactivite.cshtml" />
@@ -253,11 +266,13 @@
     <Content Include="Views\Shared\Gestionnaire\_LayoutGestionnaire.cshtml" />
     <Content Include="Views\Gestionnaire\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Client.cshtml" />
+    <Content Include="Views\Vendeur\index.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Vendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Commande.cshtml" />
     <Content Include="Views\Connexion\Index.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_DemandeVendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Panier.cshtml" />
+    <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
     <Content Include="Views\Vendeur\GestionCommandes.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_ListeDisablePersonne.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_ListeDisableVendeur.cshtml" />
@@ -267,6 +282,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ViewModels\Client" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
