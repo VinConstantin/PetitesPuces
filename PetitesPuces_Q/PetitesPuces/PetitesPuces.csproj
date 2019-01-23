@@ -182,6 +182,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Client\Commande.css" />
     <Content Include="Content\Shared\Carousel.css" />
     <Content Include="Content\Shared\Hover.css" />
     <Content Include="Content\Gestionnaire\Inactivite.css" />
@@ -198,6 +199,7 @@
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Client\Commande.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -211,13 +213,15 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Shared\Carousel.js" />
     <Content Include="Views\Client\Catalogue.cshtml" />
+    <Content Include="Views\Client\Commande.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
+    <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
+    <Content Include="Views\Shared\Client\_Produits.cshtml" />
+    <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
+    <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
+    <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
-    <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
-    <Content Include="Views\Shared\_Produits.cshtml" />
-    <Content Include="Views\Shared\_ProduitsCarousel.cshtml" />
-    <Content Include="Views\Shared\_ProduitsPanier.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

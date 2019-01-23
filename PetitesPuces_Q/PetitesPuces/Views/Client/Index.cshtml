@@ -11,7 +11,7 @@
 
 @section scripts {
     <link href="@Url.Content("/Content/Shared/Carousel.css")" rel="stylesheet" id="Carousel-css">
-    <link href="@Url.Content("/Content/Shared/Hover.css")" rel="stylesheet" id="Carousel-css">
+    <link href="@Url.Content("/Content/Shared/Hover.css")" rel="stylesheet" id="Hover-css">
     <script type="text/javascript" src="@Url.Content("/Scripts/Shared/Carousel.js")"></script>
 }
 <br/>
@@ -24,7 +24,7 @@
             <div class="MultiCarousel-inner">
                 @for (var i = 0; i <= 25; i++)
                 {
-                    @Html.Partial("_ProduitsCarousel", i)
+                    @Html.Partial("Client/_ProduitsCarousel", i)
                 }
 
             </div>
@@ -40,7 +40,7 @@
             <div class="MultiCarousel-inner">
                 @for (var i = 0; i <= 25; i++)
                 {
-                    @Html.Partial("_PaniersCarousel", i)
+                    @Html.Partial("Client/_PaniersCarousel", i)
                 }
 
             </div>
