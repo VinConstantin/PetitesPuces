@@ -163,8 +163,11 @@
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\ConnexionController.cs" />
     <Compile Include="Controllers\GestionnaireController.cs" />
-    <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ModificationMDPController.cs" />
+    <Compile Include="Controllers\OubliMDPController.cs" />
+    <Compile Include="Controllers\PanierController.cs" />
+    <Compile Include="Controllers\ProfilPersonnelController.cs" />
     <Compile Include="Controllers\VendeurController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -185,7 +188,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Gestionnaire\DemandesVendeur.css" />
-    <Content Include="Content\Home\Index.css" />
+    <Content Include="Content\Connexion\Index.css" />
+    <Content Include="Content\ProfilPersonnel\Profilpersonnel.css" />
     <Content Include="Content\Shared\Carousel.css" />
     <Content Include="Content\Shared\Hover.css" />
     <Content Include="Content\Gestionnaire\Inactivite.css" />
@@ -215,6 +219,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\register.js" />
     <Content Include="Scripts\Shared\Carousel.js" />
+    <Content Include="Scripts\profilPersonnel.js" />
     <Content Include="Views\Client\Catalogue.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
@@ -234,7 +239,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Gestionnaire\Index.cshtml" />
     <Content Include="Views\Gestionnaire\DemandesVendeur.cshtml" />
     <Content Include="Views\Gestionnaire\Inactivite.cshtml" />
@@ -247,6 +251,10 @@
     <Content Include="Views\Shared\Gestionnaire\_Vendeur.cshtml" />
     <Content Include="Views\Connexion\Index.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_DemandeVendeur.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\OubliMDP\Index.cshtml" />
+    <Content Include="Views\ProfilPersonnel\Index.cshtml" />
+    <Content Include="Views\ModificationMDP\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

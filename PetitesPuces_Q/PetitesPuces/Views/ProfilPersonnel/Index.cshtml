@@ -1,0 +1,72 @@
+﻿@using TestMVC.Controllers
+@using WebGrease.Css.ImageAssemblyAnalysis
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@section styles {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/Content/ProfilPersonnel/Profilpersonnel.css")" />
+}
+@section scripts {
+    <script type="text/javascript" src="@Url.Content("/Scripts/profilPersonnel.js")"></script>\
+}
+<h2 style="text-align:center">Profil Personnel</h2>
+<br />
+<form id="card-form" method="post" role="form" style="display: block"; class="text-center">
+    <div class="container">
+    <div class="row">
+    <div class="col-md-6 col-lg-offset-3">
+    <div class="well">
+
+        <h1 id="prenom" class="title"></h1>
+        <br />
+        <label id="nom" class="title"></label>
+        <label id="noCivique" class="title"></label>
+        <label id="rue" class="title"></label>
+        <label id="appartement" class="title"></label>
+        <label id="ville" class="title"></label>
+        <label id="province" class="title"></label>
+        <label id="pays" class="title"></label>
+        <label id="codePostal" class="title"></label>
+        <label id="telephone" class="title"></label>
+        <label id="cellulaire" class="title"></label>
+
+
+        <p><button id="btnModifier" class="btn btn-lg btn-primary btn-block">Modifier</button></p>
+    </div>
+    </div>
+      
+    </div>
+    </div>
+</form>
+<form id="modifierProfil-form" method="post" role="form" style="display: none;" class="text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-offset-3">
+                <div class="well">
+                    <br/>
+                    <h2 id="title" class="title">Modification du profil personnel</h2>
+                    <h2 id="prenomEtNom" class="title"></h2>
+                    <br/>
+                    <input id="nom" type="text" class="form-control center-block" type="text" placeholder="Entrez votre Nom"></input>
+                    <input id="noCivique" type="text" class="form-control center-block" placeholder="Entrez votre numéro de Civique"></input>
+                    <input id="rue" type="text" class="form-control center-block" placeholder="Entrez le nom de votre rue"></input>
+                    <input id="appartement" type="text" class="form-control center-block" placeholder="Entrez le numéro d'appartement"></input>
+                    <input id="ville" type="text" class="form-control center-block" placeholder="Entrez votre ville"></input>
+                    <input id="province" type="text" class="form-control center-block" placeholder="Entrez la province"></input>
+                    <input id="pays" type="text" class="form-control center-block" placeholder="Entrez le pays"></input>
+                    <input id="codePostal" type="text" class="form-control center-block" placeholder="Entrez le code postal"></input>
+                    <input id="telephone" type="text" class="form-control center-block" placeholder="Entrez le numéro de téléphone"></input>
+                    <input id="cellulaire" type="text" class="form-control center-block" placeholder="Entrez le numéro de cellulaire"></input>
+                    <br/>
+
+
+                    <p><button id="btnRetour" class="btn btn-lg btn-primary btn-block">Retour</button></p>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+  
+</form>
