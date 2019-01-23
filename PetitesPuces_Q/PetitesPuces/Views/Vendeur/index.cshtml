@@ -11,11 +11,61 @@
 
 <div class="panel panel-primary">
     <div class="panel-heading">Commandes non traitées</div>
-    <div class="panel-body">
-        <li class="list-group-item">Commande d'Antoinette</li>
-        <li class="list-group-item">Commande de Simon</li>
-        <li class="list-group-item">Commande de Vincent</li>
-    </div>
+    <table class="table table-hover">
+        <tr>
+            <th># de commande</th>
+            <th>Nom du client</th>
+            <th>Date</th>
+            <th>Type de livraison</th>
+            <th>Total avant taxes</th>
+            <th>Actions</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Antoinette</td>
+            <td>29/12/2018</td>
+            <td>Express</td>
+            <td>99,00 $</td>
+            <td>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Vincent</td>
+            <td>05/01/2019</td>
+            <td>Standard</td>
+            <td>49,99 $</td>
+            <td>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Simon</td>
+            <td>09/01/2019</td>
+            <td>Express</td>
+            <td>199,99 $</td>
+            <td>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </td>
+        </tr>
+    </table>
     <div class="panel-footer">
         <button class="btn btn-outline-primary" onclick="">Gérer les commandes</button>
     </div>
@@ -23,14 +73,56 @@
 
 <div class="panel panel-primary">
     <div class="panel-heading">Paniers courants</div>
-    <div class="panel-body">
-        <li class="list-group-item">Panier d'Antoinette</li>
-        <li class="list-group-item">Panier de Simon</li>
-        <li class="list-group-item">Panier de Vincent</li>
-    </div>
+    <table class="table table-hover">
+        <tr>
+            <th>Nom du client</th>
+            <th>Date de création</th>
+            <th>Nombre d'items</th>
+            <th>Actions</th>
+        </tr>
+        <tr>
+            <td>Antoinette</td>
+            <td>26/12/2018</td>
+            <td>7</td>
+            <td>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td>Vincent</td>
+            <td>02/01/2019</td>
+            <td>5</td>
+            <td>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td>Simon</td>
+            <td>06/01/2019</td>
+            <td>3</td>
+            <td>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </td>
+        </tr>
+    </table>
     <div class="panel-footer">
         <button class="btn btn-outline-primary" onclick="">Gérer les paniers</button>
     </div>
 </div>
 
-<h4>Nombre de visiteurs: 0</h4>
+<h4>Nombre de visiteurs: 3</h4>
