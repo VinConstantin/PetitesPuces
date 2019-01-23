@@ -3,6 +3,7 @@
 
 @{
     ViewBag.Title = "Vos paniers";
+    ViewBag.Vendeur = "Simon";
     ViewBag.SousTotal = 323.45;
     ViewBag.FraisLivraison = 23.00;
 }
@@ -97,7 +98,7 @@
             <div class="panel-heading">Informations sur le vendeur: </div>
             <div class="panel-body">
                 <div class="h4">
-                    <p>Vincent Constanin</p>
+                    <p><a href="@Url.Action("Catalogue", "Client", new RouteValueDictionary(new { Vendeur= @ViewBag.Vendeur }))">@ViewBag.Vendeur</a></p>
                     <p>Membre depuis 2015</p>
 
                     <hr/>
