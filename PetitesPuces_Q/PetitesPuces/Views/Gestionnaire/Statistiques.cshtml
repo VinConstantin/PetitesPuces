@@ -3,469 +3,498 @@
     ViewBag.Title = "Statistiques - Gestionnaire";
 }
 
-<h2>Statistiques</h2>
+<h2 class="row text-center">Statistiques</h2>
 
-<h3 class="col-xs-10 col-xs-offset-1 text-center">Total des vendeurs</h3>
-<div class="col-xs-10 col-xs-offset-1 well row text-center">
-    <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
-        <strong class="mx-1">Periode:</strong>
-        <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default active">
-                <input type="radio" name="periodeTotalVendeur" value="1" autocomplete="off" checked /> 1
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="2" autocomplete="off" /> 2
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="3" autocomplete="off" /> 3
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="6" autocomplete="off" /> 6
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="9" autocomplete="off" /> 9
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="12" autocomplete="off" /> 12
-            </label>
-            <strong class="mx-1">Mois</strong>
-        </div>
-        <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Début du site
-            </label>
-        </div>
-    </div>
-    <canvas id="cvTotalVendeurs"></canvas>
-</div>
-
-<h3 class="col-xs-10 col-xs-offset-1 text-center">Nouveaux vendeurs</h3>
-<div class="col-xs-10 col-xs-offset-1 well row text-center">
-    <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
-        <strong class="mx-1">Rejoins depuis depuis:</strong>
-        <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default active">
-                <input type="radio" name="periodeTotalVendeur" value="1" autocomplete="off" checked /> 1
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="2" autocomplete="off" /> 2
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="3" autocomplete="off" /> 3
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="6" autocomplete="off" /> 6
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="9" autocomplete="off" /> 9
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="12" autocomplete="off" /> 12
-            </label>
-            <strong class="mx-1">Mois</strong>
-        </div>
-        <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Toujours
-            </label>
-            <strong class="mx-1">Mois</strong>
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1 col-lg-5 mr-1">
+        <h3 class="text-center">Total des vendeurs</h3>
+        <div class="well row text-center">
+            <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
+                <strong class="mx-1">Periode:</strong>
+                <div class="btn-group d-flex align-items-baseline">
+                    <label type="button" class="btn btn-default active">
+                        <input type="radio" name="periodeTotalVendeur" value="1" autocomplete="off" checked /> 1
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalVendeur" value="2" autocomplete="off" /> 2
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalVendeur" value="3" autocomplete="off" /> 3
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalVendeur" value="6" autocomplete="off" /> 6
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalVendeur" value="9" autocomplete="off" /> 9
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalVendeur" value="12" autocomplete="off" /> 12
+                    </label>
+                    <strong class="mx-1">Mois</strong>
+                </div>
+                <div class="btn-group d-flex align-items-baseline">
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Début du site
+                    </label>
+                </div>
+            </div>
+            <canvas id="cvTotalVendeurs"></canvas>
         </div>
     </div>
-    <canvas id="cvNouveauVendeurs"></canvas>
-</div>
 
-<h3 class="col-xs-10 col-xs-offset-1 text-center">Total des clients</h3>
-<div class="col-xs-10 col-xs-offset-1 well row text-center">
-    <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
-        <strong class="mx-1">Periode:</strong>
+    <div class="col-xs-10 col-xs-offset-1 col-lg-5 col-lg-offset-0 ml-1">
+        <h3 class="text-center">Nouveaux vendeurs</h3>
+        <div class="well row text-center">
+            <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
+                <strong class="mx-1">Rejoins depuis:</strong>
+                <div class="btn-group d-flex align-items-baseline">
+                    <label type="button" class="btn btn-default active">
+                        <input type="radio" name="periodeTotalVendeur" value="1" autocomplete="off" checked /> 1
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalVendeur" value="2" autocomplete="off" /> 2
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalVendeur" value="3" autocomplete="off" /> 3
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalVendeur" value="6" autocomplete="off" /> 6
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalVendeur" value="9" autocomplete="off" /> 9
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalVendeur" value="12" autocomplete="off" /> 12
+                    </label>
+                    <strong class="mx-1">Mois</strong>
+                </div>
+                <div class="btn-group d-flex align-items-baseline">
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Toujours
+                    </label>
+                    <strong class="mx-1">Mois</strong>
+                </div>
+            </div>
+            <canvas id="cvNouveauVendeurs"></canvas>
+        </div>
     </div>
-    <canvas id="cvTotalClients"></canvas>
 </div>
 
-<h3 class="col-xs-10 col-xs-offset-1 text-center">Nouveaux clients</h3>
-<div class="col-xs-10 col-xs-offset-1 well row text-center">
-    <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
-        <div class="btn-group d-flex align-items-baseline" data-toggle="buttons">
-            <strong class="text-bold mx-1">Rejoins depuis depuis:</strong>
-            <label type="button" class="btn btn-default active">
-                <input type="radio" name="periodeTotalClient" value="1" autocomplete="off" checked /> 1
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalClient" value="2" autocomplete="off" /> 2
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalClient" value="3" autocomplete="off" /> 3
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalClient" value="6" autocomplete="off" /> 6
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalClient" value="9" autocomplete="off" /> 9
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalClient" value="12" autocomplete="off" /> 12
-            </label>
-            <strong class="mx-1">Mois</strong>
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1 col-lg-5 mr-1">
+        <h3 class="text-center">Total des clients</h3>
+        <div class="well row text-center">
+            <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
+                <strong class="mx-1">Periode:</strong>
+            </div>
+            <canvas id="cvTotalClients"></canvas>
+        </div>
+    </div>
+
+    <div class="col-xs-10 col-xs-offset-1 col-lg-offset-0 col-lg-5 ml-1">
+        <h3 class="text-center">Nouveaux clients</h3>
+        <div class="well row text-center">
+            <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
+                <div class="btn-group d-flex align-items-baseline" data-toggle="buttons">
+                    <strong class="text-bold mx-1">Rejoins depuis:</strong>
+                    <label type="button" class="btn btn-default active">
+                        <input type="radio" name="periodeTotalClient" value="1" autocomplete="off" checked /> 1
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalClient" value="2" autocomplete="off" /> 2
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalClient" value="3" autocomplete="off" /> 3
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalClient" value="6" autocomplete="off" /> 6
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalClient" value="9" autocomplete="off" /> 9
+                    </label>
+                    <label type="button" class="btn btn-default">
+                        <input type="radio" name="periodeTotalClient" value="12" autocomplete="off" /> 12
+                    </label>
+                    <strong class="mx-1">Mois</strong>
+                    <div class="btn-group d-flex align-items-baseline">
+                        <label type="button" class="btn btn-default">
+                            <input type="radio" name="periodeTotalClient" value="99" autocomplete="off" /> Toujours
+                        </label>
+                        <strong class="mx-1">Mois</strong>
+                    </div>
+                </div>
+            </div>
+            <canvas id="cvNouveauxClients"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs-10 col-xs-offset-1 col-lg-offset-3 col-lg-6">
+    <h3 class="text-center">Nombre de connexions au site</h3>
+    <div class="well row text-center">
+        <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
+            <strong class="mx-1">Periode:</strong>
             <div class="btn-group d-flex align-items-baseline">
+                <label type="button" class="btn btn-default active">
+                    <input type="radio" name="periodeTotalVendeur" value="1" autocomplete="off" checked /> 1
+                </label>
                 <label type="button" class="btn btn-default">
-                    <input type="radio" name="periodeTotalClient" value="99" autocomplete="off" /> Toujours
+                    <input type="radio" name="periodeTotalVendeur" value="2" autocomplete="off" /> 2
+                </label>
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="periodeTotalVendeur" value="3" autocomplete="off" /> 3
+                </label>
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="periodeTotalVendeur" value="6" autocomplete="off" /> 6
+                </label>
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="periodeTotalVendeur" value="9" autocomplete="off" /> 9
+                </label>
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="periodeTotalVendeur" value="12" autocomplete="off" /> 12
                 </label>
                 <strong class="mx-1">Mois</strong>
             </div>
+            <div class="btn-group d-flex align-items-baseline">
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Début du site
+                </label>
+            </div>
         </div>
+        <canvas id="cvConnexionsClients"></canvas>
     </div>
-    <canvas id="cvNouveauxClients"></canvas>
 </div>
 
-<h3 class="col-xs-10 col-xs-offset-1 text-center">Nombre connexions client</h3>
-<div class="col-xs-10 col-xs-offset-1 well row text-center">
-    <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
-        <strong class="mx-1">Periode:</strong>
-        <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default active">
-                <input type="radio" name="periodeTotalVendeur" value="1" autocomplete="off" checked /> 1
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="2" autocomplete="off" /> 2
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="3" autocomplete="off" /> 3
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="6" autocomplete="off" /> 6
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="9" autocomplete="off" /> 9
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeTotalVendeur" value="12" autocomplete="off" /> 12
-            </label>
-            <strong class="mx-1">Mois</strong>
-        </div>
-        <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Début du site
-            </label>
-        </div>
+<h2 class="col-xs-12 text-center">Rapports</h2>
+
+<div class="col-xs-10 col-xs-offset-1">
+    <h3 class="text-center">Nombre de connexions par client</h3>
+    <div class="well row text-center">
+        <form class="form-inline">
+            <div class="input-group">
+                <input type="search" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                        </span>
+                    </button>
+                </span>
+            </div>
+        </form>
+        <table class="table w-100">
+            <tr>
+                <th>
+                    Courriel
+                </th>
+                <th>
+                    Prénom
+                </th>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Nb. connexions
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    test@test.ca
+                </td>
+                <td>
+                    M.
+                </td>
+                <td>
+                    Tout le monde
+                </td>
+                <td>
+                    ##
+                </td>
+            </tr>
+        </table>
     </div>
-    <canvas id="cvConnexionsClients"></canvas>
 </div>
 
-<h3 class="col-xs-10 col-xs-offset-1 text-center">Nombre connexions client</h3>
-<div class="col-xs-10 col-xs-offset-1 well row text-center">
-    <form class="form-inline">
-        <div class="input-group">
-            <input type="search" class="form-control">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
-                    </span>
-                </button>
-            </span>
+<div class="col-xs-10 col-xs-offset-1">
+    <h3 class="row text-center">Connexions récentes</h3>
+    <div class="well row text-center">
+        <div class="d-flex justify-content-center align-items-center">
+            <strong class="mx-1">Afficher les</strong>
+            <strong class="mx-1">0</strong>
+            <input class="d-inline-block mx-1" type="range" class="form-control-range" id="formControlRange">
+            <strong class="mx-1">30</strong>
+            <strong class="mx-1">dernières connexions</strong>
         </div>
-    </form>
-    <table class="table w-100">
-        <tr>
-            <th>
-                Courriel
-            </th>
-            <th>
-                Prénom
-            </th>
-            <th>
-                Nom
-            </th>
-            <th>
-                Nb. connexions
-            </th>
-        </tr>
-        <tr>
-            <td>
-                test@test.ca
-            </td>
-            <td>
-                M.
-            </td>
-            <td>
-                Tout le monde
-            </td>
-            <td>
-                ##
-            </td>
-        </tr>
-    </table>
-</div>
-
-<h3 class="col-xs-10 col-xs-offset-1 text-center">Connexions récentes</h3>
-<div class="col-xs-10 col-xs-offset-1 well row text-center">
-    <div class="d-flex justify-content-center align-items-center">
-        <strong class="mx-1">Afficher les</strong>
-        <strong class="mx-1">0</strong>
-        <input class="d-inline-block mx-1" type="range" class="form-control-range" id="formControlRange">
-        <strong class="mx-1">30</strong>
-        <strong class="mx-1">dernières connexions</strong>
+        <table class="table w-100">
+            <tr>
+                <th>
+                    Courriel
+                </th>
+                <th>
+                    Prénom
+                </th>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Nb. connexions
+                </th>
+            </tr>
+            <tr>
+                <td class="text-left">
+                    test@test.ca
+                </td>
+                <td class="text-left">
+                    M.
+                </td>
+                <td class="text-left">
+                    Tout le monde
+                </td>
+                <td class="text-left">
+                    ##
+                </td>
+            </tr>
+        </table>
     </div>
-    <table class="table w-100">
-        <tr>
-            <th>
-                Courriel
-            </th>
-            <th>
-                Prénom
-            </th>
-            <th>
-                Nom
-            </th>
-            <th>
-                Nb. connexions
-            </th>
-        </tr>
-        <tr>
-            <td class="text-left">
-                test@test.ca
-            </td>
-            <td class="text-left">
-                M.
-            </td>
-            <td class="text-left">
-                Tout le monde
-            </td>
-            <td class="text-left">
-                ##
-            </td>
-        </tr>
-    </table>
-</div>
-
-<h3 class="col-xs-10 col-xs-offset-1 text-center">Total des commandes d'un client par vendeur</h3>
-<div class="col-xs-10 col-xs-offset-1 well row text-center">
-    <form class="form-inline">
-        <div class="input-group">
-            <input type="search" class="form-control">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
-                    </span>
-                </button>
-            </span>
-        </div>
-    </form>
-    <table class="table w-100">
-        <tr>
-            <th>
-                Courriel
-            </th>
-            <th>
-                Prénom
-            </th>
-            <th>
-                Nom
-            </th>
-            <th>
-                Nom d'affaires du vendeur
-            </th>
-            <th>
-                Nb. connexions
-            </th>
-        </tr>
-        <tr>
-            <td class="text-left">
-                test@test.ca
-            </td>
-            <td class="text-left">
-                M.
-            </td>
-            <td class="text-left">
-                Tout le monde
-            </td>
-            <td class="text-left">
-                Magasin
-            </td>
-            <td class="text-left">
-                ##.##$
-            </td>
-        </tr>
-    </table>
-</div>
-
-<h3 class="col-xs-10 col-xs-offset-1 text-center">Nombre de clients par vendeur</h3>
-<div class="col-xs-10 col-xs-offset-1 well row text-center">
-    <form class="form-inline">
-        <div class="input-group">
-            <input type="search" class="form-control">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
-                    </span>
-                </button>
-            </span>
-        </div>
-    </form>
-    <table class="table w-100">
-        <tr>
-            <th>
-                Nom d'affaire
-            </th>
-            <th>
-                Courriel
-            </th>
-            <th>
-                Prénom
-            </th>
-            <th>
-                Nom
-            </th>
-            <th>
-                Nb. de clients
-            </th>
-        </tr>
-        <tr>
-            <td class="text-left">
-                Magasin
-            </td>
-            <td class="text-left">
-                test@test.ca
-            </td>
-            <td class="text-left">
-                M.
-            </td>
-            <td class="text-left">
-                Tout le monde
-            </td>
-            <td class="text-left">
-                ##
-            </td>
-        </tr>
-    </table>
-</div>
-
-<h3 class="col-xs-10 col-xs-offset-1 text-center">Gestion des redevances</h3>
-<div class="col-xs-10 col-xs-offset-1 well row text-center">
-    <form class="form-inline">
-        <div class="input-group">
-            <input type="search" class="form-control">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
-                    </span>
-                </button>
-            </span>
-        </div>
-    </form>
-    <table class="table w-100">
-        <tr>
-            <th>
-                Nom d'affaires
-            </th>
-            <th>
-                Courriel
-            </th>
-            <th>
-                Prénom
-            </th>
-            <th>
-                Nom
-            </th>
-            <th>
-                Redevances
-            </th>
-            <th>
-
-            </th>
-        </tr>
-        <tr>
-            <td>
-                Vendeur
-            </td>
-            <td class="text-left">
-                test@test.ca
-            </td>
-            <td class="text-left">
-                M.
-            </td>
-            <td class="text-left">
-                LeVendeur
-            </td>
-            <td class="text-left">
-                ##.##%
-            </td>
-            <td class="text-left">
-                <button class="btn btn-default">
-                    <i class="glyphicon glyphicon-adjust"></i>
-                </button>
-            </td>
-        </tr>
-    </table>
 </div>
 
 
-<h3 class="col-xs-10 col-xs-offset-1 text-center">Clients et vendeurs selon ventes</h3>
-<div class="col-xs-10 col-xs-offset-1 well row text-center">
-    <form class="form-inline">
-        <div class="input-group">
-            <input type="search" class="form-control">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
-                    </span>
-                </button>
-            </span>
-        </div>
-    </form>
-    <table class="table w-100">
-        <tr>
-            <th>
-                Role
-            </th>
-            <th>
-                Courriel
-            </th>
-            <th>
-                Prénom
-            </th>
-            <th>
-                Nom
-            </th>
-            <th>
-                Total ventes/Achats
-            </th>
-        </tr>
-        <tr>
-            <td>
-                Vendeur
-            </td>
-            <td class="text-left">
-                test@test.ca
-            </td>
-            <td class="text-left">
-                M.
-            </td>
-            <td class="text-left">
-                LeVendeur
-            </td>
-            <td class="text-left">
-                ##.##$
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Client
-            </td>
-            <td class="text-left">
-                test@test.ca
-            </td>
-            <td class="text-left">
-                M.
-            </td>
-            <td class="text-left">
-                LeClient
-            </td>
-            <td class="text-left">
-                ##.##$
-            </td>
-        </tr>
-    </table>
+<div class="col-xs-10 col-xs-offset-1">
+    <h3 class="text-center">Total des commandes d'un client par vendeur</h3>
+    <div class="well row text-center">
+        <form class="form-inline">
+            <div class="input-group">
+                <input type="search" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                        </span>
+                    </button>
+                </span>
+            </div>
+        </form>
+        <table class="table w-100">
+            <tr>
+                <th>
+                    Courriel
+                </th>
+                <th>
+                    Prénom
+                </th>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Nom d'affaires du vendeur
+                </th>
+                <th>
+                    Nb. connexions
+                </th>
+            </tr>
+            <tr>
+                <td class="text-left">
+                    test@test.ca
+                </td>
+                <td class="text-left">
+                    M.
+                </td>
+                <td class="text-left">
+                    Tout le monde
+                </td>
+                <td class="text-left">
+                    Magasin
+                </td>
+                <td class="text-left">
+                    ##.##$
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
+
+<div class="col-xs-10 col-xs-offset-1">
+    <h3 class="text-center">Nombre de clients par vendeur</h3>
+    <div class="well row text-center">
+        <form class="form-inline">
+            <div class="input-group">
+                <input type="search" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                        </span>
+                    </button>
+                </span>
+            </div>
+        </form>
+        <table class="table w-100">
+            <tr>
+                <th>
+                    Nom d'affaire
+                </th>
+                <th>
+                    Courriel
+                </th>
+                <th>
+                    Prénom
+                </th>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Nb. de clients
+                </th>
+            </tr>
+            <tr>
+                <td class="text-left">
+                    Magasin
+                </td>
+                <td class="text-left">
+                    test@test.ca
+                </td>
+                <td class="text-left">
+                    M.
+                </td>
+                <td class="text-left">
+                    Tout le monde
+                </td>
+                <td class="text-left">
+                    ##
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="col-xs-10 col-xs-offset-1">
+    <h3 class="text-center">Gestion des redevances</h3>
+    <div class="well row text-center">
+        <form class="form-inline">
+            <div class="input-group">
+                <input type="search" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                        </span>
+                    </button>
+                </span>
+            </div>
+        </form>
+        <table class="table w-100">
+            <tr>
+                <th>
+                    Nom d'affaires
+                </th>
+                <th>
+                    Courriel
+                </th>
+                <th>
+                    Prénom
+                </th>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Redevances
+                </th>
+                <th>
+
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    Vendeur
+                </td>
+                <td class="text-left">
+                    test@test.ca
+                </td>
+                <td class="text-left">
+                    M.
+                </td>
+                <td class="text-left">
+                    LeVendeur
+                </td>
+                <td class="text-left">
+                    ##.##%
+                </td>
+                <td class="text-left">
+                    <button class="btn btn-default">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="col-xs-10 col-xs-offset-1">
+    <h3 class="text-center">Clients et vendeurs selon ventes</h3>
+    <div class="well row text-center">
+        <form class="form-inline">
+            <div class="input-group">
+                <input type="search" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                        </span>
+                    </button>
+                </span>
+            </div>
+        </form>
+        <table class="table w-100">
+            <tr>
+                <th>
+                    Role
+                </th>
+                <th>
+                    Courriel
+                </th>
+                <th>
+                    Prénom
+                </th>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Total ventes/Achats
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    Vendeur
+                </td>
+                <td class="text-left">
+                    test@test.ca
+                </td>
+                <td class="text-left">
+                    M.
+                </td>
+                <td class="text-left">
+                    LeVendeur
+                </td>
+                <td class="text-left">
+                    ##.##$
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Client
+                </td>
+                <td class="text-left">
+                    test@test.ca
+                </td>
+                <td class="text-left">
+                    M.
+                </td>
+                <td class="text-left">
+                    LeClient
+                </td>
+                <td class="text-left">
+                    ##.##$
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
 
 @section scripts {
     @Scripts.Render("~/bundles/chart");

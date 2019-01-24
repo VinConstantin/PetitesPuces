@@ -81,19 +81,19 @@
             labels: lastSevenDays(),
             datasets: [
                 {
-                    label: 'Demandes de vendeurs',
-                    data: [12, 19, 3, 5, 2, 3, 7],
+                    label: 'Demandes acceptées',
+                    data: [12 / 2, 19 / 2, 3 / 2, 5 / 2, 2 / 2, 3 / 2, 7 / 2],
                     backgroundColor: [
-                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(133, 187, 101, 0.2)',
                     ],
                     borderColor: [
-                        'rgba(54, 162, 235, 1)',
+                        'rgba(133, 187, 101, 1)',
                     ],
                     borderWidth: 1
                 },
                 {
-                    label: 'DemandesAcceptées',
-                    data: [12 / 2, 19 / 2, 3 / 2, 5 / 2, 2 / 2, 3 / 2, 7 / 2],
+                    label: 'Demandes totales',
+                    data: [12, 19, 3, 5, 2, 3, 7],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                     ],

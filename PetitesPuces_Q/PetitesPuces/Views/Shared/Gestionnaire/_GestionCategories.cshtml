@@ -1,39 +1,45 @@
 @model List<PetitesPuces.Models.Categorie>
 
 
-<h1>Categories 
-    <button class="btn btn-success btn-md v-align-baseline" data-toggle="modal" data-target="#modalAjoutCategorie">
+<div class="row d-flex justify-content-center align-items-center" style="margin: 20px 0 10px 0">
+    <h3 class="m-0 mx-1">
+        Categories
+    </h3>
+    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAjoutCategorie">
         <i class="glyphicon glyphicon-plus"></i>
     </button>
-</h1> 
+</div> 
 
-<table class="table lst-utils table-hover">
-    <tr>
-        <th style="width: 5vh" scope="col">No</th>
-        <th scope="col" class="text-left">Description</th>
-        <th scope="col" class="text-left">Details</th>
-        <td></td>
-        <td></td>
-    </tr>
-    @foreach (var categorie in Model)
-    {
-        <tr class="v-align-baseline">
-            <td contenteditable="false" scope="row">@categorie.No</td>
-            <td contenteditable="false" class="text-left">@categorie.Description</td>
-            <td contenteditable="false" class="text-left">@categorie.Details</td>
-            <td>
-                <button class="btn btn-danger v-align-baseline">
-                    <i class="glyphicon glyphicon-remove"></i>
-                </button>
-            </td>
-            <td>
-                <button class="btn btn-warning v-align-baseline editbtn">
-                    Modifier
-                </button>
-            </td>
+<div class="well">
+    <table class="table lst-utils table-hover">
+        <tr>
+            <th style="width: 5vh" scope="col">No</th>
+            <th scope="col" class="text-left">Description</th>
+            <th scope="col" class="text-left">Details</th>
+            <td></td>
+            <td></td>
         </tr>
-    }
-</table>
+        @foreach (var categorie in Model)
+        {
+            <tr class="v-align-baseline">
+                <td contenteditable="false" scope="row">@categorie.No</td>
+                <td contenteditable="false" class="text-left">@categorie.Description</td>
+                <td contenteditable="false" class="text-left">@categorie.Details</td>
+                <td>
+                    <button class="btn btn-danger v-align-baseline">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-warning v-align-baseline editbtn">
+                        Modifier
+                    </button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="modalAjoutCategorie" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCategorie" aria-hidden="true">
