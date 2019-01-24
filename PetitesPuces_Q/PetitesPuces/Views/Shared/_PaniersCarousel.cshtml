@@ -1,0 +1,15 @@
+﻿@using System.Globalization
+@using PetitesPuces.Utilities
+@model int
+
+
+<div class="item">
+    <div class="mydivouter">    
+        <div class="pad15">
+            <p class="lead">Vendeur @Model</p>
+            <p>Nombre d'items : 5</p>
+            <p>Montant total : @Formatter.Money(512.12)</p>
+        </div>
+        <input type="button" class="mybuttonoverlap btn btn-info" value="Afficher"/>
+    </div>
+</div>

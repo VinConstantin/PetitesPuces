@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+using System.Linq;
 using System.Web;
 
 namespace PetitesPuces.Utilities
@@ -7,8 +9,11 @@ namespace PetitesPuces.Utilities
     {
         public static HtmlString Money(double value)
         {
-            var str = "<strong>"+value.ToString("0.00").Split('.')[0]+"</strong>" +
-                         "<sup>"+value.ToString("0.00").Split('.')[1]+"</sup> " +
+            var valueStr = value.ToString("0.00");
+            var splitVal = valueStr.Split(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator[0]);
+
+            var str = "<strong>"+splitVal[0]+"</strong>" +
+                         "<sup>"+(splitVal.Length == 2 ? splitVal[1] : "00") +"</sup> " +
                          "<strong>$</strong>";
             
             HtmlString html = new HtmlString(str);
