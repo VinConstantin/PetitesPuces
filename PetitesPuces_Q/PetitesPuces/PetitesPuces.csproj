@@ -239,7 +239,6 @@
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
-    <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
     <Content Include="Views\Shared\_ModalConfirmation.cshtml" />
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
