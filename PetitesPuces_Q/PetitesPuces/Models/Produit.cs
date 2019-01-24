@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace PetitesPuces.Models
 {
-    public class Product
+    public class Produit
     {
         [DisplayName("No de produit")]
         public int Id { get; private set; }
@@ -13,7 +13,7 @@ namespace PetitesPuces.Models
         [DisplayName("Prix unitaire")]
         public double Price { get; set; }
 
-        public Product(int id, string name)
+        public Produit(int id, string name)
         {
             this.Id = id;
             this.Name = name;

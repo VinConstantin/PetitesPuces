@@ -9,6 +9,7 @@ namespace TestMVC.Controllers
 {
     public class HomeController : Controller
     {
+        BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
         public ActionResult Index()
         {
             return RedirectToAction("Index", "Client");
@@ -16,7 +17,10 @@ namespace TestMVC.Controllers
 
         public ActionResult Connexion()
         {
-            return View();
+            var query = from whatever in context.PPClients
+                        select whatever;
+            var clients = query.ToList();
+            return View(clients);
         }
         public ActionResult OubliMDP()
         {
