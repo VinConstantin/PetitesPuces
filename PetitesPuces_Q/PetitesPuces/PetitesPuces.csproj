@@ -284,6 +284,7 @@
     <Content Include="Views\Shared\_Produits.cshtml" />
     <Content Include="Views\Shared\_ProduitsPanier.cshtml" />
     <Content Include="Views\Home\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_Produit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
