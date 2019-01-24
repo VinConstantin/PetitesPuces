@@ -1,0 +1,34 @@
+﻿@using System.Globalization
+@model int
+
+<tr>
+    <td>
+        <div class="row">
+            <div class="col-md-3">
+                <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" alt="Image">
+            </div>
+            <div class="col-md-2">
+                <p>Produit</p>
+            </div>
+            <div class="col-md-1">
+                <p>Prix unitaire</p>
+            </div>
+            <div class="col-md-3">
+                <div class="quantity">
+                    <button class="minus-btn" type="button" name="button" onclick="moinsQuantite(@Model)">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                    <input type="text" style="width: 30%;" pattern="\d*" name="name" value="1" width="50px" id="@Model">
+                    <button class="plus-btn" type="button" name="button" onclick="plusQuantite(@Model)">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <button type="button" style="color: red" class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </td>
+</tr>

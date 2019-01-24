@@ -224,6 +224,7 @@
     </None>
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\Publier vers 424q.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
@@ -255,10 +256,7 @@
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
     <Content Include="Views\Shared\_ModalConfirmation.cshtml" />
-    <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
-    <Content Include="Views\Shared\_Produits.cshtml" />
-    <Content Include="Views\Shared\_ProduitsPanier.cshtml" />
     <Content Include="Views\Vendeur\Profil.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -271,7 +269,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Gestionnaire\Index.cshtml" />
     <Content Include="Views\Gestionnaire\DemandesVendeur.cshtml" />
     <Content Include="Views\Gestionnaire\Inactivite.cshtml" />
@@ -300,7 +297,12 @@
     <Content Include="Views\Client\Profil.cshtml" />
     <Content Include="Views\Client\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Client\_LayoutClient.cshtml" />
+    <Content Include="Views\Shared\_Produits.cshtml" />
+    <Content Include="Views\Shared\_ProduitsPanier.cshtml" />
+    <Content Include="Views\Home\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Produit.cshtml" />
+    <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
+    <Content Include="Views\Home\OubliMDP.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
