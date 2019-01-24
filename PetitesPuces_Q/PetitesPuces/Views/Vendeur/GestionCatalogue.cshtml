@@ -1,4 +1,5 @@
 ﻿@model List<PetitesPuces.Models.Product>
+
 @{
     ViewBag.Title = "Gestion du catalogue";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,32 +13,104 @@
     <li>@Html.ActionLink("Profil", "Profil", "Vendeur")</li>
 }
 
-<h2 class="text-center">Votre catalogue</h2>
+<h2 class="text-center">@ViewBag.Title</h2>
+
+<h3 class="text-center col-xs-12">Ajouter un produit</h3>
 
 <div class="well text-center col-xs-10 col-xs-offset-1">
     <div class="row">
-        @foreach (var produits in Model)
-        {
-            @Html.Partial("Client/_Produits", produits)
-        }
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <div class="col-sm-6 text-left">
+            <span>Numéro</span>
+            <input style="float: right" type="text" disabled value="3226" />
+        </div>
+        <div class="col-sm-6 text-left">
+            <span>Date de création</span>
+            <input style="float: right" type="text" disabled value="@DateTime.Today" />
+        </div>
     </div>
+    <div class="row">
+        <div class="col-sm-6 text-left">
+            <span>Catégorie</span>
+            <select style="width:174px; float:right">
+                <option id="cat1">Catégorie 1</option>
+                <option id="cat2">Catégorie 2</option>
+                <option id="cat3">Catégorie 3</option>
+                <option id="cat4">Catégorie 4</option>
+            </select>
+        </div>
+        <div class="col-sm-6 text-left">
+            <span>Nombre d'item</span>
+            <input style="float: right" type="number" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 text-left">
+            <span>Nom</span>
+            <input style="float: right" type="text" />
+        </div>
+        <div class="col-sm-6 text-left">
+            <span>Prix de vente</span>
+            <input style="float: right" type="number" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 text-left">
+            <span>Prix demandé</span>
+            <input style="float: right" type="number" />
+        </div>
+        <div class="col-sm-6 text-left">
+            <span>Date de vente</span>
+            <input style="float: right" type="text" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 text-left">
+            <span>Photo</span>
+            <input class="form-control" style="float: right; width:174px" type="file" />
+        </div>
+        <div class="col-sm-6 text-left">
+            <span>Poids</span>
+            <input style="float: right; width:174px" type="number" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 text-left">
+            <span>Description détaillée</span>
+            <textarea style="float: right; width:174px" id="taDescription"></textarea>
+        </div>
+        <div class="col-sm-6 text-left">
+            <span>Disponibilité</span>
+            <input style="float: right" type="checkbox" checked />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 text-right">
+            <button class="btn btn-outline-primary">Inscrire le produit</button>
+        </div>
+    </div>
+</div>
+
+<h3 class="text-center col-xs-12">Vos produits</h3>
+
+<div class="well text-center col-xs-10 col-xs-offset-1">
+    <table class="table lst-vendeurs mt-2">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Price)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+        @foreach (var produit in Model)
+        {
+            @Html.Partial("Vendeur/_Produit", produit);
+        }
+    </table>
 </div>
