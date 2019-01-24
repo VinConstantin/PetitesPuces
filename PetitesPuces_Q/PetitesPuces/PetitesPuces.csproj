@@ -287,6 +287,7 @@
     <Content Include="Views\Shared\Vendeur\_Produit.cshtml" />
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
     <Content Include="Views\Home\OubliMDP.cshtml" />
+    <Content Include="Views\Gestionnaire\Redevances.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
