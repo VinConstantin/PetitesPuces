@@ -56,6 +56,15 @@ namespace PetitesPuces.Controllers
             
             return View();
         }
-        
+
+        public ActionResult Profil()
+        {
+            return View();
+        }
+        public ActionResult modificationMDP()
+        {
+            return View();
+        }
+
     }
 }
