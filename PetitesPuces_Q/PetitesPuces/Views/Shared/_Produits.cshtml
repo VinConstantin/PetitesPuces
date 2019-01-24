@@ -1,0 +1,36 @@
+﻿@using System.Globalization
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.Product
+
+<div class="col-xs-12 col-sm-4 col-md-3"> 
+    <div class="panel panel-primary">
+        <div class="panel-footer">@Model.Name</div>
+        <div class="panel-body">
+            <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width: 100%" alt="Image">
+            <div class="h3">
+                @Formatter.Money(@Model.Price)
+            </div>
+            <button class="btn btn-outline-primary" onclick="ajouterAuPanier(@Model.Id)">Ajouter au panier</button>
+
+            <script>
+                function ajouterAuPanier(idProduit) {
+                    console.log(idProduit)
+                    .getJSON("api/panier/AjouterProduit/"+ + idProduit)
+                        .done(function (data) {
+                            console.log(data);
+                        })
+                        .fail(function (jqXHR, textStatus, err) {
+                            console.log(err);
+                        });
+                }
+                function success(returnedData) {
+                    console.log(returnedData);
+                }
+                function error() {
+                    console.log(returnedData);
+                }
+            </script>
+        </div>
+        <div class="panel-footer">@Model.Id</div>
+    </div>
+</div>
