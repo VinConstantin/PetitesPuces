@@ -1,15 +1,6 @@
 ﻿@model PetitesPuces.ViewModels.VMVendeur.AccueilVendeurViewModel
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Page d'accueil";
-}
-
-@section navbar {
-<li>@Html.ActionLink("Accueil", "Index", "Vendeur")</li>
-<li>@Html.ActionLink("Catalogue", "GestionCatalogue", "Vendeur")</li>
-<li>@Html.ActionLink("Commandes", "GestionCommandes", "Vendeur")</li>
-<li>@Html.ActionLink("Paniers", "GestionPaniers", "Vendeur")</li>
-<li>@Html.ActionLink("Profil", "Profil", "Vendeur")</li>
 }
 
 <div class="jumbotron jumbotron-fluid">

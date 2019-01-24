@@ -163,8 +163,8 @@
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\ConnexionController.cs" />
     <Compile Include="Controllers\GestionnaireController.cs" />
-    <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="Controllers\VendeurController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -191,7 +191,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Gestionnaire\DemandesVendeur.css" />
-    <Content Include="Content\Home\Index.css" />
+    <Content Include="Content\Connexion\Index.css" />
     <Content Include="Content\Shared\Carousel.css" />
     <Content Include="Content\Shared\Hover.css" />
     <Content Include="Content\Gestionnaire\Inactivite.css" />
@@ -226,6 +226,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\register.js" />
     <Content Include="Scripts\Shared\Carousel.js" />
+    <Content Include="Scripts\profilPersonnel.js" />
     <Content Include="Views\Client\Catalogue.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
@@ -238,12 +239,12 @@
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
-    <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
     <Content Include="Views\Shared\_ModalConfirmation.cshtml" />
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\_Produits.cshtml" />
     <Content Include="Views\Shared\_ProduitsPanier.cshtml" />
+    <Content Include="Views\Vendeur\Profil.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -256,11 +257,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Client\Commande.cshtml" />
     <Content Include="Views\Gestionnaire\Index.cshtml" />
     <Content Include="Views\Gestionnaire\DemandesVendeur.cshtml" />
     <Content Include="Views\Gestionnaire\Inactivite.cshtml" />
-    <Content Include="Views\Gestionnaire\Redevances.cshtml" />
     <Content Include="Views\Gestionnaire\Statistiques.cshtml" />
     <Content Include="Views\Vendeur\Index.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_LayoutGestionnaire.cshtml" />
@@ -268,7 +267,7 @@
     <Content Include="Views\Shared\Gestionnaire\_Client.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Vendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Commande.cshtml" />
-    <Content Include="Views\Connexion\Index.cshtml" />
+    <Content Include="Views\Home\Connexion.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_DemandeVendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Panier.cshtml" />
     <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
@@ -279,6 +278,13 @@
     <Content Include="Views\Vendeur\InfoCommande.cshtml" />
     <Content Include="Views\Vendeur\GestionPaniers.cshtml" />
     <Content Include="Views\Vendeur\GestionCatalogue.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_LayoutVendeur.cshtml" />
+    <Content Include="Views\Vendeur\_ViewStart.cshtml" />
+    <Content Include="Views\Client\Commande.cshtml" />
+    <Content Include="Views\Client\modificationMDP.cshtml" />
+    <Content Include="Views\Client\Profil.cshtml" />
+    <Content Include="Views\Client\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Client\_LayoutClient.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Produit.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -1,14 +1,5 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Information sur la commande";
-}
-
-@section navbar {
-    <li>@Html.ActionLink("Accueil", "Index", "Vendeur")</li>
-    <li>@Html.ActionLink("Catalogue", "GestionCatalogue", "Vendeur")</li>
-    <li>@Html.ActionLink("Commandes", "GestionCommandes", "Vendeur")</li>
-    <li>@Html.ActionLink("Paniers", "GestionPaniers", "Vendeur")</li>
-    <li>@Html.ActionLink("Profil", "Profil", "Vendeur")</li>
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
