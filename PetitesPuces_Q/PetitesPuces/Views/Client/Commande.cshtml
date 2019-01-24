@@ -6,12 +6,6 @@
     ViewBag.FraisLivraison = 25.00;
 }
 
-@section navbar {
-    <li>@Html.ActionLink("Accueil", "Index", "Client")</li>
-    <li>@Html.ActionLink("Catalogue", "Catalogue", "Client")</li>
-    <li>@Html.ActionLink("Mon Panier", "MonPanier", "Client")</li>
-}
-
 @section scripts {
     <link href="@Url.Content("/Content/Client/Commande.css")" rel="stylesheet" id="Commande-css">
     <script type="text/javascript" src="@Url.Content("/Scripts/Client/Commande.js")"></script>
