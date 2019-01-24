@@ -244,6 +244,7 @@
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\_Produits.cshtml" />
     <Content Include="Views\Shared\_ProduitsPanier.cshtml" />
+    <Content Include="Views\Vendeur\Profil.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
