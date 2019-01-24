@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12, 16.75" name="BDPetitesPuces">
+  <DataContextMoniker Name="/BDPetitesPucesDataContext" />
+  <nestedChildShapes>
+    <classShape Id="c1646b65-c423-4689-98f0-ed0d8a6f7728" absoluteBounds="3.5, 4.875, 2, 1.9631982421875005">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPArticlesEnPanier" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0c4175cd-0c47-4e7c-8c09-854860244d1d" absoluteBounds="3.515, 5.335, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cfaab299-8374-4bbc-8f0d-05957a3b1aa9" absoluteBounds="6.75, 2, 2, 1.7708968098958327">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/sysdiagram" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b9d361ca-af8c-4d65-a0b6-0e10f806a36e" absoluteBounds="6.765, 2.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d57184d1-8213-42db-a7da-fdd4b9a5e2cd" absoluteBounds="3.75, 2.125, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPCategory" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1f8092ef-c842-4bfc-9df2-45a88ddd5ea0" absoluteBounds="3.765, 2.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="15b4c565-227c-4368-96a0-6a296c0cda6f" absoluteBounds="0.75, 0.75, 2, 4.0785139973958326">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPClient" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4e2fea0b-6a94-4ef0-8809-cd2fb699aca9" absoluteBounds="0.765, 1.21, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cd8e346b-c87b-4d91-a8ff-9084054830fc" absoluteBounds="3.5, 10.25, 2, 3.1170068359374987">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPCommande" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8261ab16-4f8f-4351-b316-99ad204625b6" absoluteBounds="3.515, 10.71, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="46ff01bf-9cde-4304-83a1-c02cd200a859" absoluteBounds="9.25, 9.375, 2, 1.7708968098958344">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPDetailsCommande" />
+      <nestedChildShapes>
+        <elementListCompartment Id="444b0205-e1e3-4969-b677-298189ed83c0" absoluteBounds="9.265, 9.835, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="92c1b17f-5704-4ef8-9182-825d36cf5994" absoluteBounds="9.75, 2, 2, 3.1170068359375005">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPHistoriquePaiement" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8c855292-f21f-43db-9ea7-3d41d2031902" absoluteBounds="9.765, 2.46, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e0505557-63db-4888-8ef9-92ea60b8cb53" absoluteBounds="3.5, 14.125, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPPoidsLivraison" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7d91e036-1660-4bd1-9240-7822cbae8360" absoluteBounds="3.515, 14.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a026c2f9-3635-42b2-a454-10788c20a44c" absoluteBounds="6.5, 7.125, 2, 3.5016097005208335">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPProduit" />
+      <nestedChildShapes>
+        <elementListCompartment Id="58cfd42a-a2b4-4a5a-bb5b-43b53be63964" absoluteBounds="6.515, 7.585, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="48dd54d5-e30e-440d-b22b-e7920e383561" absoluteBounds="9.75, 6, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPTaxeFederale" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b101c5bb-d036-4992-9c92-6d36f3c3e631" absoluteBounds="9.765, 6.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7faaabb7-1c17-4982-944f-2874c5bfdfbe" absoluteBounds="6.75, 12, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPTaxeProvinciale" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4c7e1f3c-49d8-4641-8a8b-16360f096aa7" absoluteBounds="6.765, 12.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3eef2f96-8146-430c-8c72-7f61fd829bf8" absoluteBounds="0.75, 12.25, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPTypesLivraison" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ea0a59fc-a920-444c-82fe-2408e2350275" absoluteBounds="0.765, 12.71, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f90420c2-515a-4788-ac3e-57250fa0e476" absoluteBounds="0.75, 15.125, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPTypesPoid" />
+      <nestedChildShapes>
+        <elementListCompartment Id="94693e71-ef8f-469f-b7ef-7769b07da9eb" absoluteBounds="0.765, 15.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="feb9b905-732d-4ef3-8396-d77ab3c454c7" absoluteBounds="0.75, 6.375, 2, 4.8477197265624987">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPVendeur" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5a6c8817-691d-4a41-aa4d-4421b3656ede" absoluteBounds="0.765, 6.835, 1.9700000000000002, 4.2877197265625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="483b0453-d81b-4554-9f69-ec0390d0002f" absoluteBounds="3.5, 8.125, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/BDPetitesPucesDataContext/PPVendeursClient" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6eac922c-80da-444a-865f-b23fb6da0bcd" absoluteBounds="3.515, 8.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 1.40625); (3.59375 : 1.40625); (3.59375 : 4.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPClient/PPClient_PPArticlesEnPanier" />
+      <nodes>
+        <classShapeMoniker Id="15b4c565-227c-4368-96a0-6a296c0cda6f" />
+        <classShapeMoniker Id="c1646b65-c423-4689-98f0-ed0d8a6f7728" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.71769230769231 : 4.82851399739583); (3.125 : 5.23582168970353); (3.125 : 11.8085034179687); (3.5 : 11.8085034179687)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPClient/PPClient_PPCommande" />
+      <nodes>
+        <classShapeMoniker Id="15b4c565-227c-4368-96a0-6a296c0cda6f" />
+        <classShapeMoniker Id="cd8e346b-c87b-4d91-a8ff-9084054830fc" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 10.9175032552083); (9.25 : 10.9175032552083)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPCommande/PPCommande_PPDetailsCommande" />
+      <nodes>
+        <classShapeMoniker Id="cd8e346b-c87b-4d91-a8ff-9084054830fc" />
+        <classShapeMoniker Id="46ff01bf-9cde-4304-83a1-c02cd200a859" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(7.5 : 7.125); (7.5 : 5.85659912109375); (5.5 : 5.85659912109375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPProduit/PPProduit_PPArticlesEnPanier" />
+      <nodes>
+        <classShapeMoniker Id="a026c2f9-3635-42b2-a454-10788c20a44c" />
+        <classShapeMoniker Id="c1646b65-c423-4689-98f0-ed0d8a6f7728" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.5 : 10.0008048502604); (9.25 : 10.0008048502604)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPProduit/PPProduit_PPDetailsCommande" />
+      <nodes>
+        <classShapeMoniker Id="a026c2f9-3635-42b2-a454-10788c20a44c" />
+        <classShapeMoniker Id="46ff01bf-9cde-4304-83a1-c02cd200a859" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.65625 : 3.5112939453125); (5.65625 : 7.59375); (6.5 : 7.59375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPCategory/PPCategory_PPProduit" />
+      <nodes>
+        <classShapeMoniker Id="d57184d1-8213-42db-a7da-fdd4b9a5e2cd" />
+        <classShapeMoniker Id="a026c2f9-3635-42b2-a454-10788c20a44c" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 12.8085034179687); (3.5 : 12.8085034179687)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPTypesLivraison/PPTypesLivraison_PPCommande" />
+      <nodes>
+        <classShapeMoniker Id="3eef2f96-8146-430c-8c72-7f61fd829bf8" />
+        <classShapeMoniker Id="cd8e346b-c87b-4d91-a8ff-9084054830fc" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 13.4430730572416); (3.125 : 13.8180730572416); (3.125 : 13.75); (3.5 : 14.125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPTypesLivraison/PPTypesLivraison_PPPoidsLivraison" />
+      <nodes>
+        <classShapeMoniker Id="3eef2f96-8146-430c-8c72-7f61fd829bf8" />
+        <classShapeMoniker Id="e0505557-63db-4888-8ef9-92ea60b8cb53" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 15.3181469726562); (3.5 : 15.3181469726562)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPTypesPoid/PPTypesPoid_PPPoidsLivraison" />
+      <nodes>
+        <classShapeMoniker Id="f90420c2-515a-4788-ac3e-57250fa0e476" />
+        <classShapeMoniker Id="e0505557-63db-4888-8ef9-92ea60b8cb53" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 6.60659912109375); (3.22916666666667 : 6.60659912109375 : JumpStart); (3.39583333333333 : 6.60659912109375 : JumpEnd); (3.5 : 6.60659912109375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPVendeur/PPVendeur_PPArticlesEnPanier" />
+      <nodes>
+        <classShapeMoniker Id="feb9b905-732d-4ef3-8396-d77ab3c454c7" />
+        <classShapeMoniker Id="c1646b65-c423-4689-98f0-ed0d8a6f7728" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 10.7363598632812); (3.04166666666667 : 10.7363598632812 : JumpStart); (3.20833333333333 : 10.7363598632812 : JumpEnd); (3.5 : 10.7363598632812)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPVendeur/PPVendeur_PPCommande" />
+      <nodes>
+        <classShapeMoniker Id="feb9b905-732d-4ef3-8396-d77ab3c454c7" />
+        <classShapeMoniker Id="cd8e346b-c87b-4d91-a8ff-9084054830fc" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 9.88064697265625); (3.04166666666667 : 9.88064697265625 : JumpStart); (3.20833333333333 : 9.88064697265625 : JumpEnd); (6.5 : 9.88064697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPVendeur/PPVendeur_PPProduit" />
+      <nodes>
+        <classShapeMoniker Id="feb9b905-732d-4ef3-8396-d77ab3c454c7" />
+        <classShapeMoniker Id="a026c2f9-3635-42b2-a454-10788c20a44c" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 4.73312838201122); (3.3125 : 5.29562838201122); (3.3125 : 8.81814697265625); (3.5 : 8.81814697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPClient/PPClient_PPVendeursClient" />
+      <nodes>
+        <classShapeMoniker Id="15b4c565-227c-4368-96a0-6a296c0cda6f" />
+        <classShapeMoniker Id="483b0453-d81b-4554-9f69-ec0390d0002f" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 8.40907348632813); (3.04166666666667 : 8.40907348632813 : JumpStart); (3.20833333333333 : 8.40907348632813 : JumpEnd); (3.22916666666667 : 8.40907348632813 : JumpStart); (3.39583333333333 : 8.40907348632813 : JumpEnd); (3.5 : 8.40907348632813)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BDPetitesPucesDataContext/PPVendeur/PPVendeur_PPVendeursClient" />
+      <nodes>
+        <classShapeMoniker Id="feb9b905-732d-4ef3-8396-d77ab3c454c7" />
+        <classShapeMoniker Id="483b0453-d81b-4554-9f69-ec0390d0002f" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

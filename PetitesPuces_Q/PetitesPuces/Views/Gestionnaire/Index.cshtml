@@ -7,28 +7,28 @@
     Bienvenue "Gestionnaire"
 </h1>
 <div class="row">
-    <div class="col-xs-10 col-xs-offset-1">
+    <div class="col-xs-10 col-xs-offset-1 col-lg-5 mr-lg-1">
         <h3 class="row text-center">Nouvelles demandes de vendeurs</h3>
         <div class="row well">
             <canvas id="cvDemandesVendeur" class="w-100"></canvas>
             @Html.ActionLink("Gérer les demandes", "DemandesVendeur", "Gestionnaire", null, new { @class = "btn btn-primary btn-large center-block" })
         </div>
     </div>
-    <div class="col-xs-10 col-xs-offset-1">
+    <div class="col-xs-10 col-xs-offset-1 col-lg-5 col-lg-offset-0 ml-lg-1">
         <h3 class="row text-center">Redevances</h3>
         <div class="row well">
             <canvas id="cvRedevances" class="w-100"></canvas>
-            @Html.ActionLink("Visualiser toutes les statistiques et rapports", "Statistiques", "Gestionnaire", null, new { @class = "btn btn-primary btn-large center-block" })
+            @Html.ActionLink("Gérer les redevances", "Redevances", "Gestionnaire", null, new { @class = "btn btn-primary btn-large center-block" })
         </div>
     </div>
-    <div class="col-xs-10 col-xs-offset-1">
+    <div class="col-xs-10 col-xs-offset-1 col-lg-5 mr-lg-1">
         <h3 class="row text-center">Utilisateurs inactifs</h3>
         <div class="row well">
             <canvas id="cvInactivite" class="w-100"></canvas>
             @Html.ActionLink("Gérer les utilisateurs inactifs", "Inactivite", "Gestionnaire", null, new { @class = "btn btn-primary btn-large center-block" })
         </div>
     </div>
-    <div class="col-xs-10 col-xs-offset-1 text-center">
+    <div class="col-xs-10 col-xs-offset-1 col-lg-5 col-lg-offset-0 ml-lg-1 text-center ">
         @Html.Partial("Gestionnaire/_GestionCategories", new List<Categorie>
         {
             new Categorie
@@ -38,6 +38,15 @@
                 Details = "Électroniques et gadgets",
             }
         })
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1 col-lg-6 col-lg-offset-3">
+        <h3 class="row text-center">Statistiques et Rapports</h3>
+        <div class="row well text-center">
+            @Html.ActionLink("Visionner toutes les statistiques", "Statistiques", "Gestionnaire", null, new { @class = "btn btn-primary center-block" })
+        </div>
     </div>
 </div>
 
