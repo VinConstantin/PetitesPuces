@@ -280,6 +280,8 @@
     <Content Include="Views\Vendeur\InfoCommande.cshtml" />
     <Content Include="Views\Vendeur\GestionPaniers.cshtml" />
     <Content Include="Views\Vendeur\GestionCatalogue.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_LayoutVendeur.cshtml" />
+    <Content Include="Views\Vendeur\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
