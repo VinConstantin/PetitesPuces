@@ -13,11 +13,6 @@ namespace PetitesPuces.Controllers
             return View();
         }
 
-        public ActionResult Redevances()
-        {
-            return View();
-        }
-
         public ActionResult DemandesVendeur()
         {
             var viewmodel = new List<Vendeur>()

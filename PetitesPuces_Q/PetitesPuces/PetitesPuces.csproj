@@ -260,7 +260,6 @@
     <Content Include="Views\Gestionnaire\Index.cshtml" />
     <Content Include="Views\Gestionnaire\DemandesVendeur.cshtml" />
     <Content Include="Views\Gestionnaire\Inactivite.cshtml" />
-    <Content Include="Views\Gestionnaire\Redevances.cshtml" />
     <Content Include="Views\Gestionnaire\Statistiques.cshtml" />
     <Content Include="Views\Vendeur\Index.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_LayoutGestionnaire.cshtml" />
@@ -281,6 +280,11 @@
     <Content Include="Views\Vendeur\GestionCatalogue.cshtml" />
     <Content Include="Views\Shared\Vendeur\_LayoutVendeur.cshtml" />
     <Content Include="Views\Vendeur\_ViewStart.cshtml" />
+    <Content Include="Views\Client\Commande.cshtml" />
+    <Content Include="Views\Client\modificationMDP.cshtml" />
+    <Content Include="Views\Client\Profil.cshtml" />
+    <Content Include="Views\Client\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Client\_LayoutClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
