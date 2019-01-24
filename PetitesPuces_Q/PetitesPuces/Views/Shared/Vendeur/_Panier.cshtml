@@ -1,14 +1,14 @@
 ﻿@model PetitesPuces.Models.Panier
-<tr>
-    <td>@Model.NomClient</td>
-    <td>@Model.DateCreation</td>
-    <td>@Model.NbItems</td>
-    <td>
-        <button type="button" title="Visualiser" class="btn btn-default">
-            <span class="glyphicon glyphicon-info-sign"></span>
-        </button>
-        <button type="button" title="Supprimer" class="btn btn-default">
-            <span class="glyphicon glyphicon-remove"></span>
-        </button>
+<tr style="height: 51px">
+    <td class="text-left">@Model.NomClient</td>
+    <td class="text-left">@Model.DateCreation</td>
+    <td class="text-left">@Model.NbItems</td>
+    <td class="text-right">
+        @if (Model.DateCreation <= DateTime.Today.AddMonths(-6))
+        {
+            <button class="btn btn-danger" title="Supprimer">
+                <i class="glyphicon glyphicon-remove v-align-middle"></i>
+            </button>
+        }
     </td>
 </tr>

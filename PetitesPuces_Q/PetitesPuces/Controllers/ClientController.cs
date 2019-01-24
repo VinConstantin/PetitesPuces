@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PetitesPuces.Models;
+using PetitesPuces.ViewModels.VMVendeur;
 
 namespace PetitesPuces.Controllers
 {
@@ -49,9 +50,9 @@ namespace PetitesPuces.Controllers
             
             return View();
         }
-        public ActionResult Commande()
+        public ActionResult Commande(string Etape)
         {
-            
+            ViewBag.Etape = Etape;
             
             return View();
         }

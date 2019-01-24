@@ -2,20 +2,22 @@
 
 @{
     ViewBag.Title = "Gestion des commandes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+@section navbar {
+    <li>@Html.ActionLink("Accueil", "Index", "Vendeur")</li>
+    <li>@Html.ActionLink("Catalogue", "GestionCatalogue", "Vendeur")</li>
+    <li>@Html.ActionLink("Commandes", "GestionCommandes", "Vendeur")</li>
+    <li>@Html.ActionLink("Paniers", "GestionPaniers", "Vendeur")</li>
+    <li>@Html.ActionLink("Profil", "Profil", "Vendeur")</li>
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 
+<h3 class="text-center col-xs-12">Commandes non traitées</h3>
+
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    <div class="row">
-        <div class="col-xs-10 col-xs-offset-1 text-center">
-            <h4>Commandes non traitées</h4>
-        </div>
-    </div>
     <table class="table lst-vendeurs mt-2">
         <tr>
             <th>
@@ -45,7 +47,50 @@
         </tr>
         @foreach (var commande in Model)
         {
-            @Html.Partial("Vendeur/_Commande", commande);
+            if (commande.Statut == 'P')
+            {
+                @Html.Partial("Vendeur/_Commande", commande);
+            }
+        }
+    </table>
+</div>
+
+<h3 class="text-center col-xs-12">Historique des commandes</h3>
+
+<div class="well text-center col-xs-10 col-xs-offset-1">
+    <table class="table lst-vendeurs mt-2">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().NoCommande)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().NomClient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().DateCommande)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().CoutLivraison)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().PoidsTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().TotalAvantTaxes)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+        @foreach (var commande in Model)
+        {
+            if (commande.Statut == 'L')
+            {
+                @Html.Partial("Vendeur/_Commande", commande);
+            }
         }
     </table>
 </div>
