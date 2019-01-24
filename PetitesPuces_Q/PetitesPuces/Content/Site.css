@@ -31,14 +31,33 @@ textarea {
     align-items: baseline;
 }
 
+.align-items-center {
+    align-items: center;
+}
+
 .justify-content-center {
     justify-content: center;
+}
+
+.m-0 {
+    margin: 0 !important;
 }
 
 .mx-1 {
     margin-left: 1rem !important;
     margin-right: 1rem !important;
 }
+
+@media (min-width: 1200px) {
+    .mr-lg-1 {
+        margin-right: 1rem !important;
+    }
+
+    .ml-lg-1 {
+        margin-left: 1rem !important;
+    }
+}
+
 
 .mt-2 {
     margin-top: 2rem !important;

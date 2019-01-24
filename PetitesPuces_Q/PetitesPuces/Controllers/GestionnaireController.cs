@@ -76,5 +76,10 @@ namespace PetitesPuces.Controllers
 
             return View(viewModel);
         }
+
+        public ActionResult Redevances()
+        {
+            return View();
+        }
     }
 }
