@@ -80,10 +80,14 @@
                         <br/><hr/>
                     </div>
 
-                    <p>Montant total: @Formatter.Money(ViewBag.SousTotal + ViewBag.FraisLivraison + (ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.05 + (ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.09975)</p>
+                    <p class="row">             
+                        <div class="col-xs-6">Montant total:</div> 
+                        <div class="col-xs-6">@Formatter.Money(ViewBag.SousTotal + ViewBag.FraisLivraison + (ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.05 + (ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.09975)</div> 
+                    </p>
+                    <br/>    
                 </div>
 
-                <hr/>
+                
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationCommande">
                     Passer la commande
                 </button>

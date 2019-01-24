@@ -1,0 +1,72 @@
+@using PetitesPuces.Models
+@Model AccueilHomeViewModel
+
+@{
+    ViewBag.Title = "Accueil";
+    ViewBag.NoCategorie = @Model.Categorie.No;
+}
+@section styles
+{
+        <link href="@Url.Content("/Content/Shared/Carousel.css")" rel="stylesheet" id="Carousel-css">
+        <link href="@Url.Content("/Content/Shared/Hover.css")" rel="stylesheet" id="Hover-css">
+}
+@section scripts {
+    <script type="text/javascript" src="@Url.Content("/Scripts/Shared/Carousel.js")"></script>
+}
+<br/>
+<br/>
+<div class="container">
+    @Html.Partial("_CarouselPublicitaire")
+    <div class="row">
+        <h2>Catégories</h2>
+        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="5" id="CarouselProduits" data-interval="1000" on>
+            <div class="MultiCarousel-inner">
+                @foreach(Categorie cat in @Model.Categories)
+                {
+                    @Html.Partial("Home/_CategorieCarousel", cat)
+                }
+
+            </div>
+            <button class="btn btn-primary leftLst"><</button>
+            <button class="btn btn-primary rightLst">></button>
+        </div>
+
+        <br/>
+        <hr/>
+
+        <h2>Vendeur en @Model.Categorie.Description</h2>
+        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="5" id="CarouselPaniers" data-interval="1000">
+            <div class="MultiCarousel-inner">
+                @foreach (Vendeur vend in @Model.Vendeurs)
+                {
+                    @Html.Partial("Home/_VendeurCarousel", vend)
+                }
+
+            </div>
+            <button class="btn btn-primary leftLst"><</button>
+            <button class="btn btn-primary rightLst">></button>
+        </div>
+    </div>
+    <div class="alert alert-info" role="alert"><a href="@Url.Action("Connexion", "Home")">Pour consulter le catalogue complet et passer des commandes, veuiller vous connecter</a></div>
+    @foreach (Product produits in Model.Produits)
+    {
+        @Html.Partial("Home/_Produits", produits)
+    }
+</div>
+
+
+
+<script>
+    window.addEventListener("load",function(){
+            $('#Cat'+@Model.Categorie.No).first().addClass("Current");
+            $('#Vendeur'+@Model.Vendeur.NoVendeur).first().addClass("Current");
+
+    },false);
+</script>
+
+<style>
+    .Current {
+        border: 2px solid blue;
+        border-radius: 5px;
+    }
+</style>

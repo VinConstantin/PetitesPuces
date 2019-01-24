@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+
+@section scripts {
+    @RenderSection("scripts", false);
+}
+
+@section navbar {
+    <li>@Html.ActionLink("Connexion", "Connexion", "Home")</li>
+}
+
+@RenderBody()
+
+@section styles {
+    @RenderSection("styles", false);
+}

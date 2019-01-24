@@ -4,14 +4,27 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PetitesPuces.Models;
+using PetitesPuces.ViewModels.Home;
 
 namespace TestMVC.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string Categorie, string Vendeur)
         {
-            return RedirectToAction("Index", "Client");
+            int NoCategorie;
+            int NoVendeur;
+            if (String.IsNullOrEmpty(Categorie) || !int.TryParse(Categorie, out NoCategorie))
+                NoCategorie = 1;
+            if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
+                NoVendeur = 1;
+            
+            AccueilHomeViewModel viewModel = new AccueilHomeViewModel(
+                new Categorie{No = NoCategorie , Description = "Sport", Details = "Tous les articles de sport"},
+                new Vendeur{Nom = "Ginette",Prenom = "Francois",NoVendeur = NoVendeur,NomAffaires = "Clémentines",AdresseEmail = "courriel@gmail.com",DateCreation = new DateTime()}
+                );
+            
+            return View(viewModel);
         }
 
         public ActionResult Connexion()

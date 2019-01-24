@@ -182,6 +182,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Formatter.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
+    <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />
     <Compile Include="ViewModels\VMVendeur\AccueilVendeurViewModel.cs" />
     <Compile Include="ViewModels\VMVendeur\CommandesViewModel.cs" />
   </ItemGroup>
@@ -231,6 +232,7 @@
     <Content Include="Views\Client\Catalogue.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Confirmation.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Information.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
@@ -240,8 +242,13 @@
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
+    <Content Include="Views\Shared\Home\_CategorieCarousel.cshtml" />
+    <Content Include="Views\Shared\Home\_LayoutHome.cshtml" />
+    <Content Include="Views\Shared\Home\_Produits.cshtml" />
+    <Content Include="Views\Shared\Home\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\_ModalConfirmation.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
+    <Content Include="Views\Vendeur\index.cshtml" />
     <Content Include="Views\Vendeur\Profil.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -258,7 +265,6 @@
     <Content Include="Views\Gestionnaire\DemandesVendeur.cshtml" />
     <Content Include="Views\Gestionnaire\Inactivite.cshtml" />
     <Content Include="Views\Gestionnaire\Statistiques.cshtml" />
-    <Content Include="Views\Vendeur\Index.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_LayoutGestionnaire.cshtml" />
     <Content Include="Views\Gestionnaire\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Client.cshtml" />
@@ -291,6 +297,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\Home" />
     <Folder Include="ViewModels\Client\" />
   </ItemGroup>
   <ItemGroup>

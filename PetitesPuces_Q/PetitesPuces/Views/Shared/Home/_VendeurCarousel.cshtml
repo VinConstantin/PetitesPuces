@@ -1,0 +1,17 @@
+﻿@using System.Globalization
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.Vendeur
+
+<style>
+    .div_hover { background-color: #FFFFFF; }
+
+    .div_hover:hover { background-color: rgba(123,123,123,01); }
+</style>
+<div id="@("Vendeur" + @Model.NoVendeur)" class="item div_hover" style="cursor: pointer" onclick="location.href = '@Url.Action("Index", "Home", new RouteValueDictionary(new { Categorie= ViewBag.NoCategorie,Vendeur= @Model.NoVendeur }))'">
+    <div class="">    
+        <div class="">
+            <p style="line-height: 2.0;">@Model.Nom</p>
+            <p>Nombre d'items : 5</p>
+        </div>
+    </div>
+</div>
