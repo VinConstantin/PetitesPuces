@@ -261,7 +261,6 @@
     <Content Include="Views\Gestionnaire\Index.cshtml" />
     <Content Include="Views\Gestionnaire\DemandesVendeur.cshtml" />
     <Content Include="Views\Gestionnaire\Inactivite.cshtml" />
-    <Content Include="Views\Gestionnaire\Redevances.cshtml" />
     <Content Include="Views\Gestionnaire\Statistiques.cshtml" />
     <Content Include="Views\Vendeur\Index.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_LayoutGestionnaire.cshtml" />
