@@ -6,7 +6,7 @@
     <title>@ViewBag.Title - Les Petites Puces</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @RenderSection("styles", false);
+    @RenderSection("styles", false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -30,8 +30,8 @@
         @RenderBody()
     </div>
     <hr />
-    <footer>
-        <p>&copy; @DateTime.Now.Year - Les petites puces</p>
+    <footer class="container">
+        <p>&copy @DateTime.Now.Year - Les petites puces</p>
     </footer>
 
     @Scripts.Render("~/bundles/jquery")

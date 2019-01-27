@@ -1,22 +1,16 @@
 ﻿@using System.Drawing
 @using PetitesPuces.Models
-@model PetitesPuces.Models.Categorie
+@model PetitesPuces.Models.PPCategory
 @{
     //pour random une couleur
     var rand = new Random();
-    Color col = Color.FromArgb(1, rand.Next(256), rand.Next(256), rand.Next(256));
+    Color col = Color.FromArgb(1, @Model.NoCategorie*2, rand.Next(256), rand.Next(256));
     string rgba= String.Format("rgba({0},{1},{2},{3})", col.R, col.G, col.B, col.A);
 }
-<style>
-    .div_hover { background-color: #FFFFFF; }
-
-    .div_hover:hover { background-color: rgba(123,123,123,01); }
-</style>
-
-<div class="item div_hover" id="@("Cat" + @Model.No)">
-    <div class="pad15" style="background-color: " style="cursor: pointer" onclick="location.href = '@Url.Action("Index", "Home", new RouteValueDictionary(new { Categorie= @Model.No }))'">
-        <p class="lead">@Model.Description</p>
+<div class="item" id="@("Cat" + @Model.NoCategorie)">
+    <div class="pad15" style="max-height: 20vh; min-height: 20vh; background-color: lightskyblue; text-overflow: ellipsis;">
+        <p><span class="lead">@Model.Description</span> <sup>(@Model.PPProduits.Count)</sup></p>
         <hr/>
-        <p>@Model.Details</p>
+        <p class="cut-text">@Model.Details</p>
     </div>
 </div>

@@ -260,6 +260,7 @@
     <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
     <Content Include="Views\Shared\Home\_CategorieCarousel.cshtml" />
     <Content Include="Views\Shared\Home\_LayoutHome.cshtml" />
+    <Content Include="Views\Shared\Home\_ListeProduits.cshtml" />
     <Content Include="Views\Shared\Home\_Produits.cshtml" />
     <Content Include="Views\Shared\Home\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\_ModalConfirmation.cshtml" />

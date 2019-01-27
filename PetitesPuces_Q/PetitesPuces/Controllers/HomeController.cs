@@ -11,21 +11,45 @@ namespace TestMVC.Controllers
     public class HomeController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
-        public ActionResult Index(string Categorie, string Vendeur)
+        public ActionResult Index(string Vendeur)
         {
-            int NoCategorie;
+            PPVendeur vendeur;
             int NoVendeur;
-            if (String.IsNullOrEmpty(Categorie) || !int.TryParse(Categorie, out NoCategorie))
-                NoCategorie = 1;
             if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
-                NoVendeur = 1;
+            {
+                var requete = (from unVendeur in context.PPVendeurs select unVendeur);
+                vendeur = requete.FirstOrDefault();
+            }
+            else
+            {
+                var requete = (from unVendeur in context.PPVendeurs 
+                    where unVendeur.NoVendeur == NoVendeur
+                    select unVendeur);
+                vendeur = requete.FirstOrDefault();
+            }
             
-            AccueilHomeViewModel viewModel = new AccueilHomeViewModel(
-                new Categorie{No = NoCategorie , Description = "Sport", Details = "Tous les articles de sport"},
-                new Vendeur{Nom = "Ginette",Prenom = "Francois",NoVendeur = NoVendeur,NomAffaires = "Clémentines",AdresseEmail = "courriel@gmail.com",DateCreation = new DateTime()}
-                );
+            AccueilHomeViewModel viewModel = new AccueilHomeViewModel(vendeur);
             
             return View(viewModel);
+        }
+        public ActionResult ListeProduits(string Vendeur) //that's if you need the model
+        {
+            PPVendeur vendeur;
+            int NoVendeur;
+            if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
+            {
+                var requete = (from unVendeur in context.PPVendeurs select unVendeur);
+                vendeur = requete.FirstOrDefault();
+            }
+            else
+            {
+                var requete = (from unVendeur in context.PPVendeurs 
+                    where unVendeur.NoVendeur == NoVendeur
+                    select unVendeur);
+                vendeur = requete.FirstOrDefault();
+            }
+
+            return View("Home/_ListeProduits",vendeur.PPProduits.ToList());
         }
 
         public ActionResult Connexion()

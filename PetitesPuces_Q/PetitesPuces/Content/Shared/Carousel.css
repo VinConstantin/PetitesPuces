@@ -7,3 +7,11 @@
 .MultiCarousel .rightLst { right:0; }
 
 .MultiCarousel .leftLst.over, .MultiCarousel .rightLst.over { pointer-events: none; background:#ccc; }
+
+.cut-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 160px;
+    height: 90%;
+    white-space: nowrap;
+}

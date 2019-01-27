@@ -1,0 +1,11 @@
+@using PetitesPuces.Models
+@model List<PetitesPuces.Models.PPProduit>
+
+@{
+    Layout = null;
+}
+
+@foreach (PPProduit produit in Model)
+    {
+        @Html.Partial("Home/_Produits", produit)
+    }
