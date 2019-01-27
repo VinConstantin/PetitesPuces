@@ -2,11 +2,6 @@
 @using PetitesPuces.Utilities
 @model PetitesPuces.Models.PPVendeur
 
-<style>
-    .div_hover { background-color: #FFFFFF; }
-
-    .div_hover:hover { background-color: rgba(123,123,123,01); }
-</style>
 <div id="@("Vendeur" + @Model.NoVendeur)" class="item div_hover" style="cursor: pointer" onclick="updateListeProduits('@Model.NoVendeur')">
     <div class="">    
         <div class="">

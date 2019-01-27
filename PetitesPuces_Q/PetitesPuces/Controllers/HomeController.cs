@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using PetitesPuces.Models;
 using PetitesPuces.ViewModels.Home;
 
-namespace TestMVC.Controllers
+namespace PetitesPuces.Controllers
 {
     public class HomeController : Controller
     {
@@ -32,7 +30,7 @@ namespace TestMVC.Controllers
             
             return View(viewModel);
         }
-        public ActionResult ListeProduits(string Vendeur) //that's if you need the model
+        public ActionResult ListeProduits(string Vendeur)
         {
             PPVendeur vendeur;
             int NoVendeur;

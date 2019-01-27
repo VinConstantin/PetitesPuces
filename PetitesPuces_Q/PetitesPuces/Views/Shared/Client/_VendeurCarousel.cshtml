@@ -1,17 +1,12 @@
 ﻿@using System.Globalization
 @using PetitesPuces.Utilities
-@model int
+@model PetitesPuces.Models.PPVendeur
 
-<style>
-    .div_hover { background-color: #FFFFFF; }
-
-    .div_hover:hover { background-color: rgba(123,123,123,01); }
-</style>
-<div style="" class="item div_hover" style="cursor: pointer" onclick="location.href = '@Url.Action("Catalogue", "Client", new RouteValueDictionary(new { Vendeur= @Model }))'">
+<div id="@("Vendeur" + @Model.NoVendeur)" class="item div_hover" style="cursor: pointer" onclick="updateListeProduits('@Model.NoVendeur')">
     <div class="">    
         <div class="">
-            <p style="line-height: 2.0;">Vendeur  sadasd @Model</p>
-            <p>Nombre d'items : 5</p>
+            <p style="line-height: 2.0;">@Model.Nom</p>
+            <p>Nombre d'items : @Model.PPProduits.Count </p>
         </div>
     </div>
 </div>

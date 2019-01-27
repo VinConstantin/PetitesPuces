@@ -70,6 +70,9 @@
             success: function (result) {
                 $("#partialListeProduits").html(result);
             },
+            error: function() {
+                $("#partialListeProduits").html("@Html.Partial("_ErrorAlert")");
+            }
         });
         $('.Current').removeClass('Current');
         $('#Vendeur'+NoVendeur).first().addClass("Current");
