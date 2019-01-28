@@ -1,0 +1,18 @@
+﻿body {
+}
+table tbody, table thead {
+    display: block;
+}
+
+table tbody {
+    overflow: auto;
+    max-height: 190px;
+}
+
+th {
+    width: 145px;
+}
+
+td {
+    width: 145px;
+}
