@@ -9,10 +9,10 @@
     <th scope="row">@Model.NoCommande</th>
     <td class="text-left">@Model.NomClient</td>
     <td class="text-left">@Model.DateCommande</td>
-    <td class="text-left">@Formatter.Money(Model.CoutLivraison)</td>
+    <td class="text-left">@Formatter.Money((decimal)Model.CoutLivraison)</td>
     <td class="text-left">@Model.Type</td>
     <td class="text-left">@Model.PoidsTotal</td>
-    <td class="text-left">@Formatter.Money(@Model.TotalAvantTaxes)</td>
+    <td class="text-left">@Formatter.Money((decimal)@Model.TotalAvantTaxes)</td>
     <td class="text-right">
         <form class="form-inline">
             @if (Model.Statut != 'L')

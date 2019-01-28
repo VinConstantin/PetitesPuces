@@ -200,4 +200,13 @@
       <Association Name="PPVendeur_PPVendeursClient" Member="PPVendeur" ThisKey="NoVendeur" OtherKey="NoVendeur" Type="PPVendeur" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.PPGestionnaires" Member="PPGestionnaires">
+    <Type Name="PPGestionnaire">
+      <Column Name="NoGestionnaire" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nom" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Prenom" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="AdresseEmail" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="MotDePasse" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
 </Database>

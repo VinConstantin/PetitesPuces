@@ -48,7 +48,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.Linq">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -187,6 +189,7 @@
     <Compile Include="Models\Produit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Formatter.cs" />
+    <Compile Include="ViewModels\Gestionnaire\Redevance.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
     <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />
     <Compile Include="ViewModels\VMVendeur\AccueilVendeurViewModel.cs" />
@@ -203,6 +206,7 @@
     <Content Include="Content\Shared\Carousel.css" />
     <Content Include="Content\Shared\Hover.css" />
     <Content Include="Content\Gestionnaire\Inactivite.css" />
+    <Content Include="Content\Vendeur\Index.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -231,6 +235,7 @@
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
     <Content Include="Scripts\constant.js" />
+    <Content Include="Scripts\Gestionnaire\DemandeVendeur.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
     <Content Include="Scripts\Gestionnaire\Statistiques.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -315,11 +320,12 @@
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
     <Content Include="Views\Home\OubliMDP.cshtml" />
     <Content Include="Views\Gestionnaire\Redevances.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\_Redevance.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\_DetailsVendeur.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\Home" />
-    <Folder Include="ViewModels\Client\" />
+    <Folder Include="Scripts\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

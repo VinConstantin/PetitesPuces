@@ -72,6 +72,9 @@ namespace PetitesPuces.Models
     partial void InsertPPVendeursClient(PPVendeursClient instance);
     partial void UpdatePPVendeursClient(PPVendeursClient instance);
     partial void DeletePPVendeursClient(PPVendeursClient instance);
+    partial void InsertPPGestionnaire(PPGestionnaire instance);
+    partial void UpdatePPGestionnaire(PPGestionnaire instance);
+    partial void DeletePPGestionnaire(PPGestionnaire instance);
     #endregion
 		
 		public BDPetitesPucesDataContext() : 
@@ -221,6 +224,14 @@ namespace PetitesPuces.Models
 			get
 			{
 				return this.GetTable<PPVendeursClient>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PPGestionnaire> PPGestionnaires
+		{
+			get
+			{
+				return this.GetTable<PPGestionnaire>();
 			}
 		}
 	}
@@ -4365,6 +4376,164 @@ namespace PetitesPuces.Models
 						this._NoVendeur = default(long);
 					}
 					this.SendPropertyChanged("PPVendeur");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PPGestionnaires")]
+	public partial class PPGestionnaire : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private long _NoGestionnaire;
+		
+		private string _Nom;
+		
+		private string _Prenom;
+		
+		private string _AdresseEmail;
+		
+		private string _MotDePasse;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNoGestionnaireChanging(long value);
+    partial void OnNoGestionnaireChanged();
+    partial void OnNomChanging(string value);
+    partial void OnNomChanged();
+    partial void OnPrenomChanging(string value);
+    partial void OnPrenomChanged();
+    partial void OnAdresseEmailChanging(string value);
+    partial void OnAdresseEmailChanged();
+    partial void OnMotDePasseChanging(string value);
+    partial void OnMotDePasseChanged();
+    #endregion
+		
+		public PPGestionnaire()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoGestionnaire", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public long NoGestionnaire
+		{
+			get
+			{
+				return this._NoGestionnaire;
+			}
+			set
+			{
+				if ((this._NoGestionnaire != value))
+				{
+					this.OnNoGestionnaireChanging(value);
+					this.SendPropertyChanging();
+					this._NoGestionnaire = value;
+					this.SendPropertyChanged("NoGestionnaire");
+					this.OnNoGestionnaireChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nom", DbType="VarChar(50)")]
+		public string Nom
+		{
+			get
+			{
+				return this._Nom;
+			}
+			set
+			{
+				if ((this._Nom != value))
+				{
+					this.OnNomChanging(value);
+					this.SendPropertyChanging();
+					this._Nom = value;
+					this.SendPropertyChanged("Nom");
+					this.OnNomChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Prenom", DbType="VarChar(50)")]
+		public string Prenom
+		{
+			get
+			{
+				return this._Prenom;
+			}
+			set
+			{
+				if ((this._Prenom != value))
+				{
+					this.OnPrenomChanging(value);
+					this.SendPropertyChanging();
+					this._Prenom = value;
+					this.SendPropertyChanged("Prenom");
+					this.OnPrenomChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdresseEmail", DbType="VarChar(100)")]
+		public string AdresseEmail
+		{
+			get
+			{
+				return this._AdresseEmail;
+			}
+			set
+			{
+				if ((this._AdresseEmail != value))
+				{
+					this.OnAdresseEmailChanging(value);
+					this.SendPropertyChanging();
+					this._AdresseEmail = value;
+					this.SendPropertyChanged("AdresseEmail");
+					this.OnAdresseEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MotDePasse", DbType="VarChar(50)")]
+		public string MotDePasse
+		{
+			get
+			{
+				return this._MotDePasse;
+			}
+			set
+			{
+				if ((this._MotDePasse != value))
+				{
+					this.OnMotDePasseChanging(value);
+					this.SendPropertyChanging();
+					this._MotDePasse = value;
+					this.SendPropertyChanged("MotDePasse");
+					this.OnMotDePasseChanged();
 				}
 			}
 		}

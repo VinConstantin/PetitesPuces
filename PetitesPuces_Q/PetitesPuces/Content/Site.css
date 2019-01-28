@@ -58,9 +58,22 @@ textarea {
     }
 }
 
+.ml-auto {
+    margin-left: auto;
+}
 
 .mt-2 {
     margin-top: 2rem !important;
+}
+
+.btn-circle-sm {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+.d-inline-block {
+    display: inline-block !important;
 }
 
 .v-align-middle {
@@ -103,4 +116,12 @@ textarea {
 
 .d-inline-block {
     display: inline-block !important;
+}
+
+.f-size-15 {
+    font-size: 20pt !important;
+}
+
+.justify-self-end {
+    justify-self: flex-end;
 }
