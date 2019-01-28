@@ -5,7 +5,7 @@
     <td class="text-left">@Model.NbItems</td>
     <td></td>
     <td class="text-right">
-        @if (Model.DateCreation <= DateTime.Today.AddMonths(-6))
+        @if (ViewBag.Page != "Index" && Model.DateCreation <= DateTime.Today.AddMonths(-6))
         {
             <button class="btn btn-danger" title="Supprimer">
                 <i class="glyphicon glyphicon-remove v-align-middle"></i>

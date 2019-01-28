@@ -201,6 +201,7 @@
     <Content Include="Content\Shared\Carousel.css" />
     <Content Include="Content\Shared\Hover.css" />
     <Content Include="Content\Gestionnaire\Inactivite.css" />
+    <Content Include="Content\Vendeur\Index.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
