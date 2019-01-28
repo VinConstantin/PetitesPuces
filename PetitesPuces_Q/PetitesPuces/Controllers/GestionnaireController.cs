@@ -73,7 +73,7 @@ namespace PetitesPuces.Controllers
                 }
             };
 
-            viewModel.UtilsRecherche = new List<IPersonne>
+            viewModel.UtilsRecherche = new List<IUtilisateur>
             {
                 viewModel.ClientsInactifs[0],
                 viewModel.VendeursInactifs[0],

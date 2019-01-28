@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PetitesPuces.Models
 {
-    public class Vendeur: IPersonne
+    public class Vendeur: IUtilisateur
     {
         [DisplayName("No Vendeur")]
         public int NoVendeur { get; set; }

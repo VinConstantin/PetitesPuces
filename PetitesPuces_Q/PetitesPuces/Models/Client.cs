@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PetitesPuces.Models
 {
-    public class Client: IPersonne
+    public class Client: IUtilisateur
     {
         [DisplayName("No Client")]
         public int NoClient { get; set; }

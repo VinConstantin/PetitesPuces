@@ -57,10 +57,12 @@ namespace PetitesPuces.Controllers
             var clients = query.ToList();
             return View(clients);
         }
+
         public ActionResult OubliMDP()
         {
             return View();
         }
+
         public ActionResult Catalogue()
         {
             return RedirectToAction("Catalogue", "Client");

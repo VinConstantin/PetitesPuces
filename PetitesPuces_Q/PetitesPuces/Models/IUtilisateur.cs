@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace PetitesPuces.Models
 {
-    public interface IPersonne
+    public interface IUtilisateur: IUser<int>
     {
         string Role { get; }
         string AdresseEmail { get; }
