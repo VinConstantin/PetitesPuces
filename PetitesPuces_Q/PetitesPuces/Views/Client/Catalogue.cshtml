@@ -17,7 +17,7 @@
 <div class="container-fluid">
     <br/>
     <div class="row">
-        <div class="MultiCarousel" data-items="1,3,5,11" data-slide="10" id="CarouselProduits" data-interval="700">
+        <div class="MultiCarousel" data-items="1,3,5,10" data-slide="10" id="CarouselProduits" data-interval="700">
             <div class="MultiCarousel-inner">
                 @foreach (PPVendeur vendeur in @Model.Vendeurs)
                 {
@@ -36,43 +36,4 @@
 </div>
 
 
-<script>
-    window.addEventListener("load",function(){
-        $('#Vendeur'+@Model.Vendeur.NoVendeur).first().addClass("Current");
-    },false);
-    /**
-     * gérer les clicks de categories
-     */
-    function selectCategorie(elem) {
-        var id = $(elem).attr("id");
-        updateListeProduits(@Model.Vendeur.NoVendeur, id)
-    }
-    
-    /**
-     * Update les produits selon le vendeur selectionner
-     */
-    function updateListeProduits(NoVendeur, NoCategorie) {
-        $.ajax({
-            url: URLPATH+"/Client/ListeProduits",
-            type: "get",
-            data: { 
-                "Vendeur": NoVendeur,
-                "Categorie": NoCategorie
-            },
-            success: function (result) {
-                $("#partialListeProduits").html(result);
-            },
-            error: function (req, status, err) {
-                $("#partialListeProduits").html("@Html.Partial("_ErrorAlert")");
-            }
-        });
-        $('.Current').removeClass("Current");
-        $("#Vendeur"+NoVendeur).first().addClass("Current");
-        
-        /**
-         * changer le url sans refresh
-         */
-        history.pushState(null, "", "?Vendeur="+NoVendeur+"&Categorie="+NoCategorie);
-    }
-</script>
 
