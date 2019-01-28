@@ -19,3 +19,7 @@
     display:block;
     background: rgba(254, 209, 54, 0.9);
 }
+.Current {
+    border: 2px solid blue;
+    border-radius: 5px;
+}

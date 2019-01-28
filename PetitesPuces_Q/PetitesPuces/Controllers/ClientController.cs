@@ -22,29 +22,75 @@ namespace PetitesPuces.Controllers
 
         public ActionResult Catalogue(string Vendeur)
         {
-            ViewBag.Message = "Catalogue";
-            ViewBag.Vendeur = Vendeur;
-            
-            /**
-             * Créer des produits bidons
-             */
-            Random random = new Random();
-            var produits = new List<Produit>();
-            for (int i = 1; i <= 20; i++)
-            {           
-                var next = random.NextDouble();
-
-                var prix = 5.00 + (next * (1000.00 - 5.00));
-                produits.Add(new Produit(i, "Produit No."+i){Price = prix});
+            PPVendeur vendeur;
+            int NoVendeur;
+            if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
+            {
+                var requete = (from unVendeur in context.PPVendeurs select unVendeur);
+                vendeur = requete.FirstOrDefault();
             }
-
-            //Mettre la liste de produits dans le viewModel qui va ensuite être envoyé vers le view
+            else
+            {
+                var requete = (from unVendeur in context.PPVendeurs 
+                    where unVendeur.NoVendeur == NoVendeur
+                    select unVendeur);
+                vendeur = requete.FirstOrDefault();
+            }
+            
             var viewModel = new CatalogueViewModel
             {
-                Produits = produits
+                Vendeur = vendeur,
+                Vendeurs = (from unVendeur in context.PPVendeurs
+                    select unVendeur).ToList(),
+                Categories = (from uneCategorie in context.PPCategories
+                    select uneCategorie).ToList()              
             };
 
             return View(viewModel);
+        }
+        public ActionResult ListeProduits(string Vendeur, string Categorie)
+        {
+            PPCategory categorie;
+            int NoCategorie;
+            if (String.IsNullOrEmpty(Categorie) || !int.TryParse(Categorie, out NoCategorie))
+            {
+                categorie = null;
+            }
+            else
+            {
+                var requeteCategorie = (from uneCategorie in context.PPCategories 
+                    where uneCategorie.NoCategorie == NoCategorie
+                    select uneCategorie);
+                categorie = requeteCategorie.FirstOrDefault();
+            }
+            
+            PPVendeur vendeur;
+            int NoVendeur;
+            if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
+            {
+                var requete = (from unVendeur in context.PPVendeurs select unVendeur);
+                vendeur = requete.FirstOrDefault();
+            }
+            else
+            {
+                var requete = (from unVendeur in context.PPVendeurs 
+                    where unVendeur.NoVendeur == NoVendeur
+                    select unVendeur);
+                vendeur = requete.FirstOrDefault();
+            }
+            
+            var viewModel = new CatalogueViewModel
+            {
+                Vendeur = vendeur,
+                Vendeurs = (from unVendeur in context.PPVendeurs
+                    select unVendeur).ToList(),
+                Categories = (from uneCategorie in context.PPCategories
+                    select uneCategorie).ToList()              ,
+                Categorie = categorie
+            };
+            
+
+            return View("Client/_Catalogue",viewModel);
         }
         public ActionResult MonPanier(string No)
         {
