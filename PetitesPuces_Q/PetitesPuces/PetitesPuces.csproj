@@ -191,8 +191,8 @@
     <Compile Include="Utilities\Formatter.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
     <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />
-    <Compile Include="ViewModels\VMVendeur\AccueilVendeurViewModel.cs" />
-    <Compile Include="ViewModels\VMVendeur\CommandesViewModel.cs" />
+    <Compile Include="ViewModels\Vendeur\AccueilVendeurViewModel.cs" />
+    <Compile Include="ViewModels\Vendeur\CommandesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -272,7 +272,7 @@
     <Content Include="Views\Shared\Home\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\_ModalConfirmation.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
-    <Content Include="Views\Vendeur\index.cshtml" />
+    <Content Include="Views\Vendeur\Index.cshtml" />
     <Content Include="Views\Vendeur\Profil.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
