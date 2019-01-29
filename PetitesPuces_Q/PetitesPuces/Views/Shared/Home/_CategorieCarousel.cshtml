@@ -7,8 +7,8 @@
     Color col = Color.FromArgb(1, @Model.NoCategorie*2, rand.Next(256), rand.Next(256));
     string rgba= String.Format("rgba({0},{1},{2},{3})", col.R, col.G, col.B, col.A);
 }
-<div class="item" id="@("Cat" + @Model.NoCategorie)">
-    <div class="pad15" style="max-height: 20vh; min-height: 20vh; background-color: lightskyblue; text-overflow: ellipsis;">
+<div class="item" style="text-overflow: ellipsis;" id="@("Cat" + @Model.NoCategorie)">
+    <div class="pad15" style="max-height: 20vh; min-height: 20vh; background-color: lightskyblue;">
         <p><span class="lead">@Model.Description</span> <sup>(@Model.PPProduits.Count)</sup></p>
         <hr/>
         <p class="cut-text">@Model.Details</p>
