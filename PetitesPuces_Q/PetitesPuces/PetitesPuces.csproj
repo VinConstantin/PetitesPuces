@@ -213,11 +213,13 @@
     <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Commande.cs" />
-    <Compile Include="Models\Securite\PPVendeur.cs" />
-    <Compile Include="Models\Securite\TypesUtilisateur.cs" />
+    <Compile Include="Models\Ext\PPClient.cs" />
+    <Compile Include="Models\Ext\PPVendeur.cs" />
     <Compile Include="Models\IUtilisateur.cs" />
     <Compile Include="Models\Panier.cs" />
     <Compile Include="Models\Vendeur.cs" />
+    <Compile Include="Securite\Securise.cs" />
+    <Compile Include="Securite\SessionUtilisateur.cs" />
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\InactiviteViewModel.cs" />

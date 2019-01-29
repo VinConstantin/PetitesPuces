@@ -7,18 +7,14 @@ using Microsoft.AspNet.Identity;
 
 namespace PetitesPuces.Models
 {
-    public interface IUtilisateur: IUser<int>
+    public interface IUtilisateur
     {
         string Role { get; }
         string AdresseEmail { get; }
+        string MotDePasse { get; }
         string Nom { get; }
         string Prenom { get; }
         string Rue { get; }
-        string Ville { get; }
-        string Province { get; }
-        string CodePostal { get; }
-        string Pays { get; }
-        DateTime DateCreation { get; }
-        DateTime DateMAJ { get; }
+        DateTime? DateCreation { get; }
     }
 }
