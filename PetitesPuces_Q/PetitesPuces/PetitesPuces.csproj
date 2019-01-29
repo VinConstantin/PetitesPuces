@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -180,15 +186,20 @@
     <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Commande.cs" />
-    <Compile Include="Models\IPersonne.cs" />
+    <Compile Include="Models\Ext\PPClient.cs" />
+    <Compile Include="Models\Ext\PPVendeur.cs" />
+    <Compile Include="Models\IUtilisateur.cs" />
     <Compile Include="Models\Panier.cs" />
     <Compile Include="Models\Vendeur.cs" />
+    <Compile Include="Securite\Securise.cs" />
+    <Compile Include="Securite\SessionUtilisateur.cs" />
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\InactiviteViewModel.cs" />
     <Compile Include="Models\Produit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Formatter.cs" />
+    <Compile Include="ViewModels\Gestionnaire\Redevance.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
     <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\AccueilVendeurViewModel.cs" />
@@ -234,6 +245,7 @@
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
     <Content Include="Scripts\constant.js" />
+    <Content Include="Scripts\Gestionnaire\DemandeVendeur.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
     <Content Include="Scripts\Gestionnaire\Statistiques.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -318,6 +330,8 @@
     <Content Include="Views\Shared\_CarouselPublicitaire.cshtml" />
     <Content Include="Views\Home\OubliMDP.cshtml" />
     <Content Include="Views\Gestionnaire\Redevances.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\_Redevance.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\_DetailsVendeur.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -332,7 +346,9 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>

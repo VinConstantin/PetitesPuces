@@ -10,6 +10,6 @@ namespace PetitesPuces.ViewModels.Gestionnaire
     {
         public List<Models.Vendeur> VendeursInactifs { get; set; }
         public List<Client> ClientsInactifs { get; set; }
-        public List<IPersonne> UtilsRecherche { get; set; }
+        public List<IUtilisateur> UtilsRecherche { get; set; }
     }
 }
