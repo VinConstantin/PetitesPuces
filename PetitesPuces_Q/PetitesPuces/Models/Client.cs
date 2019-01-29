@@ -14,6 +14,8 @@ namespace PetitesPuces.Models
         [DisplayName("Adresse Courriel")]
         public string AdresseEmail { get; set; }
 
+        public string MotDePasse { get; }
+
         [DisplayName("Nom")]
         public string Nom { get; set; }
 
@@ -28,7 +30,7 @@ namespace PetitesPuces.Models
         public string Province { get; }
         public string CodePostal { get; }
         public string Pays { get; }
-        public DateTime DateCreation { get; }
+        public DateTime? DateCreation { get; }
         public DateTime DateMAJ { get; }
 
         public string Role
