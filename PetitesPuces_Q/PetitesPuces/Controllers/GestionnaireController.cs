@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using PetitesPuces.Models;
+using PetitesPuces.Securite;
 using PetitesPuces.ViewModels.Gestionnaire;
 
 namespace PetitesPuces.Controllers
@@ -11,6 +12,7 @@ namespace PetitesPuces.Controllers
     {
         private BDPetitesPucesDataContext dataContext = new BDPetitesPucesDataContext();
 
+        [Securise]
         public ActionResult Index()
         {
             return View();
@@ -73,7 +75,7 @@ namespace PetitesPuces.Controllers
                 }
             };
 
-            viewModel.UtilsRecherche = new List<IPersonne>
+            viewModel.UtilsRecherche = new List<IUtilisateur>
             {
                 viewModel.ClientsInactifs[0],
                 viewModel.VendeursInactifs[0],

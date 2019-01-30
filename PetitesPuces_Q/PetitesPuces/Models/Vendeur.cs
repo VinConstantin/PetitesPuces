@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PetitesPuces.Models
 {
-    public class Vendeur: IPersonne
+    public class Vendeur: IUtilisateur
     {
         [DisplayName("No Vendeur")]
         public int NoVendeur { get; set; }
@@ -15,6 +15,7 @@ namespace PetitesPuces.Models
         public string NomAffaires { get; set; }
 
         public string AdresseEmail { get; set; }
+        public string MotDePasse { get; }
 
         [DisplayName("Nom")]
         public string Nom { get; set; }
@@ -23,7 +24,7 @@ namespace PetitesPuces.Models
         public string Prenom { get; set; }
 
         [DisplayName("Date de la demande")]
-        public DateTime DateCreation { get; set; }
+        public DateTime? DateCreation { get; set; }
 
         public DateTime DateMAJ { get; }
 

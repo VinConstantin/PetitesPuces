@@ -1,19 +1,19 @@
 ﻿@using PetitesPuces.Utilities
-@model PetitesPuces.Models.Commande
+@model PetitesPuces.Models.PPCommande
 
 @{
     ViewBag.Title = "_Commande";
 }
 
-<tr class="v-align-middle">
-    <th scope="row">@Model.NoCommande</th>
-    <td class="text-left">@Model.NomClient</td>
-    <td class="text-left">@Model.DateCommande</td>
-    <td class="text-left">@Formatter.Money((decimal)Model.CoutLivraison)</td>
-    <td class="text-left">@Model.Type</td>
-    <td class="text-left">@Model.PoidsTotal</td>
-    <td class="text-left">@Formatter.Money((decimal)@Model.TotalAvantTaxes)</td>
-    <td class="text-right">
+<tr class="v-align-middle text-right">
+    <th scope="row" class="rowHead">@Model.NoCommande</th>
+    <td>@Model.PPClient.Nom</td>
+    <td>@Model.DateCommande.Value.ToShortDateString()</td>
+    <td>@Formatter.Money(Model.CoutLivraison)</td>
+    <td>@Model.PPTypesLivraison.Description</td>
+    <td>@Model.PoidsTotal lbs</td>
+    <td>@Formatter.Money(Model.MontantTotAvantTaxes)</td>
+    <td>
         <form class="form-inline">
             @if (Model.Statut != 'L')
             {

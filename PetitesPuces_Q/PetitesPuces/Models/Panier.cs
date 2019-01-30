@@ -16,5 +16,8 @@ namespace PetitesPuces.Models
 
         [DisplayName("Nombre d'items")]
         public int NbItems { get; set; }
+
+        [DisplayName("Coût total")]
+        public double CoutTotal { get; set; }
     }
 }

@@ -35,7 +35,7 @@ namespace PetitesPuces.Controllers
         {
             PPVendeur vendeur;
             int NoVendeur;
-            if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
+            if (string.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
             {
                 var requete = (from unVendeur in context.PPVendeurs select unVendeur);
                 vendeur = requete.FirstOrDefault();
@@ -50,6 +50,7 @@ namespace PetitesPuces.Controllers
 
             return View("Home/_ListeProduits", vendeur.PPProduits.ToList());
         }
+
         [HttpGet]
         public ActionResult Connexion()
         {
@@ -58,112 +59,78 @@ namespace PetitesPuces.Controllers
 
 
         [HttpPost]
-
         public ActionResult Connexion(FormCollection formCollection)
         {
-            //  try
+            var unClientExist = from unClient in context.PPClients
+                                where unClient.AdresseEmail == formCollection["usernameLogin"] &&
+                                      unClient.MotDePasse == formCollection["passwordLogin"]
+                                select unClient;
+
+            var unVendeurExist = from unVendeur in context.PPVendeurs
+                                 where unVendeur.AdresseEmail == formCollection["usernameLogin"] &&
+                                       unVendeur.MotDePasse == formCollection["passwordLogin"]
+                                 select unVendeur;
+
+            if (unClientExist.Count() != 0)
             {
-
-                /*
-                 * Partie Login
-                 */
-
-                var unClientExist = from unClient in context.PPClients
-                                    where unClient.AdresseEmail == formCollection["usernameLogin"] &&
-                                          unClient.MotDePasse == formCollection["passwordLogin"]
-                                    select unClient;
-
-                var unVendeurExist = from unVendeur in context.PPVendeurs
-                                     where unVendeur.AdresseEmail == formCollection["usernameLogin"] &&
-                                           unVendeur.MotDePasse == formCollection["passwordLogin"]
-                                     select unVendeur;
-
-
-
-
-                if (unClientExist.Count() != 0)
-                {
-                    TempData["connexion"] = true;
-                    return RedirectToAction("Index", "Client");
-                }
-                else if (unVendeurExist.Count() != 0)
-                {
-
-                    TempData["connexion"] = true;
-                    return RedirectToAction("Index", "Vendeur");
-                }
-
-                foreach (var key in formCollection.AllKeys)
-                {
-                    Response.Write("key: " + key + " ");
-                    Response.Write(formCollection[key]);
-                    Response.Write("<br/> ");
-                }
-
-                // if (ModelState.IsValid)
-                {
-                    /*
-                     * Partie inscription client
-                     */
-                    var noClientCourrant = from unclient in context.PPClients select unclient.NoClient;
-                    int maxNo = Convert.ToInt16(noClientCourrant.Max()) + 1;
-
-
-
-                    PPClient nouveauClient = new PPClient();
-                    nouveauClient.Nom = formCollection["username"];
-                    nouveauClient.AdresseEmail = formCollection["emailClient"];
-                    nouveauClient.MotDePasse = formCollection["passwordClient"];
-                    nouveauClient.NoClient = maxNo;
-                    UpdateModel(nouveauClient);
-                    Response.Write(nouveauClient.Nom);
-                    context.PPClients.InsertOnSubmit(nouveauClient);
-
-                }
-
-                    /*
-                     * Partie inscription vendeur
-                     */
-
-                var noVendeurCourrant = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
-                int maxNoVendeur = Convert.ToInt16(noVendeurCourrant.Max()) + 1;
-
-
-
-                PPVendeur nouveauVendeur = new PPVendeur();
-
-                DateTime today = DateTime.Today;
-                nouveauVendeur.NomAffaires = formCollection["nomAffaires"];
-                nouveauVendeur.Nom = formCollection["nomVendeur"];
-                nouveauVendeur.Prenom = formCollection["prenomVendeur"];
-                nouveauVendeur.Rue = formCollection["rue"];
-                nouveauVendeur.NoVendeur = maxNoVendeur;
-                nouveauVendeur.Ville = formCollection["ville"];
-                nouveauVendeur.Province = formCollection["province"];
-                nouveauVendeur.CodePostal = formCollection["codePostal"];
-                nouveauVendeur.Tel1 = formCollection["tel1"];
-                nouveauVendeur.Tel2 = formCollection["tel2"];
-                nouveauVendeur.AdresseEmail = formCollection["adresseEmail"];
-                nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["poidMaxLiv"]);
-                nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["livraisonGraduite"]);
-                nouveauVendeur.MotDePasse = formCollection["MDP"];
-                nouveauVendeur.Taxes = formCollection["taxe"]== null ? false : true;
-                nouveauVendeur.DateCreation = today;
-                nouveauVendeur.Pays = formCollection["pays"];
-                // UpdateModel(nouveauVendeur);
-                Response.Write(nouveauVendeur.Nom);
-                context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
-
-
-
-                context.SubmitChanges();
-
-
+                HttpContext.Session["userId"] = unClientExist.First().NoClient;
+                TempData["connexion"] = true;
+                return RedirectToAction("Index", "Client");
             }
-            // catch (Exception )
+            else if (unVendeurExist.Count() != 0)
             {
-                Response.Write("Mot de passe ou adresse courriel incorrect! Veuillez réssayer nouveau.");
+                HttpContext.Session["userId"] = unVendeurExist.First().NoVendeur;
+                TempData["connexion"] = true;
+                return RedirectToAction("Index", "Vendeur");
             }
+
+            foreach (var key in formCollection.AllKeys)
+            {
+                Response.Write("key: " + key + " ");
+                Response.Write(formCollection[key]);
+                Response.Write("<br/> ");
+            }
+
+            var noClientCourrant = from unclient in context.PPClients select unclient.NoClient;
+            int maxNo = Convert.ToInt16(noClientCourrant.Max()) + 1;
+
+            PPClient nouveauClient = new PPClient();
+            nouveauClient.Nom = formCollection["username"];
+            nouveauClient.AdresseEmail = formCollection["emailClient"];
+            nouveauClient.MotDePasse = formCollection["passwordClient"];
+            nouveauClient.NoClient = maxNo;
+            UpdateModel(nouveauClient);
+            Response.Write(nouveauClient.Nom);
+            context.PPClients.InsertOnSubmit(nouveauClient);
+
+            var noVendeurCourrant = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
+            int maxNoVendeur = Convert.ToInt16(noVendeurCourrant.Max()) + 1;
+
+            PPVendeur nouveauVendeur = new PPVendeur();
+
+            DateTime today = DateTime.Today;
+            nouveauVendeur.NomAffaires = formCollection["nomAffaires"];
+            nouveauVendeur.Nom = formCollection["nomVendeur"];
+            nouveauVendeur.Prenom = formCollection["prenomVendeur"];
+            nouveauVendeur.Rue = formCollection["rue"];
+            nouveauVendeur.NoVendeur = maxNoVendeur;
+            nouveauVendeur.Ville = formCollection["ville"];
+            nouveauVendeur.Province = formCollection["province"];
+            nouveauVendeur.CodePostal = formCollection["codePostal"];
+            nouveauVendeur.Tel1 = formCollection["tel1"];
+            nouveauVendeur.Tel2 = formCollection["tel2"];
+            nouveauVendeur.AdresseEmail = formCollection["adresseEmail"];
+            nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["poidMaxLiv"]);
+            nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["livraisonGraduite"]);
+            nouveauVendeur.MotDePasse = formCollection["MDP"];
+            nouveauVendeur.Taxes = formCollection["taxe"]== null ? false : true;
+            nouveauVendeur.DateCreation = today;
+            nouveauVendeur.Pays = formCollection["pays"];
+            // UpdateModel(nouveauVendeur);
+            Response.Write(nouveauVendeur.Nom);
+            context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
+
+            context.SubmitChanges();
 
             return View();
         }
@@ -172,6 +139,7 @@ namespace PetitesPuces.Controllers
         {
             return View();
         }
+
         public ActionResult Catalogue()
         {
             return RedirectToAction("Catalogue", "Client");

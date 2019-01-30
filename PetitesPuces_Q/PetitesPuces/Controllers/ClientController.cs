@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PetitesPuces.Models;
-using PetitesPuces.ViewModels.VMVendeur;
+using PetitesPuces.ViewModels.Vendeur;
 
 namespace PetitesPuces.Controllers
 {
