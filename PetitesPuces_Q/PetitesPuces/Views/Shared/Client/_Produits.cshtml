@@ -10,7 +10,12 @@
             <div class="h3">
                 @Formatter.Money(@Model.PrixVente)
             </div>
-            <button class="btn btn-outline-primary" onclick="ajouterAuPanier(@Model.NoProduit)">Ajouter au panier</button>
+            <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit)">
+                <span class="glyphicon glyphicon-shopping-cart"></span>
+            </button>
+            <button class="btn btn-link btn-lg" title="Visualiser le produit" onclick="ajouterAuPanier(@Model.NoProduit)">
+                <span class="glyphicon glyphicon-eye-open"></span>
+            </button>
         </div>
         <div class="panel-footer">Vendeur : @Model.PPVendeur.Nom</div>
     </div>

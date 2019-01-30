@@ -19,9 +19,10 @@ namespace PetitesPuces.Controllers
             ViewBag.Utilisateur = "Client";
             return View();
         }
-        
 
-        public ActionResult Catalogue(string Vendeur, string Categorie, string Page, string Size)
+        private CatalogueViewModel GetCatalogueViewModel(ref IEnumerable<PPProduit> listeProduits, 
+            string Vendeur, string Categorie, string Page, string Size,
+            string Filtre, Tri tri)
         {
             int noPage = int.TryParse(Page, out noPage) ? noPage : 1;
             int nbItemsParPage = int.TryParse(Size, out nbItemsParPage) ? nbItemsParPage : DEFAULTITEMPARPAGE;
@@ -55,6 +56,31 @@ namespace PetitesPuces.Controllers
                     select unVendeur);
                 vendeur = requete.FirstOrDefault();
             }
+            //creer la liste de produits
+            listeProduits = vendeur.PPProduits
+                .Where(p => categorie == null || p.PPCategory == categorie);
+            if(!String.IsNullOrEmpty(Filtre)) 
+                listeProduits = listeProduits.Where(p => p.Nom.ToLower().Contains(Filtre.ToLower()));
+
+            switch (tri)
+            {
+                case Tri.Nom :
+                    listeProduits = listeProduits.OrderBy(p => p.Nom);
+                    break;
+                case Tri.Categorie :
+                    listeProduits = listeProduits.OrderBy(p => p.PPCategory.Description);
+                    break;
+                case Tri.Date :
+                    listeProduits = listeProduits.OrderBy(p => p.DateCreation);
+                    break;
+                case Tri.Numero :
+                    listeProduits = listeProduits.OrderBy(p => p.NoProduit);
+                break;
+                default:
+                    listeProduits = listeProduits.OrderBy(p => p.Nom);
+                    break;
+            }
+            
             //creer le view model
             var viewModel = new CatalogueViewModel
             {
@@ -64,64 +90,45 @@ namespace PetitesPuces.Controllers
                 Categories = (from uneCategorie in context.PPCategories
                     select uneCategorie).ToList(),
                 Categorie = categorie,
-                Produits = vendeur.PPProduits.Where(p => categorie==null || p.PPCategory == categorie).Skip(noPage*nbItemsParPage-nbItemsParPage).Take(nbItemsParPage).ToList()
+                Produits = listeProduits.Skip(noPage * (nbItemsParPage == -1 ? listeProduits.Count() : nbItemsParPage) -
+                                              (nbItemsParPage == -1 ? listeProduits.Count() : nbItemsParPage))
+                    .Take((nbItemsParPage == -1 ? listeProduits.Count() : nbItemsParPage)).ToList()
             };
-            ViewBag.NoCategorie = categorie?.NoCategorie ?? -1;
-            ViewBag.NbItems = nbItemsParPage;
-            ViewBag.noPage = noPage;
-            ViewBag.NbPage = (vendeur.PPProduits.Where(p => categorie==null || p.PPCategory == categorie).ToList().Count)/nbItemsParPage+1;
-            return View(viewModel);
+            return viewModel;
         }
-        public ActionResult ListeProduits(string Vendeur, string Categorie, string Page, string Size)
+        public ActionResult Catalogue(string Vendeur, string Categorie, string Page, string Size, string Filtre, string TriPar)
         {
+            IEnumerable<PPProduit> listeProduits = new List<PPProduit>();
             int noPage = int.TryParse(Page, out noPage) ? noPage : 1;
             int nbItemsParPage = int.TryParse(Size, out nbItemsParPage) ? nbItemsParPage : DEFAULTITEMPARPAGE;
+            Tri tri;
+            Enum.TryParse(TriPar, out tri);
             
-            //chercher la categorie
-            PPCategory categorie;
-            int NoCategorie;
-            if (String.IsNullOrEmpty(Categorie) || !int.TryParse(Categorie, out NoCategorie))
-            {
-                categorie = null;
-            }
-            else
-            {
-                var requeteCategorie = (from uneCategorie in context.PPCategories 
-                    where uneCategorie.NoCategorie == NoCategorie
-                    select uneCategorie);
-                categorie = requeteCategorie.FirstOrDefault();
-            }
-            //chercher le vendeur
-            PPVendeur vendeur;
-            int NoVendeur;
-            if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
-            {
-                var requete = (from unVendeur in context.PPVendeurs select unVendeur);
-                vendeur = requete.FirstOrDefault();
-            }
-            else
-            {
-                var requete = (from unVendeur in context.PPVendeurs 
-                    where unVendeur.NoVendeur == NoVendeur
-                    select unVendeur);
-                vendeur = requete.FirstOrDefault();
-            }
-            //creer le viewmodel
-            var viewModel = new CatalogueViewModel
-            {
-                Vendeur = vendeur,
-                Vendeurs = (from unVendeur in context.PPVendeurs
-                    select unVendeur).ToList(),
-                Categories = (from uneCategorie in context.PPCategories
-                    select uneCategorie).ToList(),
-                Categorie = categorie,
-                Produits = vendeur.PPProduits.Where(p => categorie==null || p.PPCategory == categorie).Skip(noPage*nbItemsParPage-nbItemsParPage).Take(nbItemsParPage).ToList()
-            };
-            ViewBag.NoCategorie = categorie?.NoCategorie ?? -1;
+            CatalogueViewModel viewModel = GetCatalogueViewModel(ref listeProduits, Vendeur, Categorie, Page, Size, Filtre, tri);
+            
+            ViewBag.NoCategorie = viewModel.Categorie?.NoCategorie ?? -1;
             ViewBag.NbItems = nbItemsParPage;
             ViewBag.noPage = noPage;
-            ViewBag.NbPage = (vendeur.PPProduits.Where(p => categorie==null || p.PPCategory == categorie).ToList().Count)/nbItemsParPage+1;
-            return View("Client/_Catalogue",viewModel);
+            ViewBag.NbPage = (listeProduits.Count()-1)/nbItemsParPage+1;
+            ViewBag.Filtre = Filtre;
+            return View(viewModel);
+        }
+        public ActionResult ListeProduits(string Vendeur, string Categorie, string Page, string Size, string Filtre, string TriPar)
+        {
+            IEnumerable<PPProduit> listeProduits = new List<PPProduit>();
+            int noPage = int.TryParse(Page, out noPage) ? noPage : 1;
+            int nbItemsParPage = int.TryParse(Size, out nbItemsParPage) ? nbItemsParPage : DEFAULTITEMPARPAGE;
+            Tri tri;
+            Enum.TryParse(TriPar, out tri);
+            
+            CatalogueViewModel viewModel = GetCatalogueViewModel(ref listeProduits, Vendeur, Categorie, Page, Size, Filtre, tri);
+            
+            ViewBag.NoCategorie = viewModel.Categorie?.NoCategorie ?? -1;
+            ViewBag.NbItems = nbItemsParPage;
+            ViewBag.noPage = noPage;
+            ViewBag.NbPage = (listeProduits.Count()-1)/nbItemsParPage+1;
+            ViewBag.Filtre = Filtre;
+            return PartialView("Client/_Catalogue",viewModel);
         }
         public ActionResult MonPanier(string No)
         {

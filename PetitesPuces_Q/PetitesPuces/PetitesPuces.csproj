@@ -182,6 +182,7 @@
     <Compile Include="Models\Commande.cs" />
     <Compile Include="Models\IPersonne.cs" />
     <Compile Include="Models\Panier.cs" />
+    <Compile Include="Models\Tri.cs" />
     <Compile Include="Models\Vendeur.cs" />
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
