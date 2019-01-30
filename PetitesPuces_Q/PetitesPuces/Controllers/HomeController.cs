@@ -61,14 +61,15 @@ namespace PetitesPuces.Controllers
         [HttpPost]
         public ActionResult Connexion(FormCollection formCollection)
         {
+
             var unClientExist = from unClient in context.PPClients
-                                where unClient.AdresseEmail == formCollection["usernameLogin"] &&
-                                      unClient.MotDePasse == formCollection["passwordLogin"]
+                                where unClient.AdresseEmail == formCollection["adresseEmail"] &&
+                                      unClient.MotDePasse == formCollection["motDePasse"]
                                 select unClient;
 
             var unVendeurExist = from unVendeur in context.PPVendeurs
-                                 where unVendeur.AdresseEmail == formCollection["usernameLogin"] &&
-                                       unVendeur.MotDePasse == formCollection["passwordLogin"]
+                                 where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
+                                       unVendeur.MotDePasse == formCollection["motDePasse"]
                                  select unVendeur;
 
             if (unClientExist.Count() != 0)
@@ -83,68 +84,110 @@ namespace PetitesPuces.Controllers
                 TempData["connexion"] = true;
                 return RedirectToAction("Index", "Vendeur");
             }
-
+            else
+            {
+                ModelState.AddModelError("motDePasse", "Votre mot de passe ou adresse courriel est incorrect.");
+            }
             foreach (var key in formCollection.AllKeys)
+                {
+                    Response.Write("key: " + key + " ");
+                    Response.Write(formCollection[key]);
+                    Response.Write("<br/> ");
+                }
+
+        [HttpPost]
+        public ActionResult InscriptionClient(FormCollection formCollection)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+
+                var noClientCourrant = from unclient in context.PPClients select unclient.NoClient;
+                int maxNo = Convert.ToInt16(noClientCourrant.Max()) + 1;
+
+
+
+                PPClient nouveauClient = new PPClient();
+                nouveauClient.Nom = formCollection["username"];
+                nouveauClient.AdresseEmail = formCollection["emailClient"];
+                nouveauClient.MotDePasse = formCollection["passwordClient"];
+                nouveauClient.NoClient = maxNo;
+                UpdateModel(nouveauClient);
+            
+                context.PPClients.InsertOnSubmit(nouveauClient);
+                context.SubmitChanges();
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult InscriptionVendeur()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult InscriptionVendeur(FormCollection formCollection)
+        {
+          
+           /* foreach (var key in formCollection.AllKeys)
             {
                 Response.Write("key: " + key + " ");
                 Response.Write(formCollection[key]);
                 Response.Write("<br/> ");
+            }*/
+
+            if (ModelState.IsValid)
+            {
+                var noVendeurCourrant = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
+                int maxNoVendeur = Convert.ToInt16(noVendeurCourrant.Max()) + 1;
+                
+                PPVendeur nouveauVendeur = new PPVendeur();
+
+                DateTime today = DateTime.Today;
+                nouveauVendeur.NomAffaires = formCollection["NomAffaires"];
+                nouveauVendeur.Nom = formCollection["Nom"];
+                nouveauVendeur.Prenom = formCollection["Prenom"];
+                nouveauVendeur.Rue = formCollection["Rue"];
+                nouveauVendeur.NoVendeur = maxNoVendeur;
+                nouveauVendeur.Ville = formCollection["Ville"];
+                nouveauVendeur.Province = formCollection["Province"];
+                nouveauVendeur.CodePostal = formCollection["CodePostal"];
+                nouveauVendeur.Tel1 = formCollection["tel1"];
+                nouveauVendeur.Tel2 = formCollection["tel2"];
+                nouveauVendeur.AdresseEmail = formCollection["AdresseEmail"];
+                nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["poidsMax"]);
+                nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["prixMinimum"]);
+                nouveauVendeur.MotDePasse = formCollection["motDePasse"];
+                nouveauVendeur.Taxes = formCollection["taxes"] == null ? false : true;
+                nouveauVendeur.DateCreation = today;
+                nouveauVendeur.Pays = formCollection["Pays"];
+             
+               
+                context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
+                context.SubmitChanges();
             }
-
-            var noClientCourrant = from unclient in context.PPClients select unclient.NoClient;
-            int maxNo = Convert.ToInt16(noClientCourrant.Max()) + 1;
-
-            PPClient nouveauClient = new PPClient();
-            nouveauClient.Nom = formCollection["username"];
-            nouveauClient.AdresseEmail = formCollection["emailClient"];
-            nouveauClient.MotDePasse = formCollection["passwordClient"];
-            nouveauClient.NoClient = maxNo;
-            UpdateModel(nouveauClient);
-            Response.Write(nouveauClient.Nom);
-            context.PPClients.InsertOnSubmit(nouveauClient);
-
-            var noVendeurCourrant = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
-            int maxNoVendeur = Convert.ToInt16(noVendeurCourrant.Max()) + 1;
-
-            PPVendeur nouveauVendeur = new PPVendeur();
-
-            DateTime today = DateTime.Today;
-            nouveauVendeur.NomAffaires = formCollection["nomAffaires"];
-            nouveauVendeur.Nom = formCollection["nomVendeur"];
-            nouveauVendeur.Prenom = formCollection["prenomVendeur"];
-            nouveauVendeur.Rue = formCollection["rue"];
-            nouveauVendeur.NoVendeur = maxNoVendeur;
-            nouveauVendeur.Ville = formCollection["ville"];
-            nouveauVendeur.Province = formCollection["province"];
-            nouveauVendeur.CodePostal = formCollection["codePostal"];
-            nouveauVendeur.Tel1 = formCollection["tel1"];
-            nouveauVendeur.Tel2 = formCollection["tel2"];
-            nouveauVendeur.AdresseEmail = formCollection["adresseEmail"];
-            nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["poidMaxLiv"]);
-            nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["livraisonGraduite"]);
-            nouveauVendeur.MotDePasse = formCollection["MDP"];
-            nouveauVendeur.Taxes = formCollection["taxe"]== null ? false : true;
-            nouveauVendeur.DateCreation = today;
-            nouveauVendeur.Pays = formCollection["pays"];
-            // UpdateModel(nouveauVendeur);
-            Response.Write(nouveauVendeur.Nom);
-            context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
-
-            context.SubmitChanges();
-
             return View();
-        }
-
-        public ActionResult OubliMDP()
-        {
-            return View();
-        }
-
-        public ActionResult Catalogue()
-        {
-            return RedirectToAction("Catalogue", "Client");
-
-
-        }
     }
+    public ActionResult OubliMDP()
+    {
+        return View();
+    }
+    public ActionResult Catalogue()
+    {
+        return RedirectToAction("Catalogue", "Client");
+
+
+    }
+
+    public ActionResult testValidation()
+
+    {
+        return View();
+    }
+
+}
 }

@@ -1,15 +1,17 @@
-﻿@model PetitesPuces.Models.Panier
+﻿@using PetitesPuces.Utilities
+@model PetitesPuces.Models.Panier
+
 <tr class="v-align-middle" style="height: 51px">
-    <td class="text-left">@Model.NomClient</td>
-    <td class="text-left">@Model.DateCreation</td>
-    <td class="text-left">@Model.NbItems</td>
-    <td></td>
-    <td class="text-right">
-        @if (ViewBag.Page != "Index" && Model.DateCreation <= DateTime.Today.AddMonths(-6))
-        {
+    <th class="rowHead">@Model.NomClient</th>
+    <td>@Model.DateCreation.ToShortDateString()</td>
+    <td>@Model.NbItems</td>
+    <td>@Formatter.Money(Model.CoutTotal)</td>
+    @if (ViewBag.Page != "Index" && Model.DateCreation <= DateTime.Today.AddMonths(-6))
+    {
+        <td>
             <button class="btn btn-danger" title="Supprimer">
                 <i class="glyphicon glyphicon-remove v-align-middle"></i>
             </button>
-        }
-    </td>
+        </td>
+    }
 </tr>
