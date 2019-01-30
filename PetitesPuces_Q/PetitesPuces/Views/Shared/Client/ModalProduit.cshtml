@@ -1,0 +1,42 @@
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPProduit
+
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLabel">@Model.Nom</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <img src="@Url.Content("/images/produits/" + Model.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="width: 100%" alt="Image">
+        <br/>
+        <p>@Model.Description</p>
+         
+        <p><div class="h3">
+            @Formatter.Money(@Model.PrixVente)
+        </div></p>
+        
+        <p>Poids : @Model.Poids g</p>
+        <p>Catégorie : @Model.PPCategory.Description</p>
+        <hr/>
+        <p>Date de création : @Model.DateCreation</p>
+        <p>Vendeur : @Model.PPVendeur.Nom</p>
+    </div>
+    <div class="modal-footer">
+        <span style="border-right: 1px solid #ccc;">
+            <span class="glyphicon glyphicon-minus" onclick="moinsQuantite(@Model.NoProduit)"></span>
+            <input type="text" style="width: 10%;" pattern="\d*" name="name" value="1" width="50px" id="@Model.NoProduit">
+            <span class="glyphicon glyphicon-plus" onclick="plusQuantite(@Model.NoProduit)"></span>
+            
+            <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());">
+                <span class="glyphicon glyphicon-shopping-cart" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());"></span>
+            </button>
+        </span>
+        <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Contacter @Model.PPVendeur.Nom" onclick="visualiser(@Model.NoProduit)">
+            <span class="glyphicon glyphicon-envelope"></span>
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+    </div>
+</div>

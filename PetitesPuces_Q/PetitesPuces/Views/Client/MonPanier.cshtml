@@ -1,5 +1,6 @@
-﻿@using PetitesPuces.Utilities
-@model PetitesPuces.Models.CatalogueViewModel
+﻿@using PetitesPuces.Models
+@using PetitesPuces.Utilities
+@model List<PetitesPuces.Models.Panier>
 
 @{
     ViewBag.Title = "Vos paniers";
@@ -7,7 +8,11 @@
     ViewBag.SousTotal = 323.45;
     ViewBag.FraisLivraison = 23.00;
 }
-
+@section scripts {
+    <link href="@Url.Content("/Content/Shared/Carousel.css")" rel="stylesheet" id="Carousel-css">
+    <link href="@Url.Content("/Content/Shared/Hover.css")" rel="stylesheet" id="Hover-css">
+    <script type="text/javascript" src="@Url.Content("/Scripts/Shared/Carousel.js")"></script>
+}
 <script>
     function plusQuantite(id) {
         $("#" + id).val(parseInt($("#" + id).val())+1);
@@ -17,21 +22,20 @@
             $("#" + id).val(parseInt($("#" + id).val())-1);
     }
 </script>
-<style>
-    .pagination>li>a, .pagination>li>span { border-radius: 50% !important;margin: 0 5px;}
-</style>
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1 class="display-3">@ViewBag.Message</h1>
-        <ul class="pagination">
-            <li class="disabled"><a href="#">«</a></li>
-            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">»</a></li>
-        </ul>
+        <h2>Mes paniers</h2>
+        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="5" id="CarouselPaniers" data-interval="1000">
+            <div class="MultiCarousel-inner">
+                @foreach(Panier p in Model)
+                {
+                    @Html.Partial("Client/_PaniersCarousel",p)
+                }
+
+            </div>
+            <button class="btn btn-primary leftLst"><</button>
+            <button class="btn btn-primary rightLst">></button>
+        </div>
     </div>
 </div>
 <div class="container">

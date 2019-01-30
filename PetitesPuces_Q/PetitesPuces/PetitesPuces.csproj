@@ -190,9 +190,11 @@
     <Compile Include="Models\Ext\PPVendeur.cs" />
     <Compile Include="Models\IUtilisateur.cs" />
     <Compile Include="Models\Panier.cs" />
+    <Compile Include="Models\Tri.cs" />
     <Compile Include="Models\Vendeur.cs" />
     <Compile Include="Securite\Securise.cs" />
     <Compile Include="Securite\SessionUtilisateur.cs" />
+    <Compile Include="ViewModels\Client\AccueilViewModel.cs" />
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\InactiviteViewModel.cs" />
@@ -269,6 +271,7 @@
     <Content Include="Views\Shared\Client\Commande\_Information.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
+    <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_Produits.cshtml" />
