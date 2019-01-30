@@ -4,6 +4,9 @@
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/PetitesPuces.dll
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/obj/Debug/PetitesPuces.dll
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/obj/Debug/PetitesPuces.dll.mdb
+/home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/EntityFramework.dll
+/home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/EntityFramework.SqlServer.dll
+/home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/System.Data.Linq.dll
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/Microsoft.Web.Infrastructure.dll
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/System.Web.Helpers.dll
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/System.Web.Mvc.dll
@@ -28,6 +31,3 @@
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/Microsoft.AI.WindowsServer.dll
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/Microsoft.AI.Web.dll
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
-/home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/System.Data.Linq.dll
-/home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/EntityFramework.dll
-/home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/EntityFramework.SqlServer.dll
