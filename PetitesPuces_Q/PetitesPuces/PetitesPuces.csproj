@@ -332,6 +332,7 @@
     <Content Include="Views\Gestionnaire\Redevances.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Redevance.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_DetailsVendeur.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_ConfirmationLivraison.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

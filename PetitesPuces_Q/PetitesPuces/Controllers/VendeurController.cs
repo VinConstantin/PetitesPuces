@@ -36,46 +36,11 @@ namespace PetitesPuces.Controllers
 
         public ActionResult GestionPaniers()
         {
-            List<Panier> viewModel = new List<Panier>
-                {
-                    new Panier
-                    {
-                        NomClient = "Antoinette",
-                        DateCreation = new DateTime(2018, 03, 26),
-                        NbItems = 7
-                    },
-                    new Panier
-                    {
-                        NomClient = "Vincent",
-                        DateCreation = new DateTime(2018, 08, 02),
-                        NbItems = 5
-                    },
-                    new Panier
-                    {
-                        NomClient = "Simon",
-                        DateCreation = new DateTime(2018, 10, 06),
-                        NbItems = 3
-                    },
-                    new Panier
-                    {
-                        NomClient = "Alain",
-                        DateCreation = new DateTime(2018, 11, 10),
-                        NbItems = 4
-                    },
-                    new Panier
-                    {
-                        NomClient = "Raph",
-                        DateCreation = new DateTime(2019, 01, 13),
-                        NbItems = 15
-                    },
-                    new Panier
-                    {
-                        NomClient = "Samuel",
-                        DateCreation = new DateTime(2019, 01, 16),
-                        NbItems = 9
-                    }
-                };
-            return View(viewModel);
+            int NoVendeur = 10;
+
+            List<Panier> paniers = getPaniersVendeurs(NoVendeur);
+
+            return View(paniers);
         }
 
         public ActionResult GestionCatalogue()
@@ -105,6 +70,11 @@ namespace PetitesPuces.Controllers
         public ActionResult Profil()
         {
             return View();
+        }
+
+        public void Livraison()
+        {
+
         }
 
         private List<PPCommande> getCommandesVendeurs(int NoVendeur)

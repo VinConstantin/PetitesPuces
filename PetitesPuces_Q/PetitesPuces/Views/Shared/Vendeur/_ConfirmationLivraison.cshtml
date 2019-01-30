@@ -1,7 +1,6 @@
-@model HtmlString
-
+﻿
 <!-- Modal confirmation -->
-<div class="modal fade" id="confirmationCommande" tabindex="-1" role="dialog" aria-labelledby="confirmationCommande" aria-hidden="true">
+<div class="modal fade" id="confirmationLivraison" tabindex="-1" role="dialog" aria-labelledby="confirmationLivraison" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,11 +10,11 @@
                 <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
             </div>
             <div class="modal-body">
-                @Model
+                <p>Êtes-vous sûrs de vouloir livrer cette commande?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button type="button" onclick="location.href = '@Url.Action("Commande", "Client",new RouteValueDictionary(new { Etape= "Information" }))'" class="btn btn-primary">Confirmer</button>
+                <button type="button" onclick="" class="btn btn-primary">Confirmer</button>
             </div>
         </div>
     </div>
