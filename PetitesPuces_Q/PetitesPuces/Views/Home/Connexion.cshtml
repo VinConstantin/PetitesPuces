@@ -1,4 +1,4 @@
-﻿@model PetitesPuces.Models.IPersonne
+﻿@model PetitesPuces.Models.IUtilisateur
 @{
     ViewBag.Title = "Connexion";
 
@@ -49,8 +49,8 @@
 
                                     </div>
                                     <div class="form-group center-block text-center">
-                                        @Html.EditorFor(model => model.motDePasse, new { id = "motDePasse", @name = "motDePasse", htmlAttributes = new { @PlaceHolder = "Mot de passe", @class = "form-control center-block" } })
-                                        @Html.ValidationMessageFor(model => model.motDePasse, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.MotDePasse, new { id = "motDePasse", @name = "motDePasse", htmlAttributes = new { @PlaceHolder = "Mot de passe", @class = "form-control center-block" } })
+                                        @Html.ValidationMessageFor(model => model.MotDePasse, "", new { @class = "text-danger" })
 
                                     </div>
                                    

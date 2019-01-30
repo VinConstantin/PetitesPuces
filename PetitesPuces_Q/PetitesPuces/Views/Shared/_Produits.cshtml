@@ -1,16 +1,16 @@
 ﻿@using System.Globalization
 @using PetitesPuces.Utilities
-@model PetitesPuces.Models.Product
+@model PetitesPuces.Models.PPProduit
 
 <div class="col-xs-12 col-sm-4 col-md-3"> 
     <div class="panel panel-primary">
-        <div class="panel-footer">@Model.Name</div>
+        <div class="panel-footer">@Model.Nom</div>
         <div class="panel-body">
             <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width: 100%" alt="Image">
             <div class="h3">
-                @Formatter.Money(@Model.Price)
+                @Formatter.Money(@Model.PrixVente)
             </div>
-            <button class="btn btn-outline-primary" onclick="ajouterAuPanier(@Model.Id)">Ajouter au panier</button>
+            <button class="btn btn-outline-primary" onclick="ajouterAuPanier(@Model.NoProduit)">Ajouter au panier</button>
 
             <script>
                 function ajouterAuPanier(idProduit) {
@@ -31,6 +31,6 @@
                 }
             </script>
         </div>
-        <div class="panel-footer">@Model.Id</div>
+        <div class="panel-footer">@Model.NoProduit</div>
     </div>
 </div>

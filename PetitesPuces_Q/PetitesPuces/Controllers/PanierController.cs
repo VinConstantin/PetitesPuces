@@ -10,6 +10,7 @@ namespace PetitesPuces.Controllers
 {
     public class PanierController : ApiController
     {
+        [HttpPost]
         public IHttpActionResult Post(int idProduit)
         {
             return Ok();
