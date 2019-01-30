@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Http;
+using System.Web.Mvc;
 using System.Web.Http.Controllers;
 
 namespace PetitesPuces.Securite
@@ -22,7 +22,7 @@ namespace PetitesPuces.Securite
             this.rolesAutorises = rolesAutorises;
         }
 
-        protected override bool IsAuthorized(HttpActionContext actionContext)
+        protected override bool AuthorizeCore(HttpContextBase actionContext)
         {
             var user = SessionUtilisateur.UtilisateurCourant;
 

@@ -13,7 +13,7 @@ namespace PetitesPuces.ViewModels.Gestionnaire
         public Dictionary<TimeSpan, int> ClientsActifs { get; set; }
         public Dictionary<TimeSpan, int> ClientsPotentiels { get; set; }
         public Dictionary<TimeSpan, int> ClientsVisiteurs { get; set; }
-        public Dictionary<Client, int> NombreConnexionClients { get; set; }
-        public List<Client> DernieresConnexions { get; set; }
+        public Dictionary<PPClient, int> NombreConnexionClients { get; set; }
+        public List<PPClient> DernieresConnexions { get; set; }
     }
 }

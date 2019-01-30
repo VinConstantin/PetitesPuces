@@ -26,6 +26,8 @@ namespace PetitesPuces.Models
         [DisplayName("Date de la demande")]
         public DateTime? DateCreation { get; set; }
 
+        public DateTime DateDerniereActivite { get; }
+
         public DateTime DateMAJ { get; }
 
         public string Rue { get; }

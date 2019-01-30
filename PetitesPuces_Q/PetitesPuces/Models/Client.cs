@@ -31,6 +31,7 @@ namespace PetitesPuces.Models
         public string CodePostal { get; }
         public string Pays { get; }
         public DateTime? DateCreation { get; }
+        public DateTime DateDerniereActivite { get; }
         public DateTime DateMAJ { get; }
 
         public string Role
