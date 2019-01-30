@@ -21,7 +21,6 @@ namespace PetitesPuces.Models
         [ValidationCourriel]
         [DisplayName("Adresse courriel")]
         public string AdresseEmail { get; set; }
-        public string MotDePasse { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer encore votre adresse courriel!")]
         [DisplayName("Confirmation courriel")]
@@ -45,7 +44,7 @@ namespace PetitesPuces.Models
 
         [Required(ErrorMessage = "Veuillez rentrer votre mot de passe!")]
         [DisplayName("Mot de passe")]
-        public string motDePasse { get; }
+        public string MotDePasse { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer encore une fois votre mot de passe!")]
         [DisplayName("confirmation mot de passe")]
