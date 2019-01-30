@@ -23,5 +23,12 @@ namespace PetitesPuces.Models
 
         string Rue { get; }
         DateTime? DateCreation { get; }
+        DateTime DateDerniereActivite { get; }
+    }
+    
+    public enum StatutCompte : short
+    {
+        INACTIF = 0,
+        ACTIF = 1,
     }
 }

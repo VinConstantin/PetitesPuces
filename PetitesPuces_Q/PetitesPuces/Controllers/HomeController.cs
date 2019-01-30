@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using System;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web;
@@ -64,14 +64,14 @@ namespace PetitesPuces.Controllers
         {
 
             var unClientExist = from unClient in context.PPClients
-                                where unClient.AdresseEmail == formCollection["adresseEmail"] &&
-                                      unClient.MotDePasse == formCollection["motDePasse"]
-                                select unClient;
+                where unClient.AdresseEmail == formCollection["adresseEmail"] &&
+                      unClient.MotDePasse == formCollection["motDePasse"]
+                select unClient;
 
             var unVendeurExist = from unVendeur in context.PPVendeurs
-                                 where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
-                                       unVendeur.MotDePasse == formCollection["motDePasse"]
-                                 select unVendeur;
+                where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
+                      unVendeur.MotDePasse == formCollection["motDePasse"]
+                select unVendeur;
 
             if (unClientExist.Count() != 0)
             {
@@ -108,6 +108,9 @@ namespace PetitesPuces.Controllers
         public ActionResult InscriptionClient()
         {
 
+
+            return View();
+        }
 
             return View();
         }

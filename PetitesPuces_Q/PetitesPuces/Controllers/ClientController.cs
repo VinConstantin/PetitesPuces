@@ -18,6 +18,7 @@ namespace PetitesPuces.Controllers
 
         public ActionResult Index()
         {
+            //TODO:implémenter pour utiliser le bon no
             int noClient = 10100;
             List<Panier> lstPaniers = GetPaniersClient(noClient);
             
@@ -193,6 +194,7 @@ namespace PetitesPuces.Controllers
             //TODO: implément pour utiliser le bon noClient
             int noClient = 10100;
             List<Panier> lstPaniers = GetPaniersClient(noClient);
+            //List<Panier> lstPaniers = new List<Panier>();
             return View(lstPaniers);
         }
         private List<Panier> GetPaniersClient(int NoClient)
@@ -214,7 +216,7 @@ namespace PetitesPuces.Controllers
                     Client = pan.FirstOrDefault().PPClient,
                     Vendeur = pan.FirstOrDefault().PPVendeur,
                     DateCreation = (DateTime)pan.FirstOrDefault().DateCreation,
-                    Produits = new List<PPProduit>()
+                    Articles = pan.ToList()
                 };
                 lstPaniers.Add(panier);
             }
@@ -226,6 +228,33 @@ namespace PetitesPuces.Controllers
             ViewBag.Etape = Etape;
             
             return View();
+        }
+
+        public ActionResult Information(int NoClient)
+        {
+            PPClient client = (from cli in context.PPClients
+                where cli.NoClient == NoClient
+                select cli).FirstOrDefault();
+            return PartialView("Client/Commande/_Information", client);
+        }
+        public ActionResult Livraison()
+        {
+            return PartialView("Client/Commande/_Livraison");
+        }
+        public ActionResult Paiement()
+        {
+            return PartialView("Client/Commande/_Paiement");
+        }
+        public ActionResult Confirmation()
+        {
+            Panier panier = new Panier
+            {
+                Vendeur = (from p in context.PPVendeurs select p).FirstOrDefault(),
+                Client = (from p in context.PPClients select p).FirstOrDefault(),
+                DateCreation = DateTime.Now,
+                Articles = (from p in context.PPArticlesEnPaniers select p).Take(4).ToList()
+            };
+            return PartialView("Client/Commande/_Confirmation",panier);
         }
 
         public ActionResult Profil()
