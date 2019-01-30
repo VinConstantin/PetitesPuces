@@ -8,7 +8,7 @@ using PetitesPuces.Validations;
 
 namespace PetitesPuces.Models
 {
-    public class Vendeur: IPersonne
+    public class Vendeur: IUtilisateur
     {
         [DisplayName("No Vendeur")]
         public int NoVendeur { get; set; }
@@ -21,6 +21,7 @@ namespace PetitesPuces.Models
         [ValidationCourriel]
         [DisplayName("Adresse courriel")]
         public string AdresseEmail { get; set; }
+        public string MotDePasse { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer encore votre adresse courriel!")]
         [DisplayName("Confirmation courriel")]
@@ -36,7 +37,7 @@ namespace PetitesPuces.Models
 
 
         [DisplayName("Date de la demande")]
-        public DateTime DateCreation { get; set; }
+        public DateTime? DateCreation { get; set; }
 
         public DateTime DateMAJ { get; }
 

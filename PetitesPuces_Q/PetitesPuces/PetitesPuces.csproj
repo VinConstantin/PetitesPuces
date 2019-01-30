@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -179,10 +185,16 @@
     <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Commande.cs" />
-    <Compile Include="Models\IPersonne.cs" />
+    <Compile Include="Models\Ext\PPClient.cs" />
+    <Compile Include="Models\Ext\PPVendeur.cs" />
+    <Compile Include="Models\IUtilisateur.cs" />
     <Compile Include="Models\Panier.cs" />
+    <Compile Include="Models\Tri.cs" />
     <Compile Include="Models\Vendeur.cs" />
     <Compile Include="Validations\ValidationCourriel.cs" />
+    <Compile Include="Securite\Securise.cs" />
+    <Compile Include="Securite\SessionUtilisateur.cs" />
+    <Compile Include="ViewModels\Client\AccueilViewModel.cs" />
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\InactiviteViewModel.cs" />
@@ -192,8 +204,8 @@
     <Compile Include="ViewModels\Gestionnaire\Redevance.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
     <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />
-    <Compile Include="ViewModels\VMVendeur\AccueilVendeurViewModel.cs" />
-    <Compile Include="ViewModels\VMVendeur\CommandesViewModel.cs" />
+    <Compile Include="ViewModels\Vendeur\AccueilVendeurViewModel.cs" />
+    <Compile Include="ViewModels\Vendeur\CommandesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -262,6 +274,7 @@
     <Content Include="Views\Shared\Client\Commande\_Information.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
+    <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_Produits.cshtml" />
@@ -277,7 +290,7 @@
     <Content Include="Views\Shared\Home\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\_ModalConfirmation.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
-    <Content Include="Views\Vendeur\index.cshtml" />
+    <Content Include="Views\Vendeur\Index.cshtml" />
     <Content Include="Views\Vendeur\Profil.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -343,7 +356,9 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>

@@ -1,16 +1,22 @@
 ﻿body {
 }
-table tbody, table thead {
-    display: block;
+
+.rowHead {
+    width: 130px;
+    text-align: left;
 }
 
-table tbody {
-    overflow: auto;
+.tableau {
+    overflow-y: auto;
     max-height: 190px;
 }
 
 th {
     width: 145px;
+}
+
+tr, th{
+    text-align:right;
 }
 
 td {

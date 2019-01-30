@@ -35,7 +35,7 @@ namespace PetitesPuces.Controllers
         {
             PPVendeur vendeur;
             int NoVendeur;
-            if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
+            if (string.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
             {
                 var requete = (from unVendeur in context.PPVendeurs select unVendeur);
                 vendeur = requete.FirstOrDefault();
@@ -50,6 +50,7 @@ namespace PetitesPuces.Controllers
 
             return View("Home/_ListeProduits", vendeur.PPProduits.ToList());
         }
+
         [HttpGet]
         public ActionResult Connexion()
         {
@@ -58,7 +59,6 @@ namespace PetitesPuces.Controllers
 
 
         [HttpPost]
-
         public ActionResult Connexion(FormCollection formCollection)
         {
 
@@ -72,36 +72,28 @@ namespace PetitesPuces.Controllers
                                        unVendeur.MotDePasse == formCollection["motDePasse"]
                                  select unVendeur;
 
-
-
-
             if (unClientExist.Count() != 0)
             {
+                HttpContext.Session["userId"] = unClientExist.First().NoClient;
                 TempData["connexion"] = true;
                 return RedirectToAction("Index", "Client");
             }
             else if (unVendeurExist.Count() != 0)
             {
-
+                HttpContext.Session["userId"] = unVendeurExist.First().NoVendeur;
                 TempData["connexion"] = true;
                 return RedirectToAction("Index", "Vendeur");
             }
             else
             {
-                ModelState.AddModelError("motDePasse","Votre mot de passe ou adresse courriel est incorrect.");
+                ModelState.AddModelError("motDePasse", "Votre mot de passe ou adresse courriel est incorrect.");
             }
-
-
-            return View();
-
-        }
-
-        [HttpGet]
-        public ActionResult InscriptionClient()
-        {
-
-            return View();
-        }
+            foreach (var key in formCollection.AllKeys)
+                {
+                    Response.Write("key: " + key + " ");
+                    Response.Write(formCollection[key]);
+                    Response.Write("<br/> ");
+                }
 
         [HttpPost]
         public ActionResult InscriptionClient(FormCollection formCollection)

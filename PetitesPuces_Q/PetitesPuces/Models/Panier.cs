@@ -16,5 +16,12 @@ namespace PetitesPuces.Models
 
         [DisplayName("Nombre d'items")]
         public int NbItems { get; set; }
+
+        [DisplayName("Coût total")]
+        public double CoutTotal { get; set; }
+        
+        public PPClient Client { get; set; }
+        public PPVendeur Vendeur { get; set; }
+        public List<PPProduit> Produits { get; set; }
     }
 }

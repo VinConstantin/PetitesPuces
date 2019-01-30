@@ -1,4 +1,5 @@
-﻿@using PetitesPuces.Utilities
+﻿@using PetitesPuces.Models
+@model PetitesPuces.Models.AccueilViewModel
 @{
     ViewBag.Title = "Accueil";
 }
@@ -9,31 +10,16 @@
 }
 <br/>
 <br/>
-<div class="container" on>
+<div class="container">
     @Html.Partial("_CarouselPublicitaire")
     <div class="row">
-        <h2>Produits en vedette</h2>
-        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="5" id="CarouselProduits" data-interval="1000">
-            <div class="MultiCarousel-inner">
-                @for (var i = 0; i <= 25; i++)
-                {
-                    @Html.Partial("Client/_ProduitsCarousel", i)
-                }
-
-            </div>
-            <button class="btn btn-primary leftLst"><</button>
-            <button class="btn btn-primary rightLst">></button>
-        </div>
-
-        <br/>
-        <hr/>
 
         <h2>Vos paniers</h2>
         <div class="MultiCarousel" data-items="1,3,5,6" data-slide="5" id="CarouselPaniers" data-interval="1000">
             <div class="MultiCarousel-inner">
-                @for (var i = 0; i <= 25; i++)
+                @foreach(Panier pan in @Model.Paniers)
                 {
-                    @Html.Partial("Client/_PaniersCarousel", i)
+                    @Html.Partial("Client/_PaniersCarousel", pan)
                 }
 
             </div>

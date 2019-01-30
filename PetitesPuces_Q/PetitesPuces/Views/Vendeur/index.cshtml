@@ -1,4 +1,4 @@
-﻿@model PetitesPuces.ViewModels.VMVendeur.AccueilVendeurViewModel
+﻿@model PetitesPuces.ViewModels.Vendeur.AccueilVendeurViewModel
 @{
     ViewBag.Title = "Page d'accueil";
     ViewBag.Page = "Index";
@@ -18,14 +18,19 @@
 <h3 class="text-center col-xs-12">Commandes non traitées</h3>
 
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    <table class="table mt-2" style="max-height: 10vh;">
-        <thead>
+    @if (Model.Commandes.Count == 0)
+    {
+        <h4 class="text-center col-xs-12">Aucune commande à traiter</h4>
+    }
+    else
+    {
+        <table class="table m-0">
             <tr>
-                <th>
+                <th class="rowHead">
                     @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().NoCommande)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().NomClient)
+                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().PPClient.Nom)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().DateCommande)
@@ -34,54 +39,41 @@
                     @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().CoutLivraison)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().Type)
+                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().TypeLivraison)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().PoidsTotal)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().TotalAvantTaxes)
+                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().MontantTotAvantTaxes)
                 </th>
                 <th>
 
                 </th>
             </tr>
-        </thead>
-
-        <tbody>
-            @foreach (var commande in Model.Commandes)
-            {
-                if (commande.Statut == 'P')
+        </table>
+        <div class="tableau">
+            <table class="table text-right">
+                @foreach (var commande in Model.Commandes)
                 {
-                    @Html.Partial("Vendeur/_Commande", commande)
-                }
+                    if (commande.Statut == 'T')
+                    {@Html.Partial("Vendeur/_Commande", commande)}
             }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td class="text-left">
-                    <button class="btn btn-outline-primary" onclick="location.href='@Url.Action(" GestionCommandes", "Vendeur" )'">Gérer les commandes</button>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tfoot>
-    </table>
+            </table>
+        </div>
+    }
+    <div class="text-left mt-2">
+        <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("GestionCommandes", "Vendeur" )'">Gérer les commandes</button>
+    </div>
 </div>
 
 <br />
-
 <h3 class="text-center col-xs-12">Paniers</h3>
 
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    <table class="table lst-vendeurs mt-2">
+    <table class="table m-0">
         <tr>
-            <th>
+            <th class="rowHead">
                 @Html.DisplayNameFor(model => model.Paniers.FirstOrDefault().NomClient)
             </th>
             <th>
@@ -91,20 +83,19 @@
                 @Html.DisplayNameFor(model => model.Paniers.FirstOrDefault().NbItems)
             </th>
             <th>
-
+                @Html.DisplayNameFor(model => model.Paniers.FirstOrDefault().CoutTotal)
             </th>
         </tr>
-        @foreach (var panier in Model.Paniers)
-        {
-            @Html.Partial("Vendeur/_Panier", panier)
-        }
-        <tr>
-            <td class="text-left">
-                <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("GestionPaniers", "Vendeur" )'">Gérer les paniers</button>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
     </table>
+    <div class="tableau">
+        <table class="table text-right">
+            @foreach (var panier in Model.Paniers)
+            {
+                @Html.Partial("Vendeur/_Panier", panier)
+            }
+        </table>
+    </div>
+    <div class="text-left mt-2">
+        <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("GestionPaniers", "Vendeur" )'">Gérer les paniers</button>
+    </div>
 </div>
