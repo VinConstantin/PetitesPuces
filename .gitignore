@@ -364,5 +364,5 @@ Desktop.ini
 .DS_Store
 
 #Other stuff
-**/bin/*
-**/packages/*
+PetitesPuces_Q/PetitesPuces/bin/*
+PetitesPuces_Q/packages/*
