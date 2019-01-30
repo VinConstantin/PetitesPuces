@@ -200,6 +200,7 @@
         }
         history.pushState(objParams, "", PARAMS);
     }
+    //remplir le div template pour le modal de visualiser un produit
     function visualiser(noProduit) {
         $.ajax({
             url: URLPATH+"/Client/InformationProduit",
@@ -213,21 +214,35 @@
             error: function (req, status, err) {
                 $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
             }
-        });     
+        });
     }
-    function ajouterAuPanier(noProduit) {
+    //ajouter un item au produit
+    function ajouterAuPanier(noProduit, quantite = 1) {
+        /*
         $.ajax({
-            url: URLPATH+"/Client/AjouterProduitAuPanier",
+            url: URLPATH + "/Client/AjouterProduitAuPanier",
             type: "post",
-            data: { 
-                "NoProduit": noProduit
+            data: {
+                "NoProduit": noProduit,
+                "Quantite": quantite
             },
-            success: function (result) {
+            success: function(result) {
                 console.log(result)
             },
-            error: function (req, status, err) {
-                console.log(req,status,err)
+            error: function(req, status, err) {
+                console.log(req, status, err)
             }
-        });     
+        });
+        */
+        console.log(quantite)
+    }
+    //augmeneter la quantite
+    function plusQuantite(id) {
+        $("#" + id).val(parseInt($("#" + id).val()) + 1);
+    }
+    //diminuer la quantite
+    function moinsQuantite(id) {
+        if ($("#" + id).val() >= 1)
+            $("#" + id).val(parseInt($("#" + id).val()) - 1);
     }
 </script>

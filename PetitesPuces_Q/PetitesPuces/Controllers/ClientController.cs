@@ -143,7 +143,7 @@ namespace PetitesPuces.Controllers
 
         }
         [HttpPost]
-        public HttpStatusCode AjouterProduitAuPanier(int NoProduit)
+        public HttpStatusCode AjouterProduitAuPanier(int NoProduit, short Quantite)
         {
             //TODO: implément pour utiliser le bon noClient
             int noClient = 10100;
@@ -157,7 +157,7 @@ namespace PetitesPuces.Controllers
 
             int noVendeur = (int) requeteProduit.First().NoVendeur;
             DateTime dateCreation = DateTime.Now;
-            short nbItems = 1;
+            short nbItems = Quantite;
             
             long noPanier = (from unPanier in context.PPArticlesEnPaniers
                 select unPanier.NoPanier).Max() + 1;
