@@ -270,6 +270,7 @@
     <Content Include="Views\Shared\Client\Commande\_Information.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
+    <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_Produits.cshtml" />

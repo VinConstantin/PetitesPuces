@@ -13,7 +13,7 @@
             <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit)">
                 <span class="glyphicon glyphicon-shopping-cart"></span>
             </button>
-            <button class="btn btn-link btn-lg" title="Visualiser le produit" onclick="ajouterAuPanier(@Model.NoProduit)">
+            <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Visualiser le produit" onclick="visualiser(@Model.NoProduit)">
                 <span class="glyphicon glyphicon-eye-open"></span>
             </button>
         </div>

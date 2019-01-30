@@ -29,3 +29,5 @@
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/Microsoft.AI.Web.dll
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 /home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/System.Data.Linq.dll
+/home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/EntityFramework.dll
+/home/vincent/Documents/Projets/PetitesPuces/PetitesPuces_Q/PetitesPuces/bin/EntityFramework.SqlServer.dll

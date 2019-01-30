@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using PetitesPuces.Models;
 using PetitesPuces.ViewModels.Vendeur;
 
@@ -130,19 +132,71 @@ namespace PetitesPuces.Controllers
             ViewBag.Filtre = Filtre;
             return PartialView("Client/_Catalogue",viewModel);
         }
+
+        public ActionResult InformationProduit(int NoProduit)
+        {
+            PPProduit produit = (from unProduit in context.PPProduits
+                where unProduit.NoProduit == NoProduit
+                select unProduit).FirstOrDefault();
+
+            return PartialView("Client/ModalProduit", produit);
+
+        }
+        [HttpPost]
+        public HttpStatusCode AjouterProduitAuPanier(int NoProduit)
+        {
+            //TODO: implément pour utiliser le bon noClient
+            int noClient = 10100;
+                
+            var requeteProduit = (from unProduit in context.PPProduits
+                where unProduit.NoProduit == NoProduit
+                select unProduit);
+
+            if (!requeteProduit.Any())
+                return HttpStatusCode.Gone;
+
+            int noVendeur = (int) requeteProduit.First().NoVendeur;
+            DateTime dateCreation = DateTime.Now;
+            short nbItems = 1;
+            
+            long noPanier = (from unPanier in context.PPArticlesEnPaniers
+                select unPanier.NoPanier).Max() + 1;
+
+            PPArticlesEnPanier article = new PPArticlesEnPanier
+            {
+                NoPanier = noPanier,
+                NoClient = noClient,
+                NoVendeur = noVendeur,
+                DateCreation = dateCreation,
+                NbItems = nbItems,
+                NoProduit = NoProduit
+            };        
+            context.PPArticlesEnPaniers.InsertOnSubmit(article);            
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                return HttpStatusCode.InternalServerError;
+            }         
+            return HttpStatusCode.OK;
+        }
         public ActionResult MonPanier(string No)
         {
-            ViewBag.Message = "Votre panier No. "+No;
-            
-            return View();
+            //TODO: implément pour utiliser le bon noClient
+            int noClient = 10100;
+            List<Panier> lstPaniers = GetPaniersClient(noClient);
+            return View(lstPaniers);
         }
-        private List<Panier> getPaniersClient(int NoClient)
+        private List<Panier> GetPaniersClient(int NoClient)
         {
-            var paniers = (from articles in context.PPArticlesEnPaniers
+            var query = from articles in context.PPArticlesEnPaniers
                 where articles.NoClient == NoClient
                 orderby articles.DateCreation ascending
-                group articles by articles.NoVendeur into g
-                select g).ToList();
+                select articles;
+
+            var paniers = query.GroupBy(p => p.NoVendeur);
 
             List<Panier> lstPaniers = new List<Panier>();
 
@@ -150,10 +204,10 @@ namespace PetitesPuces.Controllers
             {
                 Panier panier = new Panier
                 {
-                    Client = pan.FirstOrDefault()?.PPClient,
-                    Vendeur = pan.FirstOrDefault()?.PPVendeur,
+                    Client = pan.FirstOrDefault().PPClient,
+                    Vendeur = pan.FirstOrDefault().PPVendeur,
                     DateCreation = (DateTime)pan.FirstOrDefault().DateCreation,
-                    Produits = pan.Select(p => p.PPProduit).ToList()
+                    Produits = new List<PPProduit>()
                 };
                 lstPaniers.Add(panier);
             }

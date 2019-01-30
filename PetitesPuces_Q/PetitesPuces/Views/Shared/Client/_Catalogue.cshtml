@@ -200,4 +200,34 @@
         }
         history.pushState(objParams, "", PARAMS);
     }
+    function visualiser(noProduit) {
+        $.ajax({
+            url: URLPATH+"/Client/InformationProduit",
+            type: "get",
+            data: { 
+                "NoProduit": noProduit
+            },
+            success: function (result) {
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });     
+    }
+    function ajouterAuPanier(noProduit) {
+        $.ajax({
+            url: URLPATH+"/Client/AjouterProduitAuPanier",
+            type: "post",
+            data: { 
+                "NoProduit": noProduit
+            },
+            success: function (result) {
+                console.log(result)
+            },
+            error: function (req, status, err) {
+                console.log(req,status,err)
+            }
+        });     
+    }
 </script>
