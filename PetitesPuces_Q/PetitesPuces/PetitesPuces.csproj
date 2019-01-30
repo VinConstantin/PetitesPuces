@@ -343,6 +343,7 @@
     <Content Include="Views\Shared\Connexion\_LayoutConnexion.cshtml" />
     <Content Include="Views\Home\InscriptionClient.cshtml" />
     <Content Include="Views\Home\InscriptionVendeur.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_ConfirmationLivraison.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
