@@ -22,127 +22,8 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-9">
-            @if (@ViewBag.Etape == "Information")
-            {
-                <form>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputEmail4">Courriel</label>
-                            <input type="text" class="form-control" id="inputEmail4" placeholder="Courriel">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputPassword4">Téléphone 1</label>
-                            <input type="text" class="form-control" id="inputPassword4" placeholder="Telephone">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputEmail4">Adresse</label>
-                            <input type="text" class="form-control" id="inputEmail4" placeholder="Adresse">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputPassword4">Téléphone 2</label>
-                            <input type="text" class="form-control" id="inputPassword4" placeholder="Telephone">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputCity">Ville</label>
-                            <input type="text" class="form-control" id="inputCity">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputState">Province</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choose...</option>
-                                <option>...</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="inputZip">Code Postal</label>
-                            <input type="text" class="form-control" id="inputZip">
-                        </div>
+        <div class="col-md-9" id="PLACEHOLDER">
 
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12"><hr/></div>
-                        <div class="col-md-4 col-lg-offset-5">
-                            <button type="button" class="btn btn-danger"onclick="location.href = '@Url.Action("Catalogue", "Client")'">Retour</button>
-                            <button type="button" class="btn btn-primary" onclick="location.href = '@Url.Action("Commande", "Client", new RouteValueDictionary(new {Etape = "Livraison"}))'">Continuer</button>
-                        </div>
-                    </div>
-                </form>
-            }
-            else if (@ViewBag.Etape == "Livraison")
-            {
-                <form>
-                    <div class="form-row">
-                        <div class="col-md-6 col-md-offset-3">
-                            <div class="radio">
-                                <label><input type="radio" name="optradio" checked>Poste régulière</label>
-                            </div>
-                            <div class="radio">
-                                <label><input type="radio" name="optradio">Poste prioritaire</label>
-                            </div>
-                            <div class="radio">
-                                <label><input type="radio" name="optradio">Compagnie de livraison</label>
-                            </div>
-                            <hr/>
-                            <div>
-                                <h4>Frais de livraison : @Formatter.Money(23.00)</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12"><hr/></div>
-                        <div class="col-md-4 col-lg-offset-5">
-                            <button type="button" class="btn btn-danger"onclick="location.href = '@Url.Action("Commande", "Client", new RouteValueDictionary(new {Etape = "Information"}))'">Retour</button>
-                            <button type="button" class="btn btn-primary" onclick="location.href = '@Url.Action("Commande", "Client", new RouteValueDictionary(new {Etape = "Paiement"}))'">Continuer</button>
-                        </div>
-                    </div>
-                </form>
-            }
-            else if (@ViewBag.Etape == "Paiement")
-            {
-                <form>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputEmail4">Nom sur la carte </label>
-                            <input type="text" class="form-control" id="inputEmail4" placeholder="Nom">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputPassword4">No de carte</label>
-                            <input type="text" class="form-control" id="inputPassword4" placeholder="XXXX XXXX XXXX XXXX">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputEmail4">Expiration</label>
-                            <input type="text" class="form-control" id="inputEmail4" placeholder="MM/AA">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputPassword4">CVV</label>
-                            <input type="text" class="form-control" id="inputPassword4" placeholder="XXX">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12"><hr/></div>
-                        <div class="col-md-4 col-lg-offset-5">
-                            <button type="button" class="btn btn-danger"onclick="location.href = '@Url.Action("Commande", "Client", new RouteValueDictionary(new {Etape = "Livraison"}))'">Retour</button>
-                            <button type="button" class="btn btn-primary" onclick="location.href = '@Url.Action("Commande", "Client", new RouteValueDictionary(new {Etape = "Confirmation"}))'">Continuer</button>
-                        </div>
-                    </div>
-                </form>
-            }
-            else if (@ViewBag.Etape == "Confirmation")
-            {
-                <div class="row">
-                    <div class="col-md-4 col-lg-offset-5">
-                        <button type="button" class="btn btn-danger"onclick="location.href = '@Url.Action("Commande", "Client", new RouteValueDictionary(new {Etape = "Paiement"}))'">Retour</button>
-                        <button type="button" class="btn btn-primary">Confirmer</button>
-                    </div>
-                </div>
-            }
         </div>
         <br/>
         <div class="col-md-3">
@@ -187,7 +68,20 @@
 
 <script>
     window.onload = function() {
-        
         $('#@ViewBag.Etape').addClass('active');
+        $.ajax({
+            url: URLPATH + "/Client/@ViewBag.Etape",
+            type: "get",
+            data: {
+            },
+            success: function(result) {
+                $('#PLACEHOLDER').html(result);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+        var PARAMS = "?Etape="+"@ViewBag.Etape";
+        history.pushState(null, "", PARAMS);
     };
 </script>
