@@ -194,6 +194,7 @@
     <Compile Include="Models\Vendeur.cs" />
     <Compile Include="Securite\Securise.cs" />
     <Compile Include="Securite\SessionUtilisateur.cs" />
+    <Compile Include="ViewModels\Client\AccueilViewModel.cs" />
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\InactiviteViewModel.cs" />

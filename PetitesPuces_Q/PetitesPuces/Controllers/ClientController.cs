@@ -18,8 +18,14 @@ namespace PetitesPuces.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Utilisateur = "Client";
-            return View();
+            int noClient = 10100;
+            List<Panier> lstPaniers = GetPaniersClient(noClient);
+            
+            AccueilViewModel viewModel = new AccueilViewModel
+            {
+                Paniers = new List<Panier>()
+            };
+            return View(viewModel);
         }
 
         private CatalogueViewModel GetCatalogueViewModel(ref IEnumerable<PPProduit> listeProduits, 
@@ -194,9 +200,10 @@ namespace PetitesPuces.Controllers
             var query = from articles in context.PPArticlesEnPaniers
                 where articles.NoClient == NoClient
                 orderby articles.DateCreation ascending
-                select articles;
+                group articles by articles.NoVendeur into g
+                select g;
 
-            var paniers = query.GroupBy(p => p.NoVendeur);
+            var paniers = query.ToList();
 
             List<Panier> lstPaniers = new List<Panier>();
 
