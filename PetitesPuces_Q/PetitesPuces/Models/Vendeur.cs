@@ -39,6 +39,8 @@ namespace PetitesPuces.Models
         [DisplayName("Date de la demande")]
         public DateTime? DateCreation { get; set; }
 
+        public DateTime DateDerniereActivite { get; }
+
         public DateTime DateMAJ { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer votre mot de passe!")]

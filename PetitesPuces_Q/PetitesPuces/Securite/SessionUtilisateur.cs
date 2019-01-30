@@ -17,9 +17,11 @@ namespace PetitesPuces.Securite
             {
                 if (_utilisateurCourant != null) return _utilisateurCourant;
 
-                var userId = (long)HttpContext.Current.Session["userId"];
+                var userId = (long?)HttpContext.Current.Session["userId"];
 
-                IUtilisateur infosUtil = GetAllUsersWithId(userId)
+                if (!userId.HasValue) return null;
+
+                IUtilisateur infosUtil = GetAllUsersWithId(userId.Value)
                                             .FirstOrDefault();
 
                 _utilisateurCourant = infosUtil;
