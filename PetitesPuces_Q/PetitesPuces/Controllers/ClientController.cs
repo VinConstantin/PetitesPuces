@@ -136,6 +136,29 @@ namespace PetitesPuces.Controllers
             
             return View();
         }
+        private List<Panier> getPaniersClient(int NoClient)
+        {
+            var paniers = (from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NoClient
+                orderby articles.DateCreation ascending
+                group articles by articles.NoVendeur into g
+                select g).ToList();
+
+            List<Panier> lstPaniers = new List<Panier>();
+
+            foreach (var pan in paniers)
+            {
+                Panier panier = new Panier
+                {
+                    Client = pan.FirstOrDefault()?.PPClient,
+                    DateCreation = (DateTime)pan.FirstOrDefault().DateCreation,
+                    Produits = pan.Select(p => p.PPProduit).ToList()
+                };
+                lstPaniers.Add(panier);
+            }
+
+            return lstPaniers;
+        }
         public ActionResult Commande(string Etape)
         {
             ViewBag.Etape = Etape;
