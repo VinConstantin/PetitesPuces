@@ -63,14 +63,14 @@ namespace PetitesPuces.Controllers
         {
 
             var unClientExist = from unClient in context.PPClients
-                                where unClient.AdresseEmail == formCollection["adresseEmail"] &&
-                                      unClient.MotDePasse == formCollection["motDePasse"]
-                                select unClient;
+                where unClient.AdresseEmail == formCollection["adresseEmail"] &&
+                      unClient.MotDePasse == formCollection["motDePasse"]
+                select unClient;
 
             var unVendeurExist = from unVendeur in context.PPVendeurs
-                                 where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
-                                       unVendeur.MotDePasse == formCollection["motDePasse"]
-                                 select unVendeur;
+                where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
+                      unVendeur.MotDePasse == formCollection["motDePasse"]
+                select unVendeur;
 
             if (unClientExist.Count() != 0)
             {
@@ -88,12 +88,16 @@ namespace PetitesPuces.Controllers
             {
                 ModelState.AddModelError("motDePasse", "Votre mot de passe ou adresse courriel est incorrect.");
             }
+
             foreach (var key in formCollection.AllKeys)
-                {
-                    Response.Write("key: " + key + " ");
-                    Response.Write(formCollection[key]);
-                    Response.Write("<br/> ");
-                }
+            {
+                Response.Write("key: " + key + " ");
+                Response.Write(formCollection[key]);
+                Response.Write("<br/> ");
+            }
+
+            return View();
+        }
 
         [HttpPost]
         public ActionResult InscriptionClient(FormCollection formCollection)
