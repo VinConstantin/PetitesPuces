@@ -8,30 +8,34 @@ using PetitesPuces.Validations;
 
 namespace PetitesPuces.Models
 {
-    public class Vendeur: IUtilisateur
+    public class Vendeur : IUtilisateur
     {
         [DisplayName("No Vendeur")]
         public int NoVendeur { get; set; }
 
-        [Required (ErrorMessage = "Veuillez rentrer le nom d'affaire!")]
+        [Required(ErrorMessage = "Veuillez rentrer le nom d'affaire!")]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("Nom d'affaires")]
         public string NomAffaires { get; set; }
 
         [Required(ErrorMessage = "Veuillez rentrer votre adresse courriel!")]
-        [ValidationCourriel]
+        [RegularExpression("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", ErrorMessage ="Votre format de courriel est incorrect.")]
         [DisplayName("Adresse courriel")]
         public string AdresseEmail { get; set; }
-        public string MotDePasse { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer encore votre adresse courriel!")]
+        [RegularExpression("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", ErrorMessage = "Votre format de courriel est incorrect.")]
+        [Compare("AdresseEmail", ErrorMessage = "Le second courriel ne corespond pas au premier.")]
         [DisplayName("Confirmation courriel")]
         public string confirmationCourriel { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer votre nom!")]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("Nom")]
         public string Nom { get; set; }
 
         [Required(ErrorMessage = "Veuillez rentrer votre prénom!")]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("Prénom")]
         public string Prenom { get; set; }
 
@@ -41,19 +45,30 @@ namespace PetitesPuces.Models
 
         public DateTime DateMAJ { get; }
 
+     
+
         [Required(ErrorMessage = "Veuillez rentrer votre mot de passe!")]
+        [DataType(DataType.Password)]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 8 caractères.", MinimumLength = 8)]
+        [RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,100}$", ErrorMessage = "Votre format de mot de passe est incorrect. Il doit avoir minimum 8 caractères et inclure au moins une majuscule.")]
         [DisplayName("Mot de passe")]
-        public string motDePasse { get; }
+        public string MotDePasse { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer encore une fois votre mot de passe!")]
+        [DataType(DataType.Password)]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 8 caractères.", MinimumLength = 8)]
+        [RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,100}$", ErrorMessage = "Votre format de mot de passe est incorrect. Il doit avoir minimum 8 caractères et inclure au moins une majuscule.")]
+        [Compare("MotDePasse", ErrorMessage = "Le second mot de passe ne corespond pas au premier.")]
         [DisplayName("confirmation mot de passe")]
         public string confirmationMDP { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer votre rue!")]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("Rue")]
         public string Rue { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer votre ville!")]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("Ville")]
         public string Ville { get; }
 
@@ -66,32 +81,36 @@ namespace PetitesPuces.Models
         public string CodePostal { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer votre pays!")]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("pays")]
         public string Pays { get; }
 
-        [Range(0, 10000)]
+        [Range(0, 10000, ErrorMessage = "S.V.P de rentrer un chiffre entre 0 à 10000 kg")]
         [Required(ErrorMessage = "Veuillez rentrer le poids max pour la livraison!")]
         [DisplayName("Poids max (KG)")]
-        public string poidsMax { get; }
+        public int poidsMax { get; }
 
-        [Range(0,10000)]
-        [Required(ErrorMessage = "Veuillez rentrer un prix minimum pour une livraison graduite!")]
+        [Range(0, 10000, ErrorMessage = "S.V.P de rentrer un chiffre entre 0 à 10000 $")]
+        [Required(ErrorMessage = "Veuillez rentrer un prix au moins pour une livraison graduite!")]
         [DisplayName("Prix minimum")]
         public int prixMinimum { get; }
 
-       
+        
         [DisplayName("Taxes TPS/TVQ")]
         public Boolean taxes { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer votre numéro de téléphone!")]
-        [DisplayName("Téléphone No1")]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 10 caractères.", MinimumLength = 10)]
+        [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
         public string tel1 { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer un autre numéro de téléphone!")]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 10 caractères.", MinimumLength = 10)]
+        [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
         [DisplayName("Téléphone No1")]
         public string tel2 { get; }
 
-      
+
 
         public string Role
         {

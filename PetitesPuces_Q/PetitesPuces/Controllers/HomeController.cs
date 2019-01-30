@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web;
 using PetitesPuces.Models;
 using PetitesPuces.ViewModels.Home;
 
@@ -74,13 +75,13 @@ namespace PetitesPuces.Controllers
 
             if (unClientExist.Count() != 0)
             {
-                HttpContext.Session["userId"] = unClientExist.First().NoClient;
+                System.Web.HttpContext.Current.Session["userId"] = unClientExist.First().NoClient;
                 TempData["connexion"] = true;
                 return RedirectToAction("Index", "Client");
             }
             else if (unVendeurExist.Count() != 0)
             {
-                HttpContext.Session["userId"] = unVendeurExist.First().NoVendeur;
+                System.Web.HttpContext.Current.Session["userId"] = unVendeurExist.First().NoVendeur;
                 TempData["connexion"] = true;
                 return RedirectToAction("Index", "Vendeur");
             }
@@ -88,12 +89,28 @@ namespace PetitesPuces.Controllers
             {
                 ModelState.AddModelError("motDePasse", "Votre mot de passe ou adresse courriel est incorrect.");
             }
+            /*
             foreach (var key in formCollection.AllKeys)
-                {
-                    Response.Write("key: " + key + " ");
-                    Response.Write(formCollection[key]);
-                    Response.Write("<br/> ");
-                }
+            {
+                Response.Write("key: " + key + " ");
+                Response.Write(formCollection[key]);
+                Response.Write("<br/> ");
+            }*/
+
+            return View();
+        }
+
+        public ActionResult FormLogin()
+        {
+            return PartialView("Home/_FormLogin", new Client());
+        }
+        [HttpGet]
+        public ActionResult InscriptionClient()
+        {
+
+
+            return View();
+        }
 
         [HttpPost]
         public ActionResult InscriptionClient(FormCollection formCollection)
@@ -114,7 +131,7 @@ namespace PetitesPuces.Controllers
                 nouveauClient.MotDePasse = formCollection["passwordClient"];
                 nouveauClient.NoClient = maxNo;
                 UpdateModel(nouveauClient);
-            
+
                 context.PPClients.InsertOnSubmit(nouveauClient);
                 context.SubmitChanges();
             }
@@ -132,19 +149,19 @@ namespace PetitesPuces.Controllers
         [HttpPost]
         public ActionResult InscriptionVendeur(FormCollection formCollection)
         {
-          
-           /* foreach (var key in formCollection.AllKeys)
-            {
-                Response.Write("key: " + key + " ");
-                Response.Write(formCollection[key]);
-                Response.Write("<br/> ");
-            }*/
+
+            /* foreach (var key in formCollection.AllKeys)
+             {
+                 Response.Write("key: " + key + " ");
+                 Response.Write(formCollection[key]);
+                 Response.Write("<br/> ");
+             }*/
 
             if (ModelState.IsValid)
             {
                 var noVendeurCourrant = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
                 int maxNoVendeur = Convert.ToInt16(noVendeurCourrant.Max()) + 1;
-                
+
                 PPVendeur nouveauVendeur = new PPVendeur();
 
                 DateTime today = DateTime.Today;
@@ -165,29 +182,29 @@ namespace PetitesPuces.Controllers
                 nouveauVendeur.Taxes = formCollection["taxes"] == null ? false : true;
                 nouveauVendeur.DateCreation = today;
                 nouveauVendeur.Pays = formCollection["Pays"];
-             
-               
+
+
                 context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
                 context.SubmitChanges();
             }
             return View();
+        }
+        public ActionResult OubliMDP()
+        {
+            return View();
+        }
+        public ActionResult Catalogue()
+        {
+            return RedirectToAction("Catalogue", "Client");
+
+
+        }
+
+        public ActionResult testValidation()
+
+        {
+            return View();
+        }
+
     }
-    public ActionResult OubliMDP()
-    {
-        return View();
-    }
-    public ActionResult Catalogue()
-    {
-        return RedirectToAction("Catalogue", "Client");
-
-
-    }
-
-    public ActionResult testValidation()
-
-    {
-        return View();
-    }
-
-}
 }

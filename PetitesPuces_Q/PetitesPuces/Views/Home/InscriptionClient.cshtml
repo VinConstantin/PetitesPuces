@@ -46,43 +46,42 @@
                                 <form id="register-form" method="post" role="form" class="text-left">
                                     <h3 class=" text-center">S'inscrire en tant que client</h3>
                                     <br />
-                                    <div class="form-row">
-                                        @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new { @class = "col-md-6 col-lg-offset-3" })
-                                        <div class="col-md-6 col-lg-offset-3">
-                                            @Html.EditorFor(model => model.AdresseEmail, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.AdresseEmail, "", new { @class = "text-danger" })
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new {@class = "text-right w-100" })
+                                       
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            @Html.EditorFor(model => model.AdresseEmail, new {htmlAttributes = new {@class = "form-control"}})
+                                            @Html.ValidationMessageFor(model => model.AdresseEmail, "", new {@class = "text-danger"})
                                         </div>
                                     </div>
-                                    <div class="form-row">
-                                        @Html.LabelFor(model => model.Nom, htmlAttributes: new { @class = "col-md-6 col-lg-offset-3" })
-                                        <div class="col-md-6 col-lg-offset-3">
-                                            @Html.EditorFor(model => model.Nom, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.Nom, "", new { @class = "text-danger" })
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(model => model.ConfirmationCourriel, htmlAttributes: new {@class = "text-right w-100" })
+                                       
                                         </div>
-
-                                    </div>
-                                    <div class="form-row">
-                                        @Html.LabelFor(model => model.Prenom, htmlAttributes: new { @class = "col-md-6 col-lg-offset-3" })
-                                        <div class="col-md-6 col-lg-offset-3">
-                                            @Html.EditorFor(model => model.Prenom, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.Prenom, "", new { @class = "text-danger" })
+                                        <div class="form-group col-md-8">
+                                            @Html.EditorFor(model => model.ConfirmationCourriel, new {htmlAttributes = new {@class = "form-control"}})
+                                            @Html.ValidationMessageFor(model => model.ConfirmationCourriel, "", new {@class = "text-danger"})
                                         </div>
-
                                     </div>
-
-                                    <div class="form-row">
-                                        @Html.LabelFor(model => model.motDePasse, htmlAttributes: new { @class = "col-md-6 col-lg-offset-3" })
-                                        <div class="col-md-6 col-lg-offset-3">
-                                            @Html.EditorFor(model => model.motDePasse, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.motDePasse, "", new { @class = "text-danger" })
+                                    
+                                    <div class="row">
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(model => model.MotDePasse, htmlAttributes: new {@class = "text-right w-100"})
+                                        </div><div class="form-group col-md-8">
+                                            @Html.EditorFor(model => model.MotDePasse, new {htmlAttributes = new {@class = "form-control"}})
+                                            @Html.ValidationMessageFor(model => model.MotDePasse, "", new {@class = "text-danger"})
                                         </div>
                                     </div>
 
 
-                                    <div class="form-row">
-
-                                        @Html.LabelFor(model => model.confirmationMDP, htmlAttributes: new { @class = "col-md-6 col-lg-offset-3" })
-                                        <div class="col-md-6 col-lg-offset-3">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(model => model.confirmationMDP, htmlAttributes: new { @class = "text-right w-100" })
+                                       
+                                        </div><div class="form-group col-md-8">
                                             @Html.EditorFor(model => model.confirmationMDP, new { htmlAttributes = new { @class = "form-control" } })
                                             @Html.ValidationMessageFor(model => model.confirmationMDP, "", new { @class = "text-danger" })
                                         </div>
