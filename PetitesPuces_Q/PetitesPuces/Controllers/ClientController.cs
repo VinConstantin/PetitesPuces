@@ -151,6 +151,7 @@ namespace PetitesPuces.Controllers
                 Panier panier = new Panier
                 {
                     Client = pan.FirstOrDefault()?.PPClient,
+                    Vendeur = pan.FirstOrDefault()?.PPVendeur,
                     DateCreation = (DateTime)pan.FirstOrDefault().DateCreation,
                     Produits = pan.Select(p => p.PPProduit).ToList()
                 };
