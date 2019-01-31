@@ -31,6 +31,8 @@ namespace PetitesPuces.Controllers
 
             List<PPCommande> commandes = getCommandesVendeurs(NoVendeur);
 
+            commandes = commandes.Where(c => c.Statut == 'T').ToList();
+
             return View(commandes);
         } 
 

@@ -56,9 +56,8 @@
             <table class="table text-right">
                 @foreach (var commande in Model.Commandes)
                 {
-                    if (commande.Statut == 'T')
-                    {@Html.Partial("Vendeur/_Commande", commande)}
-            }
+                    @Html.Partial("Vendeur/_Commande", commande)
+                }
             </table>
         </div>
     }
