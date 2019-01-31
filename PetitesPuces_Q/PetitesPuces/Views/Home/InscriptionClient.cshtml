@@ -1,4 +1,5 @@
-﻿@model PetitesPuces.Models.Client
+﻿@using System.Web.UI.WebControls
+@model PetitesPuces.Models.PPClient_Validation
 
 @{
     ViewBag.Title = "Inscription Client";
@@ -52,7 +53,7 @@
                                        
                                         </div>
                                         <div class="form-group col-md-8">
-                                            @Html.EditorFor(model => model.AdresseEmail, new {htmlAttributes = new {@class = "form-control"}})
+                                            @Html.EditorFor(model => model.AdresseEmail, new {htmlAttributes = new {@class = "form-control",@PlaceHolder="Adresse courriel"}})
                                             @Html.ValidationMessageFor(model => model.AdresseEmail, "", new {@class = "text-danger"})
                                         </div>
                                     </div>
@@ -62,7 +63,7 @@
                                        
                                         </div>
                                         <div class="form-group col-md-8">
-                                            @Html.EditorFor(model => model.ConfirmationCourriel, new {htmlAttributes = new {@class = "form-control"}})
+                                            @Html.EditorFor(model => model.ConfirmationCourriel, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer votre adresse courriel" } })
                                             @Html.ValidationMessageFor(model => model.ConfirmationCourriel, "", new {@class = "text-danger"})
                                         </div>
                                     </div>
@@ -71,7 +72,7 @@
                                     <div class="col-md-4">
                                         @Html.LabelFor(model => model.MotDePasse, htmlAttributes: new {@class = "text-right w-100"})
                                         </div><div class="form-group col-md-8">
-                                            @Html.EditorFor(model => model.MotDePasse, new {htmlAttributes = new {@class = "form-control"}})
+                                            @Html.EditorFor(model => model.MotDePasse, new {htmlAttributes = new {@class = "form-control" ,@PlaceHolder="Mot de passe" } })
                                             @Html.ValidationMessageFor(model => model.MotDePasse, "", new {@class = "text-danger"})
                                         </div>
                                     </div>
@@ -82,7 +83,7 @@
                                             @Html.LabelFor(model => model.confirmationMDP, htmlAttributes: new { @class = "text-right w-100" })
                                        
                                         </div><div class="form-group col-md-8">
-                                            @Html.EditorFor(model => model.confirmationMDP, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.EditorFor(model => model.confirmationMDP, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Confirmer votre mot de passe" } })
                                             @Html.ValidationMessageFor(model => model.confirmationMDP, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -97,6 +98,10 @@
                                                 <br />
                                                 @Html.ActionLink("S'inscrire en tant que vendeur", "InscriptionVendeur")
                                             </div>
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <br/>
+                                                @Html.ActionLink("Retourner au menu", "Index")
+                                            </div>
                                         </div>
                                     </div>
 
@@ -104,7 +109,6 @@
                                 </form>
 
 
-                                @Html.ActionLink("Retourner au menu", "Index")
                             </div>
                         </div>
                     </div>

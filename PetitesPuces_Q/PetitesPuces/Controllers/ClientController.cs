@@ -261,8 +261,13 @@ namespace PetitesPuces.Controllers
         {
             return View();
         }
-        public ActionResult modificationMDP()
+        public ActionResult modificationMDP(FormCollection formCollection)
         {
+          /*  PPClient unClient=new PPClient();
+
+            var motDePasseCourrant=formCollection[""]
+            var nouveauMotdePasse;
+            */
             return View();
         }
 

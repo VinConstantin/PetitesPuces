@@ -11,6 +11,7 @@ namespace PetitesPuces.Controllers
     public class HomeController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
+
         public ActionResult Index(string Vendeur)
         {
             PPVendeur vendeur;
@@ -32,6 +33,7 @@ namespace PetitesPuces.Controllers
 
             return View(viewModel);
         }
+
         public ActionResult ListeProduits(string Vendeur)
         {
             PPVendeur vendeur;
@@ -64,14 +66,14 @@ namespace PetitesPuces.Controllers
         {
 
             var unClientExist = from unClient in context.PPClients
-                where unClient.AdresseEmail == formCollection["adresseEmail"] &&
-                      unClient.MotDePasse == formCollection["motDePasse"]
-                select unClient;
+                                where unClient.AdresseEmail == formCollection["adresseEmail"] &&
+                                      unClient.MotDePasse == formCollection["motDePasse"]
+                                select unClient;
 
             var unVendeurExist = from unVendeur in context.PPVendeurs
-                where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
-                      unVendeur.MotDePasse == formCollection["motDePasse"]
-                select unVendeur;
+                                 where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
+                                       unVendeur.MotDePasse == formCollection["motDePasse"]
+                                 select unVendeur;
 
             if (unClientExist.Count() != 0)
             {
@@ -89,21 +91,12 @@ namespace PetitesPuces.Controllers
             {
                 ModelState.AddModelError("motDePasse", "Votre mot de passe ou adresse courriel est incorrect.");
             }
-            /*
-            foreach (var key in formCollection.AllKeys)
-            {
-                Response.Write("key: " + key + " ");
-                Response.Write(formCollection[key]);
-                Response.Write("<br/> ");
-            }*/
+
 
             return View();
         }
 
-        public ActionResult FormLogin()
-        {
-            return PartialView("Home/_FormLogin", new Client());
-        }
+
         [HttpGet]
         public ActionResult InscriptionClient()
         {
@@ -112,12 +105,16 @@ namespace PetitesPuces.Controllers
             return View();
         }
 
-            return View();
-        }
 
         [HttpPost]
         public ActionResult InscriptionClient(FormCollection formCollection)
         {
+            /*foreach (var key in formCollection.AllKeys)
+            {
+                Response.Write("key: " + key + " ");
+                Response.Write(formCollection[key]);
+                Response.Write("<br/> ");
+            }*/
 
             if (ModelState.IsValid)
             {
@@ -126,17 +123,26 @@ namespace PetitesPuces.Controllers
                 var noClientCourrant = from unclient in context.PPClients select unclient.NoClient;
                 int maxNo = Convert.ToInt16(noClientCourrant.Max()) + 1;
 
+                var VerificationAdresseCourriel = from unclient in context.PPClients
+                                                  where unclient.AdresseEmail == formCollection["AdresseEmail"]
+                                                  select unclient;
+
+                if (VerificationAdresseCourriel.Count() == 0)
+                {
 
 
-                PPClient nouveauClient = new PPClient();
-                nouveauClient.Nom = formCollection["username"];
-                nouveauClient.AdresseEmail = formCollection["emailClient"];
-                nouveauClient.MotDePasse = formCollection["passwordClient"];
-                nouveauClient.NoClient = maxNo;
-                UpdateModel(nouveauClient);
+                    PPClient nouveauClient = new PPClient();
+                    nouveauClient.AdresseEmail = formCollection["AdresseEmail"];
 
-                context.PPClients.InsertOnSubmit(nouveauClient);
-                context.SubmitChanges();
+                    nouveauClient.MotDePasse = formCollection["MotDePasse"];
+                    nouveauClient.NoClient = maxNo;
+
+
+                    context.PPClients.InsertOnSubmit(nouveauClient);
+                    context.SubmitChanges();
+                    return RedirectToAction("Connexion", "Home");
+                }
+
             }
 
             return View();
@@ -164,31 +170,39 @@ namespace PetitesPuces.Controllers
             {
                 var noVendeurCourrant = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
                 int maxNoVendeur = Convert.ToInt16(noVendeurCourrant.Max()) + 1;
+                var VerificationAdresseCourriel = from unVendeur in context.PPVendeurs
+                                                  where unVendeur.AdresseEmail == formCollection["AdresseEmail"]
+                                                  select unVendeur;
 
-                PPVendeur nouveauVendeur = new PPVendeur();
+                if (VerificationAdresseCourriel.Count() == 0)
+                {
 
-                DateTime today = DateTime.Today;
-                nouveauVendeur.NomAffaires = formCollection["NomAffaires"];
-                nouveauVendeur.Nom = formCollection["Nom"];
-                nouveauVendeur.Prenom = formCollection["Prenom"];
-                nouveauVendeur.Rue = formCollection["Rue"];
-                nouveauVendeur.NoVendeur = maxNoVendeur;
-                nouveauVendeur.Ville = formCollection["Ville"];
-                nouveauVendeur.Province = formCollection["Province"];
-                nouveauVendeur.CodePostal = formCollection["CodePostal"];
-                nouveauVendeur.Tel1 = formCollection["tel1"];
-                nouveauVendeur.Tel2 = formCollection["tel2"];
-                nouveauVendeur.AdresseEmail = formCollection["AdresseEmail"];
-                nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["poidsMax"]);
-                nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["prixMinimum"]);
-                nouveauVendeur.MotDePasse = formCollection["motDePasse"];
-                nouveauVendeur.Taxes = formCollection["taxes"] == null ? false : true;
-                nouveauVendeur.DateCreation = today;
-                nouveauVendeur.Pays = formCollection["Pays"];
+                    PPVendeur nouveauVendeur = new PPVendeur();
+
+                    DateTime today = DateTime.Today;
+                    nouveauVendeur.NomAffaires = formCollection["NomAffaires"];
+                    nouveauVendeur.Nom = formCollection["Nom"];
+                    nouveauVendeur.Prenom = formCollection["Prenom"];
+                    nouveauVendeur.Rue = formCollection["Rue"];
+                    nouveauVendeur.NoVendeur = maxNoVendeur;
+                    nouveauVendeur.Ville = formCollection["Ville"];
+                    nouveauVendeur.Province = formCollection["Province"];
+                    nouveauVendeur.CodePostal = formCollection["CodePostal"];
+                    nouveauVendeur.Tel1 = formCollection["tel1"];
+                    nouveauVendeur.Tel2 = formCollection["tel2"];
+                    nouveauVendeur.AdresseEmail = formCollection["AdresseEmail"];
+                    nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["poidsMax"]);
+                    nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["prixMinimum"]);
+                    nouveauVendeur.MotDePasse = formCollection["motDePasse"];
+                    nouveauVendeur.Taxes = formCollection["taxes"] == null ? false : true;
+                    nouveauVendeur.DateCreation = today;
+                    nouveauVendeur.Pays = formCollection["Pays"];
 
 
-                context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
-                context.SubmitChanges();
+                    context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
+                    context.SubmitChanges();
+                    return RedirectToAction("Connexion", "Home");
+                }
             }
             return View();
         }
