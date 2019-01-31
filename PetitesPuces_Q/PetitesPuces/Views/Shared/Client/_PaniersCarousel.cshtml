@@ -2,12 +2,12 @@
 @using PetitesPuces.Utilities
 @model PetitesPuces.Models.Panier
 
-<div id="@("Panier")" class="item div_hover" style="cursor: pointer;" onclick="changePanier('w')">
+<div id="@("Panier")" class="item div_hover" style="cursor: pointer;" onclick="changePanier(@Model.Vendeur.NoVendeur)">
     <div class="" style="background-color: skyblue;">    
         <div class="">
             <p>Vendeur : @Model.Vendeur.Nom</p>
             <hr/>
-            <p>Nombre d'items :  @Model.Produits.Count</p>
+            <p>Nombre d'items :  @Model.Articles.Count</p>
         </div>
     </div>
 </div>

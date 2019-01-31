@@ -218,7 +218,6 @@
     }
     //ajouter un item au produit
     function ajouterAuPanier(noProduit, quantite = 1) {
-        /*
         $.ajax({
             url: URLPATH + "/Client/AjouterProduitAuPanier",
             type: "post",
@@ -227,14 +226,12 @@
                 "Quantite": quantite
             },
             success: function(result) {
-                console.log(result)
+                alert("Les produit est ajouté au panier")
             },
             error: function(req, status, err) {
-                console.log(req, status, err)
+                alert("Une erreure est survenue")
             }
         });
-        */
-        console.log(quantite)
     }
     //augmeneter la quantite
     function plusQuantite(id) {

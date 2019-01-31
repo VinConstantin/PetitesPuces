@@ -8,8 +8,8 @@ namespace PetitesPuces.ViewModels.Gestionnaire
 {
     public class InactiviteViewModel
     {
-        public List<Models.Vendeur> VendeursInactifs { get; set; }
-        public List<Client> ClientsInactifs { get; set; }
+        public List<Models.PPVendeur> VendeursInactifs { get; set; }
+        public List<PPClient> ClientsInactifs { get; set; }
         public List<IUtilisateur> UtilsRecherche { get; set; }
     }
 }

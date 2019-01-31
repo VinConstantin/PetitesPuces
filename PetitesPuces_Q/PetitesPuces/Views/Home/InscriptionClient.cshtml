@@ -1,0 +1,119 @@
+﻿@using System.Web.UI.WebControls
+@model PetitesPuces.Models.PPClient_Validation
+
+@{
+    ViewBag.Title = "Inscription Client";
+}
+
+
+
+@section styles {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/Content/Connexion/Index.css")" />
+}
+
+@section scripts {
+    <script type="text/javascript" src="@Url.Content("/Scripts/InscriptionEtConnexion/InscriptionClient.js")"></script>
+   
+}
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@using (Html.BeginForm())
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-login">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-6">
+
+                                @Html.ActionLink("Se connecter", "Connexion", new { id = "login-form-link", @class = "active" })
+
+                            </div>
+                            <div class="col-xs-6">
+
+                                <a href="#" id="register-form-link" class="active">S'inscrire</a>
+
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+
+
+                                <form id="register-form" method="post" role="form" class="text-left">
+                                    <h3 class=" text-center">S'inscrire en tant que client</h3>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new {@class = "text-right w-100" })
+                                       
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            @Html.EditorFor(model => model.AdresseEmail, new {htmlAttributes = new {@class = "form-control",@PlaceHolder="Adresse courriel"}})
+                                            @Html.ValidationMessageFor(model => model.AdresseEmail, "", new {@class = "text-danger"})
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(model => model.ConfirmationCourriel, htmlAttributes: new {@class = "text-right w-100" })
+                                       
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            @Html.EditorFor(model => model.ConfirmationCourriel, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer votre adresse courriel" } })
+                                            @Html.ValidationMessageFor(model => model.ConfirmationCourriel, "", new {@class = "text-danger"})
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(model => model.MotDePasse, htmlAttributes: new {@class = "text-right w-100"})
+                                        </div><div class="form-group col-md-8">
+                                            @Html.EditorFor(model => model.MotDePasse, new {htmlAttributes = new {@class = "form-control" ,@PlaceHolder="Mot de passe" } })
+                                            @Html.ValidationMessageFor(model => model.MotDePasse, "", new {@class = "text-danger"})
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(model => model.confirmationMDP, htmlAttributes: new { @class = "text-right w-100" })
+                                       
+                                        </div><div class="form-group col-md-8">
+                                            @Html.EditorFor(model => model.confirmationMDP, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Confirmer votre mot de passe" } })
+                                            @Html.ValidationMessageFor(model => model.confirmationMDP, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <br />
+                                                <input type="submit" name="register-submit" id="register-submit" tabindex="5" class="btn btn-lg btn-primary btn-block" value="S'inscrire maintenant">
+                                            </div>
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <br />
+                                                @Html.ActionLink("S'inscrire en tant que vendeur", "InscriptionVendeur")
+                                            </div>
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <br/>
+                                                @Html.ActionLink("Retourner au menu", "Index")
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

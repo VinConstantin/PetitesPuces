@@ -1,25 +1,26 @@
 ﻿@using System.Globalization
-@model int
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPArticlesEnPanier
 
 <tr>
     <td>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" alt="Image">
             </div>
             <div class="col-md-2">
-                <p>Produit</p>
+                <p>@Model.PPProduit.Nom</p>
             </div>
-            <div class="col-md-1">
-                <p>Prix unitaire</p>
+            <div class="col-md-2">
+                <p>@Formatter.Money(@Model.PPProduit.PrixVente)</p>
             </div>
             <div class="col-md-3">
                 <div class="quantity">
-                    <button class="minus-btn" type="button" name="button" onclick="moinsQuantite(@Model)">
+                    <button class="minus-btn" type="button" name="button" onclick="moinsQuantite(@Model.PPProduit.NoProduit)">
                         <span class="glyphicon glyphicon-minus"></span>
                     </button>
-                    <input type="text" style="width: 30%;" pattern="\d*" name="name" value="1" width="50px" id="@Model">
-                    <button class="plus-btn" type="button" name="button" onclick="plusQuantite(@Model)">
+                    <input type="text" style="width: 30%;" pattern="\d*" name="name" value="1" width="50px" id="@Model.PPProduit.NoProduit">
+                    <button class="plus-btn" type="button" name="button" onclick="plusQuantite(@Model.PPProduit.NoProduit)">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>
@@ -28,6 +29,9 @@
                 <button class="btn btn-link btn-lg" style="color: red" title="Retirer du panier" onclick="SupprimerProduit()">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
+            </div>
+            <div class="col-md-2">
+                <p>@Formatter.Money(@Model.PPProduit.PrixVente*@Model.NbItems)</p>
             </div>
         </div>
     </td>

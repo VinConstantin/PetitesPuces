@@ -1,49 +1,68 @@
+@using PetitesPuces.Utilities
 @model string
 
 <form>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="inputEmail4">Courriel</label>
-              <input type="email" class="form-control" id="inputEmail4" placeholder="Courriel">
+    <div class="form-row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="radio">
+                <label><input type="radio" name="optradio" checked>Poste régulière</label>
             </div>
-            <div class="form-group col-md-6">
-              <label for="inputPassword4">Téléphone 1</label>
-              <input type="password" class="form-control" id="inputPassword4" placeholder="Telephone">
+            <div class="radio">
+                <label><input type="radio" name="optradio">Poste prioritaire</label>
             </div>
-          </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="inputEmail4">Adresse</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="Adresse">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputPassword4">Téléphone 2</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Telephone">
-                </div>
+            <div class="radio">
+                <label><input type="radio" name="optradio">Compagnie de livraison</label>
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="inputCity">Ville</label>
-                    <input type="text" class="form-control" id="inputCity">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputState">Province</label>
-                    <select id="inputState" class="form-control">
-                        <option selected>Choose...</option>
-                        <option>...</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="inputZip">Code Postal</label>
-                    <input type="text" class="form-control" id="inputZip">
-                </div>
-
+            <hr/>
+            <div>
+                <h4>Frais de livraison : @Formatter.Money(23.00)</h4>
             </div>
-            <div class="row">
-                <div class="col-md-12"><hr/></div>
-                <div class="col-md-4 col-lg-offset-5">
-                    <button type="button" class="btn btn-danger"onclick="location.href = '@Url.Action("Catalogue", "Client")'">Retour</button>
-                    <button type="button" class="btn btn-primary" onclick="location.href = '@Url.Action("Commande", "Client",new RouteValueDictionary(new { Etape= "Livraison" }))'">Continuer</button>
-                </div>
-            </div>   
-        </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12"><hr/></div>
+        <div class="col-md-4 col-lg-offset-5">
+            <button type="button" class="btn btn-danger"onclick="previous()">Retour</button>
+            <button type="button" class="btn btn-primary" onclick="next()">Continuer</button>
+        </div>
+    </div>
+</form>
+<script>
+    function next(){
+        $('#Livraison').removeClass('active');
+        $('#Paiement').addClass('active');
+        $.ajax({
+            url: URLPATH + "/Client/Paiement",
+            type: "get",
+            data: {
+            },
+            success: function(result) {
+                $('#PLACEHOLDER').html(result);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+        var PARAMS = "?Etape="+"Paiement";
+        history.pushState(null, "", PARAMS);
+    }
+    function previous(){
+        $('#Livraison').removeClass('active');
+        $('#Information').addClass('active');
+        $.ajax({
+            url: URLPATH + "/Client/Information",
+            type: "get",
+            data: {
+                "NoClient":10100
+            },
+            success: function(result) {
+                $('#PLACEHOLDER').html(result);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+        var PARAMS = "?Etape="+"Information";
+        history.pushState(null, "", PARAMS);
+    }
+</script>
