@@ -21,10 +21,12 @@ namespace PetitesPuces.Controllers
             //TODO:implémenter pour utiliser le bon no
             int noClient = 10100;
             List<Panier> lstPaniers = GetPaniersClient(noClient);
+            List<PPCommande> lstCommandes = GetCommandesClient(noClient);
             
             AccueilViewModel viewModel = new AccueilViewModel
             {
-                Paniers = new List<Panier>()
+                Paniers = lstPaniers,
+                Commandes = lstCommandes
             };
             return View(viewModel);
         }
@@ -115,7 +117,7 @@ namespace PetitesPuces.Controllers
             
             CatalogueViewModel viewModel = GetCatalogueViewModel(ref listeProduits, Vendeur, Categorie, Page, Size, Filtre, tri);
             
-            ViewBag.NoCategorie = viewModel.Categorie?.NoCategorie ?? -1;
+            ViewBag.NoCategorie = viewModel.Categorie==null?-1 : viewModel.Categorie.NoCategorie;
             ViewBag.NbItems = nbItemsParPage;
             ViewBag.noPage = noPage;
             ViewBag.NbPage = (listeProduits.Count()-1)/nbItemsParPage+1;
@@ -132,7 +134,7 @@ namespace PetitesPuces.Controllers
             
             CatalogueViewModel viewModel = GetCatalogueViewModel(ref listeProduits, Vendeur, Categorie, Page, Size, Filtre, tri);
             
-            ViewBag.NoCategorie = viewModel.Categorie?.NoCategorie ?? -1;
+            ViewBag.NoCategorie = viewModel.Categorie==null?-1 : viewModel.Categorie.NoCategorie;
             ViewBag.NbItems = nbItemsParPage;
             ViewBag.noPage = noPage;
             ViewBag.NbPage = (listeProduits.Count()-1)/nbItemsParPage+1;
@@ -191,6 +193,7 @@ namespace PetitesPuces.Controllers
         }
         public ActionResult MonPanier(string No)
         {
+            ViewBag.NoVendeur = No;
             //TODO: implément pour utiliser le bon noClient
             int noClient = 10100;
             List<Panier> lstPaniers = GetPaniersClient(noClient);
@@ -223,6 +226,18 @@ namespace PetitesPuces.Controllers
 
             return lstPaniers;
         }
+        private List<PPCommande> GetCommandesClient(int NoClient)
+        {
+            var query = from commande in context.PPCommandes
+                where commande.NoClient == NoClient
+                orderby commande.DateCommande ascending
+                select commande;
+
+            List<PPCommande> lstCommandes = query.ToList();
+
+
+            return lstCommandes;
+        }
         public ActionResult Commande(string Etape)
         {
             ViewBag.Etape = Etape;
@@ -230,7 +245,7 @@ namespace PetitesPuces.Controllers
             return View();
         }
 
-        public ActionResult Information(int NoClient)
+        public ActionResult Information(int NoClient=0)
         {
             PPClient client = (from cli in context.PPClients
                 where cli.NoClient == NoClient
@@ -255,6 +270,26 @@ namespace PetitesPuces.Controllers
                 Articles = (from p in context.PPArticlesEnPaniers select p).Take(4).ToList()
             };
             return PartialView("Client/Commande/_Confirmation",panier);
+        }
+
+        public ActionResult DetailPanier(int noVendeur)
+        {
+            //TODO: implément pour utiliser le bon noClient
+            int noClient = 10100;
+            
+            var query = from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == noClient
+                      && articles.NoVendeur == noVendeur
+                orderby articles.DateCreation ascending
+                select articles;
+
+            Panier panier = new Panier
+            {
+                Vendeur = query.FirstOrDefault().PPVendeur,
+                Client = query.FirstOrDefault().PPClient,
+                Articles = query.ToList()
+            };
+            return PartialView("Client/_DetailPanier",panier);
         }
 
         public ActionResult Profil()

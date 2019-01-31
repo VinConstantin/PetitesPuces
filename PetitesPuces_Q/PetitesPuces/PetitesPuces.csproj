@@ -293,6 +293,7 @@
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
     <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
+    <Content Include="Views\Shared\Client\_DetailPanier.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_Produits.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />

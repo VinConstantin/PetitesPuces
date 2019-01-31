@@ -96,14 +96,14 @@ namespace PetitesPuces.Models
 
 
 
-        public string Rue { get; }
-        public string Ville { get; }
-        public string Province { get; }
-        public string CodePostal { get; }
-        public string Pays { get; }
-        public DateTime? DateCreation { get; }
-        public DateTime DateDerniereActivite { get; }
-        public DateTime DateMAJ { get; }
+        public string Rue { get; set; }
+        public string Ville { get;  set;}
+        public string Province { get;  set;}
+        public string CodePostal { get;  set;}
+        public string Pays { get;  set;}
+        public DateTime? DateCreation { get;  set;}
+        public DateTime DateDerniereActivite { get;  set;}
+        public DateTime DateMAJ { get;  set;}
 
         public string Role
         {

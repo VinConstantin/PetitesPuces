@@ -69,7 +69,7 @@ namespace PetitesPuces.Models
         [RegularExpression("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", ErrorMessage = "Votre format de courriel est incorrect.")]
         [System.ComponentModel.DataAnnotations.Compare("AdresseEmail", ErrorMessage = "Le second courriel ne corespond pas au premier.")]
         [DisplayName("Confirmation courriel")]
-        public string confirmationCourriel { get; }
+        public string confirmationCourriel { get;  set;}
 
         [Required(ErrorMessage = "Veuillez rentrer votre nom!")]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
@@ -85,9 +85,9 @@ namespace PetitesPuces.Models
         [DisplayName("Date de la demande")]
         public DateTime? DateCreation { get; set; }
 
-        public DateTime DateDerniereActivite { get; }
+        public DateTime DateDerniereActivite { get;  set;}
 
-        public DateTime DateMAJ { get; }
+        public DateTime DateMAJ { get;  set;}
 
 
 
@@ -122,38 +122,38 @@ namespace PetitesPuces.Models
 
         [Required(ErrorMessage = "Veuillez rentrer votre code postal!")]
         [DisplayName("Code Postal")]
-        public string CodePostal { get; }
+        public string CodePostal { get;  set;}
 
         [Required(ErrorMessage = "Veuillez rentrer votre pays!")]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("Pays")]
-        public string Pays { get; }
+        public string Pays { get;  set;}
 
         [Range(0, 10000, ErrorMessage = "S.V.P de rentrer un chiffre entre 0 à 10000 kg")]
         [Required(ErrorMessage = "Veuillez rentrer le poids max pour la livraison!")]
         [DisplayName("Poids max (KG)")]
-        public int poidsMax { get; }
+        public int poidsMax { get;  set;}
 
         [Range(0, 10000, ErrorMessage = "S.V.P de rentrer un chiffre entre 0 à 10000 $")]
         [Required(ErrorMessage = "Veuillez rentrer un prix au moins pour une livraison graduite!")]
         [DisplayName("Prix minimum")]
-        public int prixMinimum { get; }
+        public int prixMinimum { get;  set;}
 
 
         [DisplayName("Taxes TPS/TVQ")]
-        public Boolean taxes { get; }
+        public Boolean taxes { get;  set;}
 
         [Required(ErrorMessage = "Veuillez rentrer votre numéro de téléphone!")]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 10 caractères.", MinimumLength = 10)]
         [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
         [DisplayName("Téléphone No1")]
-        public string tel1 { get; }
+        public string tel1 { get;  set;}
 
         [Required(ErrorMessage = "Veuillez rentrer un autre numéro de téléphone!")]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 10 caractères.", MinimumLength = 10)]
         [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
         [DisplayName("Téléphone No2")]
-        public string tel2 { get; }
+        public string tel2 { get;  set;}
 
 
 
