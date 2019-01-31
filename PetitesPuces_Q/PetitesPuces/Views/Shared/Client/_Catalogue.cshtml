@@ -60,14 +60,30 @@
                     <h4>Catégories :</h4>
                 </div>
                 <div class="panel-body" style="height: 40vh; overflow: auto;">
-                    <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,-1)" id="-1">Tous (@Model.Categories.Sum(c=>c.PPProduits.Count))</a></p>   
-                    @foreach (PPCategory category in @Model.Categories)
+                    @if (Model.Vendeur.NoVendeur == -1)
                     {
-                        var nb = category.PPProduits.Count;
-                        if (nb > 0)
-                        {
-                            <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
-                        }
+                        <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur, -1)" id="-1">Tous (@Model.Categories.Sum(c => c.PPProduits.Count))</a></p>
+                        foreach (PPCategory category in @Model.Categories)
+                         {
+                             var nb = category.PPProduits.Count;
+                             if (nb > 0)
+                             {
+                                 <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur, this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
+                             }
+                         }
+
+                    }
+                    else
+                    {
+                        <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,-1)" id="-1">Tous (@Model.Vendeur.PPProduits.Count)</a></p>   
+                        foreach (PPCategory category in @Model.Categories)
+                         {
+                             var nb = Model.Vendeur.PPProduits.Count(c => c.PPCategory == category);
+                             if (nb > 0)
+                             {
+                                 <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
+                             }
+                         }
                     }
                 </div>
             </div>

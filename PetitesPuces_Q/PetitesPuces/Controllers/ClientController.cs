@@ -54,13 +54,13 @@ namespace PetitesPuces.Controllers
             }
             //chercher le vendeur
             PPVendeur vendeur;
-            if (Vendeur == "-1")
+            int NoVendeur;
+            if (Vendeur == "-1" || String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
             {
                 vendeur = new PPVendeur
                 {
                     NoVendeur = -1
                 };
-                int NoVendeur;
                 
                 //creer la liste de produits
                 listeProduits = (from p in context.PPProduits select p)
@@ -68,19 +68,11 @@ namespace PetitesPuces.Controllers
             }
             else
             {
-                int NoVendeur;
-                if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
-                {
-                    var requete = (from unVendeur in context.PPVendeurs select unVendeur);
-                    vendeur = requete.FirstOrDefault();
-                }
-                else
-                {
-                    var requete = (from unVendeur in context.PPVendeurs 
-                        where unVendeur.NoVendeur == NoVendeur
-                        select unVendeur);
-                    vendeur = requete.FirstOrDefault();
-                }
+                
+                var requete = (from unVendeur in context.PPVendeurs 
+                    where unVendeur.NoVendeur == NoVendeur
+                    select unVendeur);
+                vendeur = requete.FirstOrDefault();
                 //creer la liste de produits
                 listeProduits = vendeur.PPProduits
                     .Where(p => categorie == null || p.PPCategory == categorie);
