@@ -17,7 +17,7 @@
         <form class="form-inline">
             @if (Model.Statut != 'L')
             {
-                <button type="button" title="Livrer" class="btn btn-success" data-toggle="modal" data-target="#confirmationLivraison">
+                <button type="button" title="Livrer" class="btn btn-success" onclick="visualiser(@Model.NoCommande)" data-toggle="modal" data-target="#confirmationLivraison">
                     <span class="glyphicon glyphicon-send"></span>
                 </button>
             }

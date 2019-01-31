@@ -303,6 +303,7 @@
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
     <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
+    <Content Include="Views\Shared\Client\_DetailPanier.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_Produits.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
@@ -370,6 +371,8 @@
     <Content Include="Views\Home\InscriptionClient.cshtml" />
     <Content Include="Views\Home\InscriptionVendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_ConfirmationLivraison.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_PaniersMois.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_MenagePaniers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

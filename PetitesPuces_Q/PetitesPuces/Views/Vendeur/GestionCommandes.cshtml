@@ -8,6 +8,40 @@
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Vendeur/Index.css")" />
 }
 
+<script>
+    function visualiser(NoCommande) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/ConfirmationLivraison",
+            type: "get",
+            data: {
+                "NoCommande": NoCommande
+            },
+            success: function (result) {
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+
+    function livrer(NoCommande) {
+        $.ajax({
+            url: URLPATH+"/Vendeur/Livraison",
+            type: "get",
+            data: {
+                "NoCommande": NoCommande
+            },
+            success: function (result) {
+                window.location.reload();
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+</script>
+
 <h2 class="text-center">@ViewBag.Title</h2>
 
 <h3 class="text-center col-xs-12">Commandes non traitées</h3>
@@ -19,7 +53,7 @@
     }
     else
     {
-        <table class="table m-0">
+        <table class="table m-0 bg-light">
             <tr>
                 <th class="rowHead">
                     @Html.DisplayNameFor(model => model.FirstOrDefault().NoCommande)
@@ -48,7 +82,7 @@
             </tr>
         </table>
         <div class="tableau">
-            <table class="table text-right">
+            <table class="table text-right bg-light m-0">
                 @foreach (var commande in Model)
                 {
                     if (commande.Statut == 'T')
@@ -70,7 +104,7 @@
     }
     else
     {
-        <table class="table m-0">
+        <table class="table m-0 bg-light">
             <tr>
                 <th class="rowHead">
                     @Html.DisplayNameFor(model => model.FirstOrDefault().NoCommande)
@@ -99,7 +133,7 @@
             </tr>
         </table>
         <div class="tableau">
-            <table class="table text-right">
+            <table class="table text-right bg-light m-0">
                 @foreach (var commande in Model)
                 {
                     if (commande.Statut == 'L')
@@ -111,4 +145,11 @@
         </div>
     }
 </div>
-@Html.Partial("Vendeur/_ConfirmationLivraison")
+
+<div class="modal fade" id="confirmationLivraison" tabindex="-1" role="dialog" aria-labelledby="confirmationLivraison" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div id="PLACEHOLDERModalDescription" class="modal-content">
+
+        </div>
+    </div>
+</div>

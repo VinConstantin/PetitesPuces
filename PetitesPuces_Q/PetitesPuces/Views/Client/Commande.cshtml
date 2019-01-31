@@ -70,7 +70,7 @@
     window.onload = function() {
         $('#@ViewBag.Etape').addClass('active');
         $.ajax({
-            url: URLPATH + "/Client/@ViewBag.Etape",
+            url: "/Client/@ViewBag.Etape",
             type: "get",
             data: {
             },
@@ -79,6 +79,7 @@
             },
             error: function(req, status, err) {
                 console.log(req, status, err);
+                $('#PLACEHOLDER').html("@Html.Partial("_ErrorAlert")");
             }
         });
         var PARAMS = "?Etape="+"@ViewBag.Etape";
