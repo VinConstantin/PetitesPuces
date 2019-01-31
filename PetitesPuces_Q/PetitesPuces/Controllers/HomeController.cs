@@ -75,6 +75,11 @@ namespace PetitesPuces.Controllers
                                        unVendeur.MotDePasse == formCollection["motDePasse"]
                                  select unVendeur;
 
+            var unGestionnaireExist = from unGestionnaire in context.PPGestionnaires
+                                      where unGestionnaire.AdresseEmail == formCollection["AdresseEmail"]
+                                      select unGestionnaire;
+
+
             if (unClientExist.Count() != 0)
             {
                 System.Web.HttpContext.Current.Session["userId"] = unClientExist.First().NoClient;
@@ -86,6 +91,12 @@ namespace PetitesPuces.Controllers
                 System.Web.HttpContext.Current.Session["userId"] = unVendeurExist.First().NoVendeur;
                 TempData["connexion"] = true;
                 return RedirectToAction("Index", "Vendeur");
+            }
+            else if (unGestionnaireExist.Count() != 0)
+            {
+                System.Web.HttpContext.Current.Session["userId"] = unGestionnaireExist.First().NoGestionnaire;
+                TempData["connexion"] = true;
+                return RedirectToAction("Index", "Gestionnaire");
             }
             else
             {
@@ -119,7 +130,7 @@ namespace PetitesPuces.Controllers
             if (ModelState.IsValid)
             {
 
-
+                PPClient nouveauClient = new PPClient();
                 var noClientCourrant = from unclient in context.PPClients select unclient.NoClient;
                 int maxNo = Convert.ToInt16(noClientCourrant.Max()) + 1;
 
@@ -131,7 +142,7 @@ namespace PetitesPuces.Controllers
                 {
 
 
-                    PPClient nouveauClient = new PPClient();
+
                     nouveauClient.AdresseEmail = formCollection["AdresseEmail"];
 
                     nouveauClient.MotDePasse = formCollection["MotDePasse"];
@@ -142,7 +153,11 @@ namespace PetitesPuces.Controllers
                     context.SubmitChanges();
                     return RedirectToAction("Connexion", "Home");
                 }
+                else
+                {
+                    ModelState.AddModelError("AdresseEmail", "Cette adresse courriel est déjà utilisée, veuillez réessayer un nouveau!");
 
+                }
             }
 
             return View();
@@ -168,16 +183,17 @@ namespace PetitesPuces.Controllers
 
             if (ModelState.IsValid)
             {
+
                 var noVendeurCourrant = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
                 int maxNoVendeur = Convert.ToInt16(noVendeurCourrant.Max()) + 1;
                 var VerificationAdresseCourriel = from unVendeur in context.PPVendeurs
                                                   where unVendeur.AdresseEmail == formCollection["AdresseEmail"]
                                                   select unVendeur;
 
+                PPVendeur nouveauVendeur = new PPVendeur();
+
                 if (VerificationAdresseCourriel.Count() == 0)
                 {
-
-                    PPVendeur nouveauVendeur = new PPVendeur();
 
                     DateTime today = DateTime.Today;
                     nouveauVendeur.NomAffaires = formCollection["NomAffaires"];
@@ -203,9 +219,14 @@ namespace PetitesPuces.Controllers
                     context.SubmitChanges();
                     return RedirectToAction("Connexion", "Home");
                 }
+                else
+                {
+                    ModelState.AddModelError("AdresseEmail", "Cette adresse courriel est déjà utilisée, veuillez réessayer un nouveau!");
+                }
             }
             return View();
         }
+
         public ActionResult OubliMDP()
         {
             return View();

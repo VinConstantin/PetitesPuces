@@ -24,12 +24,13 @@
                                                 <input id="emailInput" placeholder="Ancien mot de passe" class="form-control" type="password" oninvalid="setCustomValidity('Ce mot de passe ne coresponds pas!')"  required="">
                                                 <input id="emailInput" placeholder="Nouveau mot de passe" class="form-control" type="password" oninvalid="setCustomValidity('Vous devez rentrez un mot de passe !')"  required="">
                                                 <input id="emailInput" placeholder="Confirmer le nouveau mot de passe" class="form-control" type="password" oninvalid="setCustomValidity('Veuillez rentrer un mot de passe identique!')" required="">
-                                             </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <input class="btn btn-lg btn-primary btn-block center-block" value="Modifier" type="submit">
                                         </div>
                                     </fieldset>
+                                    @Html.ActionLink("Retourner au menu", "Index")
                                 </form>
 
                             </div>

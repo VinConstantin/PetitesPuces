@@ -1,0 +1,22 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PetitesPuces.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="BD6B8_424QConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=sqlinfo.cgodin.qc.ca;Initial Catalog=BD6B8_424Q;Persist Security Info=True;User ID=6B8equipe424q&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=sqlinfo.cgodin.qc.ca;Initial Catalog=BD6B8_424Q;Persist Security Info=True;User ID=6B8equipe424q</Value>
+    </Setting>
+    <Setting Name="BD6B8_424QConnectionString1" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=sqlinfo.cgodin.qc.ca;Initial Catalog=BD6B8_424Q;Persist Security Info=True;User ID=6B8equipe424q;Password=Secret15772&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=sqlinfo.cgodin.qc.ca;Initial Catalog=BD6B8_424Q;Persist Security Info=True;User ID=6B8equipe424q;Password=Secret15772</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

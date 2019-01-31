@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BD6B8_424Q" Class="BDPetitesPucesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=sqlinfo.cgodin.qc.ca;Initial Catalog=BD6B8_424Q;Persist Security Info=True;User ID=6B8equipe424q" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="BD6B8_424QConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=sqlinfo.cgodin.qc.ca;Initial Catalog=BD6B8_424Q;Persist Security Info=True;User ID=6B8equipe424q" SettingsObjectName="PetitesPuces.Properties.Settings" SettingsPropertyName="BD6B8_424QConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.PPArticlesEnPanier" Member="PPArticlesEnPaniers">
     <Type Name="PPArticlesEnPanier">
       <Column Name="NoPanier" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
