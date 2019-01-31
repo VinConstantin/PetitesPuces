@@ -17,20 +17,26 @@ namespace PetitesPuces.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var categories =
+                from categorie
+                    in ctxt.PPCategories
+                select categorie;
+
+            
+            return View(categories.AsEnumerable().ToList());
         }
 
         [HttpPost]
         public ActionResult DonneesIndex()
         {
-            IndexViewModel viewModel = new IndexViewModel
+            IndexStats stats = new IndexStats
             {
                 NombreDemandesVendeur = CalculerNombreDemandesVendeurs(),
                 Redevances = CalculerRedevances(),
                 UtilisateursInactifs = CalculerInactivite(),
             };
 
-            return Json(viewModel);
+            return Json(stats);
         }
 
         private Dictionary<string, int> CalculerNombreDemandesVendeurs()
@@ -131,6 +137,13 @@ namespace PetitesPuces.Controllers
                 select client).AsEnumerable().ToList();
 
             return vendeursInactifs.Where(c => c.DateDerniereActivite.AddYears(1) < DateTime.Today - INDEX_STATS_PERIOD);
+        }
+
+        public ActionResult ActualiserCategories()
+        {
+
+
+            return PartialView("Gestionnaire/_GestionCategories");
         }
 
         public ActionResult DemandesVendeur()

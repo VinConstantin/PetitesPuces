@@ -17,7 +17,7 @@
                     }
                 }
             ]
-        }
+        }   
     };
 
     const ctxInactive = ctxtForSelector('#cvInactivite');
@@ -68,7 +68,7 @@
     function creerDataSet(demandes, etiquetteDonnees) {
         const etiquettes = [];
         const donnees = [];
-        const intl = new Intl.RelativeTimeFormat('fr');
+        const intl = new Intl.RelativeTimeFormat('de');
 
         const today = new Date();
         const ticksInDay = 1000 * 60 * 60 * 24;

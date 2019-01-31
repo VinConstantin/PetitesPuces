@@ -195,7 +195,7 @@
     <Compile Include="Models\Produit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Formatter.cs" />
-    <Compile Include="ViewModels\Gestionnaire\IndexViewModel.cs" />
+    <Compile Include="ViewModels\Gestionnaire\IndexStats.cs" />
     <Compile Include="ViewModels\Gestionnaire\Redevance.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
     <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />

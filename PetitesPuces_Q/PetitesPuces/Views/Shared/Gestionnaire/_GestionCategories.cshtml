@@ -1,4 +1,4 @@
-@model List<PetitesPuces.Models.Categorie>
+@model List<PetitesPuces.Models.PPCategory>
 
 
 <div class="row d-flex justify-content-center align-items-center" style="margin: 20px 0 10px 0">
@@ -22,7 +22,7 @@
         @foreach (var categorie in Model)
         {
             <tr class="v-align-baseline">
-                <td contenteditable="false" scope="row">@categorie.No</td>
+                <td contenteditable="false" scope="row">@categorie.NoCategorie</td>
                 <td contenteditable="false" class="text-left">@categorie.Description</td>
                 <td contenteditable="false" class="text-left">@categorie.Details</td>
                 <td>
@@ -70,24 +70,38 @@
 </div>
 
 <script>
-    window.onload = function() {
+    window.onload = function () {
+        let td;
+        let _this;
+
         $('.editbtn').click(function () {
-                                          var td = $(this).parents('tr').find('td');
-            if ($(this).html() == 'Modifier') {                  
-            $.each(td, function () {
-                $(this).prop('contenteditable', true);
-                td.css('background-color', 'rgba(241, 166, 166, .1) ');
-            });
+            _this = $(this);
+            td = _this.parents('tr').find('td');
+
+            if (_this.html().trim() === 'Modifier') {
+                onModifyStart();
             } else {
-            $.each(td, function () {
-                $(this).prop('contenteditable', false);
-                td.css('background-color', '');
-            });
-        }
-    
-        $(this).html($(this).html() == 'Modifier' ? 'Enregistrer' : 'Modifier')
-    
+                onModifyEnd();
+            }
         });
 
+        function onModifyStart() {
+            _this.html('Enregistrer');
+
+            $.each(td, () => setEditable(true));
+        }
+
+        function onModifyEnd() {
+            _this.html('Modifier');
+
+            $.each(td, () => setEditable(false));
+
+            $.post();
+        }
+
+        function setEditable(isEditable) {
+            $(this).prop('contenteditable', isEditable);
+            td.css('background-color', isEditable ? 'rgba(241, 166, 166, 0.1) ' : '');
+        }
     };
 </script>
