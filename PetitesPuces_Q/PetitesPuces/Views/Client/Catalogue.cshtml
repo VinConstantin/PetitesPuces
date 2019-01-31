@@ -23,6 +23,7 @@
                     <div class="">    
                         <div class="">
                             <p style="line-height: 2.0;">Tous les vendeurs</p>
+                            <p>Nombre d'items : @Model.Categories.Sum(c=>c.PPProduits.Count) </p>
                         </div>
                     </div>
                 </div>
@@ -48,7 +49,7 @@
 <div class="modal fade" id="ModalDescription" tabindex="-1" role="dialog" aria-labelledby="ModalDescription" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div id="PLACEHOLDERModalDescription">
-            @Html.Partial("Client/ModalProduit", @Model.Produits.First())
+            
         </div>
     </div>
 </div>
