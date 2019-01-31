@@ -8,6 +8,40 @@
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Vendeur/Index.css")" />
 }
 
+<script>
+    function visualiser(NoCommande) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/ConfirmationLivraison",
+            type: "get",
+            data: {
+                "NoCommande": NoCommande
+            },
+            success: function (result) {
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+
+    function livrer(NoCommande) {
+        $.ajax({
+            url: URLPATH+"/Vendeur/Livraison",
+            type: "get",
+            data: {
+                "NoCommande": NoCommande
+            },
+            success: function (result) {
+                window.location.reload();
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+</script>
+
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1 class="display-3">@ViewBag.Title</h1>
@@ -26,6 +60,7 @@
     {
         <table class="table m-0">
             <tr>
+
                 <th class="rowHead">
                     @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().NoCommande)
                 </th>
@@ -50,6 +85,7 @@
                 <th>
 
                 </th>
+
             </tr>
         </table>
         <div class="tableau">
@@ -97,5 +133,13 @@
     </div>
     <div class="text-left mt-2">
         <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("GestionPaniers", "Vendeur" )'">Gérer les paniers</button>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmationLivraison" tabindex="-1" role="dialog" aria-labelledby="confirmationLivraison" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div id="PLACEHOLDERModalDescription" class="modal-content">
+
+        </div>
     </div>
 </div>

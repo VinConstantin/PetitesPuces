@@ -32,10 +32,7 @@ namespace PetitesPuces.Models
                 return _dateDerniereActivite.Value;
             }
         }
-
-        //Peut changer
-        public string MessageErreur { get; set; }
-
+        
         public DateTime CalculerDerniereActivite()
         {
             return (from paniers
@@ -61,20 +58,20 @@ namespace PetitesPuces.Models
         [RegularExpression("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", ErrorMessage = "Votre format de courriel est incorrect.")]
         [DisplayName("Adresse Courriel")]
         public string AdresseEmail { get; set; }
-
+/*
         [Required(ErrorMessage = "Veuillez rentrer votre adresse courriel!")]
         [RegularExpression("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", ErrorMessage = "Votre format de courriel est incorrect.")]
         [System.ComponentModel.DataAnnotations.Compare("AdresseEmail", ErrorMessage = "Le second courriel ne corespond pas au premier")]
         [DisplayName("Confirmation Courriel")]
         public string ConfirmationCourriel { get; set; }
-
+        */
         [Required(ErrorMessage = "Veuillez rentrer votre mot de passe!")]
         [DataType(DataType.Password)]
         [RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,100}$", ErrorMessage = "Votre format de mot de passe est incorrect. Il doit avoir minimum 8 caractères et inclure au moins une majuscule.")]
         [DisplayName("Mot de passe")]
         public string MotDePasse { get; set; }
 
-
+        /*
         [Required(ErrorMessage = "Veuillez rentrer votre mot de passe encore une autre fois!")]
         [DataType(DataType.Password)]
         [RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,100}$", ErrorMessage = "Votre format de mot de passe est incorrect. Il doit avoir minimum 8 caractères et inclure au moins une majuscule.")]
@@ -82,7 +79,7 @@ namespace PetitesPuces.Models
         [DisplayName("Confirmation de mot de passe")]
         public string confirmationMDP { get; set; }
 
-
+    */
         [Required(ErrorMessage = "Veuillez rentrer votre nom!")]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("Nom")]

@@ -20,7 +20,6 @@ namespace PetitesPuces.Models
             get { return ROLE; }
         }
 
-        public string MessageErreur { get; set; }
         public DateTime DateDerniereActivite
         {
             get
@@ -66,12 +65,12 @@ namespace PetitesPuces.Models
         [DisplayName("Adresse courriel")]
         public string AdresseEmail { get; set; }
 
-        [Required(ErrorMessage = "Veuillez rentrer encore votre adresse courriel!")]
+       /* [Required(ErrorMessage = "Veuillez rentrer encore votre adresse courriel!")]
         [RegularExpression("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", ErrorMessage = "Votre format de courriel est incorrect.")]
         [System.ComponentModel.DataAnnotations.Compare("AdresseEmail", ErrorMessage = "Le second courriel ne corespond pas au premier.")]
         [DisplayName("Confirmation courriel")]
         public string confirmationCourriel { get;  set;}
-
+        */
         [Required(ErrorMessage = "Veuillez rentrer votre nom!")]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("Nom")]
@@ -99,14 +98,14 @@ namespace PetitesPuces.Models
         [DisplayName("Mot de passe")]
         public string MotDePasse { get; set; }
 
-        [Required(ErrorMessage = "Veuillez rentrer encore une fois votre mot de passe!")]
+       /* [Required(ErrorMessage = "Veuillez rentrer encore une fois votre mot de passe!")]
         [DataType(DataType.Password)]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 8 caractères.", MinimumLength = 8)]
         [RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,100}$", ErrorMessage = "Votre format de mot de passe est incorrect. Il doit avoir minimum 8 caractères et inclure au moins une majuscule.")]
         [System.ComponentModel.DataAnnotations.Compare("MotDePasse", ErrorMessage = "Le second mot de passe ne corespond pas au premier.")]
         [DisplayName("Confirmation mot de passe")]
         public string confirmationMDP { get; set; }
-
+        */
         [Required(ErrorMessage = "Veuillez rentrer votre rue!")]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("Rue")]
@@ -133,28 +132,28 @@ namespace PetitesPuces.Models
         [Range(0, 10000, ErrorMessage = "S.V.P de rentrer un chiffre entre 0 à 10000 kg")]
         [Required(ErrorMessage = "Veuillez rentrer le poids max pour la livraison!")]
         [DisplayName("Poids max (KG)")]
-        public int poidsMax { get;  set;}
+        public int PoidsMaxLivraison { get;  set;}
 
         [Range(0, 10000, ErrorMessage = "S.V.P de rentrer un chiffre entre 0 à 10000 $")]
         [Required(ErrorMessage = "Veuillez rentrer un prix au moins pour une livraison graduite!")]
         [DisplayName("Prix minimum")]
-        public int prixMinimum { get;  set;}
+        public int LivraisonGratuite { get;  set;}
 
 
         [DisplayName("Taxes TPS/TVQ")]
-        public Boolean taxes { get;  set;}
+        public Boolean Taxes { get;  set;}
 
         [Required(ErrorMessage = "Veuillez rentrer votre numéro de téléphone!")]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 10 caractères.", MinimumLength = 10)]
         [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
         [DisplayName("Téléphone No1")]
-        public string tel1 { get;  set;}
+        public string Tel1 { get;  set;}
 
         [Required(ErrorMessage = "Veuillez rentrer un autre numéro de téléphone!")]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 10 caractères.", MinimumLength = 10)]
         [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
         [DisplayName("Téléphone No2")]
-        public string tel2 { get;  set;}
+        public string Tel2 { get;  set;}
 
 
         public string Role

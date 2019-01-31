@@ -317,6 +317,7 @@
     <Content Include="Views\Shared\Home\_Produits.cshtml" />
     <Content Include="Views\Shared\Home\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\_ModalConfirmation.cshtml" />
+    <Content Include="Views\Shared\_Pagination.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
     <Content Include="Views\Vendeur\Index.cshtml" />
     <Content Include="Views\Vendeur\Profil.cshtml" />

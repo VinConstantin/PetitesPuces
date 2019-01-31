@@ -54,22 +54,38 @@ namespace PetitesPuces.Controllers
             }
             //chercher le vendeur
             PPVendeur vendeur;
-            int NoVendeur;
-            if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
+            if (Vendeur == "-1")
             {
-                var requete = (from unVendeur in context.PPVendeurs select unVendeur);
-                vendeur = requete.FirstOrDefault();
+                vendeur = new PPVendeur
+                {
+                    NoVendeur = -1
+                };
+                int NoVendeur;
+                
+                //creer la liste de produits
+                listeProduits = (from p in context.PPProduits select p)
+                    .Where(p => categorie == null || p.PPCategory == categorie);
             }
             else
             {
-                var requete = (from unVendeur in context.PPVendeurs 
-                    where unVendeur.NoVendeur == NoVendeur
-                    select unVendeur);
-                vendeur = requete.FirstOrDefault();
+                int NoVendeur;
+                if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
+                {
+                    var requete = (from unVendeur in context.PPVendeurs select unVendeur);
+                    vendeur = requete.FirstOrDefault();
+                }
+                else
+                {
+                    var requete = (from unVendeur in context.PPVendeurs 
+                        where unVendeur.NoVendeur == NoVendeur
+                        select unVendeur);
+                    vendeur = requete.FirstOrDefault();
+                }
+                //creer la liste de produits
+                listeProduits = vendeur.PPProduits
+                    .Where(p => categorie == null || p.PPCategory == categorie);
             }
-            //creer la liste de produits
-            listeProduits = vendeur.PPProduits
-                .Where(p => categorie == null || p.PPCategory == categorie);
+
             if(!String.IsNullOrEmpty(Filtre)) 
                 listeProduits = listeProduits.Where(p => p.Nom.ToLower().Contains(Filtre.ToLower()));
 
