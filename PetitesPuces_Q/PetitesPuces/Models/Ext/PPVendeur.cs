@@ -20,6 +20,7 @@ namespace PetitesPuces.Models
             get { return ROLE; }
         }
 
+        public string MessageErreur { get; set; }
         public DateTime DateDerniereActivite
         {
             get
@@ -154,7 +155,6 @@ namespace PetitesPuces.Models
         [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
         [DisplayName("Téléphone No2")]
         public string tel2 { get; }
-
 
 
         public string Role

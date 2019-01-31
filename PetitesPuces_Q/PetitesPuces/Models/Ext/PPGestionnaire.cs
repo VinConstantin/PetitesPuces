@@ -4,58 +4,13 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 
-namespace PetitesPuces.Models
+namespace PetitesPuces.Models.Ext
 {
-    [MetadataType(typeof(PPClient_Validation))]
-    public partial class PPClient : IUtilisateur
+    public class PPGestionnaire
     {
-        private static readonly BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
-        private static readonly string ROLE = "client";
-        private DateTime? _dateDerniereActivite;
-
-        public string Role
-        {
-            get { return ROLE; }
-        }
-
-        public DateTime DateDerniereActivite
-        {
-            get
-            {
-                if (!_dateDerniereActivite.HasValue)
-                {
-                    _dateDerniereActivite = CalculerDerniereActivite();
-                }
-
-                return _dateDerniereActivite.Value;
-            }
-        }
-
-        //Peut changer
-        public string MessageErreur { get; set; }
-
-        public DateTime CalculerDerniereActivite()
-        {
-            return (from paniers
-                            in ctxt.PPArticlesEnPaniers
-                    where paniers.NoClient == NoClient
-                    select paniers.DateCreation.GetValueOrDefault())
-                    .Concat(
-                        from commande
-                            in ctxt.PPCommandes
-                        where commande.NoClient == NoClient
-                        select commande.DateCommande.GetValueOrDefault()).AsEnumerable().ToList().DefaultIfEmpty(DateTime.MinValue).Max();
-        }
-    }
-
-    [Bind()]
-    public class PPClient_Validation
-    {
-
-        [DisplayName("No Client")]
-        public int NoClient { get; set; }
+        [DisplayName("No Gestionnaire")]
+        public int NoGestionnaire { get; set; }
 
         [Required(ErrorMessage = "Veuillez rentrer votre adresse courriel!")]
         [RegularExpression("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", ErrorMessage = "Votre format de courriel est incorrect.")]
@@ -93,25 +48,5 @@ namespace PetitesPuces.Models
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("Prénom")]
         public string Prenom { get; set; }
-
-
-        [DisplayName("Date de dernière connexion")]
-        public DateTime DateDerniereConnexion { get; set; }
-
-
-
-        public string Rue { get; }
-        public string Ville { get; }
-        public string Province { get; }
-        public string CodePostal { get; }
-        public string Pays { get; }
-        public DateTime? DateCreation { get; }
-        public DateTime DateDerniereActivite { get; }
-        public DateTime DateMAJ { get; }
-        
-        public string Role
-        {
-            get { return "Client"; }
-        }
     }
 }

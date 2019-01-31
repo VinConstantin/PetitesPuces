@@ -21,6 +21,7 @@ namespace PetitesPuces.Models
         [Required (ErrorMessage = "Veuillez rentrer votre mot de passe!")]
         string MotDePasse { get;  }
 
+        string MessageErreur { get; }
         string Rue { get; }
         DateTime? DateCreation { get; }
         DateTime DateDerniereActivite { get; }
