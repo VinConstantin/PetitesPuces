@@ -226,10 +226,10 @@
                 "Quantite": quantite
             },
             success: function(result) {
-                console.log(result)
+                alert("Les produit est ajouté au panier")
             },
             error: function(req, status, err) {
-                console.log(req, status, err)
+                alert("Une erreure est survenue")
             }
         });
     }

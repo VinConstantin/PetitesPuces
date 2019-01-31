@@ -13,15 +13,15 @@ namespace PetitesPuces.Controllers
 {
     public class ClientController : Controller
     {
+        //TODO:implémenter pour utiliser le bon no
+        private const int NOCLIENT = 10100;
         private const int DEFAULTITEMPARPAGE = 8;
         private BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
 
         public ActionResult Index()
         {
-            //TODO:implémenter pour utiliser le bon no
-            int noClient = 10100;
-            List<Panier> lstPaniers = GetPaniersClient(noClient);
-            List<PPCommande> lstCommandes = GetCommandesClient(noClient);
+            List<Panier> lstPaniers = GetPaniersClient(NOCLIENT);
+            List<PPCommande> lstCommandes = GetCommandesClient(NOCLIENT);
             
             AccueilViewModel viewModel = new AccueilViewModel
             {
@@ -154,9 +154,6 @@ namespace PetitesPuces.Controllers
         [HttpPost]
         public HttpStatusCode AjouterProduitAuPanier(int NoProduit, short Quantite)
         {
-            //TODO: implément pour utiliser le bon noClient
-            int noClient = 10100;
-                
             var requeteProduit = (from unProduit in context.PPProduits
                 where unProduit.NoProduit == NoProduit
                 select unProduit);
@@ -174,7 +171,7 @@ namespace PetitesPuces.Controllers
             PPArticlesEnPanier article = new PPArticlesEnPanier
             {
                 NoPanier = noPanier,
-                NoClient = noClient,
+                NoClient = NOCLIENT,
                 NoVendeur = noVendeur,
                 DateCreation = dateCreation,
                 NbItems = nbItems,
@@ -194,9 +191,7 @@ namespace PetitesPuces.Controllers
         public ActionResult MonPanier(string No)
         {
             ViewBag.NoVendeur = No;
-            //TODO: implément pour utiliser le bon noClient
-            int noClient = 10100;
-            List<Panier> lstPaniers = GetPaniersClient(noClient);
+            List<Panier> lstPaniers = GetPaniersClient(NOCLIENT);
             //List<Panier> lstPaniers = new List<Panier>();
             return View(lstPaniers);
         }
@@ -248,7 +243,7 @@ namespace PetitesPuces.Controllers
         public ActionResult Information(int NoClient=0)
         {
             PPClient client = (from cli in context.PPClients
-                where cli.NoClient == NoClient
+                where cli.NoClient == NOCLIENT
                 select cli).FirstOrDefault();
             return PartialView("Client/Commande/_Information", client);
         }
@@ -274,11 +269,8 @@ namespace PetitesPuces.Controllers
 
         public ActionResult DetailPanier(int noVendeur)
         {
-            //TODO: implément pour utiliser le bon noClient
-            int noClient = 10100;
-            
             var query = from articles in context.PPArticlesEnPaniers
-                where articles.NoClient == noClient
+                where articles.NoClient == NOCLIENT
                       && articles.NoVendeur == noVendeur
                 orderby articles.DateCreation ascending
                 select articles;
