@@ -198,6 +198,7 @@ namespace PetitesPuces.Controllers
         }
         public ActionResult MonPanier(string No)
         {
+            ViewBag.NoClient = NOCLIENT;
             ViewBag.NoVendeur = No;
             List<Panier> lstPaniers = GetPaniersClient(NOCLIENT);
             //List<Panier> lstPaniers = new List<Panier>();
@@ -291,7 +292,92 @@ namespace PetitesPuces.Controllers
             };
             return PartialView("Client/_DetailPanier",panier);
         }
+        public ActionResult SupprimerArticle(int NoProduit, int NoVendeur)
+        {
+            var articleSuprimer = (from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == NoVendeur
+                      && articles.PPProduit.NoProduit == NoProduit
+                select articles).FirstOrDefault();
+            
+            context.PPArticlesEnPaniers.DeleteOnSubmit(articleSuprimer);         
+            context.SubmitChanges();
+            
+            var query = from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == NoVendeur
+                orderby articles.DateCreation ascending
+                select articles;
 
+            Panier panier = new Panier
+            {
+                Vendeur = query.FirstOrDefault().PPVendeur,
+                Client = query.FirstOrDefault().PPClient,
+                Articles = query.ToList()
+            };
+            
+            return PartialView("Client/_DetailPanier",panier);
+        }
+        public ActionResult SupprimerPanier(int NoVendeur)
+        {
+            var articlesSuprimer = (from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == NoVendeur
+                select articles).ToList();
+
+            foreach (var article in articlesSuprimer)
+            {
+                context.PPArticlesEnPaniers.DeleteOnSubmit(article);     
+            }    
+            context.SubmitChanges();
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+        public ActionResult ModifierQuantite(int NoProduit, int NoVendeur, bool aAugmenter)
+        {
+            var articleModifer = (from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == NoVendeur
+                      && articles.PPProduit.NoProduit == NoProduit
+                select articles).FirstOrDefault();
+            
+            //TODO: v'erifier si disponible
+
+            //augmenter
+            if (aAugmenter)
+            {
+                if (articleModifer.PPProduit.NombreItems > articleModifer.NbItems)
+                {
+                    articleModifer.NbItems += 1;
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Conflict);
+                }
+            }
+            //diminuer
+            else if(articleModifer.NbItems > 1)
+            {
+                articleModifer.NbItems -= 1;
+            }
+            
+            context.SubmitChanges();
+            
+            var query = from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == NoVendeur
+                orderby articles.DateCreation ascending
+                select articles;
+
+            Panier panier = new Panier
+            {
+                Vendeur = query.FirstOrDefault().PPVendeur,
+                Client = query.FirstOrDefault().PPClient,
+                Articles = query.ToList()
+            };
+            
+            return PartialView("Client/_DetailPanier",panier);
+        }
         public ActionResult Profil()
         {
             return View();

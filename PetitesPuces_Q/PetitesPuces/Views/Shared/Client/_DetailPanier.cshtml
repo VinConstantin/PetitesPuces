@@ -8,7 +8,7 @@
 }
 <div class="row">
     <div class="col-md-8" style="height: 70vh;
-                                       overflow: auto;">
+                                      overflow: auto;">
         <table class="table table-hover">
             <tbody>
             @foreach(PPArticlesEnPanier article in @Model.Articles)
@@ -19,43 +19,24 @@
         </table>
     </div>
     <div class="col-md-4">
-        <button class="btn btn-danger">Supprimer ce panier</button>
+        <button type="button" data-toggle="modal" data-target="#modalConfirmationSupprimer" class="btn btn-danger">Supprimer ce panier</button>
         <br/>
         <br/>
         <div class="panel panel-primary">
-            <div class="panel-heading">Récapitulaif (2 articles): </div>
+            <div class="panel-heading">Récapitulaif: </div>
             <div class="panel-body">
                 <div class="h4">
                     <p class="row">
-                        <div class="col-xs-6">Articles :</div>
-                        <div class="col-xs-6">@Formatter.Money(ViewBag.SousTotal)</div></p>
+                        <div class="col-xs-8">Nombre d'items :</div>
+                        <div class="col-xs-4" style="text-align: right">@Model.Articles.Sum(a=>a.NbItems)</div></p>
+                    
                     <p class="row">
-                        <div class="col-xs-6">Livraison :</div>
-                        <div class="col-xs-6"> @Formatter.Money(ViewBag.FraisLivraison)</div></p>
-
+                        <div class="col-xs-8">Sous total :</div>
+                        <div class="col-xs-4">@Formatter.Money(@Model.Articles.Sum(a=>a.NbItems*a.PPProduit.PrixVente))</div></p>
                     <div class="row">
                         <br/><hr/>
                     </div>
 
-                    <p class="row">
-                        <div class="col-xs-6">Sous total:</div>
-                        <div class="col-xs-6"> @Formatter.Money(ViewBag.SousTotal + ViewBag.FraisLivraison)</div></p>
-                    <p class="row">
-                        <div class="col-xs-6">TPS :</div>
-                        <div class="col-xs-6"> @Formatter.Money((ViewBag.SousTotal + ViewBag.FraisLivraison) * (decimal)0.05)</div></p>
-                    <p class="row">
-                        <div class="col-xs-6">tvq :</div>
-                        <div class="col-xs-6"> @Formatter.Money((ViewBag.SousTotal + ViewBag.FraisLivraison) * (decimal)0.09975)</div></p>
-
-                    <div class="row">
-                        <br/><hr/>
-                    </div>
-
-                    <p class="row">             
-                        <div class="col-xs-6">Montant total:</div> 
-                        <div class="col-xs-6">@Formatter.Money(ViewBag.SousTotal + ViewBag.FraisLivraison + (ViewBag.SousTotal + ViewBag.FraisLivraison) * (decimal)0.05 + (ViewBag.SousTotal + ViewBag.FraisLivraison) * (decimal)0.09975)</div> 
-                    </p>
-                    <br/>    
                 </div>
 
                 
@@ -68,9 +49,8 @@
             <div class="panel-heading">Informations sur le vendeur: </div>
             <div class="panel-body">
                 <div class="h4">
-                    <p><a href="@Url.Action("Catalogue", "Client", new RouteValueDictionary(new { Vendeur= @ViewBag.Vendeur }))">@Model.Vendeur.Nom</a></p>
+                    <p><a href="@Url.Action("Catalogue", "Client", new RouteValueDictionary(new { Vendeur= @ViewBag.Vendeur }))">@Model.Vendeur.NomAffaires</a></p>
                     <p>Membre depuis @Model.Vendeur.DateCreation.ToString()</p>
-                    <p>Entreprise : @Model.Vendeur.NomAffaires</p>
 
                     <hr/>
 
@@ -80,3 +60,30 @@
         </div>
     </div>
 </div>
+
+<!-- Modal pour supprimer panier -->
+<div class="modal fade" id="modalConfirmationSupprimer" tabindex="-1" role="dialog" aria-labelledby="modalConfirmationSupprimer" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer ce panier?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" type="button" onclick="supprimerPanier(@Model.Vendeur.NoVendeur)" class="btn btn-primary">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.addEventListener("load",function(){
+        $('#Panier'+@Model.Vendeur.NoVendeur).first().addClass("Current");
+    },false);
+</script>
