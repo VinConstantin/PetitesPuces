@@ -108,8 +108,8 @@
 
             if (titreUnique) {
                 $.post('/Gestionnaire/Categories',
-                    { NoCategorie: null, Description: titre, Details: details },
-                    window.onload.majCategories);
+                       { NoCategorie: null, Description: titre, Details: details },
+                       majCategories);
             } else {
                 e.preventDefault();
                 alert('Le titre de la catégorie doit être unique');

@@ -79,7 +79,8 @@ namespace PetitesPuces.Controllers
                 (from cat
                         in ctxt.PPCategories
                     select cat.NoCategorie).Max() + 10;
-            
+
+            categorie.NoCategorie = nextId;
             ctxt.PPCategories.InsertOnSubmit(categorie);
             ctxt.SubmitChanges();
 
