@@ -5,7 +5,7 @@
     <div class="form-row">
         <div class="col-md-6 col-md-offset-3">
             <div class="radio">
-                <label><input type="radio" name="optradio" checked>Poste rÃ©guliÃ¨re</label>
+                <label><input type="radio" name="optradio" checked>Poste régulière</label>
             </div>
             <div class="radio">
                 <label><input type="radio" name="optradio">Poste prioritaire</label>
@@ -29,7 +29,6 @@
 </form>
 <script>
     function next(){
-        $('#Livraison').removeClass('active');
         $('#Paiement').addClass('active');
         $.ajax({
             url: URLPATH + "/Client/Paiement",
@@ -48,10 +47,9 @@
     }
     function previous(){
         $('#Livraison').removeClass('active');
-        $('#Information').addClass('active');
         $.ajax({
             url: URLPATH + "/Client/Information",
-            type: "get",
+            type: "post",
             data: {
                 "NoClient":10100
             },
