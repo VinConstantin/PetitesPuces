@@ -4,7 +4,7 @@
 }
 <hr>
 <div class="container">
-    <div class="row">
+    
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="panel panel-default">
@@ -12,7 +12,7 @@
                         <div class="text-center well">
                             <h3><i class="fa fa-lock fa-4x"></i></h3>
                             <h2 class="text-center">Modification du MDP</h2>
-                            <p>Le nouveau MDP ne doit pas être identique qu'avant</p>
+                            <sm>Le nouveau MDP ne doit pas être identique qu'avant</sm>
                             <div class="panel-body">
 
                                 <form class="form">
@@ -21,15 +21,16 @@
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-edit color-blue"></i></span>
 
-                                                <input id="emailInput" placeholder="Ancien mot de passe" class="form-control" type="password" oninvalid="setCustomValidity('Ce mot de passe ne coresponds pas!')" onchange="try{setCustomValidity('')}catch(e){}" required="">
-                                                <input id="emailInput" placeholder="Nouveau mot de passe" class="form-control" type="password" oninvalid="setCustomValidity('Vous devez rentrez un mot de passe !')" onchange="try{setCustomValidity('')}catch(e){}" required="">
-                                                <input id="emailInput" placeholder="Confirmer le nouveau mot de passe" class="form-control" type="password" oninvalid="setCustomValidity('Veuillez rentrer un mot de passe identique!')" onchange="try{setCustomValidity('')}catch(e){}" required="">
-                                             </div>
+                                                <input id="emailInput" placeholder="Ancien mot de passe" class="form-control" type="password" oninvalid="setCustomValidity('Ce mot de passe ne coresponds pas!')"  required="">
+                                                <input id="emailInput" placeholder="Nouveau mot de passe" class="form-control" type="password" oninvalid="setCustomValidity('Vous devez rentrez un mot de passe !')"  required="">
+                                                <input id="emailInput" placeholder="Confirmer le nouveau mot de passe" class="form-control" type="password" oninvalid="setCustomValidity('Veuillez rentrer un mot de passe identique!')" required="">
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <input class="btn btn-lg btn-primary btn-block center-block" value="Modifier" type="submit">
                                         </div>
                                     </fieldset>
+                                    @Html.ActionLink("Retourner au menu", "Index")
                                 </form>
 
                             </div>
@@ -38,5 +39,5 @@
                 </div>
             </div>
         </div>
-    </div>
+ 
 </div>

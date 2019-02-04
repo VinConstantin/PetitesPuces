@@ -4,6 +4,31 @@
     ViewBag.Title = "Gestion des paniers";
 }
 
+@section styles {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Vendeur/Index.css")" />
+}
+
+<script>
+    function visualiser(NbMois) {
+        console.log("visualiser");
+        $.ajax({
+            url: URLPATH +"/Vendeur/VisualiserPaniers",
+            type: "get",
+            data: {
+                "NbMois": NbMois
+            },
+            success: function (result) {
+                console.log("success")
+                $("#PLACEHOLDERPaniersMois").html(result);
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERPaniersMois").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+</script>
+
 <h2 class="text-center">@ViewBag.Title</h2>
 
 <h3 class="col-xs-12 text-center">Tous les paniers</h3>
@@ -11,76 +36,62 @@
     <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
         <strong class="text-bold mx-1">Panier existe depuis:</strong>
         <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default">
+            <label type="button" onclick="visualiser(1)" class="btn btn-default">
                 <input type="radio" name="periodeClient" value="1" autocomplete="off" /> 1
             </label>
-            <label type="button" class="btn btn-default">
+            <label type="button" onclick="visualiser(2)" class="btn btn-default">
                 <input type="radio" name="periodeClient" value="2" autocomplete="off" /> 2
             </label>
-            <label type="button" class="btn btn-default">
+            <label type="button" onclick="visualiser(3)" class="btn btn-default">
                 <input type="radio" name="periodeClient" value="3" autocomplete="off" /> 3
             </label>
-            <label type="button" class="btn btn-default">
+            <label type="button" onclick="visualiser(6)" class="btn btn-default">
                 <input type="radio" name="periodeClient" value="6" autocomplete="off" /> 6
             </label>
             <strong class="mx-1">Mois</strong>
         </div>
         <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default">
+            <label type="button" onclick="visualiser(99)" class="btn btn-default">
                 <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Toujours
             </label>
         </div>
     </div>
-    <table class="table lst-vendeurs mt-2 bg-light">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().NomClient)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().DateCreation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().NbItems)
-            </th>
-            <th>
-                Total
-            </th>
-        </tr>
-        @foreach (var panier in Model)
-        {
-            if (panier.DateCreation > DateTime.Today.AddMonths(-1))
-            {
-                @Html.Partial("Vendeur/_Panier", panier)
-            }
-        }
-    </table>
+    <div id="PLACEHOLDERPaniersMois">
+
+    </div>
 </div>
 
 <h3 class="col-xs-12 text-center">Ménage des paniers</h3>
+
+
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    <table class="table lst-vendeurs mt-2 bg-light">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().NomClient)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().DateCreation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().NbItems)
-            </th>
-            <th>
-                Total
-            </th>
-            <th>
-            </th>
-        </tr>
-        @foreach (var panier in Model)
-        {
-            if (panier.DateCreation < DateTime.Today.AddMonths(-6))
+    @if (Model.Count() == 0)
+    {
+        <h4 class="text-center col-xs-12">Aucun panier plus vieux que 6 mois</h4>
+    }
+    else
+    {
+        <table class="table m-0 bg-light">
+            <tr>
+                <th class="rowHead">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().NomClient)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().DateCreation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().NbItems)
+                </th>
+                <th>
+                    Total
+                </th>
+                <th>
+                </th>
+            </tr>
+            @foreach (var panier in Model)
             {
-                @Html.Partial("Vendeur/_Panier", panier)
+                @Html.Partial("Vendeur/_MenagePaniers", panier)
             }
-        }
-    </table>
+        </table>
+    }
 </div>

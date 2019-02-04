@@ -78,7 +78,7 @@ namespace PetitesPuces.Models
     #endregion
 		
 		public BDPetitesPucesDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["BD6B8_424QConnectionString"].ConnectionString, mappingSource)
+				base(global::PetitesPuces.Properties.Settings.Default.BD6B8_424QConnectionString1, mappingSource)
 		{
 			OnCreated();
 		}
@@ -1307,220 +1307,216 @@ namespace PetitesPuces.Models
 			entity.PPClient = null;
 		}
 	}
-
-    [global::System.Data.Linq.Mapping.TableAttribute(Name = "dbo.PPCommandes")]
-    public partial class PPCommande : INotifyPropertyChanging, INotifyPropertyChanged
-    {
-
-        private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-
-        private long _NoCommande;
-
-        private System.Nullable<long> _NoClient;
-
-        private System.Nullable<long> _NoVendeur;
-
-        private System.Nullable<System.DateTime> _DateCommande;
-
-        private System.Nullable<decimal> _CoutLivraison;
-
-        private System.Nullable<short> _TypeLivraison;
-
-        private System.Nullable<decimal> _MontantTotAvantTaxes;
-
-        private System.Nullable<decimal> _TPS;
-
-        private System.Nullable<decimal> _TVQ;
-
-        private System.Nullable<decimal> _PoidsTotal;
-
-        private System.Nullable<char> _Statut;
-
-        private string _NoAutorisation;
-
-        private EntitySet<PPDetailsCommande> _PPDetailsCommandes;
-
-        private EntityRef<PPClient> _PPClient;
-
-        private EntityRef<PPTypesLivraison> _PPTypesLivraison;
-
-        private EntityRef<PPVendeur> _PPVendeur;
-
-        #region Extensibility Method Definitions
-        partial void OnLoaded();
-        partial void OnValidate(System.Data.Linq.ChangeAction action);
-        partial void OnCreated();
-        partial void OnNoCommandeChanging(long value);
-        partial void OnNoCommandeChanged();
-        partial void OnNoClientChanging(System.Nullable<long> value);
-        partial void OnNoClientChanged();
-        partial void OnNoVendeurChanging(System.Nullable<long> value);
-        partial void OnNoVendeurChanged();
-        partial void OnDateCommandeChanging(System.Nullable<System.DateTime> value);
-        partial void OnDateCommandeChanged();
-        partial void OnCoutLivraisonChanging(System.Nullable<decimal> value);
-        partial void OnCoutLivraisonChanged();
-        partial void OnTypeLivraisonChanging(System.Nullable<short> value);
-        partial void OnTypeLivraisonChanged();
-        partial void OnMontantTotAvantTaxesChanging(System.Nullable<decimal> value);
-        partial void OnMontantTotAvantTaxesChanged();
-        partial void OnTPSChanging(System.Nullable<decimal> value);
-        partial void OnTPSChanged();
-        partial void OnTVQChanging(System.Nullable<decimal> value);
-        partial void OnTVQChanged();
-        partial void OnPoidsTotalChanging(System.Nullable<decimal> value);
-        partial void OnPoidsTotalChanged();
-        partial void OnStatutChanging(System.Nullable<char> value);
-        partial void OnStatutChanged();
-        partial void OnNoAutorisationChanging(string value);
-        partial void OnNoAutorisationChanged();
-        #endregion
-
-        public PPCommande()
-        {
-            this._PPDetailsCommandes = new EntitySet<PPDetailsCommande>(new Action<PPDetailsCommande>(this.attach_PPDetailsCommandes), new Action<PPDetailsCommande>(this.detach_PPDetailsCommandes));
-            this._PPClient = default(EntityRef<PPClient>);
-            this._PPTypesLivraison = default(EntityRef<PPTypesLivraison>);
-            this._PPVendeur = default(EntityRef<PPVendeur>);
-            OnCreated();
-        }
-
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_NoCommande", DbType = "BigInt NOT NULL", IsPrimaryKey = true)]
-        public long NoCommande
-        {
-            get
-            {
-                return this._NoCommande;
-            }
-            set
-            {
-                if ((this._NoCommande != value))
-                {
-                    this.OnNoCommandeChanging(value);
-                    this.SendPropertyChanging();
-                    this._NoCommande = value;
-                    this.SendPropertyChanged("NoCommande");
-                    this.OnNoCommandeChanged();
-                }
-            }
-        }
-
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_NoClient", DbType = "BigInt")]
-        public System.Nullable<long> NoClient
-        {
-            get
-            {
-                return this._NoClient;
-            }
-            set
-            {
-                if ((this._NoClient != value))
-                {
-                    if (this._PPClient.HasLoadedOrAssignedValue)
-                    {
-                        throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-                    }
-                    this.OnNoClientChanging(value);
-                    this.SendPropertyChanging();
-                    this._NoClient = value;
-                    this.SendPropertyChanged("NoClient");
-                    this.OnNoClientChanged();
-                }
-            }
-        }
-
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_NoVendeur", DbType = "BigInt")]
-        public System.Nullable<long> NoVendeur
-        {
-            get
-            {
-                return this._NoVendeur;
-            }
-            set
-            {
-                if ((this._NoVendeur != value))
-                {
-                    if (this._PPVendeur.HasLoadedOrAssignedValue)
-                    {
-                        throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-                    }
-                    this.OnNoVendeurChanging(value);
-                    this.SendPropertyChanging();
-                    this._NoVendeur = value;
-                    this.SendPropertyChanged("NoVendeur");
-                    this.OnNoVendeurChanged();
-                }
-            }
-        }
-
-        [DisplayName("Date")]
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_DateCommande", DbType = "SmallDateTime")]
-        public System.Nullable<System.DateTime> DateCommande
-        {
-            get
-            {
-                return this._DateCommande;
-            }
-            set
-            {
-                if ((this._DateCommande != value))
-                {
-                    this.OnDateCommandeChanging(value);
-                    this.SendPropertyChanging();
-                    this._DateCommande = value;
-                    this.SendPropertyChanged("DateCommande");
-                    this.OnDateCommandeChanged();
-                }
-            }
-        }
-
-        [DisplayName("Cout de livraison")]
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_CoutLivraison", DbType = "SmallMoney")]
-        public System.Nullable<decimal> CoutLivraison
-        {
-            get
-            {
-                return this._CoutLivraison;
-            }
-            set
-            {
-                if ((this._CoutLivraison != value))
-                {
-                    this.OnCoutLivraisonChanging(value);
-                    this.SendPropertyChanging();
-                    this._CoutLivraison = value;
-                    this.SendPropertyChanged("CoutLivraison");
-                    this.OnCoutLivraisonChanged();
-                }
-            }
-        }
-
-        [DisplayName("Type de livraison")]
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_TypeLivraison", DbType = "SmallInt")]
-        public System.Nullable<short> TypeLivraison
-        {
-            get
-            {
-                return this._TypeLivraison;
-            }
-            set
-            {
-                if ((this._TypeLivraison != value))
-                {
-                    if (this._PPTypesLivraison.HasLoadedOrAssignedValue)
-                    {
-                        throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-                    }
-                    this.OnTypeLivraisonChanging(value);
-                    this.SendPropertyChanging();
-                    this._TypeLivraison = value;
-                    this.SendPropertyChanged("TypeLivraison");
-                    this.OnTypeLivraisonChanged();
-                }
-            }
-        }
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PPCommandes")]
+	public partial class PPCommande : INotifyPropertyChanging, INotifyPropertyChanged
+	{
 		
-        [DisplayName("Total avant taxes")]
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private long _NoCommande;
+		
+		private System.Nullable<long> _NoClient;
+		
+		private System.Nullable<long> _NoVendeur;
+		
+		private System.Nullable<System.DateTime> _DateCommande;
+		
+		private System.Nullable<decimal> _CoutLivraison;
+		
+		private System.Nullable<short> _TypeLivraison;
+		
+		private System.Nullable<decimal> _MontantTotAvantTaxes;
+		
+		private System.Nullable<decimal> _TPS;
+		
+		private System.Nullable<decimal> _TVQ;
+		
+		private System.Nullable<decimal> _PoidsTotal;
+		
+		private System.Nullable<char> _Statut;
+		
+		private string _NoAutorisation;
+		
+		private EntitySet<PPDetailsCommande> _PPDetailsCommandes;
+		
+		private EntityRef<PPClient> _PPClient;
+		
+		private EntityRef<PPTypesLivraison> _PPTypesLivraison;
+		
+		private EntityRef<PPVendeur> _PPVendeur;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNoCommandeChanging(long value);
+    partial void OnNoCommandeChanged();
+    partial void OnNoClientChanging(System.Nullable<long> value);
+    partial void OnNoClientChanged();
+    partial void OnNoVendeurChanging(System.Nullable<long> value);
+    partial void OnNoVendeurChanged();
+    partial void OnDateCommandeChanging(System.Nullable<System.DateTime> value);
+    partial void OnDateCommandeChanged();
+    partial void OnCoutLivraisonChanging(System.Nullable<decimal> value);
+    partial void OnCoutLivraisonChanged();
+    partial void OnTypeLivraisonChanging(System.Nullable<short> value);
+    partial void OnTypeLivraisonChanged();
+    partial void OnMontantTotAvantTaxesChanging(System.Nullable<decimal> value);
+    partial void OnMontantTotAvantTaxesChanged();
+    partial void OnTPSChanging(System.Nullable<decimal> value);
+    partial void OnTPSChanged();
+    partial void OnTVQChanging(System.Nullable<decimal> value);
+    partial void OnTVQChanged();
+    partial void OnPoidsTotalChanging(System.Nullable<decimal> value);
+    partial void OnPoidsTotalChanged();
+    partial void OnStatutChanging(System.Nullable<char> value);
+    partial void OnStatutChanged();
+    partial void OnNoAutorisationChanging(string value);
+    partial void OnNoAutorisationChanged();
+    #endregion
+		
+		public PPCommande()
+		{
+			this._PPDetailsCommandes = new EntitySet<PPDetailsCommande>(new Action<PPDetailsCommande>(this.attach_PPDetailsCommandes), new Action<PPDetailsCommande>(this.detach_PPDetailsCommandes));
+			this._PPClient = default(EntityRef<PPClient>);
+			this._PPTypesLivraison = default(EntityRef<PPTypesLivraison>);
+			this._PPVendeur = default(EntityRef<PPVendeur>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoCommande", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long NoCommande
+		{
+			get
+			{
+				return this._NoCommande;
+			}
+			set
+			{
+				if ((this._NoCommande != value))
+				{
+					this.OnNoCommandeChanging(value);
+					this.SendPropertyChanging();
+					this._NoCommande = value;
+					this.SendPropertyChanged("NoCommande");
+					this.OnNoCommandeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoClient", DbType="BigInt")]
+		public System.Nullable<long> NoClient
+		{
+			get
+			{
+				return this._NoClient;
+			}
+			set
+			{
+				if ((this._NoClient != value))
+				{
+					if (this._PPClient.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnNoClientChanging(value);
+					this.SendPropertyChanging();
+					this._NoClient = value;
+					this.SendPropertyChanged("NoClient");
+					this.OnNoClientChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoVendeur", DbType="BigInt")]
+		public System.Nullable<long> NoVendeur
+		{
+			get
+			{
+				return this._NoVendeur;
+			}
+			set
+			{
+				if ((this._NoVendeur != value))
+				{
+					if (this._PPVendeur.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnNoVendeurChanging(value);
+					this.SendPropertyChanging();
+					this._NoVendeur = value;
+					this.SendPropertyChanged("NoVendeur");
+					this.OnNoVendeurChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCommande", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> DateCommande
+		{
+			get
+			{
+				return this._DateCommande;
+			}
+			set
+			{
+				if ((this._DateCommande != value))
+				{
+					this.OnDateCommandeChanging(value);
+					this.SendPropertyChanging();
+					this._DateCommande = value;
+					this.SendPropertyChanged("DateCommande");
+					this.OnDateCommandeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoutLivraison", DbType="SmallMoney")]
+		public System.Nullable<decimal> CoutLivraison
+		{
+			get
+			{
+				return this._CoutLivraison;
+			}
+			set
+			{
+				if ((this._CoutLivraison != value))
+				{
+					this.OnCoutLivraisonChanging(value);
+					this.SendPropertyChanging();
+					this._CoutLivraison = value;
+					this.SendPropertyChanged("CoutLivraison");
+					this.OnCoutLivraisonChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeLivraison", DbType="SmallInt")]
+		public System.Nullable<short> TypeLivraison
+		{
+			get
+			{
+				return this._TypeLivraison;
+			}
+			set
+			{
+				if ((this._TypeLivraison != value))
+				{
+					if (this._PPTypesLivraison.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTypeLivraisonChanging(value);
+					this.SendPropertyChanging();
+					this._TypeLivraison = value;
+					this.SendPropertyChanged("TypeLivraison");
+					this.OnTypeLivraisonChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MontantTotAvantTaxes", DbType="SmallMoney")]
 		public System.Nullable<decimal> MontantTotAvantTaxes
 		{
@@ -1580,9 +1576,8 @@ namespace PetitesPuces.Models
 				}
 			}
 		}
-
-        [DisplayName("Poids total")]
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PoidsTotal", DbType="Decimal(8,1)")]
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PoidsTotal", DbType="Decimal(8,1)")]
 		public System.Nullable<decimal> PoidsTotal
 		{
 			get
@@ -1621,9 +1616,8 @@ namespace PetitesPuces.Models
 				}
 			}
 		}
-
-        [DisplayName("No d'autorisation")]
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoAutorisation", DbType="VarChar(50)")]
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoAutorisation", DbType="VarChar(50)")]
 		public string NoAutorisation
 		{
 			get

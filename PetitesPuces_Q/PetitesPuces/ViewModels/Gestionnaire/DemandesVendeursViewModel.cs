@@ -8,6 +8,6 @@ namespace PetitesPuces.ViewModels.Gestionnaire
 {
     public class DemandesVendeursViewModel
     {
-        public List<Models.Vendeur> Vendeurs;
+        public List<Models.PPVendeur_Validation> Vendeurs;
     }
 }

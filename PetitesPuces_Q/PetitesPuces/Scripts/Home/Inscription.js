@@ -47,3 +47,17 @@ $(function () {
     });
 
 });
+
+function chargerLogin(e) {
+    const ACTION_URL = "/Home/FormLogin";
+
+    $.ajax(ACTION_URL, {
+        success: afficherLogin,
+    });
+
+    e.preventDefault();
+}
+
+function afficherLogin(vuePartielle) {
+    $("#loginDiv")[0].innerHTML = vuePartielle;
+}

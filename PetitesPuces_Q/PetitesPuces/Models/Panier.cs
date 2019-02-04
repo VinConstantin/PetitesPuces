@@ -22,6 +22,6 @@ namespace PetitesPuces.Models
         
         public PPClient Client { get; set; }
         public PPVendeur Vendeur { get; set; }
-        public List<PPProduit> Produits { get; set; }
+        public List<PPArticlesEnPanier> Articles { get; set; }
     }
 }

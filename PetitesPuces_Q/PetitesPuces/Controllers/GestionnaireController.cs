@@ -263,9 +263,9 @@ namespace PetitesPuces.Controllers
         {
             var viewModel = new InactiviteViewModel
             {
-                ClientsInactifs = new List<Client>
+                ClientsInactifs = new List<PPClient>
                 {
-                    new Client
+                    new PPClient
                     {
                         NoClient = 1,
                         AdresseEmail = "test@test.ca",
@@ -274,9 +274,9 @@ namespace PetitesPuces.Controllers
                         Prenom = "Client",
                     }
                 },
-                VendeursInactifs = new List<Vendeur>()
+                VendeursInactifs = new List<PPVendeur>()
                 {
-                    new Vendeur
+                    new PPVendeur()
                     {
                         NoVendeur = 1,
                         Nom = "Nom",

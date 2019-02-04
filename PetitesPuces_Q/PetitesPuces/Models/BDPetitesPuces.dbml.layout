@@ -92,14 +92,14 @@
         <elementListCompartment Id="6eac922c-80da-444a-865f-b23fb6da0bcd" absoluteBounds="3.515, 8.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.75 : 1.40625); (3.59375 : 1.40625); (3.59375 : 4.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 1.40625); (3.59375 : 1.40625); (3.59375 : 4.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/BDPetitesPucesDataContext/PPClient/PPClient_PPArticlesEnPanier" />
       <nodes>
         <classShapeMoniker Id="15b4c565-227c-4368-96a0-6a296c0cda6f" />
         <classShapeMoniker Id="c1646b65-c423-4689-98f0-ed0d8a6f7728" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.71769230769231 : 4.82851399739583); (3.125 : 5.23582168970353); (3.125 : 11.8085034179687); (3.5 : 11.8085034179687)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.71769230769231 : 4.82851399739583); (3.125 : 5.23582168970353); (3.125 : 11.8085034179687); (3.5 : 11.8085034179687)]" fixedFrom="NotFixed" fixedTo="Algorithm">
       <AssociationMoniker Name="/BDPetitesPucesDataContext/PPClient/PPClient_PPCommande" />
       <nodes>
         <classShapeMoniker Id="15b4c565-227c-4368-96a0-6a296c0cda6f" />
@@ -113,7 +113,7 @@
         <classShapeMoniker Id="46ff01bf-9cde-4304-83a1-c02cd200a859" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.5 : 7.125); (7.5 : 5.85659912109375); (5.5 : 5.85659912109375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(7.5 : 7.125); (7.5 : 5.85659912109375); (5.73958333333333 : 5.85659912109375 : JumpStart); (5.57291666666667 : 5.85659912109375 : JumpEnd); (5.5 : 5.85659912109375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/BDPetitesPucesDataContext/PPProduit/PPProduit_PPArticlesEnPanier" />
       <nodes>
         <classShapeMoniker Id="a026c2f9-3635-42b2-a454-10788c20a44c" />
@@ -155,14 +155,14 @@
         <classShapeMoniker Id="e0505557-63db-4888-8ef9-92ea60b8cb53" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 6.60659912109375); (3.04166666666667 : 6.60659912109375 : JumpStart); (3.20833333333333 : 6.60659912109375 : JumpEnd); (3.22916666666667 : 6.60659912109375 : JumpStart); (3.39583333333333 : 6.60659912109375 : JumpEnd); (3.5 : 6.60659912109375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 6.60659912109375); (3.04166666666667 : 6.60659912109375 : JumpStart); (3.20833333333333 : 6.60659912109375 : JumpEnd); (3.22916666666667 : 6.60659912109375 : JumpStart); (3.39583333333333 : 6.60659912109375 : JumpEnd); (3.5 : 6.60659912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/BDPetitesPucesDataContext/PPVendeur/PPVendeur_PPArticlesEnPanier" />
       <nodes>
         <classShapeMoniker Id="feb9b905-732d-4ef3-8396-d77ab3c454c7" />
         <classShapeMoniker Id="c1646b65-c423-4689-98f0-ed0d8a6f7728" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 10.7363598632812); (3.5 : 10.7363598632812)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 10.7363598632812); (3.04166666666667 : 10.7363598632812 : JumpStart); (3.20833333333333 : 10.7363598632812 : JumpEnd); (3.5 : 10.7363598632812)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/BDPetitesPucesDataContext/PPVendeur/PPVendeur_PPCommande" />
       <nodes>
         <classShapeMoniker Id="feb9b905-732d-4ef3-8396-d77ab3c454c7" />
@@ -176,14 +176,14 @@
         <classShapeMoniker Id="a026c2f9-3635-42b2-a454-10788c20a44c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 4.73312838201122); (3.3125 : 5.29562838201122); (3.3125 : 8.81814697265625); (3.5 : 8.81814697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 4.73312838201122); (3.3125 : 5.29562838201122); (3.3125 : 8.81814697265625); (3.5 : 8.81814697265625)]" fixedFrom="NotFixed" fixedTo="Algorithm">
       <AssociationMoniker Name="/BDPetitesPucesDataContext/PPClient/PPClient_PPVendeursClient" />
       <nodes>
         <classShapeMoniker Id="15b4c565-227c-4368-96a0-6a296c0cda6f" />
         <classShapeMoniker Id="483b0453-d81b-4554-9f69-ec0390d0002f" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 8.40907348632813); (3.04166666666667 : 8.40907348632813 : JumpStart); (3.20833333333333 : 8.40907348632813 : JumpEnd); (3.5 : 8.40907348632813)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 8.40907348632813); (3.04166666666667 : 8.40907348632813 : JumpStart); (3.20833333333333 : 8.40907348632813 : JumpEnd); (3.22916666666667 : 8.40907348632813 : JumpStart); (3.39583333333333 : 8.40907348632813 : JumpEnd); (3.5 : 8.40907348632813)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/BDPetitesPucesDataContext/PPVendeur/PPVendeur_PPVendeursClient" />
       <nodes>
         <classShapeMoniker Id="feb9b905-732d-4ef3-8396-d77ab3c454c7" />

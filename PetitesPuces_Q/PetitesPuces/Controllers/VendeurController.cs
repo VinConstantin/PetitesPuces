@@ -31,6 +31,8 @@ namespace PetitesPuces.Controllers
 
             List<PPCommande> commandes = getCommandesVendeurs(NoVendeur);
 
+            commandes = commandes.Where(c => c.Statut == 'T').ToList();
+
             return View(commandes);
         } 
 
@@ -39,6 +41,8 @@ namespace PetitesPuces.Controllers
             int NoVendeur = 10;
 
             List<Panier> paniers = getPaniersVendeurs(NoVendeur);
+
+            paniers = paniers.Where(p => DateTime.Today.AddMonths(-6) >= p.DateCreation).ToList();
 
             return View(paniers);
         }
@@ -72,9 +76,36 @@ namespace PetitesPuces.Controllers
             return View();
         }
 
-        public void Livraison()
+        public ActionResult VisualiserPaniers(int NbMois)
         {
+            List<Panier> paniers = getPaniersVendeurs(10);
+            if(NbMois != 99)
+            {
+                paniers = paniers.Where(p => DateTime.Today.AddMonths(-NbMois) <= p.DateCreation).ToList();
+            }
+            return PartialView("Vendeur/_PaniersMois", paniers);
+        }
 
+        public ActionResult ConfirmationLivraison(int NoCommande)
+        {
+            return PartialView("Vendeur/_ConfirmationLivraison", NoCommande);
+        }
+
+        public void Livraison(int NoCommande)
+        {
+            var query = from commandes in context.PPCommandes
+                        where commandes.NoCommande == NoCommande
+                        select commandes;
+
+            query.FirstOrDefault().Statut = 'L';
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private List<PPCommande> getCommandesVendeurs(int NoVendeur)

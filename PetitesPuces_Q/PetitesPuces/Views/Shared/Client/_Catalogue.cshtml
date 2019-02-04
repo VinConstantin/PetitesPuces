@@ -60,20 +60,40 @@
                     <h4>Catégories :</h4>
                 </div>
                 <div class="panel-body" style="height: 40vh; overflow: auto;">
-                    <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,-1)" id="-1">Tous (@Model.Vendeur.PPProduits.Count)</a></p>   
-                    @foreach (PPCategory category in @Model.Categories)
+                    @if (Model.Vendeur.NoVendeur == -1)
                     {
-                        var nb = Model.Vendeur.PPProduits.Count(c => c.PPCategory == category);
-                        if (nb > 0)
-                        {
-                            <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
-                        }
+                        <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur, -1)" id="-1">Tous (@Model.Categories.Sum(c => c.PPProduits.Count))</a></p>
+                        foreach (PPCategory category in @Model.Categories)
+                         {
+                             var nb = category.PPProduits.Count;
+                             if (nb > 0)
+                             {
+                                 <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur, this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
+                             }
+                         }
+
+                    }
+                    else
+                    {
+                        <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,-1)" id="-1">Tous (@Model.Vendeur.PPProduits.Count)</a></p>   
+                        foreach (PPCategory category in @Model.Categories)
+                         {
+                             var nb = Model.Vendeur.PPProduits.Count(c => c.PPCategory == category);
+                             if (nb > 0)
+                             {
+                                 <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
+                             }
+                         }
                     }
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-10">
+        @if (ViewBag.NbPage > 1)
+        {
+            @Html.Partial("_Pagination")
+        }
         <div class="container row">
             @if (@Model.Categorie == null)
             {
@@ -90,17 +110,7 @@
         </div>
         @if (ViewBag.NbPage > 1)
         {
-            <div class="text-center">
-                <ul class="pagination">
-                    <li class="page-item"><a onclick="previousPage()" class="page-link">&laquo</a></li>
-                    @for (int i = 1; i <= ViewBag.NbPage; i++)
-                    {
-                        string cssClass = i.Equals(ViewBag.NoPage) ? "page-item active" : "page-item";
-                        <li class="@cssClass"><a id="@i" class="page-link" onclick="changePage(this)">@i</a></li>
-                    }
-                    <li class="page-item"><a onclick="nextPage()" class="page-link">&raquo</a></li>
-                </ul>
-            </div>
+            @Html.Partial("_Pagination")
         }
     </div>
 </div>
@@ -186,7 +196,7 @@
          * changer le url sans refresh
          */
         var PARAMS = "";
-        PARAMS += NoVendeur ? "?Vendeur="+NoVendeur : "";
+        PARAMS += NoVendeur ? "?Vendeur="+NoVendeur : "?Vendeur=-1";
         PARAMS += NoCategorie !== 1 ? "&Categorie="+NoCategorie : "";
         PARAMS += noPage ? "&Page="+noPage : "";
         PARAMS += nbItems ? "&Size="+nbItems : "";
@@ -218,7 +228,6 @@
     }
     //ajouter un item au produit
     function ajouterAuPanier(noProduit, quantite = 1) {
-        /*
         $.ajax({
             url: URLPATH + "/Client/AjouterProduitAuPanier",
             type: "post",
@@ -227,14 +236,12 @@
                 "Quantite": quantite
             },
             success: function(result) {
-                console.log(result)
+                alert("Les produit est ajouté au panier")
             },
             error: function(req, status, err) {
-                console.log(req, status, err)
+                alert("Une erreure est survenue")
             }
         });
-        */
-        console.log(quantite)
     }
     //augmeneter la quantite
     function plusQuantite(id) {

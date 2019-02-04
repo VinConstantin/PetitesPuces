@@ -1,4 +1,4 @@
-﻿@using PetitesPuces.Models
+@using PetitesPuces.Models
 @using PetitesPuces.Utilities
 @model List<PetitesPuces.Models.Panier>
 
@@ -15,14 +15,15 @@
 }
 <script>
     function plusQuantite(id) {
-        $("#" + id).val(parseInt($("#" + id).val())+1);
+        
+        
     }
     function moinsQuantite(id) {
         if($("#" + id).val()>=1)
             $("#" + id).val(parseInt($("#" + id).val())-1);
     }
 </script>
-<div class="jumbotron jumbotron-fluid">
+<div class="well">
     <div class="container">
         <h2>Mes paniers</h2>
         <div class="MultiCarousel" data-items="1,3,5,6" data-slide="5" id="CarouselPaniers" data-interval="1000">
@@ -39,78 +40,107 @@
     </div>
 </div>
 <div class="container">
-<div class="row">
-    <div class="col-md-8" style="height: 70vh;
-                                       overflow: auto;">
-        <table class="table table-hover">
-            <tbody>
-            @for (var i = 10; i < 40; i++)
-            {
-                @Html.Partial("Client/_ProduitsPanier", i)
-            }
-            </tbody>
-        </table>
+    <div id="PLACEHOLDERDetailPanier">
+        @Html.Partial("Client/_DetailPanier",@Model.FirstOrDefault())
     </div>
-    <div class="col-md-4">
-        <button class="btn btn-danger">Supprimer ce panier</button>
-        <br/>
-        <br/>
-        <div class="panel panel-primary">
-            <div class="panel-heading">Récapitulaif (2 articles): </div>
-            <div class="panel-body">
-                <div class="h4">
-                    <p class="row">
-                        <div class="col-xs-6">Articles :</div>
-                        <div class="col-xs-6">@Formatter.Money(ViewBag.SousTotal)</div></p>
-                    <p class="row">
-                        <div class="col-xs-6">Livraison :</div>
-                        <div class="col-xs-6"> @Formatter.Money(ViewBag.FraisLivraison)</div></p>
-
-                    <div class="row">
-                        <br/><hr/>
-                    </div>
-
-                    <p class="row">
-                        <div class="col-xs-6">Sous total:</div>
-                        <div class="col-xs-6"> @Formatter.Money(ViewBag.SousTotal + ViewBag.FraisLivraison)</div></p>
-                    <p class="row">
-                        <div class="col-xs-6">TPS :</div>
-                        <div class="col-xs-6"> @Formatter.Money((ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.05)</div></p>
-                    <p class="row">
-                        <div class="col-xs-6">tvq :</div>
-                        <div class="col-xs-6"> @Formatter.Money((ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.09975)</div></p>
-
-                    <div class="row">
-                        <br/><hr/>
-                    </div>
-
-                    <p class="row">             
-                        <div class="col-xs-6">Montant total:</div> 
-                        <div class="col-xs-6">@Formatter.Money(ViewBag.SousTotal + ViewBag.FraisLivraison + (ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.05 + (ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.09975)</div> 
-                    </p>
-                    <br/>    
-                </div>
-
-                
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationCommande">
-                    Passer la commande
-                </button>
-            </div>
-        </div>
-        <div class="panel panel-success">
-            <div class="panel-heading">Informations sur le vendeur: </div>
-            <div class="panel-body">
-                <div class="h4">
-                    <p><a href="@Url.Action("Catalogue", "Client", new RouteValueDictionary(new { Vendeur= @ViewBag.Vendeur }))">@ViewBag.Vendeur</a></p>
-                    <p>Membre depuis 2015</p>
-
-                    <hr/>
-
-                    <p>...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
 @Html.Partial("_ModalConfirmation",new HtmlString("<p>Êtes-vous sûr de vouloir commander ces articles?</p><br/><p>Vous aurez la chance de annuler la commande passé ce point.</p>"))
+
+<script>
+    function changePanier(no) {
+        $.ajax({
+            url: URLPATH+"/Client/DetailPanier",
+            type: "get",
+            data: { 
+                "NoVendeur": no
+            },
+            success: function (result) {
+                $("#PLACEHOLDERDetailPanier").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERDetailPanier").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+        $('.Current').removeClass("Current");
+        $('#Panier'+no).first().addClass("Current");
+        
+        var PARAMS = "?Vendeur="+no;
+        var objParams = {
+            NoVendeur:no
+        }
+        history.pushState(objParams, "", PARAMS);
+    }
+    function plusQuantite(id, noVendeur) {
+        $.ajax({
+            url: URLPATH+"/Client/ModifierQuantite",
+            type: "get",
+            data: { 
+                "NoProduit": id,
+                "NoVendeur": noVendeur,
+                aAugmenter: true
+            },
+            success: function (result) {
+                $("#PLACEHOLDERDetailPanier").html(result);
+            },
+            error: function (req, status, err) {
+                var strErreure = "Une erreure est survenue";
+                switch (err) {
+                    case "Conflict":
+                        strErreure = "L'item n'a pas assez de stock";
+                        break;
+                    }
+  
+                $("#Erreur"+id).html(strErreure);
+            }
+        });
+        
+    }
+    function moinsQuantite(id, noVendeur) {
+        $.ajax({
+            url: URLPATH+"/Client/ModifierQuantite",
+            type: "get",
+            data: { 
+                "NoProduit": id,
+                "NoVendeur": noVendeur,
+                aAugmenter: false
+            },
+            success: function (result) {
+                $("#PLACEHOLDERDetailPanier").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERDetailPanier").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+    function supprimerArticles(id, noVendeur) {
+        $.ajax({
+            url: URLPATH+"/Client/SupprimerArticle",
+            type: "get",
+            data: { 
+                "NoProduit": id,
+                "NoVendeur": noVendeur
+            },
+            success: function (result) {
+                $("#PLACEHOLDERDetailPanier").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERDetailPanier").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+    function supprimerPanier(noVendeur) {
+        $.ajax({
+            url: URLPATH+"/Client/SupprimerPanier",
+            type: "get",
+            data: { 
+                "NoVendeur": noVendeur
+            },
+            success: function (result) {
+                window.location.href = "@Url.Action("MonPanier", "Client")";
+            },
+            error: function (req, status, err) {
+                window.location.href = "@Url.Action("MonPanier", "Client")";
+            }
+        });
+    }
+</script>

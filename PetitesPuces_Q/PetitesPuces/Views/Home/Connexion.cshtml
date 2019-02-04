@@ -38,47 +38,46 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
+                            <form id="login-form" method="post" role="form" style="display: block;">
+
+                                <h3 class=" text-center">Connexion</h3>
+                                <div class="form-group center-block text-center">
+
+                                    @Html.EditorFor(model => model.AdresseEmail, new { id = "adresseEmail", @name = "adresseEmail", htmlAttributes = new { @PlaceHolder = "Adresse courriel", @class = "form-control center-block" } })
+                                    @Html.ValidationMessageFor(model => model.AdresseEmail, "", new { @class = "text-danger center-block" })
+
+                                </div>
+                                <div class="form-group center-block text-center">
+                                    @Html.EditorFor(model => model.MotDePasse, new { id = "motDePasse", @name = "motDePasse", htmlAttributes = new { @PlaceHolder = "Mot de passe", @class = "form-control center-block" } })
+                                    @Html.ValidationMessageFor(model => model.MotDePasse, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <input type="checkbox" tabindex="3" class="text-center" name="remember" id="remember">
+                                    <label for="remember"> Se souvenir de moi</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-sm-offset-3">
+                                            <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="btn btn-lg btn-primary btn-block" value="Se connecter">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="text-center">
+                                                <a href="@Url.Action("OubliMDP", "Home")" tabindex="5" class="forgot-password">Mot de passe oublié?</a><br />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
                             <div class="col-lg-12">
-                                <form id="login-form" method="post" role="form" style="display: block;">
-
-
-                                    <div class="form-group center-block text-center">
-
-                                        @Html.EditorFor(model => model.AdresseEmail, new { id = "adresseEmail", @name = "adresseEmail", htmlAttributes = new { @PlaceHolder = "Adresse courriel", @class = "form-control center-block" } })
-                                        @Html.ValidationMessageFor(model => model.AdresseEmail, "", new { @class = "text-danger center-block" })
-
-                                    </div>
-                                    <div class="form-group center-block text-center">
-                                        @Html.EditorFor(model => model.MotDePasse, new { id = "motDePasse", @name = "motDePasse", htmlAttributes = new { @PlaceHolder = "Mot de passe", @class = "form-control center-block" } })
-                                        @Html.ValidationMessageFor(model => model.MotDePasse, "", new { @class = "text-danger" })
-
-                                    </div>
-                                   
-                                    <div class="form-group text-center">
-                                        <input type="checkbox" tabindex="3" class="text-center" name="remember" id="remember">
-                                        <label for="remember"> Se souvenir de moi</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-sm-offset-3">
-                                                <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="btn btn-lg btn-primary btn-block" value="Se connecter">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="text-center">
-                                                    <a href="@Url.Action("OubliMDP", "Home")" tabindex="5" class="forgot-password">Mot de passe oublié?</a><br />
-                                                    <a href="@Url.Action("Index", "Client")" tabindex="5" class="forgot-password">Connecter en tant que client</a><br />
-                                                    <a href="@Url.Action("Index", "Vendeur")" tabindex="5" class="forgot-password">Connecter en tant que vendeur</a><br />
-                                                    <a href="@Url.Action("Index", "Gestionnaire")" tabindex="5" class="forgot-password">Connecter en tant que gestionnaire</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-
+                                <div id="loginDiv"> </div>
                                 @Html.ActionLink("Retourner au menu", "Index")
                             </div>
                         </div>
