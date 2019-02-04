@@ -1,69 +1,81 @@
-@model List<PetitesPuces.Models.PPCategory>
+@model List<Tuple<PetitesPuces.Models.PPCategory, bool>>
 
+<div id="lstCategories">
+    <div class="row d-flex justify-content-center align-items-center" style="margin: 20px 0 10px 0">
+        <h3 class="m-0 mx-1">
+            Catégories
+        </h3>
+        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAjoutCategorie">
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+    </div> 
 
-<div class="row d-flex justify-content-center align-items-center" style="margin: 20px 0 10px 0">
-    <h3 class="m-0 mx-1">
-        Categories
-    </h3>
-    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAjoutCategorie">
-        <i class="glyphicon glyphicon-plus"></i>
-    </button>
-</div> 
-
-<div class="row well">
-    <table class="table lst-utils table-hover">
-        <tr>
-            <th style="width: 5vh" scope="col">No</th>
-            <th scope="col" class="text-left">Description</th>
-            <th scope="col" class="text-left">Details</th>
-            <td></td>
-            <td></td>
-        </tr>
-        @foreach (var categorie in Model)
-        {
-            <tr class="v-align-baseline">
-                <td contenteditable="false" scope="row">@categorie.NoCategorie</td>
-                <td contenteditable="false" class="text-left">@categorie.Description</td>
-                <td contenteditable="false" class="text-left">@categorie.Details</td>
-                <td>
-                    <button class="btn btn-danger v-align-baseline">
-                        <i class="glyphicon glyphicon-remove"></i>
-                    </button>
-                </td>
+    <div class="row well">
+        <table class="table lst-utils table-hover">
+            <tr>
+                <th style="width: 5vh" scope="col">No</th>
+                <th scope="col" class="text-left">Description</th>
+                <th scope="col" class="text-left">Details</th>
+                <td></td>
+                <td></td>
+            </tr>
+            @foreach (var categorie in Model)
+            {
+            <tr class="tr-cat v-align-baseline">
+                <td contenteditable="false" scope="row">@categorie.Item1.NoCategorie</td>
+                <td contenteditable="false" class="text-left">@categorie.Item1.Description</td>
+                <td contenteditable="false" class="text-left">@categorie.Item1.Details</td>
+                @if (!categorie.Item2)
+                {
+                    <td>
+                        <button class="btn btn-danger v-align-baseline delbtn">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </button>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <button class="btn btn-danger v-align-baseline disabled" title="Impossible de supprimer: des produits sont associés à cette catégorie">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </button>
+                    </td>
+                }
                 <td>
                     <button class="btn btn-warning v-align-baseline editbtn">
-                        Modifier
+                        <i class="glyphicon glyphicon-edit"></i>
                     </button>
                 </td>
             </tr>
-        }
-    </table>
-</div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="modalAjoutCategorie" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCategorie" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ajout de catÃ©gorie</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="inputEmail4">Description</label>
-                    <input type="text" class="form-control" placeholder="Titre">
+            }
+        </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalAjoutCategorie" tabindex="-1" role="dialog" aria-labelledby="modalAjoutCategorie" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Ajout de catégorie</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label for="inputEmail4">DÃ©tails</label>
-                    <input type="text" class="form-control" id="inputEmail4" placeholder="Details">
+                <div class="modal-body text-center">
+                    <div class="form-group">
+                        <label for="inputEmail4">Description</label>
+                        <input id="tbCreerTitre" type="text" class="form-control center-block" placeholder="Titre">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail4">Détails</label>
+                        <input id="tbCreerDetails" type="text" class="form-control center-block" id="inputEmail4" placeholder="Details">
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary">Enregistrer</button>
+                <div class="modal-footer">
+                    <div class="center-block text-center">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-primary btn-enregistrer" data-dismiss="modal">Enregistrer</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -74,33 +86,102 @@
         let td;
         let _this;
 
-        $('.editbtn').click(function () {
+        setupEvents();
+
+        function setupEvents() {
+            $('.delbtn').click(handleDel);
+            $('.btn-enregistrer').click(handleAdd);
+            $('.editbtn').click(handleEdit);
+        }
+        
+        function handleAdd(e) {
+            const titre = $('#tbCreerTitre').val();
+            const details = $('#tbCreerDetails').val();
+            const rangees = $('.tr-cat');
+            let titreUnique = true;
+
+            rangees.each((_, row) => {
+                if ($(row).children(null, 'td')[1].innerText === titre) {
+                    titreUnique = false;
+                }
+            });
+
+            if (titreUnique) {
+                $.post('/Gestionnaire/Categories',
+                    { NoCategorie: null, Description: titre, Details: details },
+                    window.onload.majCategories);
+            } else {
+                e.preventDefault();
+                alert('Le titre de la catégorie doit être unique');
+                console.log(e);
+            }
+        }
+
+        function handleDel() {
+            td = $(this).parents('tr').find('td');
+
+            $.ajax({
+                url: `/Gestionnaire/Categories/${td[0].textContent}`,
+                type: 'DELETE',
+                success: majCategories,
+            });
+        }
+
+        function handleEdit () {
             _this = $(this);
             td = _this.parents('tr').find('td');
 
-            if (_this.html().trim() === 'Modifier') {
+            if (_this.html().trim() === '<i class="glyphicon glyphicon-edit"></i>') {
                 onModifyStart();
             } else {
                 onModifyEnd();
             }
-        });
+        }
 
         function onModifyStart() {
-            _this.html('Enregistrer');
+            _this.html('<i class="glyphicon glyphicon-floppy-disk"></i>');
 
-            $.each(td, () => setEditable(true));
+            $.each(td, (index, cell) => setEditable(index, cell, true));
         }
 
         function onModifyEnd() {
-            _this.html('Modifier');
+            _this.html('<i class="glyphicon glyphicon-edit"></i>');
 
-            $.each(td, () => setEditable(false));
+            $.each(td, (index, cell) => setEditable(index, cell, false));
+            const id = td[0].textContent;
+            const description = td[1].textContent;
+            const details = td[2].textContent;
+            const categorie = {
+                NoCategorie: id,
+                Description: description,
+                Details: details,
+            }
+            const jsonData = JSON.stringify(categorie);
 
-            $.post();
+            $.ajax({
+                url: '/Gestionnaire/Categories',
+                method: 'PUT',
+                contentType: "application/json",
+                data: jsonData,
+                processData: false,
+                success: majCategories
+            });
         }
 
-        function setEditable(isEditable) {
-            $(this).prop('contenteditable', isEditable);
+        function majCategories() {
+            $.get("/Gestionnaire/Categories", null, afficherCategories);
+        }
+
+        function afficherCategories(vuePartielle) {
+            $('#lstCategories').html(vuePartielle);
+            setupEvents();
+        }
+
+        function setEditable(index, cell, isEditable) {
+            if (index !== 0) {
+                $(cell).prop('contenteditable', isEditable);
+            }
+
             td.css('background-color', isEditable ? 'rgba(241, 166, 166, 0.1) ' : '');
         }
     };

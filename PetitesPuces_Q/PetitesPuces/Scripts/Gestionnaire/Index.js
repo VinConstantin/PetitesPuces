@@ -68,7 +68,7 @@
     function creerDataSet(demandes, etiquetteDonnees) {
         const etiquettes = [];
         const donnees = [];
-        const intl = new Intl.RelativeTimeFormat('de');
+        const intl = new Intl.RelativeTimeFormat('fr');
 
         const today = new Date();
         const ticksInDay = 1000 * 60 * 60 * 24;

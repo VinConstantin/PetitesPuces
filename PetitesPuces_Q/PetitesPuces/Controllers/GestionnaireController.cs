@@ -1,6 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Web.Http;
 using System.Web.Mvc;
 using PetitesPuces.Models;
 using PetitesPuces.Securite;
@@ -8,6 +10,7 @@ using PetitesPuces.ViewModels.Gestionnaire;
 
 namespace PetitesPuces.Controllers
 {
+    [System.Web.Mvc.RoutePrefix("Gestionnaire")]
     public class GestionnaireController : Controller
     {
         private readonly BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
@@ -17,16 +20,97 @@ namespace PetitesPuces.Controllers
 
         public ActionResult Index()
         {
-            var categories =
-                from categorie
-                    in ctxt.PPCategories
-                select categorie;
-
-            
-            return View(categories.AsEnumerable().ToList());
+            return View(GetCategories());
         }
 
-        [HttpPost]
+        private List<Tuple<PPCategory, bool>> GetCategories()
+        {
+            return
+                (from categorie
+                        in ctxt.PPCategories
+                    select new Tuple<PPCategory, bool> (categorie, categorie.PPProduits.Any())).AsEnumerable().ToList();
+        }
+
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("Categories")]
+        public ActionResult HttpGetCategories()
+        {
+            return PartialView("Gestionnaire/_GestionCategories", GetCategories());
+        }
+
+        [System.Web.Http.HttpPut]
+        [System.Web.Mvc.Route("Categories")]
+        public ActionResult MAJCategorie([FromBody]PPCategory categorie)
+        {
+            try
+            {
+                var categorieBd =
+                    (from cat
+                        in ctxt.PPCategories
+                     where cat.NoCategorie == categorie.NoCategorie
+                        select cat).First();
+
+                categorieBd.Description = categorie.Description;
+                categorieBd.Details = categorie.Details;
+
+                ctxt.SubmitChanges();
+
+                return PartialView("Gestionnaire/_GestionCategories", GetCategories());
+            }
+            catch (InvalidOperationException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }          
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("Categories")]
+        public ActionResult AjoutCategorie(PPCategory categorie)
+        {
+            var categories = 
+                from cat
+                    in ctxt.PPCategories
+                where cat.Description == categorie.Description
+                select cat;
+
+            if (categories.Any()) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var nextId =
+                (from cat
+                        in ctxt.PPCategories
+                    select cat.NoCategorie).Max() + 10;
+            
+            ctxt.PPCategories.InsertOnSubmit(categorie);
+            ctxt.SubmitChanges();
+
+            return PartialView("Gestionnaire/_GestionCategories", GetCategories());
+        }
+
+        [System.Web.Mvc.HttpDelete]
+        [System.Web.Mvc.Route("Categories/{id}")]
+        public ActionResult SuppressionCategorie(int id)
+        {
+            try
+            {
+                var categorieBd =
+                    (from cat
+                            in ctxt.PPCategories
+                        where cat.NoCategorie == id
+                        select cat).First();
+
+                ctxt.PPCategories.DeleteOnSubmit(categorieBd);
+                ctxt.SubmitChanges();
+
+                return PartialView("Gestionnaire/_GestionCategories", GetCategories());
+            }
+            catch (InvalidOperationException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+        }
+
+
+        [System.Web.Mvc.HttpPost]
         public ActionResult DonneesIndex()
         {
             IndexStats stats = new IndexStats
