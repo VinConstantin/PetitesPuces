@@ -224,6 +224,7 @@
     <Compile Include="Utilities\Formatter.cs" />
     <Compile Include="ViewModels\Gestionnaire\IndexStats.cs" />
     <Compile Include="ViewModels\Gestionnaire\Redevance.cs" />
+    <Compile Include="ViewModels\Gestionnaire\ReponseDemandeVendeur.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
     <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\AccueilVendeurViewModel.cs" />
@@ -273,7 +274,6 @@
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
     <Content Include="Scripts\constant.js" />
-    <Content Include="Scripts\Gestionnaire\DemandeVendeur.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
     <Content Include="Scripts\Gestionnaire\Statistiques.js" />
     <Content Include="Scripts\Home\Inscription.js" />
@@ -309,6 +309,10 @@
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Demandes\_DemandeVendeur.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Demandes\_DetailsVendeur.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Demandes\_GestionDemande.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Demandes\_ListeDemandesVendeur.cshtml" />
     <Content Include="Views\Shared\_ErrorAlert.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
     <Content Include="Views\Shared\Home\_CategorieCarousel.cshtml" />
@@ -341,7 +345,6 @@
     <Content Include="Views\Shared\Gestionnaire\_Client.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Vendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Commande.cshtml" />
-    <Content Include="Views\Shared\Gestionnaire\_DemandeVendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Panier.cshtml" />
     <Content Include="Views\Vendeur\GestionCommandes.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_ListeDisablePersonne.cshtml" />
@@ -365,7 +368,6 @@
     <Content Include="Views\Home\OubliMDP.cshtml" />
     <Content Include="Views\Gestionnaire\Redevances.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_Redevance.cshtml" />
-    <Content Include="Views\Shared\Gestionnaire\_DetailsVendeur.cshtml" />
     <Content Include="Views\Home\testValidation.cshtml" />
     <Content Include="Views\Shared\Connexion\_Connexion.cshtml" />
     <Content Include="Views\Shared\Connexion\_LayoutConnexion.cshtml" />
