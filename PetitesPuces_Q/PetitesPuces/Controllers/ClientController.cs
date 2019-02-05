@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using PetitesPuces.Models;
+using PetitesPuces.Utilities;
 using PetitesPuces.ViewModels.Vendeur;
 
 namespace PetitesPuces.Controllers
@@ -242,9 +243,9 @@ namespace PetitesPuces.Controllers
 
             return lstCommandes;
         }
-        public ActionResult Commande(string Etape, int noVendeur)
+
+        private Panier GetPanierByVendeurClient(int noVendeur)
         {
-            ViewBag.Etape = Etape;
             var query = from articles in context.PPArticlesEnPaniers
                 where articles.NoClient == NOCLIENT
                       && articles.NoVendeur == noVendeur
@@ -257,44 +258,64 @@ namespace PetitesPuces.Controllers
                 Client = query.FirstOrDefault().PPClient,
                 Articles = query.ToList()
             };
+
+            return panier;
+        }
+
+        private PPVendeur GetVendeurByNo(int no)
+        {
+            return
+                (from v in context.PPVendeurs
+                    where v.NoVendeur == no
+                    select v).FirstOrDefault();
+        }
+
+        public HtmlString GetPrixLivraison(int noVendeur, decimal poids, decimal prix, int selected)
+        {
+            var intervallePoids = (from p in context.PPTypesPoids select p).ToList();
+            PPTypesPoid codePoids = intervallePoids.FirstOrDefault();
+            foreach (var intervalle in intervallePoids)
+            {
+                if(poids>=intervalle.PoidsMin && poids<=intervalle.PoidsMax)
+                {
+                    codePoids = intervalle;
+                    break;
+                }
+            }
+            PPVendeur vendeur = GetVendeurByNo(noVendeur);
+
+            PPPoidsLivraison livraisons = codePoids.PPPoidsLivraisons.FirstOrDefault(p => p.CodeLivraison == selected);
+            double prixLivraison =  (double)livraisons.Tarif;
+            string str = "Frais de livraison :" + Formatter.Money((decimal?) prixLivraison, false);
+            HtmlString html = new HtmlString(str);
+            return html;
+        }
+        public ActionResult Commande(string Etape, int noVendeur)
+        {
+            ViewBag.Etape = Etape;
+
+            Panier panier = GetPanierByVendeurClient(noVendeur);
             return View(panier);
         }
 
-        public ActionResult Information(int NoClient)
+        public ActionResult Information(int noVendeur)
         {
-            PPClient client = (from cli in context.PPClients
-                where cli.NoClient == NOCLIENT
-                select cli).FirstOrDefault();
-            return PartialView("Client/Commande/_Information", client);
+            Panier panier = GetPanierByVendeurClient(noVendeur);
+            
+            return PartialView("Client/Commande/_Information", panier);
+        }     
+        public ActionResult SetInfoCommande(InfoClient info)
+        {
+            info.no = NOCLIENT;
+            InfoCommande.setInfoClient(info);
+            
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-        
-        public ActionResult Livraison(InfoClient info)
+        public ActionResult Livraison(int noVendeur)
         {
-            PPClient client = (from cli in context.PPClients
-                where cli.NoClient == NOCLIENT
-                select cli).FirstOrDefault();
-
-            client.Nom = info.nom;
-            client.Prenom = info.prenom;
-            client.Tel1 = info.telephone;
+            Panier panier = GetPanierByVendeurClient(noVendeur);
             
-            client.Rue = info.rue;
-            client.Ville = info.ville;
-            client.Province = info.province;
-            client.CodePostal = info.codePostal;
-
-            try
-            {
-                context.SubmitChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            
-            
-            return PartialView("Client/Commande/_Livraison");
+            return PartialView("Client/Commande/_Livraison",panier);
         }
         public ActionResult Paiement()
         {

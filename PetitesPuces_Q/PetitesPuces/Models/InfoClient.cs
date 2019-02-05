@@ -2,6 +2,7 @@ namespace PetitesPuces.Models
 {
     public class InfoClient
     {
+        public int no { get; set; }
         public string nom { get; set; }
         public string prenom { get; set; }
         public string telephone { get; set; }
