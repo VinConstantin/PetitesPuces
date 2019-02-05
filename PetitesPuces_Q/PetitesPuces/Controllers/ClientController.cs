@@ -242,36 +242,77 @@ namespace PetitesPuces.Controllers
 
             return lstCommandes;
         }
-        public ActionResult Commande(string Etape)
+        public ActionResult Commande(string Etape, int noVendeur)
         {
             ViewBag.Etape = Etape;
-            
-            return View();
+            var query = from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == noVendeur
+                orderby articles.DateCreation ascending
+                select articles;
+
+            Panier panier = new Panier
+            {
+                Vendeur = query.FirstOrDefault().PPVendeur,
+                Client = query.FirstOrDefault().PPClient,
+                Articles = query.ToList()
+            };
+            return View(panier);
         }
 
-        public ActionResult Information(int NoClient=0)
+        public ActionResult Information(int NoClient)
         {
             PPClient client = (from cli in context.PPClients
                 where cli.NoClient == NOCLIENT
                 select cli).FirstOrDefault();
             return PartialView("Client/Commande/_Information", client);
         }
-        public ActionResult Livraison()
+        
+        public ActionResult Livraison(InfoClient info)
         {
+            PPClient client = (from cli in context.PPClients
+                where cli.NoClient == NOCLIENT
+                select cli).FirstOrDefault();
+
+            client.Nom = info.nom;
+            client.Prenom = info.prenom;
+            client.Tel1 = info.telephone;
+            
+            client.Rue = info.rue;
+            client.Ville = info.ville;
+            client.Province = info.province;
+            client.CodePostal = info.codePostal;
+
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
+            
             return PartialView("Client/Commande/_Livraison");
         }
         public ActionResult Paiement()
         {
             return PartialView("Client/Commande/_Paiement");
         }
-        public ActionResult Confirmation()
+        public ActionResult Confirmation(int noVendeur)
         {
+            var query = from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == noVendeur
+                orderby articles.DateCreation ascending
+                select articles;
+
             Panier panier = new Panier
             {
-                Vendeur = (from p in context.PPVendeurs select p).FirstOrDefault(),
-                Client = (from p in context.PPClients select p).FirstOrDefault(),
-                DateCreation = DateTime.Now,
-                Articles = (from p in context.PPArticlesEnPaniers select p).Take(4).ToList()
+                Vendeur = query.FirstOrDefault().PPVendeur,
+                Client = query.FirstOrDefault().PPClient,
+                Articles = query.ToList()
             };
             return PartialView("Client/Commande/_Confirmation",panier);
         }

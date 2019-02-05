@@ -23,7 +23,7 @@
         <br/>
         <br/>
         <div class="panel panel-primary">
-            <div class="panel-heading">RÃ©capitulaif: </div>
+            <div class="panel-heading">Récapitulaif: </div>
             <div class="panel-body">
                 <div class="h4">
                     <p class="row">
@@ -72,11 +72,34 @@
                 </button>
             </div>
             <div class="modal-body">
-                ÃŠtes-vous sÃ»r de vouloir supprimer ce panier?
+                Êtes-vous sûr de vouloir supprimer ce panier?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                 <button type="button" type="button" onclick="supprimerPanier(@Model.Vendeur.NoVendeur)" class="btn btn-primary">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal confirmation -->
+<div class="modal fade" id="confirmationCommande" tabindex="-1" role="dialog" aria-labelledby="confirmationCommande" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir commander ces articles?</p>
+                <br/><p>Vous aurez la chance d'annuler la commande passé ce point.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" onclick="location.href = '@Url.Action("Commande", "Client",new RouteValueDictionary(new { Etape= "Information", noVendeur = Model.Vendeur.NoVendeur }))'" class="btn btn-primary">Continuer</button>
             </div>
         </div>
     </div>

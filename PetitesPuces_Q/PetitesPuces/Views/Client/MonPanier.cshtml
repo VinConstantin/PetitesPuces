@@ -1,4 +1,4 @@
-@using PetitesPuces.Models
+﻿@using PetitesPuces.Models
 @using PetitesPuces.Utilities
 @model List<PetitesPuces.Models.Panier>
 
@@ -44,7 +44,6 @@
         @Html.Partial("Client/_DetailPanier",@Model.FirstOrDefault())
     </div>
 </div>
-@Html.Partial("_ModalConfirmation",new HtmlString("<p>Êtes-vous sûr de vouloir commander ces articles?</p><br/><p>Vous aurez la chance de annuler la commande passé ce point.</p>"))
 
 <script>
     function changePanier(no) {
