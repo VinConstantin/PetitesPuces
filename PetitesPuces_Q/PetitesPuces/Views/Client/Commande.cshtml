@@ -1,4 +1,5 @@
 ﻿@using PetitesPuces.Utilities
+@model PetitesPuces.Models.Panier
 
 @{
     ViewBag.Title = "Commander";
@@ -9,8 +10,7 @@
 @section scripts {
     <link href="@Url.Content("/Content/Client/Commande.css")" rel="stylesheet" id="Commande-css">
     <script type="text/javascript" src="@Url.Content("/Scripts/Client/Commande.js")"></script>
-}
-<div class="jumbotron">
+}<br/>
     <div class="container">
         <ul class="progressbar">
             <li id="Information">Information</li>
@@ -19,15 +19,22 @@
             <li id="Confirmation">Confirmation</li>
         </ul>
     </div>
-</div>
+<br/>
+<hr/>
+<br/>
+
 <div class="container">
     <div class="row">
-        <div class="col-md-9" id="PLACEHOLDER">
-
+        <div class="col-md-9">
+            <div class="row">
+                @Html.Partial("Client/Commande/_ProduitsInformation",Model)
+            </div>
+            <div id="PLACEHOLDER">
+                
+            </div>
         </div>
-        <br/>
         <div class="col-md-3">
-            
+
             <div class="panel panel-primary">
                 <div class="panel-heading">Récapitulaif (2 articles): </div>
                 <div class="panel-body">
@@ -63,16 +70,17 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 
 <script>
     window.onload = function() {
-        $('#@ViewBag.Etape').addClass('active');
+        $('#Information').addClass('active');
         $.ajax({
-            url: "/Client/@ViewBag.Etape",
+            url: "/Client/Information",
             type: "get",
             data: {
+                NoClient: @Model.Client.NoClient
             },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
@@ -82,7 +90,5 @@
                 $('#PLACEHOLDER').html("@Html.Partial("_ErrorAlert")");
             }
         });
-        var PARAMS = "?Etape="+"@ViewBag.Etape";
-        history.pushState(null, "", PARAMS);
     };
 </script>

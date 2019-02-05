@@ -1,6 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Web.Http;
 using System.Web.Mvc;
 using PetitesPuces.Models;
 using PetitesPuces.Securite;
@@ -8,6 +10,7 @@ using PetitesPuces.ViewModels.Gestionnaire;
 
 namespace PetitesPuces.Controllers
 {
+    [System.Web.Mvc.RoutePrefix("Gestionnaire")]
     public class GestionnaireController : Controller
     {
         private readonly BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
@@ -17,20 +20,108 @@ namespace PetitesPuces.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return View(GetCategories());
         }
 
-        [HttpPost]
+        private List<Tuple<PPCategory, bool>> GetCategories()
+        {
+            return
+                (from categorie
+                        in ctxt.PPCategories
+                    select new Tuple<PPCategory, bool> (categorie, categorie.PPProduits.Any())).AsEnumerable().ToList();
+        }
+
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("Categories")]
+        public ActionResult HttpGetCategories()
+        {
+            return PartialView("Gestionnaire/_GestionCategories", GetCategories());
+        }
+
+        [System.Web.Http.HttpPut]
+        [System.Web.Mvc.Route("Categories")]
+        public ActionResult MAJCategorie([FromBody]PPCategory categorie)
+        {
+            try
+            {
+                var categorieBd =
+                    (from cat
+                        in ctxt.PPCategories
+                     where cat.NoCategorie == categorie.NoCategorie
+                        select cat).First();
+
+                categorieBd.Description = categorie.Description;
+                categorieBd.Details = categorie.Details;
+
+                ctxt.SubmitChanges();
+
+                return PartialView("Gestionnaire/_GestionCategories", GetCategories());
+            }
+            catch (InvalidOperationException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }          
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("Categories")]
+        public ActionResult AjoutCategorie(PPCategory categorie)
+        {
+            var categories = 
+                from cat
+                    in ctxt.PPCategories
+                where cat.Description == categorie.Description
+                select cat;
+
+            if (categories.Any()) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var nextId =
+                (from cat
+                        in ctxt.PPCategories
+                    select cat.NoCategorie).Max() + 10;
+
+            categorie.NoCategorie = nextId;
+            ctxt.PPCategories.InsertOnSubmit(categorie);
+            ctxt.SubmitChanges();
+
+            return PartialView("Gestionnaire/_GestionCategories", GetCategories());
+        }
+
+        [System.Web.Mvc.HttpDelete]
+        [System.Web.Mvc.Route("Categories/{id}")]
+        public ActionResult SuppressionCategorie(int id)
+        {
+            try
+            {
+                var categorieBd =
+                    (from cat
+                            in ctxt.PPCategories
+                        where cat.NoCategorie == id
+                        select cat).First();
+
+                ctxt.PPCategories.DeleteOnSubmit(categorieBd);
+                ctxt.SubmitChanges();
+
+                return PartialView("Gestionnaire/_GestionCategories", GetCategories());
+            }
+            catch (InvalidOperationException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+        }
+
+
+        [System.Web.Mvc.HttpPost]
         public ActionResult DonneesIndex()
         {
-            IndexViewModel viewModel = new IndexViewModel
+            IndexStats stats = new IndexStats
             {
                 NombreDemandesVendeur = CalculerNombreDemandesVendeurs(),
                 Redevances = CalculerRedevances(),
                 UtilisateursInactifs = CalculerInactivite(),
             };
 
-            return Json(viewModel);
+            return Json(stats);
         }
 
         private Dictionary<string, int> CalculerNombreDemandesVendeurs()
@@ -133,18 +224,18 @@ namespace PetitesPuces.Controllers
             return vendeursInactifs.Where(c => c.DateDerniereActivite.AddYears(1) < DateTime.Today - INDEX_STATS_PERIOD);
         }
 
+        [System.Web.Mvc.Route("DemandesVendeur")]
         public ActionResult DemandesVendeur()
         {
-            List<PPVendeur> viewmodel =
-                (from vendeur
-                    in ctxt.PPVendeurs
-                where vendeur.Statut == 0
-                select vendeur).ToList();
-
-            return View(viewmodel);
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("Gestionnaire/Demandes/_ListeDemandesVendeur", GetDemandes());
+            }
+            
+            return View(GetDemandes());
         }
 
-        public ActionResult DetailsDemande(int id)
+        public ActionResult DemandesVendeur(int id)
         {
             try
             {
@@ -154,11 +245,86 @@ namespace PetitesPuces.Controllers
                         where vendeur.NoVendeur == id
                         select vendeur).First();
 
-                return PartialView("Gestionnaire/_DetailsVendeur", demandeVendeur);
+                return PartialView("Gestionnaire/Demandes/_DetailsVendeur", demandeVendeur);
             }
             catch (InvalidOperationException)
             {
                 return HttpNotFound();
+            }
+        }
+        
+        private List<PPVendeur> GetDemandes()
+        {
+            return (from vendeur
+                    in ctxt.PPVendeurs
+                where vendeur.Statut == 0
+                select vendeur).AsEnumerable().ToList();
+        }
+        
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("GererDemande/Details/{id}")]
+        public ActionResult GererDemandeVendeurDetails([FromUri]int id)
+        {
+            try
+            {
+                return PartialView("Gestionnaire/Demandes/_GestionDemande",
+                    new Tuple<int, TypesModal>(id, TypesModal.DETAILS));
+            }
+            catch (Exception e)
+            {
+                return HttpNotFound();
+            }
+        }
+        
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("GererDemande/Accepter/{id}")]
+        public ActionResult GererDemandeVendeurAccepter([FromUri]int id)
+        {
+            return PartialView("Gestionnaire/Demandes/_GestionDemande", new Tuple<int, TypesModal>(id, TypesModal.ACCEPTER));
+        }
+        
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("GererDemande/Refuser/{id}")]
+        public ActionResult GererDemandeVendeurRefuser([FromUri]int id)
+        {
+            return PartialView("Gestionnaire/Demandes/_GestionDemande", new Tuple<int, TypesModal>(id, TypesModal.REFUSER));
+        }
+
+        public enum TypesModal
+        {
+            DETAILS,
+            ACCEPTER,
+            REFUSER
+        }
+        
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("GererDemande/{id}")]
+        public ActionResult GererDemandeVendeur([FromUri]int id, [FromBody] ReponseDemandeVendeur reponse)
+        {
+            try
+            {
+                PPVendeur vendeurAAccepter =
+                    (from vendeur
+                            in ctxt.PPVendeurs
+                        where vendeur.NoVendeur == id
+                        select vendeur).First();
+                
+                if (reponse.Accepte)
+                {
+                    vendeurAAccepter.Statut = (int) StatutCompte.ACTIF;
+                }
+                else
+                {
+                    ctxt.PPVendeurs.DeleteOnSubmit(vendeurAAccepter);
+                }
+                
+                ctxt.SubmitChanges();
+
+                return PartialView("Gestionnaire/Demandes/_ListeDemandesVendeur", GetDemandes());
+            }
+            catch (InvalidOperationException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
         }
 

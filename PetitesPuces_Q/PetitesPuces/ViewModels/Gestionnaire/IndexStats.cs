@@ -5,7 +5,7 @@ using System.Web;
 
 namespace PetitesPuces.ViewModels.Gestionnaire
 {
-    public class IndexViewModel
+    public class IndexStats
     {
         public Dictionary<string, int> NombreDemandesVendeur;
         public Dictionary<string, decimal> Redevances { get; set; }

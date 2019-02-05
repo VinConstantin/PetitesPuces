@@ -57,7 +57,7 @@
                 </div>
                     
                 <div class="panel-footer">
-                    <h4>CatÃ©gories :</h4>
+                    <h4>Catégories :</h4>
                 </div>
                 <div class="panel-body" style="height: 40vh; overflow: auto;">
                     @if (Model.Vendeur.NoVendeur == -1)
@@ -133,7 +133,7 @@
     function updateTri() {
         
     }
-    //gÃ©rer les clicks de categories
+    //gérer les clicks de categories
      
     function selectCategorie(noVendeur,elem) {
         var id = $(elem).attr("id");
@@ -236,7 +236,7 @@
                 "Quantite": quantite
             },
             success: function(result) {
-                alert("Les produit est ajoutÃ© au panier")
+                alert("Les produit est ajouté au panier")
             },
             error: function(req, status, err) {
                 alert("Une erreure est survenue")

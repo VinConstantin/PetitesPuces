@@ -30,7 +30,6 @@
 </form>
 <script>
     function next(){
-        $('#Paiement').removeClass('active');
         $('#Confirmation').addClass('active');
         $.ajax({
             url: URLPATH + "/Client/Confirmation",
@@ -49,7 +48,6 @@
     }
     function previous(){
         $('#Paiement').removeClass('active');
-        $('#Livraison').addClass('active');
         $.ajax({
             url: URLPATH + "/Client/Livraison",
             type: "get",
