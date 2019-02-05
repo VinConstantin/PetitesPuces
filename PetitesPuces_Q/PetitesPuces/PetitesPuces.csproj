@@ -374,6 +374,7 @@
     <Content Include="Views\Shared\Vendeur\_ConfirmationLivraison.cshtml" />
     <Content Include="Views\Shared\Vendeur\_PaniersMois.cshtml" />
     <Content Include="Views\Shared\Vendeur\_MenagePaniers.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_RecuCommande.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
