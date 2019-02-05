@@ -224,25 +224,18 @@ namespace PetitesPuces.Controllers
             return vendeursInactifs.Where(c => c.DateDerniereActivite.AddYears(1) < DateTime.Today - INDEX_STATS_PERIOD);
         }
 
-        public ActionResult ActualiserCategories()
-        {
-
-
-            return PartialView("Gestionnaire/_GestionCategories");
-        }
-
+        [System.Web.Mvc.Route("DemandesVendeur")]
         public ActionResult DemandesVendeur()
         {
-            List<PPVendeur> viewmodel =
-                (from vendeur
-                    in ctxt.PPVendeurs
-                where vendeur.Statut == 0
-                select vendeur).ToList();
-
-            return View(viewmodel);
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("Gestionnaire/Demandes/_ListeDemandesVendeur", GetDemandes());
+            }
+            
+            return View(GetDemandes());
         }
 
-        public ActionResult DetailsDemande(int id)
+        public ActionResult DemandesVendeur(int id)
         {
             try
             {
@@ -252,11 +245,86 @@ namespace PetitesPuces.Controllers
                         where vendeur.NoVendeur == id
                         select vendeur).First();
 
-                return PartialView("Gestionnaire/_DetailsVendeur", demandeVendeur);
+                return PartialView("Gestionnaire/Demandes/_DetailsVendeur", demandeVendeur);
             }
             catch (InvalidOperationException)
             {
                 return HttpNotFound();
+            }
+        }
+        
+        private List<PPVendeur> GetDemandes()
+        {
+            return (from vendeur
+                    in ctxt.PPVendeurs
+                where vendeur.Statut == 0
+                select vendeur).AsEnumerable().ToList();
+        }
+        
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("GererDemande/Details/{id}")]
+        public ActionResult GererDemandeVendeurDetails([FromUri]int id)
+        {
+            try
+            {
+                return PartialView("Gestionnaire/Demandes/_GestionDemande",
+                    new Tuple<int, TypesModal>(id, TypesModal.DETAILS));
+            }
+            catch (Exception e)
+            {
+                return HttpNotFound();
+            }
+        }
+        
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("GererDemande/Accepter/{id}")]
+        public ActionResult GererDemandeVendeurAccepter([FromUri]int id)
+        {
+            return PartialView("Gestionnaire/Demandes/_GestionDemande", new Tuple<int, TypesModal>(id, TypesModal.ACCEPTER));
+        }
+        
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("GererDemande/Refuser/{id}")]
+        public ActionResult GererDemandeVendeurRefuser([FromUri]int id)
+        {
+            return PartialView("Gestionnaire/Demandes/_GestionDemande", new Tuple<int, TypesModal>(id, TypesModal.REFUSER));
+        }
+
+        public enum TypesModal
+        {
+            DETAILS,
+            ACCEPTER,
+            REFUSER
+        }
+        
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("GererDemande/{id}")]
+        public ActionResult GererDemandeVendeur([FromUri]int id, [FromBody] ReponseDemandeVendeur reponse)
+        {
+            try
+            {
+                PPVendeur vendeurAAccepter =
+                    (from vendeur
+                            in ctxt.PPVendeurs
+                        where vendeur.NoVendeur == id
+                        select vendeur).First();
+                
+                if (reponse.Accepte)
+                {
+                    vendeurAAccepter.Statut = (int) StatutCompte.ACTIF;
+                }
+                else
+                {
+                    ctxt.PPVendeurs.DeleteOnSubmit(vendeurAAccepter);
+                }
+                
+                ctxt.SubmitChanges();
+
+                return PartialView("Gestionnaire/Demandes/_ListeDemandesVendeur", GetDemandes());
+            }
+            catch (InvalidOperationException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
         }
 

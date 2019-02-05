@@ -1,0 +1,105 @@
+﻿@model PetitesPuces.Models.PPCommande
+@using PetitesPuces.Utilities
+
+<div id="receipt" class="well text-center col-xs-8 col-xs-offset-2">
+    <div class="row">
+        <div class="col-sm-6">
+            <img width="450" src="~/images/carouselPublicite/puces.jpg" />
+        </div>
+        <div class="col-sm-6 text-right">
+            <p>Commande #@Model.NoCommande</p>
+            <p>@Model.DateCommande.Value.ToShortDateString()</p>
+            <p>No d'autorisation @Model.NoAutorisation</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 text-left">
+            <h3>Client</h3>
+            <br />
+            <h5>#@Model.PPClient.NoClient</h5>
+            <h5>@Model.PPClient.Prenom @Model.PPClient.Nom</h5>
+            <h5>@Model.PPClient.AdresseEmail</h5>
+            <h5>@Model.PPClient.Tel1</h5>
+            <h5>@Model.PPClient.Tel2</h5>
+            <h5>@Model.PPClient.Rue, @Model.PPClient.Ville</h5>
+            <h5>@Model.PPClient.Province, @Model.PPClient.Pays</h5>
+        </div>
+        <div class="col-sm-6 text-left">
+            <h3>Vendeur</h3>
+            <br />
+            <h5>#@Model.PPVendeur.NoVendeur</h5>
+            <h5>@Model.PPVendeur.NomAffaires</h5>
+            <h5>@Model.PPVendeur.AdresseEmail</h5>
+            <h5>@Model.PPVendeur.Tel1</h5>
+            <h5>@Model.PPVendeur.Tel2</h5>
+            <h5>@Model.PPVendeur.Rue, @Model.PPVendeur.Ville</h5>
+            <h5>@Model.PPVendeur.Province, @Model.PPVendeur.Pays</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Commande</h3>
+            <table class="table bg-light">
+                <tr>
+                    <th>Produit</th>
+                    <th class="text-right">Quantité</th>
+                    <th class="text-right">Prix par unité</th>
+                    <th class="text-right">Prix total</th>
+                </tr>
+                @foreach (var article in Model.PPDetailsCommandes)
+                {
+                    <tr class="v-align-middle">
+                        <td class="text-left">@article.PPProduit.Nom</td>
+                        <td class="text-right">@article.Quantité</td>
+                        <td>@Formatter.Money(article.PrixVente)</td>
+                        <td>@Formatter.Money(article.PrixVente * article.Quantité)</td>
+                    </tr>
+                }
+                <tr class="v-align-middle">
+                    <td></td>
+                    <td></td>
+                    <th scope="row" class="text-right">Avant-total: </th>
+                    <td>@Formatter.Money(Model.MontantTotAvantTaxes)</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>Livraison</h3>
+            <table class="table bg-light">
+                <tr>
+                    <th>Type</th>
+                    <th class="text-right">Poids</th>
+                    <th class="text-right">Coût</th>
+                </tr>
+                <tr class="v-align-middle">
+                    <th class="text-left">@Model.PPTypesLivraison.Description</th>
+                    <td class="text-right">@Model.PoidsTotal lbs</td>
+                    <td class="text-right">@Formatter.Money(Model.CoutLivraison)</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-sm-6">
+            <h3>Total</h3>
+            <table class="table bg-light">
+                <tr class="v-align-middle">
+                    <th scope="row">Avant-total + livraison</th>
+                    <td>@Formatter.Money(Model.MontantTotAvantTaxes + Model.CoutLivraison)</td>
+                </tr>
+                <tr class="v-align-middle">
+                    <th scope="row">TPS</th>
+                    <td>@Formatter.Money(Model.TPS)</td>
+                </tr>
+                <tr class="v-align-middle">
+                    <th scope="row">TVQ</th>
+                    <td>@Formatter.Money(Model.TVQ)</td>
+                </tr>
+                <tr class="v-align-middle">
+                    <th scope="row">Grand total</th>
+                    <th>@Formatter.Money(Model.TPS + Model.TVQ + Model.MontantTotAvantTaxes + Model.CoutLivraison)</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

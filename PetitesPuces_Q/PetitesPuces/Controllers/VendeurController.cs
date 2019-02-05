@@ -16,9 +16,13 @@ namespace PetitesPuces.Controllers
         {
             int NoVendeur = 10;
 
+            List<PPCommande> commandes = getCommandesVendeurs(NoVendeur);
+
+            commandes = commandes.Where(c => c.Statut == 'T').ToList();
+
             var viewModel = new AccueilVendeurViewModel
             {
-                Commandes = getCommandesVendeurs(NoVendeur),
+                Commandes = commandes,
                 Paniers = getPaniersVendeurs(NoVendeur),
                 NbVisites = getNbVisiteurs(NoVendeur)
             };
@@ -30,8 +34,6 @@ namespace PetitesPuces.Controllers
             int NoVendeur = 10;
 
             List<PPCommande> commandes = getCommandesVendeurs(NoVendeur);
-
-            commandes = commandes.Where(c => c.Statut == 'T').ToList();
 
             return View(commandes);
         } 
@@ -65,10 +67,11 @@ namespace PetitesPuces.Controllers
             return View(produits);
         }
 
-        public ActionResult InfoCommande(string No)
+        public ActionResult InfoCommande(int No)
         {
-            ViewBag.No = No;
-            return View();
+            List<PPCommande> commandes = getCommandesVendeurs(10);
+            PPCommande model = commandes.Where(c => c.NoCommande == No).FirstOrDefault();
+            return View(model);
         }
 
         public ActionResult Profil()

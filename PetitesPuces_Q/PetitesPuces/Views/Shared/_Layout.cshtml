@@ -23,6 +23,11 @@ __________
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", false)
+    
+    <script type="text/javascript" src="@Url.Content("/Scripts/constant.js")"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -49,10 +54,5 @@ __________
 <footer class="container">
     <p>&copy @DateTime.Now.Year - Les petites puces</p>
 </footer>
-
-    <script type="text/javascript" src="@Url.Content("/Scripts/constant.js")"></script>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
 </body>
 </html>
