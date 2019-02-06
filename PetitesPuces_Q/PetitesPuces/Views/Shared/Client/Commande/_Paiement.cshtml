@@ -1,40 +1,57 @@
-
+@model PetitesPuces.Models.Panier
 <form>
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="inputEmail4">Nom sur la carte </label>
-            <input type="text" class="form-control" id="inputEmail4" placeholder="Nom">
-        </div>
-        <div class="form-group col-md-6">
-            <label for="inputPassword4">No de carte</label>
-            <input type="text" class="form-control" id="inputPassword4" placeholder="XXXX XXXX XXXX XXXX">
+            <label for="NoCarteCredit">No de carte</label>
+            <input type="text" class="form-control" name="NoCarteCredit" id="NoCarteCredit" maxlength="19" placeholder="XXXX XXXX XXXX XXXX">
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="inputEmail4">Expiration</label>
-            <input type="text" class="form-control" id="inputEmail4" placeholder="MM/AA">
+            <label for="DateExpirationCarteCredit">Expiration</label>
+            <input type="text" class="form-control" name="DateExpirationCarteCredit" id="DateExpirationCarteCredit" placeholder="MM/AA">
         </div>
         <div class="form-group col-md-6">
-            <label for="inputPassword4">CVV</label>
-            <input type="text" class="form-control" id="inputPassword4" placeholder="XXX">
+            <label for="NoSecuriteCarteCredit">CVV</label>
+            <input type="text" class="form-control" name="NoSecuriteCarteCredit" id="NoSecuriteCarteCredit" placeholder="XXX">
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12"><hr/></div>
+        <div class="col-md-12">
+            <div id="error" class="alert alert-danger" hidden role="alert">
+                Veuillez remplir tout les champs dans le bon format
+            </div>
+            <hr/>
+        </div>
         <div class="col-md-4 col-lg-offset-5">
             <button type="button" class="btn btn-danger"onclick="previous()">Retour</button>
-            <button type="button" class="btn btn-primary" onclick="next()">Continuer</button>
+            <button type="button" class="btn btn-primary" onclick="envoyerInfo()">Continuer</button>
         </div>
     </div>
+    
 </form>
 <script>
+    function envoyerInfo(){
+        var data = $("form").serialize();
+        
+        $.ajax({
+            url: URLPATH + "/Client/SetInfoPaiement",
+            type: "GET",
+            data: data, 
+            success: next,
+            error: function(req, status, err) {
+                $("#error").show();
+                console.log(req, status, err);
+            }
+        });
+    }
     function next(){
         $('#Confirmation').addClass('active');
         $.ajax({
             url: URLPATH + "/Client/Confirmation",
             type: "get",
             data: {
+                "noVendeur":@Model.Vendeur.NoVendeur
             },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
@@ -43,8 +60,6 @@
                 console.log(req, status, err);
             }
         });
-        var PARAMS = "?Etape="+"Confirmation";
-        history.pushState(null, "", PARAMS);
     }
     function previous(){
         $('#Paiement').removeClass('active');
@@ -52,6 +67,7 @@
             url: URLPATH + "/Client/Livraison",
             type: "get",
             data: {
+                "noVendeur":@Model.Vendeur.NoVendeur
             },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
@@ -60,7 +76,5 @@
                 console.log(req, status, err);
             }
         });
-        var PARAMS = "?Etape="+"Livraison";
-        history.pushState(null, "", PARAMS);
     }
 </script>

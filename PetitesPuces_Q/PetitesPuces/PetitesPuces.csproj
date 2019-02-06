@@ -201,24 +201,29 @@
     </Compile>
     <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Commande.cs" />
+    <Compile Include="Models\Commande\InfoClient.cs" />
+    <Compile Include="Models\Commande\InfoCommande.cs" />
+    <Compile Include="Models\Commande\InfoPaiement.cs" />
+    <Compile Include="Models\Enums\Province.cs" />
+    <Compile Include="Models\Enums\Tri.cs" />
     <Compile Include="Models\Ext\PPClient.cs" />
     <Compile Include="Models\Ext\PPGestionnaire.cs" />
     <Compile Include="Models\Ext\PPVendeur.cs" />
-    <Compile Include="Models\InfoCarteCredit.cs" />
-    <Compile Include="Models\InfoClient.cs" />
     <Compile Include="Models\IUtilisateur.cs" />
     <Compile Include="Models\Panier.cs" />
-    <Compile Include="Models\Tri.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\EnumExtensions.cs" />
+    <Compile Include="Utilities\StringExtension.cs" />
     <Compile Include="Validations\ValidationCourriel.cs" />
     <Compile Include="Securite\Securise.cs" />
     <Compile Include="Securite\SessionUtilisateur.cs" />
     <Compile Include="ViewModels\Client\AccueilViewModel.cs" />
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
+    <Compile Include="ViewModels\Client\LivraisonViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DetailsRedevances.cs" />
     <Compile Include="ViewModels\Gestionnaire\InactiviteViewModel.cs" />
@@ -385,6 +390,8 @@
     <Content Include="Views\Shared\Vendeur\_ConfirmationLivraison.cshtml" />
     <Content Include="Views\Shared\Vendeur\_PaniersMois.cshtml" />
     <Content Include="Views\Shared\Vendeur\_MenagePaniers.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_RecuCommande.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_ConfirmationPanier.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

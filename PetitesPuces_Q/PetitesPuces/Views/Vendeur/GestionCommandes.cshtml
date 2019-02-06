@@ -1,7 +1,9 @@
 ﻿@model List<PetitesPuces.Models.PPCommande>
 
 @{
-    ViewBag.Title = "Gestion des commandes";
+                /**/
+
+                ViewBag.Title = "Gestion des commandes";
 }
 
 @section styles {
@@ -55,103 +57,103 @@
     {
         <table class="table m-0 bg-light">
             <tr>
-             
-                        <th class="rowHead">
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().NoCommande)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().PPClient.Nom)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().DateCommande)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().CoutLivraison)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().TypeLivraison)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().PoidsTotal)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().MontantTotAvantTaxes)
-                        </th>
-                        <th>
 
-                        </th>
-                 
-                    </tr>
-                </table>
-                <div class="tableau">
-                    <table class="table text-right bg-light m-0">
-                        @foreach (var commande in Model)
-                        {
-                            if (commande.Statut == 'T')
-                            {
-                                @Html.Partial("Vendeur/_Commande", commande);
-                            }
-                        }
-                    </table>
-                </div>
-            }
+                <th class="rowHead">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().NoCommande)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().PPClient.Nom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().DateCommande)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().CoutLivraison)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().TypeLivraison)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().PoidsTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().MontantTotAvantTaxes)
+                </th>
+                <th>
+
+                </th>
+
+            </tr>
+        </table>
+        <div class="tableau">
+            <table class="table text-right bg-light m-0">
+                @foreach (var commande in Model)
+                {
+                    if (commande.Statut == 'T')
+                    {
+                        @Html.Partial("Vendeur/_Commande", commande);
+                    }
+                }
+            </table>
         </div>
+    }
+</div>
 
-        <h3 class="text-center col-xs-12">Historique des commandes</h3>
+<h3 class="text-center col-xs-12">Historique des commandes</h3>
 
-        <div class="well text-center col-xs-10 col-xs-offset-1">
-            @if (Model.Where(x => x.Statut == 'L').Count() == 0)
-            {
-                <h4 class="text-center col-xs-12">Aucun historique de commandes</h4>
-            }
-            else
-            {
-                <table class="table m-0 bg-light">
-                    <tr>
-                        <th class="rowHead">
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().NoCommande)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().PPClient.Nom)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().DateCommande)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().CoutLivraison)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().TypeLivraison)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().PoidsTotal)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstOrDefault().MontantTotAvantTaxes)
-                        </th>
-                        <th>
+<div class="well text-center col-xs-10 col-xs-offset-1">
+    @if (Model.Where(x => x.Statut == 'L').Count() == 0)
+    {
+        <h4 class="text-center col-xs-12">Aucun historique de commandes</h4>
+    }
+    else
+    {
+        <table class="table m-0 bg-light">
+            <tr>
+                <th class="rowHead">
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().NoCommande)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().PPClient.Nom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().DateCommande)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().CoutLivraison)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().TypeLivraison)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().PoidsTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().MontantTotAvantTaxes)
+                </th>
+                <th>
 
-                        </th>
-                    </tr>
-                </table>
-                <div class="tableau">
-                    <table class="table text-right bg-light m-0">
-                        @foreach (var commande in Model)
-                        {
-                            if (commande.Statut == 'L')
-                            {
-                                @Html.Partial("Vendeur/_Commande", commande);
-                            }
-                        }
-                    </table>
-                </div>
-            }
+                </th>
+            </tr>
+        </table>
+        <div class="tableau">
+            <table class="table text-right bg-light m-0">
+                @foreach (var commande in Model)
+                {
+                    if (commande.Statut == 'L')
+                    {
+                        @Html.Partial("Vendeur/_Commande", commande);
+                    }
+                }
+            </table>
         </div>
+    }
+</div>
 
-        <div class="modal fade" id="confirmationLivraison" tabindex="-1" role="dialog" aria-labelledby="confirmationLivraison" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div id="PLACEHOLDERModalDescription" class="modal-content">
+<div class="modal fade" id="confirmationLivraison" tabindex="-1" role="dialog" aria-labelledby="confirmationLivraison" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div id="PLACEHOLDERModalDescription" class="modal-content">
 
-                </div>
-            </div>
         </div>
+    </div>
+</div>

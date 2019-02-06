@@ -58,7 +58,7 @@
     }
     else
     {
-        <table class="table m-0">
+        <table class="table m-0 bg-light">
             <tr>
 
                 <th class="rowHead">
@@ -89,7 +89,7 @@
             </tr>
         </table>
         <div class="tableau">
-            <table class="table text-right">
+            <table class="table text-right m-0 bg-light">
                 @foreach (var commande in Model.Commandes)
                 {
                     @Html.Partial("Vendeur/_Commande", commande)
@@ -98,7 +98,7 @@
         </div>
     }
     <div class="text-left mt-2">
-        <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("GestionCommandes", "Vendeur" )'">Gérer les commandes</button>
+        <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("GestionCommandes", "Vendeur")'">Gérer les commandes</button>
     </div>
 </div>
 
@@ -106,24 +106,24 @@
 <h3 class="text-center col-xs-12">Paniers</h3>
 
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    <table class="table m-0">
+    <table class="table m-0 bg-light">
         <tr>
             <th class="rowHead">
-                @Html.DisplayNameFor(model => model.Paniers.FirstOrDefault().NomClient)
+                Nom du client
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Paniers.FirstOrDefault().DateCreation)
+                Date de création
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Paniers.FirstOrDefault().NbItems)
+                Nb d'items
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Paniers.FirstOrDefault().CoutTotal)
+                Total
             </th>
         </tr>
     </table>
     <div class="tableau">
-        <table class="table text-right">
+        <table class="table text-right m-0 bg-light">
             @foreach (var panier in Model.Paniers)
             {
                 @Html.Partial("Vendeur/_Panier", panier)

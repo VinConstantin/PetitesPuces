@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using PetitesPuces.Models;
+using PetitesPuces.Utilities;
 using PetitesPuces.ViewModels.Vendeur;
 
 namespace PetitesPuces.Controllers
@@ -242,9 +244,9 @@ namespace PetitesPuces.Controllers
 
             return lstCommandes;
         }
-        public ActionResult Commande(string Etape, int noVendeur)
+
+        private Panier GetPanierByVendeurClient(int noVendeur)
         {
-            ViewBag.Etape = Etape;
             var query = from articles in context.PPArticlesEnPaniers
                 where articles.NoClient == NOCLIENT
                       && articles.NoVendeur == noVendeur
@@ -257,48 +259,90 @@ namespace PetitesPuces.Controllers
                 Client = query.FirstOrDefault().PPClient,
                 Articles = query.ToList()
             };
+
+            return panier;
+        }
+
+        private PPVendeur GetVendeurByNo(int no)
+        {
+            return
+                (from v in context.PPVendeurs
+                    where v.NoVendeur == no
+                    select v).FirstOrDefault();
+        }
+
+        public HtmlString GetPrixLivraison(int noVendeur, decimal poids, decimal prix, int selected)
+        {
+            var intervallePoids = (from p in context.PPTypesPoids select p).ToList();
+            PPTypesPoid codePoids = intervallePoids.FirstOrDefault();
+            foreach (var intervalle in intervallePoids)
+            {
+                if(poids>=intervalle.PoidsMin && poids<=intervalle.PoidsMax)
+                {
+                    codePoids = intervalle;
+                    break;
+                }
+            }
+            PPVendeur vendeur = GetVendeurByNo(noVendeur);
+
+            PPPoidsLivraison livraisons = codePoids.PPPoidsLivraisons.FirstOrDefault(p => p.CodeLivraison == selected);
+            decimal? prixLivraison = prix >= vendeur.LivraisonGratuite?(decimal?)0.00:livraisons.Tarif;
+            InfoCommande.PrixLivraison = prixLivraison;
+            
+            string str = "Frais de livraison : " + Formatter.Money( prixLivraison, false);
+            HtmlString html = new HtmlString(str);
+            return html;
+        }
+        public ActionResult Commande(string Etape, int noVendeur)
+        {
+            ViewBag.Etape = Etape;
+
+            Panier panier = GetPanierByVendeurClient(noVendeur);
             return View(panier);
         }
 
-        public ActionResult Information(int NoClient)
+        public ActionResult Information(int noVendeur)
         {
-            PPClient client = (from cli in context.PPClients
-                where cli.NoClient == NOCLIENT
-                select cli).FirstOrDefault();
-            return PartialView("Client/Commande/_Information", client);
+            Panier panier = GetPanierByVendeurClient(noVendeur);
+            
+            return PartialView("Client/Commande/_Information", panier);
+        }     
+        public ActionResult SetInfoClient(InfoClient info)
+        {
+            info.no = NOCLIENT;
+            InfoCommande.SetInfoClient(info);
+            
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-        
-        public ActionResult Livraison(InfoClient info)
+        public ActionResult SetInfoPaiement(InfoPaiement info)
         {
-            PPClient client = (from cli in context.PPClients
-                where cli.NoClient == NOCLIENT
-                select cli).FirstOrDefault();
-
-            client.Nom = info.nom;
-            client.Prenom = info.prenom;
-            client.Tel1 = info.telephone;
-            
-            client.Rue = info.rue;
-            client.Ville = info.ville;
-            client.Province = info.province;
-            client.CodePostal = info.codePostal;
-
-            try
+            if (info == null)
             {
-                context.SubmitChanges();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            catch (Exception e)
+
+            if (!new Regex("^[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}$").Match(info.NoCarteCredit).Success
+                ||!new Regex("^[0-9]{2}/[0-9]{2}$").Match(info.DateExpirationCarteCredit).Success
+                ||!new Regex("^[0-9]{3,4}$").Match(info.NoSecuriteCarteCredit).Success)
             {
-                Console.WriteLine(e);
-                throw;
+                return new HttpStatusCodeResult(HttpStatusCode.NotAcceptable);
             }
+            InfoCommande.SetInfoPaiement(info);
+            System.Diagnostics.Debug.Write(InfoCommande.InfoClient);
             
-            
-            return PartialView("Client/Commande/_Livraison");
+            System.Diagnostics.Debug.Write(InfoCommande.InfoPaiement);
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-        public ActionResult Paiement()
+        public ActionResult Livraison(int noVendeur)
         {
-            return PartialView("Client/Commande/_Paiement");
+            Panier panier = GetPanierByVendeurClient(noVendeur);
+            
+            return PartialView("Client/Commande/_Livraison",panier);
+        }
+        public ActionResult Paiement(int noVendeur)
+        {
+            Panier panier = GetPanierByVendeurClient(noVendeur);
+            return PartialView("Client/Commande/_Paiement",panier);
         }
         public ActionResult Confirmation(int noVendeur)
         {

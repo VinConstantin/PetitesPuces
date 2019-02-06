@@ -16,9 +16,13 @@ namespace PetitesPuces.Controllers
         {
             int NoVendeur = 10;
 
+            List<PPCommande> commandes = getCommandesVendeurs(NoVendeur);
+
+            commandes = commandes.Where(c => c.Statut == 'T').ToList();
+
             var viewModel = new AccueilVendeurViewModel
             {
-                Commandes = getCommandesVendeurs(NoVendeur),
+                Commandes = commandes,
                 Paniers = getPaniersVendeurs(NoVendeur),
                 NbVisites = getNbVisiteurs(NoVendeur)
             };
@@ -30,8 +34,6 @@ namespace PetitesPuces.Controllers
             int NoVendeur = 10;
 
             List<PPCommande> commandes = getCommandesVendeurs(NoVendeur);
-
-            commandes = commandes.Where(c => c.Statut == 'T').ToList();
 
             return View(commandes);
         } 
@@ -65,10 +67,11 @@ namespace PetitesPuces.Controllers
             return View(produits);
         }
 
-        public ActionResult InfoCommande(string No)
+        public ActionResult InfoCommande(int No)
         {
-            ViewBag.No = No;
-            return View();
+            List<PPCommande> commandes = getCommandesVendeurs(10);
+            PPCommande model = commandes.Where(c => c.NoCommande == No).FirstOrDefault();
+            return View(model);
         }
 
         public ActionResult Profil()
@@ -91,6 +94,11 @@ namespace PetitesPuces.Controllers
             return PartialView("Vendeur/_ConfirmationLivraison", NoCommande);
         }
 
+        public ActionResult ConfirmationPanier(int NoClient)
+        {
+            return PartialView("Vendeur/_ConfirmationPanier", NoClient);
+        }
+
         public void Livraison(int NoCommande)
         {
             var query = from commandes in context.PPCommandes
@@ -98,6 +106,24 @@ namespace PetitesPuces.Controllers
                         select commandes;
 
             query.FirstOrDefault().Statut = 'L';
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void SuppressionPanier(int NoClient)
+        {
+            var query = from articles in context.PPArticlesEnPaniers
+                        where articles.NoVendeur == 10 && articles.NoClient == NoClient
+                        select articles;
+
+            context.PPArticlesEnPaniers.DeleteAllOnSubmit(query.ToList());
+            
             try
             {
                 context.SubmitChanges();
@@ -133,10 +159,10 @@ namespace PetitesPuces.Controllers
             {
                 Panier panier = new Panier
                 {
-                    NomClient = pan.FirstOrDefault().PPClient.Nom,
-                    NbItems = (int)pan.Sum(g => g.NbItems),
+                    Client = pan.FirstOrDefault().PPClient,
+                    Vendeur = pan.FirstOrDefault().PPVendeur,
                     DateCreation = (DateTime)pan.FirstOrDefault().DateCreation,
-                    CoutTotal = pan.Sum(g => (double)(g.NbItems * g.PPProduit.PrixDemande))
+                    Articles = pan.ToList()
                 };
                 lstPaniers.Add(panier);
             }
