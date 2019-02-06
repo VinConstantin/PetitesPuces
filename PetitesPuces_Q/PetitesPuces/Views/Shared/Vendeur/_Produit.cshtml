@@ -1,8 +1,9 @@
-﻿@model PetitesPuces.Models.Produit
+﻿@model PetitesPuces.Models.PPProduit
+@using PetitesPuces.Utilities
 <tr style="height: 51px">
-    <td class="text-left">@Model.Id</td>
-    <td class="text-left">@Model.Name</td>
-    <td class="text-left">@Model.Price</td>
+    <td class="text-left">@Model.NoProduit</td>
+    <td class="text-left">@Model.Nom</td>
+    <td class="text-left">@Formatter.Money(Model.PrixVente)</td>
     <td class="text-right">
         <button class="btn btn-danger" title="Supprimer">
             <i class="glyphicon glyphicon-remove v-align-middle"></i>

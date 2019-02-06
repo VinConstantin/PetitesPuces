@@ -209,4 +209,35 @@
       <Column Name="MotDePasse" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.PPDestinataires" Member="PPDestinataires">
+    <Type Name="PPDestinataire">
+      <Column Name="NoMsg" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NoDestinataire" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="EtatLu" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Lieu" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Association Name="PPMessage_PPDestinataire" Member="PPMessage" ThisKey="NoMsg" OtherKey="NoMsg" Type="PPMessage" IsForeignKey="true" />
+      <Association Name="PPLieu_PPDestinataire" Member="PPLieu" ThisKey="Lieu" OtherKey="NoLieu" Type="PPLieu" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PPMessages" Member="PPMessages">
+    <Type Name="PPMessage">
+      <Column Name="NoMsg" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NoExpediteur" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DescMsg" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FichierJoint" Type="System.Object" DbType="Variant" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Lieu" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="dateEnvoi" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="objet" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="PPMessage_PPDestinataire" Member="PPDestinataires" ThisKey="NoMsg" OtherKey="NoMsg" Type="PPDestinataire" />
+      <Association Name="PPLieu_PPMessage" Member="PPLieu" ThisKey="Lieu" OtherKey="NoLieu" Type="PPLieu" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PPLieu" Member="PPLieus">
+    <Type Name="PPLieu">
+      <Column Name="NoLieu" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="PPLieu_PPDestinataire" Member="PPDestinataires" ThisKey="NoLieu" OtherKey="Lieu" Type="PPDestinataire" />
+      <Association Name="PPLieu_PPMessage" Member="PPMessages" ThisKey="NoLieu" OtherKey="Lieu" Type="PPMessage" />
+    </Type>
+  </Table>
 </Database>
