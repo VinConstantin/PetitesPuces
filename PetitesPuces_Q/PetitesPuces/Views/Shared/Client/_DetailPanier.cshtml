@@ -99,7 +99,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button type="button" onclick="location.href = '@Url.Action("Commande", "Client",new RouteValueDictionary(new { Etape= "Information", noVendeur = Model.Vendeur.NoVendeur }))'" class="btn btn-primary">Continuer</button>
+                <button type="button" onclick="location.href = '@Url.Action("Commande", "Client",new RouteValueDictionary(new { noVendeur = Model.Vendeur.NoVendeur }))'" class="btn btn-primary">Continuer</button>
             </div>
         </div>
     </div>
