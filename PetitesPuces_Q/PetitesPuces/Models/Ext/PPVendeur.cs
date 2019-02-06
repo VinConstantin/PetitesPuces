@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,12 +13,16 @@ namespace PetitesPuces.Models
     public partial class PPVendeur : IUtilisateur
     {
         private static readonly BDPetitesPucesDataContext ctx = new BDPetitesPucesDataContext();
-        private static readonly string ROLE = "vendeur";
         private DateTime? _dateDerniereActivite;
 
         public string Role
         {
-            get { return ROLE; }
+            get { return RolesUtil.VEND; }
+        }
+
+        public long No
+        {
+            get { return NoVendeur; }
         }
 
         public DateTime DateDerniereActivite
@@ -39,13 +44,13 @@ namespace PetitesPuces.Models
                 (from produit
                         in ctx.PPProduits
                  where produit.NoVendeur == NoVendeur
-                 select produit.DateCreation.GetValueOrDefault())
+                 select produit.DateCreation.GetValueOrDefault((DateTime) SqlDateTime.MinValue))
                 .Concat(
                     from commande
                         in ctx.PPCommandes
                     where commande.NoVendeur == NoVendeur
-                    select commande.DateCommande.GetValueOrDefault()
-                ).Max();
+                    select commande.DateCommande.GetValueOrDefault((DateTime) SqlDateTime.MinValue)
+                ).AsEnumerable().DefaultIfEmpty((DateTime) SqlDateTime.MinValue).Max();
         }
     }
 

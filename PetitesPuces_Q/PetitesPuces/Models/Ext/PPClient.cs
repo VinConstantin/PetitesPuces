@@ -12,12 +12,11 @@ namespace PetitesPuces.Models
     public partial class PPClient : IUtilisateur
     {
         private static readonly BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
-        private static readonly string ROLE = "client";
         private DateTime? _dateDerniereActivite;
 
         public string Role
         {
-            get { return ROLE; }
+            get { return RolesUtil.CLIENT; }
         }
 
         public DateTime DateDerniereActivite
@@ -32,7 +31,12 @@ namespace PetitesPuces.Models
                 return _dateDerniereActivite.Value;
             }
         }
-        
+
+        public long No
+        {
+            get { return NoClient; }
+        }
+
         public DateTime CalculerDerniereActivite()
         {
             return (from paniers

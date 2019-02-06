@@ -5,9 +5,11 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using PetitesPuces.Models;
+using PetitesPuces.Securite;
 using PetitesPuces.Utilities;
 using PetitesPuces.ViewModels.Vendeur;
 
@@ -16,7 +18,7 @@ namespace PetitesPuces.Controllers
     public class ClientController : Controller
     {
         //TODO:implémenter pour utiliser le bon no
-        private const int NOCLIENT = 10100;
+        private long NOCLIENT = SessionUtilisateur.UtilisateurCourant.No;
         private const int DEFAULTITEMPARPAGE = 8;
         private BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
 
@@ -161,7 +163,7 @@ namespace PetitesPuces.Controllers
             return PartialView("Client/ModalProduit", produit);
 
         }
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public HttpStatusCode AjouterProduitAuPanier(int NoProduit, short Quantite)
         {
             var requeteProduit = (from unProduit in context.PPProduits
@@ -206,7 +208,7 @@ namespace PetitesPuces.Controllers
             //List<Panier> lstPaniers = new List<Panier>();
             return View(lstPaniers);
         }
-        private List<Panier> GetPaniersClient(int NoClient)
+        private List<Panier> GetPaniersClient(long NoClient)
         {
             var query = from articles in context.PPArticlesEnPaniers
                 where articles.NoClient == NoClient
@@ -232,7 +234,7 @@ namespace PetitesPuces.Controllers
 
             return lstPaniers;
         }
-        private List<PPCommande> GetCommandesClient(int NoClient)
+        private List<PPCommande> GetCommandesClient(long NoClient)
         {
             var query = from commande in context.PPCommandes
                 where commande.NoClient == NoClient
@@ -288,6 +290,7 @@ namespace PetitesPuces.Controllers
             PPPoidsLivraison livraisons = codePoids.PPPoidsLivraisons.FirstOrDefault(p => p.CodeLivraison == selected);
             decimal? prixLivraison = prix >= vendeur.LivraisonGratuite?(decimal?)0.00:livraisons.Tarif;
             InfoCommande.PrixLivraison = prixLivraison;
+            InfoCommande.CodeLivraison = selected;
             
             string str = "Frais de livraison : " + Formatter.Money( prixLivraison, false);
             HtmlString html = new HtmlString(str);
@@ -304,16 +307,19 @@ namespace PetitesPuces.Controllers
         public ActionResult Information(int noVendeur)
         {
             Panier panier = GetPanierByVendeurClient(noVendeur);
+            InfoCommande.Vendeur = panier.Vendeur;
             
             return PartialView("Client/Commande/_Information", panier);
         }     
+        [System.Web.Http.HttpPost]
         public ActionResult SetInfoClient(InfoClient info)
         {
-            info.no = NOCLIENT;
-            InfoCommande.SetInfoClient(info);
+            info.no = (int)NOCLIENT;
+            InfoCommande.InfoClient = (info);
             
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+        [System.Web.Http.HttpPost]
         public ActionResult SetInfoPaiement(InfoPaiement info)
         {
             if (info == null)
@@ -327,7 +333,7 @@ namespace PetitesPuces.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotAcceptable);
             }
-            InfoCommande.SetInfoPaiement(info);
+            InfoCommande.InfoPaiement = (info);
             System.Diagnostics.Debug.Write(InfoCommande.InfoClient);
             
             System.Diagnostics.Debug.Write(InfoCommande.InfoPaiement);
@@ -462,6 +468,10 @@ namespace PetitesPuces.Controllers
             };
             
             return PartialView("Client/_DetailPanier",panier);
+        }
+        public ActionResult PasserCommande()
+        {
+            return PartialView("Client/Commande/_ResultatCommande");
         }
         public ActionResult Profil()
         {

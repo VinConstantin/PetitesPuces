@@ -187,9 +187,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\CourrielController.cs" />
     <Compile Include="Controllers\GestionnaireController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="Controllers\VendeurController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -209,6 +209,7 @@
     <Compile Include="Models\Ext\PPClient.cs" />
     <Compile Include="Models\Ext\PPGestionnaire.cs" />
     <Compile Include="Models\Ext\PPVendeur.cs" />
+    <Compile Include="Models\Ext\RolesUtil.cs" />
     <Compile Include="Models\IUtilisateur.cs" />
     <Compile Include="Models\Panier.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -224,6 +225,7 @@
     <Compile Include="ViewModels\Client\AccueilViewModel.cs" />
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Client\LivraisonViewModel.cs" />
+    <Compile Include="ViewModels\Courriel\DestinataireViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DetailsRedevances.cs" />
     <Compile Include="ViewModels\Gestionnaire\InactiviteViewModel.cs" />
@@ -305,6 +307,7 @@
     <Content Include="Views\Client\Catalogue.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
+    <Content Include="Views\Courriel\Index.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Confirmation.cshtml" />
@@ -312,6 +315,7 @@
     <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_ProduitsInformation.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_ResultatCommande.cshtml" />
     <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\_DetailPanier.cshtml" />
@@ -321,10 +325,22 @@
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
+    <Content Include="Views\Shared\Courriel\_BoiteReception.cshtml" />
+    <Content Include="Views\Shared\Courriel\_Brouillons.cshtml" />
+    <Content Include="Views\Shared\Courriel\_ComposerMessage.cshtml" />
+    <Content Include="Views\Shared\Courriel\_ElementsEnvoyes.cshtml" />
+    <Content Include="Views\Shared\Courriel\_ElementsSupprimes.cshtml" />
+    <Content Include="Views\Shared\Courriel\_ModalAjoutDestinataire.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DemandeVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DetailsVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_GestionDemande.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_ListeDemandesVendeur.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Inactivite\_Client.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeDisableClient.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeDisablePersonne.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeDisableVendeur.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Inactivite\_Personne.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Inactivite\_Vendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_DetailsRedevances.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_ListeRedevances.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_ListeVendeurRedevance.cshtml" />
@@ -358,14 +374,9 @@
     <Content Include="Views\Gestionnaire\Statistiques.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_LayoutGestionnaire.cshtml" />
     <Content Include="Views\Gestionnaire\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Gestionnaire\_Client.cshtml" />
-    <Content Include="Views\Shared\Gestionnaire\_Vendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Commande.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Panier.cshtml" />
     <Content Include="Views\Vendeur\GestionCommandes.cshtml" />
-    <Content Include="Views\Shared\Gestionnaire\_ListeDisablePersonne.cshtml" />
-    <Content Include="Views\Shared\Gestionnaire\_ListeDisableVendeur.cshtml" />
-    <Content Include="Views\Shared\Gestionnaire\_ListeDisableClient.cshtml" />
     <Content Include="Views\Vendeur\InfoCommande.cshtml" />
     <Content Include="Views\Vendeur\GestionPaniers.cshtml" />
     <Content Include="Views\Vendeur\GestionCatalogue.cshtml" />
