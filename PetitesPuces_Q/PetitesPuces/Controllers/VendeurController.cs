@@ -94,6 +94,11 @@ namespace PetitesPuces.Controllers
             return PartialView("Vendeur/_ConfirmationLivraison", NoCommande);
         }
 
+        public ActionResult ConfirmationPanier(int NoClient)
+        {
+            return PartialView("Vendeur/_ConfirmationPanier", NoClient);
+        }
+
         public void Livraison(int NoCommande)
         {
             var query = from commandes in context.PPCommandes
@@ -101,6 +106,24 @@ namespace PetitesPuces.Controllers
                         select commandes;
 
             query.FirstOrDefault().Statut = 'L';
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void SuppressionPanier(int NoClient)
+        {
+            var query = from articles in context.PPArticlesEnPaniers
+                        where articles.NoVendeur == 10 && articles.NoClient == NoClient
+                        select articles;
+
+            context.PPArticlesEnPaniers.DeleteAllOnSubmit(query.ToList());
+            
             try
             {
                 context.SubmitChanges();

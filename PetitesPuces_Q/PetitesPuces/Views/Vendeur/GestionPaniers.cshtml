@@ -10,7 +10,6 @@
 
 <script>
     function visualiser(NbMois) {
-        console.log("visualiser");
         $.ajax({
             url: URLPATH +"/Vendeur/VisualiserPaniers",
             type: "get",
@@ -20,6 +19,40 @@
             success: function (result) {
                 console.log("success")
                 $("#PLACEHOLDERPaniersMois").html(result);
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERPaniersMois").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+    function confirmer(NoClient) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/ConfirmationPanier",
+            type: "get",
+            data: {
+                "NoClient": NoClient
+            },
+            success: function (result) {
+                console.log("success")
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+    function supprimer(NoClient) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/SuppressionPanier",
+            type: "get",
+            data: {
+                "NoClient": NoClient
+            },
+            success: function (result) {
+                console.log("success")
+                window.location.reload();
             },
             error: function (req, status, err) {
                 console.log("error")
@@ -94,4 +127,12 @@
             }
         </table>
     }
+</div>
+
+<div class="modal fade" id="confirmationPanier" tabindex="-1" role="dialog" aria-labelledby="confirmationPanier" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div id="PLACEHOLDERModalDescription" class="modal-content">
+
+        </div>
+    </div>
 </div>

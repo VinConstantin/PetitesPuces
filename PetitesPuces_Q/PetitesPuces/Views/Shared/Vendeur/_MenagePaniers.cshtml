@@ -7,7 +7,7 @@
     <td>@Model.NbItems</td>
     <td>@Formatter.Money(Model.CoutTotal)</td>
     <td>
-        <button class="btn btn-danger" title="Supprimer">
+        <button class="btn btn-danger" title="Supprimer" onclick="confirmer(@Model.Client)" data-toggle="modal" data-target="#confirmationPanier">
             <i class="glyphicon glyphicon-remove v-align-middle"></i>
         </button>
     </td>
