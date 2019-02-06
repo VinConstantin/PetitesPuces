@@ -1,0 +1,126 @@
+
+@{
+   ViewBag.Title = "Courriel";
+}
+@section styles
+{
+       
+}
+@section scripts {
+   
+}<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-10">
+            <button type="button" class="btn btn-default" data-toggle="tooltip" title="Refresh">
+                &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;&nbsp;
+            </button>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-4 col-md-3">
+            <a onclick="loadComposerMessage();" href="#" class="btn btn-danger btn-sm btn-block" role="button"><i class="glyphicon glyphicon-edit"></i> Composer</a>
+            <hr>
+            <ul class="nav nav-pills nav-stacked">
+                <li id="BoiteReception" class="active" onclick="loadBoiteReception();"><a href="#"><span class="glyphicon glyphicon-inbox"></span> Boîte de réception </a></li>
+                <li id="Brouillons" onclick="loadBrouillons();"><a href="#"><span class="glyphicon glyphicon-pencil"></span> Brouillons</a></li>
+                <li id="ElementsEnvoyes" onclick="loadElementsEnvoyes();"><a href="#"><span class="glyphicon glyphicon-send"></span> Éléments envoyés</a></li>
+                <li id="ElementSupprimes" onclick="loadElementSupprimes();"><a href="#"><span class="glyphicon glyphicon-trash"></span> Éléments supprimés</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-8 col-md-9" id="PLACEHOLDER">
+            
+            
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        loadBoiteReception();
+    });
+    
+    function loadBoiteReception() {
+        $('.active').removeClass('active');
+        $('#BoiteReception').addClass('active');
+        $.ajax({
+            url: URLPATH + "/Courriel/BoiteReception",
+            type: "GET",
+            data: {
+                
+            }, 
+            success: function(result) {
+                $('#PLACEHOLDER').html(result);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+    }
+    function loadBrouillons() {
+        $('.active').removeClass('active');
+        $('#Brouillons').addClass('active');
+        $.ajax({
+            url: URLPATH + "/Courriel/Brouillons",
+            type: "GET",
+            data: {
+                
+            }, 
+            success: function(result) {
+                $('#PLACEHOLDER').html(result);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+    }
+    function loadElementsEnvoyes() {
+        $('.active').removeClass('active');
+        $('#ElementsEnvoyes').addClass('active');
+        $.ajax({
+            url: URLPATH + "/Courriel/ElementsEnvoyes",
+            type: "GET",
+            data: {
+                
+            }, 
+            success: function(result) {
+                $('#PLACEHOLDER').html(result);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+    }
+    function loadElementSupprimes() {
+        $('.active').removeClass('active');
+        $('#ElementSupprimes').addClass('active');
+        $.ajax({
+            url: URLPATH + "/Courriel/ElementsSupprimes",
+            type: "GET",
+            data: {
+                
+            }, 
+            success: function(result) {
+                $('#PLACEHOLDER').html(result);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+    }
+    function loadComposerMessage() {
+        $('.active').removeClass('active');
+        $.ajax({
+            url: URLPATH + "/Courriel/ComposerMessage",
+            type: "GET",
+            data: {
+                
+            }, 
+            success: function(result) {
+                $('#PLACEHOLDER').html(result);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+    }
+</script>
