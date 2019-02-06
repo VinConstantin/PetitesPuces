@@ -7,62 +7,70 @@
     double prixTotalDouble = (double) prixTotal;
     decimal fraisLivraison = 0;
 }
-<form>
-    <div class="center-block">     
-        <h4>Poids total : @Formatter.Poids(poidsTotal)</h4>
+<div class="row">
+    <div class="col-md-8 col-lg-offset-2">
+        <div class="row">
+            @Html.Partial("Client/Commande/_ProduitsInformation",Model)
+        </div>
+        <form>
+            <div class="center-block">     
+                <h4>Poids total : @Formatter.Poids(poidsTotal)</h4>
         
         
-        @if(prixTotal>=Model.Vendeur.LivraisonGratuite)
-        {
-            <div class="alert alert-success" role="alert">
-                <p>Vous bénificiez d'une livraison gratuite car le prix de votre commande est inférieur ou égale à :@Formatter.Money(Model.Vendeur.LivraisonGratuite, false)</p>
-            </div>
+                @if(prixTotal>=Model.Vendeur.LivraisonGratuite)
+                {
+                    <div class="alert alert-success" role="alert">
+                        <p>Vous bénificiez d'une livraison gratuite car le prix de votre commande est inférieur ou égale à :@Formatter.Money(Model.Vendeur.LivraisonGratuite, false)</p>
+                    </div>
             
-            <div class="radio">
-                <label><input type="radio" value="1" checked="checked" onchange="getPrixLivraison()" name="optradio" checked>Poste régulière</label>
-            </div>
-            <div class="radio disabled" >
-                <label><input type="radio" value="2" disabled onchange="getPrixLivraison()" name="optradio">Poste prioritaire</label>
-            </div>
-            <div class="radio disabled">
-                <label><input type="radio" value="3" disabled onchange="getPrixLivraison()" name="optradio">Compagnie de livraison</label>
-            </div>
+                    <div class="radio">
+                        <label><input type="radio" value="1" checked="checked" onchange="getPrixLivraison()" name="optradio" checked>Poste régulière</label>
+                    </div>
+                    <div class="radio disabled" >
+                        <label><input type="radio" value="2" disabled onchange="getPrixLivraison()" name="optradio">Poste prioritaire</label>
+                    </div>
+                    <div class="radio disabled">
+                        <label><input type="radio" value="3" disabled onchange="getPrixLivraison()" name="optradio">Compagnie de livraison</label>
+                    </div>
             
-            <hr/>
-        }
-        else
-        {
-            if (poidsTotal >Model.Vendeur.PoidsMaxLivraison)
-            {
-                <div class="alert alert-warning" role="alert">
-                    Le poids de votre commande dépasse le poids maximum fixé par le vendeur (@Formatter.Poids(Model.Vendeur.PoidsMaxLivraison))
+                    <hr/>
+                }
+                else
+                {
+                    if (poidsTotal >Model.Vendeur.PoidsMaxLivraison)
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            Le poids de votre commande dépasse le poids maximum fixé par le vendeur (@Formatter.Poids(Model.Vendeur.PoidsMaxLivraison))
+                        </div>
+                    }
+            
+                    <div class="radio">
+                        <label><input value="1" type="radio" onchange="getPrixLivraison()" name="optradio" checked>Poste régulière</label>
+                    </div>
+                    <div class="radio">
+                        <label><input value="2" type="radio" onchange="getPrixLivraison()" name="optradio">Poste prioritaire</label>
+                    </div>
+                    <div class="radio">
+                        <label><input value="3" type="radio" onchange="getPrixLivraison()" name="optradio">Compagnie de livraison</label>
+                    </div>
+            
+                    <hr/>
+                }
+                <div>
+                    <h4 id="PRIXLIVRAISON">Frais de livraison : @Formatter.Money((decimal?)0.00, false)</h4>
                 </div>
-            }
-            
-            <div class="radio">
-                <label><input value="1" type="radio" onchange="getPrixLivraison()" name="optradio" checked>Poste régulière</label>
             </div>
-            <div class="radio">
-                <label><input value="2" type="radio" onchange="getPrixLivraison()" name="optradio">Poste prioritaire</label>
+            <div class="row">
+                <div class="col-md-12"><hr/></div>
+                <div class="col-md-4 col-lg-offset-5">
+                    <button type="button" class="btn btn-danger"onclick="previous()">Retour</button>
+                    <button type="button" class="btn btn-primary" onclick="next()">Continuer</button>
+                </div>
             </div>
-            <div class="radio">
-                    <label><input value="3" type="radio" onchange="getPrixLivraison()" name="optradio">Compagnie de livraison</label>
-            </div>
-            
-            <hr/>
-        }
-        <div>
-            <h4 id="PRIXLIVRAISON">Frais de livraison : @Formatter.Money((decimal?)0.00, false)</h4>
-        </div>
+        </form>
     </div>
-    <div class="row">
-        <div class="col-md-12"><hr/></div>
-        <div class="col-md-4 col-lg-offset-5">
-            <button type="button" class="btn btn-danger"onclick="previous()">Retour</button>
-            <button type="button" class="btn btn-primary" onclick="next()">Continuer</button>
-        </div>
-    </div>
-</form>
+</div>
+
 <script>
     $(document).ready(function() {
         getPrixLivraison();

@@ -1,4 +1,5 @@
-﻿<!--
+﻿@using PetitesPuces.Securite
+<!--
 .____                   __________        __  .__  __                  
 |    |    ____   ______ \______   \ _____/  |_|__|/  |_  ____   ______ 
 |    |  _/ __ \ /  ___/  |     ___// __ \   __\  \   __\/ __ \ /  ___/ 
@@ -44,7 +45,20 @@ __________
                 <ul class="nav navbar-nav">
                     @RenderSection("navbar", false)
                 </ul>
+                <ul class="nav navbar-nav pull-right">
+                    @if (HttpContext.Current.Session["userId"] != null)
+                    {
+                        <li>@Html.ActionLink(HttpContext.Current.Session["userId"].ToString(), "Profil", "Client")</li>
+                        <li><a href="@Url.Action( "Deconnexion", "Home")"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action( "Connexion", "Home")"><span class="glyphicon glyphicon-log-in"></span> Connexion</a></li>
+                    }
+                    
+                </ul>
             </div>
+
         </div>
     </div>
     <div class="container-fluid body-content">

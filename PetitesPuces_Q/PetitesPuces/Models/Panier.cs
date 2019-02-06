@@ -19,5 +19,10 @@ namespace PetitesPuces.Models
         {
             return (decimal) Articles.Sum(a => a.PPProduit.PrixVente * a.NbItems);
         }
+
+        public int GetNbItems()
+        {
+            return (int)Articles.Sum(a => a.NbItems);
+        }
     }
 }
