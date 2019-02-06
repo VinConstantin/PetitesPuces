@@ -5,9 +5,31 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace PetitesPuces.Models.Ext
+namespace PetitesPuces.Models
 {
-    public class PPGestionnaire
+    [MetadataType(typeof(PPVendeur_Validation))]
+    public partial class PPGestionnaire: IUtilisateur
+    {
+        public string Role
+        {
+            get { return RolesUtil.ADMIN; }
+        }
+
+        public DateTime DateDerniereActivite
+        {
+            get
+            {
+                return DateTime.Today;
+            }
+        }
+
+        public long No
+        {
+            get { return NoGestionnaire; }
+        }
+    }
+    
+    public class PPGestionnaireValidation
     {
         [DisplayName("No Gestionnaire")]
         public int NoGestionnaire { get; set; }

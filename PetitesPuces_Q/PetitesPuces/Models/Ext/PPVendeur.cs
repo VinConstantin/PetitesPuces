@@ -12,12 +12,16 @@ namespace PetitesPuces.Models
     public partial class PPVendeur : IUtilisateur
     {
         private static readonly BDPetitesPucesDataContext ctx = new BDPetitesPucesDataContext();
-        private static readonly string ROLE = "vendeur";
         private DateTime? _dateDerniereActivite;
 
         public string Role
         {
-            get { return ROLE; }
+            get { return RolesUtil.VEND; }
+        }
+
+        public long No
+        {
+            get { return NoVendeur; }
         }
 
         public DateTime DateDerniereActivite

@@ -53,5 +53,13 @@ namespace PetitesPuces.Securite
                 where util.NoVendeur == id
                 select util;
         }
+        
+        private static IQueryable<IUtilisateur> GetAdminsWithId(long id)
+        {
+            return from util
+                    in ctxt.PPGestionnaires
+                where util.NoGestionnaire == id
+                select util;
+        }
     }
 }

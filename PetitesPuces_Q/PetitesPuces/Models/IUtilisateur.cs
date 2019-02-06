@@ -22,9 +22,9 @@ namespace PetitesPuces.Models
         string MotDePasse { get;  }
 
       
-        string Rue { get; }
-        DateTime? DateCreation { get; }
         DateTime DateDerniereActivite { get; }
+        
+        long No { get;  }
     }
     
     public enum StatutCompte : short
