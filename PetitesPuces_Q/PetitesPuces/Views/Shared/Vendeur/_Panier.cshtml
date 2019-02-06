@@ -2,8 +2,8 @@
 @model PetitesPuces.Models.Panier
 
 <tr class="v-align-middle" style="height: 51px">
-    <th class="rowHead">@Model.NomClient</th>
+    <th class="rowHead">@Model.Client.Nom</th>
     <td>@Model.DateCreation.ToShortDateString()</td>
-    <td>@Model.NbItems</td>
-    <td>@Formatter.Money(Model.CoutTotal)</td>
+    <td>@Model.Articles.Count()</td>
+    <td>@Formatter.Money(Model.getPrixTotal())</td>
 </tr>

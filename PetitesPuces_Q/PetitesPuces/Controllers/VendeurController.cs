@@ -159,10 +159,10 @@ namespace PetitesPuces.Controllers
             {
                 Panier panier = new Panier
                 {
-                    NomClient = pan.FirstOrDefault().PPClient.Nom,
-                    NbItems = (int)pan.Sum(g => g.NbItems),
+                    Client = pan.FirstOrDefault().PPClient,
+                    Vendeur = pan.FirstOrDefault().PPVendeur,
                     DateCreation = (DateTime)pan.FirstOrDefault().DateCreation,
-                    CoutTotal = pan.Sum(g => (double)(g.NbItems * g.PPProduit.PrixDemande))
+                    Articles = pan.ToList()
                 };
                 lstPaniers.Add(panier);
             }

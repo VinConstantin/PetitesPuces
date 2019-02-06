@@ -8,20 +8,16 @@ namespace PetitesPuces.Models
 {
     public class Panier
     {
-        [DisplayName("Nom du client")]
-        public string NomClient { get; set; }
-
         [DisplayName("Date de création")]
         public DateTime DateCreation { get; set; }
-
-        [DisplayName("Nombre d'items")]
-        public int NbItems { get; set; }
-
-        [DisplayName("Coût total")]
-        public double CoutTotal { get; set; }
         
         public PPClient Client { get; set; }
         public PPVendeur Vendeur { get; set; }
         public List<PPArticlesEnPanier> Articles { get; set; }
+
+        public decimal getPrixTotal()
+        {
+            return (decimal) Articles.Sum(a => a.PPProduit.PrixVente * a.NbItems);
+        }
     }
 }
