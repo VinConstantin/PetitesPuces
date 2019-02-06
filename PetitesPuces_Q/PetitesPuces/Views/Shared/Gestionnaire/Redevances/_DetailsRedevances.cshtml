@@ -1,0 +1,58 @@
+@using PetitesPuces.Utilities
+@model PetitesPuces.ViewModels.Gestionnaire.DetailsRedevances
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Gestion des redevances de @Model.Vendeur.NomAffaires</h4>
+</div>
+<div class="modal-body">
+    <table class="table">
+        <tr>
+            <th>
+                No commande
+            </th>
+            <th>
+                Date de la commande
+            </th>
+            <th>
+                Montant avant livraison
+            </th>
+            <th>
+                Redevances dûes
+            </th>
+        </tr>
+        @foreach (var paiement in @Model.Paiements)
+        {
+            <tr>
+                <td>
+                    @paiement.NoCommande
+                </td>
+                @if (@paiement.DateVente.HasValue)
+                {
+                    <td>
+                        @paiement.DateVente.Value.ToString("YYYY-MM-dd")
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        N/A
+                    </td>
+                }
+                 
+                <td>
+                    @Formatter.Money(@paiement.MontantVenteAvantLivraison)
+                </td>
+                <td>
+                    @Formatter.Money(paiement.Redevance)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div class="modal-footer">
+    <div class="center-block text-center">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </div>
+</div>

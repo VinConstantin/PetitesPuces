@@ -32,7 +32,7 @@
             <button id="afficherDetails" data-toggle="modal" data-target="#modalDetails" type="button" class="btn btn-info">
                 <i class="glyphicon glyphicon-info-sign v-align-middle"></i>
             </button>
-            <button id="btnRefuserDemandeQuick" class="btn btn-danger" onclick="afficherRefuser()" data-toggle="modal" data-target="#modalGestion">
+            <button id="btnRefuserDemandeQuick" class="btn btn-danger" onclick="afficherRefuser(@Model.NoVendeur)" data-toggle="modal" data-target="#modalGestion">
                 <i class="glyphicon glyphicon-remove v-align-middle"></i>
             </button>
         </form>
@@ -89,7 +89,6 @@
             $('#btnRefuserDemande').click(function () { gererDemande(false) });
     
             function gererDemande(accepter) {
-                console.log(accepter);
                 const message = $('#tbMsg').val();
                 const redevances = $('#tbPctRedevances').val();
                 const reponseDemande = {

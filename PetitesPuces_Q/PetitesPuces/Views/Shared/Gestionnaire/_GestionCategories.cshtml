@@ -95,12 +95,12 @@
             $('.editbtn').click(handleEdit);
         }
         
-        function validerTitre(titre, td) {
+        function validerTitre(titre, cell) {
             const rangees = $('.tr-cat');
             let titreUnique = true;
             
             rangees.each((_, row) => {
-                if (row === td.parent()[0]) return;
+                if (row === cell.parent()[0]) return;
                 
                 if ($(row).children(null, 'td')[1].innerText === titre) {
                     titreUnique = false;
@@ -115,15 +115,15 @@
             const titre = $('#tbCreerTitre').val();
             const details = $('#tbCreerDetails').val();
             
-            let titreUnique = validerTitre(titre);
+            let titreUnique = validerTitre(titre, $(this));
 
             if (titreUnique) {
                 $.post('/Gestionnaire/Categories',
                        { NoCategorie: null, Description: titre, Details: details },
                        majCategories);
                 $('#modalAjoutCategorie').modal('toggle');
-            } else if (details.trim() === '') {
-                alert('Le titre de la catégorie doit être unique');
+            } else if (titre.trim() === '' && details.trim() === '') {
+                alert('Le titre et les détails ne peuvent pas demeurer vide');
             } else {
                 alert('Le titre de la catégorie doit être unique');
             }
@@ -202,7 +202,6 @@
         }
 
         function setEditable(index, cell, isEditable) {
-            console.log('setEditable', isEditable);
             if (index !== 0) {
                 $(cell).prop('contenteditable', isEditable);
             }

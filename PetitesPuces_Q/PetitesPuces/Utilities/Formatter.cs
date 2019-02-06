@@ -50,6 +50,18 @@ namespace PetitesPuces.Utilities
             Random _random = new Random();
             return Color.FromArgb(_random.Next(0, 255), _random.Next(0, 255), _random.Next(0, 255));
         }
+
+        public static HtmlString Percentage(double value)
+        {
+            var valueStr = (value * 100).ToString("0");
+            var splitVal = valueStr.Split(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator[0]);
+
+            var str = "<div style='display:inline-block;width:100%;text-align: right;'><strong>"+splitVal[0]+"</strong>" +
+                      "<strong>%</strong></div>";
+            
+            HtmlString html = new HtmlString(str);
+            return html;
+        }
     }
     
 }
