@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 using PetitesPuces.Models;
 using PetitesPuces.Securite;
@@ -18,6 +19,7 @@ namespace PetitesPuces.Controllers
         private readonly TimeSpan INDEX_STATS_PERIOD = new TimeSpan(7, 0, 0, 0);
         private readonly TimeSpan INDEX_STATS_INCREMENT = new TimeSpan(1, 0, 0, 0);
 
+        #region Index    
         public ActionResult Index()
         {
             return View(GetCategories());
@@ -73,7 +75,7 @@ namespace PetitesPuces.Controllers
                 where cat.Description == categorie.Description
                 select cat;
 
-            if (categories.Any()) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (categories.Any()) return HttpBadRequest();
 
             var nextId =
                 (from cat
@@ -106,7 +108,7 @@ namespace PetitesPuces.Controllers
             }
             catch (InvalidOperationException)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return HttpBadRequest();
             }
         }
 
@@ -223,19 +225,17 @@ namespace PetitesPuces.Controllers
 
             return vendeursInactifs.Where(c => c.DateDerniereActivite.AddYears(1) < DateTime.Today - INDEX_STATS_PERIOD);
         }
+        #endregion
 
-        [System.Web.Mvc.Route("DemandesVendeur")]
-        public ActionResult DemandesVendeur()
+        #region DemandesVendeur
+        public ActionResult DemandesVendeur(int? id)
         {
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("Gestionnaire/Demandes/_ListeDemandesVendeur", GetDemandes());
-            }
-            
-            return View(GetDemandes());
+            if (id.HasValue) return DemandesVendeur(id.Value);
+
+            return DemandesVendeur();
         }
 
-        public ActionResult DemandesVendeur(int id)
+        private ActionResult DemandesVendeur(int id)
         {
             try
             {
@@ -251,6 +251,16 @@ namespace PetitesPuces.Controllers
             {
                 return HttpNotFound();
             }
+        }
+        
+        private ActionResult DemandesVendeur()
+        {
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("Gestionnaire/Demandes/_ListeDemandesVendeur", GetDemandes());
+            }
+            
+            return View(GetDemandes());
         }
         
         private List<PPVendeur> GetDemandes()
@@ -324,10 +334,11 @@ namespace PetitesPuces.Controllers
             }
             catch (InvalidOperationException)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return HttpBadRequest();
             }
         }
-
+        #endregion
+        
         public ActionResult Inactivite()
         {
             var viewModel = new InactiviteViewModel
@@ -375,23 +386,123 @@ namespace PetitesPuces.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Redevances()
+        public ActionResult Redevances(int? id)
         {
-            var viewModel = new List<Redevance>
+            if (id.HasValue) return Redevances(id.Value);
+
+            return Redevances();
+        }
+        
+        private ActionResult Redevances()
+        {
+            var viewModel = new RedevancesViewModel
             {
-                new Redevance
-                {
-                    EnSouffranceDepuis = DateTime.Today,
-                    Solde = 1000,
-                    Vendeur = new PPVendeur
-                    {
-                        NomAffaires = "Vendeur boi",
-                        Pourcentage = 50,
-                    }
-                }
+                Redevances = GetRedevances(),
+                Vendeurs = GetVendeursRedevances(),
             };
 
             return View(viewModel);
+        }
+        
+        private ActionResult Redevances(int id)
+        {
+            try
+            {
+                var redevances =
+                    (from paiement
+                            in ctxt.PPHistoriquePaiements
+                        where paiement.NoVendeur == id && paiement.Redevance > 0
+                        select paiement).ToList();
+
+                var vendeur =
+                    (from v
+                            in ctxt.PPVendeurs
+                        where v.NoVendeur == id
+                        select v).First();
+
+                var viewModel = new DetailsRedevances
+                {
+                    Vendeur = vendeur,
+                    Paiements = redevances,
+                };
+
+                return PartialView("Gestionnaire/Redevances/_DetailsRedevances", viewModel);
+            }
+            catch (InvalidOperationException e)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+           
+        }
+        
+        [System.Web.Mvc.Route("Redevances/Dues")]
+        public ActionResult RefreshRedevances()
+        {
+            return PartialView("Gestionnaire/Redevances/_ListeRedevances", GetRedevances());
+        }
+
+        [System.Web.Mvc.Route("Redevances/Modifiables")]
+        public ActionResult RefreshVendeurRedevances()
+        {
+            return PartialView("Gestionnaire/Redevances/_ListeVendeurRedevance", GetVendeursRedevances());
+        }
+
+        [System.Web.Mvc.HttpPatch]
+        [System.Web.Mvc.Route("Redevances/Vendeur/{idVendeur}")]
+        public ActionResult UpdateRedevancesVendeur([FromUri]int idVendeur, [FromBody] decimal pourcentage)
+        {
+            try
+            {
+                var vendeurAUpdate =
+                    (from vendeur
+                            in ctxt.PPVendeurs
+                        where vendeur.NoVendeur == idVendeur
+                        select vendeur).First();
+
+                vendeurAUpdate.Pourcentage = pourcentage;
+                
+                ctxt.SubmitChanges();
+                
+                return RefreshVendeurRedevances();
+            }
+            catch (InvalidOperationException e)
+            {
+                return HttpBadRequest();
+            }
+        }
+        
+        private List<Redevance> GetRedevances()
+        {
+            return
+                (from vendeur
+                    in ctxt.PPVendeurs
+                join paiement in ctxt.PPHistoriquePaiements 
+                    on vendeur.NoVendeur equals paiement.NoVendeur
+                    into paiements
+                select new Redevance
+                {
+                    Solde = paiements.Select(p => p.Redevance).Where(r => r > 0).Sum() ?? 0,
+                    Vendeur = vendeur,
+                }).ToList();
+        }
+
+        private List<PPVendeur> GetVendeursRedevances()
+        {
+            return
+                (from vendeur
+                    in ctxt.PPVendeurs
+                join paiement in ctxt.PPHistoriquePaiements 
+                    on vendeur.NoVendeur equals paiement.NoVendeur
+                    into paiements
+                where 
+                    paiements.All(c => c.NoVendeur != vendeur.NoVendeur)
+                select vendeur)
+                .ToList();
+        }
+
+        private HttpStatusCodeResult HttpBadRequest()
+        {
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
     }
 }

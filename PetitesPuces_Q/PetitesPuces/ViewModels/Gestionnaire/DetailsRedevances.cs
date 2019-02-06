@@ -1,14 +1,11 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using PetitesPuces.Models;
 
 namespace PetitesPuces.ViewModels.Gestionnaire
 {
-    public class Redevance
+    public class DetailsRedevances
     {
         public PPVendeur Vendeur { get; set; }
-        public decimal Solde { get; set; }
+        public List<PPHistoriquePaiement> Paiements { get; set; }
     }
-}      
+}
