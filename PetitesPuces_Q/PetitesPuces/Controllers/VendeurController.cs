@@ -2,6 +2,8 @@
 using PetitesPuces.ViewModels.Vendeur;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -34,7 +36,7 @@ namespace PetitesPuces.Controllers
             int NoVendeur = 10;
 
             return View(GetCommandesVendeurs(NoVendeur));
-        } 
+        }
 
         public ActionResult GestionPaniers()
         {
@@ -51,7 +53,13 @@ namespace PetitesPuces.Controllers
         {
             int NoVendeur = 10;
 
-            return View(GetProduitsVendeurs(NoVendeur));
+            var viewModel = new GestionCatalogueViewModel
+            {
+                Produits = GetProduitsVendeurs(NoVendeur),
+                Categories = GetCategories()
+            };
+
+            return View(viewModel);
         }
 
         public ActionResult InfoCommande(int No)
@@ -69,7 +77,7 @@ namespace PetitesPuces.Controllers
         public ActionResult VisualiserPaniers(int NbMois)
         {
             List<Panier> paniers = GetPaniersVendeurs(10);
-            if(NbMois != 99)
+            if (NbMois != 99)
             {
                 paniers = paniers.Where(p => DateTime.Today.AddMonths(-NbMois) <= p.DateCreation).ToList();
             }
@@ -110,7 +118,7 @@ namespace PetitesPuces.Controllers
                         select articles;
 
             context.PPArticlesEnPaniers.DeleteAllOnSubmit(query.ToList());
-            
+
             try
             {
                 context.SubmitChanges();
@@ -119,6 +127,56 @@ namespace PetitesPuces.Controllers
             {
                 Console.WriteLine(e);
             }
+        }
+
+        [HttpPost]
+        public string AjouterProduit()
+        {
+            NameValueCollection nvc = Request.Form;
+            PPProduit produit = new PPProduit
+            {
+                NoProduit = long.Parse(nvc["NoProduit"]),
+                DateCreation = DateTime.Parse(nvc["DateCreation"]),
+                NoCategorie = int.Parse(nvc["NoCategorie"]),
+                NombreItems = short.Parse(nvc["NombreItems"]),
+                Nom = nvc["Nom"],
+                PrixVente = decimal.Parse(nvc["PrixVente"]),
+                PrixDemande = decimal.Parse(nvc["PrixDemande"]),
+                DateVente = DateTime.Parse(nvc["DateVente"]),
+                Poids = decimal.Parse(nvc["Poids"]),
+                Description = nvc["Description"],
+                Disponibilité = nvc["Disponibilite"] == "on" ? true : false,
+                NoVendeur = 10,
+                DateMAJ = DateTime.Parse(nvc["DateCreation"])
+            };
+
+            HttpPostedFileBase hpfb = Request.Files.Get(0);
+            if (hpfb.FileName != "") 
+            {
+                string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
+                string filename = Path.GetFileName(hpfb.FileName);
+                hpfb.SaveAs(Path.Combine(path, filename));
+            }
+
+            context.PPProduits.InsertOnSubmit(produit);
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return "success";
+        }
+
+        private List<PPCategory> GetCategories()
+        {
+            var query = from categories in context.PPCategories
+                        select categories;
+
+            return query.ToList();
         }
 
         private List<PPProduit> GetProduitsVendeurs(int NoVendeur)

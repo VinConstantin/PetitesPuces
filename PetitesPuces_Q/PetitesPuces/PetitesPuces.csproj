@@ -239,6 +239,7 @@
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
     <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\AccueilVendeurViewModel.cs" />
+    <Compile Include="ViewModels\Vendeur\GestionCatalogueViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\CommandesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -406,6 +407,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="images\produits\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
