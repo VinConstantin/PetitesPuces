@@ -37,7 +37,7 @@ namespace PetitesPuces.Utilities
         {
             var valueStr = (value).ToString("0.00");
             var splitVal = valueStr.Split(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator[0]);
-
+            
             var str = "<div style='display:inline-block;width:100%;text-align: right;'><strong>"+splitVal[0]+"</strong>" +
                       "<sup>"+(splitVal.Length == 2 ? splitVal[1] : "00") +"</sup> " +
                       "<strong>$</strong></div>";

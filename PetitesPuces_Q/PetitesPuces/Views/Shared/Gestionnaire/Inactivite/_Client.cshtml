@@ -1,0 +1,17 @@
+﻿@model Tuple<PetitesPuces.Models.PPClient, bool>
+
+<tr>
+    <th scope="row">@Model.Item1.NoClient</th>
+    <td class="text-left">@Model.Item1.AdresseEmail</td>
+    <td class="text-left">@Model.Item1.Prenom</td>
+    <td class="text-left">@Model.Item1.Nom</td>
+    <td class="text-left">@Model.Item1.DateDerniereConnexion</td>
+    @if (@Model.Item2)
+    {
+        <td class="text-right">
+            <button class="btn btn-danger">
+                <i class="glyphicon glyphicon-remove"></i>
+            </button>
+        </td>
+    }
+</tr>

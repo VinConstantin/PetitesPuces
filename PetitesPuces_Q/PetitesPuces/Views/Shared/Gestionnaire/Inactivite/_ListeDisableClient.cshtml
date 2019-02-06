@@ -1,0 +1,16 @@
+﻿@model Tuple<List<PetitesPuces.Models.PPClient>, bool>
+
+<table class="table lst-utils bg-light">
+    <tr>
+        <th scope="col">No Client</th>
+        <th scope="col" class="text-left">Adresse Courriel</th>
+        <th scope="col" class="text-left">Prénom</th>
+        <th scope="col" class="text-left">Nom</th>
+        <td>
+        </td>
+    </tr>
+    @foreach (var client in Model.Item1)
+    {
+        @Html.Partial("Gestionnaire/Inactivite/_Client", Tuple.Create(client, Model.Item2))
+    }
+</table>

@@ -1,0 +1,16 @@
+﻿@model Tuple<List<PetitesPuces.Models.IUtilisateur>, bool>
+
+<table class="table lst-utils bg-light">
+    <tr>
+        <th scope="col">No</th>
+        <th scope="col">Rôle</th>
+        <th scope="col" class="text-left">Adresse Courriel</th>
+        <th scope="col" class="text-left">Prénom</th>
+        <th scope="col" class="text-left">Nom</th>
+        <td></td>
+    </tr>
+    @foreach (var pers in  Model.Item1)
+    {
+        @Html.Partial("Gestionnaire/Inactivite/_Personne", Tuple.Create(pers, @Model.Item2))
+    }
+</table>
