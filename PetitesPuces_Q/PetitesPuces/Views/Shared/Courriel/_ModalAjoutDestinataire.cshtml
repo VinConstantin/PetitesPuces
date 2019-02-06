@@ -1,0 +1,73 @@
+@using PetitesPuces.Models
+@model PetitesPuces.ViewModels.Courriel.DestinataireViewModel
+<style>
+    .sca {
+        max-height: 50vh; height: 50vh; overflow-y: scroll;
+    }
+</style>
+<div class="modal-content">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-4">
+                <h3>Vendeurs</h3>
+                <div class="sca">
+                    <table class="table table-hover">
+                        @foreach (PPVendeur vendeur in Model.Vendeurs)
+                        {
+                            <tr id="@vendeur.NoVendeur">
+                                <td>
+                                    <p>@vendeur.NomAffaires</p>
+                                </td>
+                                <td>
+                                    <a onclick="ajouterDestinataire(@vendeur.NoVendeur,'@vendeur.NomAffaires');"><span class="glyphicon glyphicon-plus pull-right"></span></a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <h3>Clients</h3>
+                <div class="sca">
+                    <table class="table table-hover">
+                        @foreach (PPClient client in Model.Clients)
+                        {
+                            <tr id="@client.NoClient">
+                                <td>
+                                    <p>@client.Nom, @client.Prenom</p>
+                                </td>
+                                <td>
+                                    <a onclick="ajouterDestinataire(@client.NoClient, '@client.Nom, @client.Prenom');"><span class="glyphicon glyphicon-plus pull-right"></span></a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <h3>Destinataires</h3>
+            <div class="col-lg-4">
+                <div style="height: 50vh" class="well">
+                    <table id="tableDestinataire" class="table table-hover">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary">Ajouter</button>
+    </div>
+</div>
+<script>
+    function ajouterDestinataire(no, nom) {
+        $('#'+no).remove();
+        var table = $('#tableDestinataire');
+        table.append("<tr id='"+no+"'><td>" + nom + "</td><td><a onclick='retirerDestinataire("+no+")';><span style='color:red;' class='glyphicon glyphicon-minus pull-right'></span></a></td></tr>");
+    }
+    function retirerDestinataire(no) {
+        $('#'+no).remove();
+    }
+</script>
