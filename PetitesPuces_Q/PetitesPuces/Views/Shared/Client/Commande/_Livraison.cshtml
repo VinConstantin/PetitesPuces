@@ -64,12 +64,16 @@
     </div>
 </form>
 <script>
+    $(document).ready(function() {
+        getPrixLivraison();
+    });
     function next(){
         $('#Paiement').addClass('active');
         $.ajax({
             url: URLPATH + "/Client/Paiement",
             type: "get",
             data: {
+                "noVendeur":@Model.Vendeur.NoVendeur
             },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
@@ -106,6 +110,7 @@
             url: URLPATH + "/Client/Information",
             type: "post",
             data: {
+                noVendeur: @Model.Vendeur.NoVendeur
             },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);

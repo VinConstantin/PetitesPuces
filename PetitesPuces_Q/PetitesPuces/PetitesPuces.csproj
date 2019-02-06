@@ -201,13 +201,14 @@
     </Compile>
     <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Commande.cs" />
+    <Compile Include="Models\Commande\InfoClient.cs" />
+    <Compile Include="Models\Commande\InfoCommande.cs" />
+    <Compile Include="Models\Commande\InfoPaiement.cs" />
     <Compile Include="Models\Enums\Province.cs" />
     <Compile Include="Models\Enums\Tri.cs" />
     <Compile Include="Models\Ext\PPClient.cs" />
     <Compile Include="Models\Ext\PPGestionnaire.cs" />
     <Compile Include="Models\Ext\PPVendeur.cs" />
-    <Compile Include="Models\InfoClient.cs" />
-    <Compile Include="Models\InfoCommande.cs" />
     <Compile Include="Models\IUtilisateur.cs" />
     <Compile Include="Models\Panier.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -216,6 +217,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Utilities\EnumExtensions.cs" />
+    <Compile Include="Utilities\StringExtension.cs" />
     <Compile Include="Validations\ValidationCourriel.cs" />
     <Compile Include="Securite\Securise.cs" />
     <Compile Include="Securite\SessionUtilisateur.cs" />

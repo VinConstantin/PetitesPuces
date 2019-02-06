@@ -73,12 +73,10 @@
 
 <script>
     function envoyerInfo(){
-        //$('#Information').removeClass('active');
-        $('#Livraison').addClass('active');
         var data = $("form").serialize();
         
         $.ajax({
-            url: URLPATH + "/Client/SetInfoCommande",
+            url: URLPATH + "/Client/SetInfoClient",
             type: "GET",
             data: data, 
             success: next,
@@ -88,6 +86,7 @@
         });
     }
     function next() {
+        $('#Livraison').addClass('active');
         $.ajax({
             url: URLPATH + "/Client/Livraison",
             type: "GET",

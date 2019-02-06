@@ -14,9 +14,9 @@ namespace PetitesPuces.Utilities
             var valueStr = (prix).ToString("0.00");
             var splitVal = valueStr.Split(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator[0]);
             string style = aDroite ? "style='display:inline-block;width:100%;text-align: right;'":"";
-            var str = "<div "+style+" ><strong>"+splitVal[0]+"</strong>" +
+            var str = "<span "+style+" ><strong>"+splitVal[0]+"</strong>" +
                          "<sup>"+(splitVal.Length == 2 ? splitVal[1] : "00") +"</sup> " +
-                         "<strong>$</strong></div>";
+                         "<strong>$</strong></span>";
             
             HtmlString html = new HtmlString(str);
             return html;

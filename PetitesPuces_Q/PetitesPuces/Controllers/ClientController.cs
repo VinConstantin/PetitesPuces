@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
@@ -285,8 +286,10 @@ namespace PetitesPuces.Controllers
             PPVendeur vendeur = GetVendeurByNo(noVendeur);
 
             PPPoidsLivraison livraisons = codePoids.PPPoidsLivraisons.FirstOrDefault(p => p.CodeLivraison == selected);
-            double prixLivraison =  (double)livraisons.Tarif;
-            string str = "Frais de livraison :" + Formatter.Money((decimal?) prixLivraison, false);
+            decimal? prixLivraison = prix >= vendeur.LivraisonGratuite?(decimal?)0.00:livraisons.Tarif;
+            InfoCommande.PrixLivraison = prixLivraison;
+            
+            string str = "Frais de livraison : " + Formatter.Money( prixLivraison, false);
             HtmlString html = new HtmlString(str);
             return html;
         }
@@ -304,11 +307,30 @@ namespace PetitesPuces.Controllers
             
             return PartialView("Client/Commande/_Information", panier);
         }     
-        public ActionResult SetInfoCommande(InfoClient info)
+        public ActionResult SetInfoClient(InfoClient info)
         {
             info.no = NOCLIENT;
-            InfoCommande.setInfoClient(info);
+            InfoCommande.SetInfoClient(info);
             
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+        public ActionResult SetInfoPaiement(InfoPaiement info)
+        {
+            if (info == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (!new Regex("^[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}$").Match(info.NoCarteCredit).Success
+                ||!new Regex("^[0-9]{2}/[0-9]{2}$").Match(info.DateExpirationCarteCredit).Success
+                ||!new Regex("^[0-9]{3,4}$").Match(info.NoSecuriteCarteCredit).Success)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotAcceptable);
+            }
+            InfoCommande.SetInfoPaiement(info);
+            System.Diagnostics.Debug.Write(InfoCommande.InfoClient);
+            
+            System.Diagnostics.Debug.Write(InfoCommande.InfoPaiement);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
         public ActionResult Livraison(int noVendeur)
@@ -317,9 +339,10 @@ namespace PetitesPuces.Controllers
             
             return PartialView("Client/Commande/_Livraison",panier);
         }
-        public ActionResult Paiement()
+        public ActionResult Paiement(int noVendeur)
         {
-            return PartialView("Client/Commande/_Paiement");
+            Panier panier = GetPanierByVendeurClient(noVendeur);
+            return PartialView("Client/Commande/_Paiement",panier);
         }
         public ActionResult Confirmation(int noVendeur)
         {
