@@ -1,4 +1,4 @@
-﻿@model List<PetitesPuces.Models.Produit>
+﻿@model List<PetitesPuces.Models.PPProduit>
 
 @{
     ViewBag.Title = "Gestion du catalogue";
@@ -12,17 +12,17 @@
     <div class="row">
         <div class="col-sm-6 text-left">
             <span>Numéro</span>
-            <input style="float: right" type="text" disabled value="3226" />
+            <input class="form-control" style="float: right" type="text" disabled value="@(Model.Last().NoProduit + 10)" />
         </div>
         <div class="col-sm-6 text-left">
             <span>Date de création</span>
-            <input style="float: right" type="text" disabled value="@DateTime.Today" />
+            <input class="form-control" style="float: right" type="text" disabled value="@DateTime.Today" />
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6 text-left">
             <span>Catégorie</span>
-            <select style="width:174px; float:right">
+            <select class="form-control" style="float:right">
                 <option id="cat1">Catégorie 1</option>
                 <option id="cat2">Catégorie 2</option>
                 <option id="cat3">Catégorie 3</option>
@@ -31,47 +31,47 @@
         </div>
         <div class="col-sm-6 text-left">
             <span>Nombre d'item</span>
-            <input style="float: right" type="number" />
+            <input class="form-control" style="float: right" type="number" />
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6 text-left">
             <span>Nom</span>
-            <input style="float: right" type="text" />
+            <input name="" class="form-control" style="float: right" type="text" />
         </div>
         <div class="col-sm-6 text-left">
             <span>Prix de vente</span>
-            <input style="float: right" type="number" />
+            <input class="form-control" style="float: right" type="number" />
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6 text-left">
             <span>Prix demandé</span>
-            <input style="float: right" type="number" />
+            <input class="form-control" style="float: right" type="number" />
         </div>
         <div class="col-sm-6 text-left">
             <span>Date de vente</span>
-            <input style="float: right" type="text" />
+            <input class="form-control" style="float: right" type="text" />
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6 text-left">
             <span>Photo</span>
-            <input class="form-control" style="float: right; width:174px" type="file" />
+            <input class="form-control" style="float: right;" type="file" />
         </div>
         <div class="col-sm-6 text-left">
             <span>Poids</span>
-            <input style="float: right; width:174px" type="number" />
+            <input class="form-control" style="float: right;" type="number" />
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6 text-left">
             <span>Description détaillée</span>
-            <textarea style="float: right; width:174px" id="taDescription"></textarea>
+            <textarea class="form-control" style="float: right;" id="taDescription"></textarea>
         </div>
         <div class="col-sm-6 text-left">
             <span>Disponibilité</span>
-            <input style="float: right" type="checkbox" checked />
+            <input class="form-control" style="float: right; width:34px; margin-right:120px" type="checkbox" checked />
         </div>
     </div>
     <div class="row">
@@ -87,13 +87,13 @@
     <table class="table lst-vendeurs mt-2">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().Id)
+                No produit
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                Nom du produit
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().Price)
+                Prix unitaire
             </th>
             <th>
 

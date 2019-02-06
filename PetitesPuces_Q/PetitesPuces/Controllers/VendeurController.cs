@@ -16,15 +16,15 @@ namespace PetitesPuces.Controllers
         {
             int NoVendeur = 10;
 
-            List<PPCommande> commandes = getCommandesVendeurs(NoVendeur);
+            List<PPCommande> commandes = GetCommandesVendeurs(NoVendeur);
 
             commandes = commandes.Where(c => c.Statut == 'T').ToList();
 
             var viewModel = new AccueilVendeurViewModel
             {
                 Commandes = commandes,
-                Paniers = getPaniersVendeurs(NoVendeur),
-                NbVisites = getNbVisiteurs(NoVendeur)
+                Paniers = GetPaniersVendeurs(NoVendeur),
+                NbVisites = GetNbVisiteurs(NoVendeur)
             };
             return View(viewModel);
         }
@@ -33,16 +33,14 @@ namespace PetitesPuces.Controllers
         {
             int NoVendeur = 10;
 
-            List<PPCommande> commandes = getCommandesVendeurs(NoVendeur);
-
-            return View(commandes);
+            return View(GetCommandesVendeurs(NoVendeur));
         } 
 
         public ActionResult GestionPaniers()
         {
             int NoVendeur = 10;
 
-            List<Panier> paniers = getPaniersVendeurs(NoVendeur);
+            List<Panier> paniers = GetPaniersVendeurs(NoVendeur);
 
             paniers = paniers.Where(p => DateTime.Today.AddMonths(-6) >= p.DateCreation).ToList();
 
@@ -51,25 +49,14 @@ namespace PetitesPuces.Controllers
 
         public ActionResult GestionCatalogue()
         {
-            /**
-             * Créer des produits bidons
-             */
-            Random random = new Random();
-            var produits = new List<Produit>();
-            for (int i = 1; i <= 20; i++)
-            {
-                var next = random.NextDouble();
+            int NoVendeur = 10;
 
-                var prix = 5.00 + (next * (1000.00 - 5.00));
-                produits.Add(new Produit(i, "Produit No." + i) { Price = prix });
-            }
-
-            return View(produits);
+            return View(GetProduitsVendeurs(NoVendeur));
         }
 
         public ActionResult InfoCommande(int No)
         {
-            List<PPCommande> commandes = getCommandesVendeurs(10);
+            List<PPCommande> commandes = GetCommandesVendeurs(10);
             PPCommande model = commandes.Where(c => c.NoCommande == No).FirstOrDefault();
             return View(model);
         }
@@ -81,7 +68,7 @@ namespace PetitesPuces.Controllers
 
         public ActionResult VisualiserPaniers(int NbMois)
         {
-            List<Panier> paniers = getPaniersVendeurs(10);
+            List<Panier> paniers = GetPaniersVendeurs(10);
             if(NbMois != 99)
             {
                 paniers = paniers.Where(p => DateTime.Today.AddMonths(-NbMois) <= p.DateCreation).ToList();
@@ -134,7 +121,16 @@ namespace PetitesPuces.Controllers
             }
         }
 
-        private List<PPCommande> getCommandesVendeurs(int NoVendeur)
+        private List<PPProduit> GetProduitsVendeurs(int NoVendeur)
+        {
+            var query = from produits in context.PPProduits
+                        where produits.NoVendeur == NoVendeur
+                        select produits;
+
+            return query.ToList();
+        }
+
+        private List<PPCommande> GetCommandesVendeurs(int NoVendeur)
         {
             var query = from commandes in context.PPCommandes
                         where commandes.NoVendeur == NoVendeur
@@ -143,7 +139,7 @@ namespace PetitesPuces.Controllers
             return query.ToList();
         }
 
-        private List<Panier> getPaniersVendeurs(int NoVendeur)
+        private List<Panier> GetPaniersVendeurs(int NoVendeur)
         {
             var query = from articles in context.PPArticlesEnPaniers
                         where articles.NoVendeur == NoVendeur
@@ -170,7 +166,7 @@ namespace PetitesPuces.Controllers
             return lstPaniers;
         }
 
-        private int getNbVisiteurs(int NoVendeur)
+        private int GetNbVisiteurs(int NoVendeur)
         {
             var query = from visiteurs in context.PPVendeursClients
                         where visiteurs.NoVendeur == NoVendeur
