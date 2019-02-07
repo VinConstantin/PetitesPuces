@@ -471,12 +471,15 @@ namespace PetitesPuces.Controllers
             
             return PartialView("Client/_DetailPanier",panier);
         }
+       
         public ActionResult PasserCommande()
         {
             return PartialView("Client/Commande/_ResultatCommande");
         }
+
         public ActionResult Profil()
         {
+
             return View();
         }
         public ActionResult modificationMDP(FormCollection formCollection)
