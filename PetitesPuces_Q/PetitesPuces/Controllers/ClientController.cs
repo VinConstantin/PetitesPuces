@@ -15,6 +15,9 @@ using PetitesPuces.ViewModels.Vendeur;
 
 namespace PetitesPuces.Controllers
 {
+    #if !DEBUG
+        [Securise(RolesUtil.CLIENT)]
+    #endif
     public class ClientController : Controller
     {
         //TODO:implémenter pour utiliser le bon no

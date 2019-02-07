@@ -7,9 +7,13 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PetitesPuces.Securite;
 
 namespace PetitesPuces.Controllers
 {
+    #if !DEBUG
+        [Securise(RolesUtil.VEND)]
+    #endif
     public class VendeurController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
