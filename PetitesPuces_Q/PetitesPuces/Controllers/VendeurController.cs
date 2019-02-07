@@ -154,7 +154,8 @@ namespace PetitesPuces.Controllers
             if (hpfb.FileName != "") 
             {
                 string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
-                string filename = Path.GetFileName(hpfb.FileName);
+                string filename = produit.NoProduit.ToString() + Path.GetExtension(hpfb.FileName);
+                produit.Photo = filename;
                 hpfb.SaveAs(Path.Combine(path, filename));
             }
 

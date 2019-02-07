@@ -5,11 +5,31 @@
 @{
     Layout = null;
 }
+<style>
+    #backTop {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+        font-size: 18px;
+        border: none;
+        outline: none;
+        background-color: lightskyblue;
+        color: white;
+        cursor: pointer;
+        padding: 15px;
+        opacity: 0.5;
+        border-radius: 4px;
+    }
 
+    #backTop:hover {
+        opacity: 0.9;
+    }
+</style>
 
 <div class="row">
 
-    <div class="col-md-2" style="border-right: 1px solid #333; ">
+    <div id="filters" class="col-lg-2" style="border-right: 1px solid #d0c9c9; ">
         <div style="">
             <div class="item">
                 <div class="panel-footer"><h4>Recherche :</h4></div>
@@ -65,26 +85,26 @@
                     {
                         <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur, -1)" id="-1">Tous (@Model.Categories.Sum(c => c.PPProduits.Count))</a></p>
                         foreach (PPCategory category in @Model.Categories)
-                         {
-                             var nb = category.PPProduits.Count;
-                             if (nb > 0)
-                             {
-                                 <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur, this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
-                             }
-                         }
+                        {
+                            var nb = category.PPProduits.Count;
+                            if (nb > 0)
+                            {
+                                <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur, this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
+                            }
+                        }
 
                     }
                     else
                     {
                         <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,-1)" id="-1">Tous (@Model.Vendeur.PPProduits.Count)</a></p>   
                         foreach (PPCategory category in @Model.Categories)
-                         {
-                             var nb = Model.Vendeur.PPProduits.Count(c => c.PPCategory == category);
-                             if (nb > 0)
-                             {
-                                 <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
-                             }
-                         }
+                        {
+                            var nb = Model.Vendeur.PPProduits.Count(c => c.PPCategory == category);
+                            if (nb > 0)
+                            {
+                                <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
+                            }
+                        }
                     }
                 </div>
             </div>
@@ -95,24 +115,51 @@
         {
             @Html.Partial("_Pagination")
         }
-        <div class="container row">
+        <div class="row">
             @if (@Model.Categorie == null)
             {
-                <h3>Tous les produits</h3>
+                <h3>&nbsp;&nbsp; Tous les produits</h3>
             }
             else
             {
-                <h3>@Model.Categorie.Description</h3>
+                <h3>&nbsp;&nbsp; @Model.Categorie.Description</h3>
             }
-            @foreach (PPProduit produit in Model.Produits)
+            @if (Model.Produits.Count > 0)
             {
-                @Html.Partial("Client/_Produits", produit)
+                foreach (PPProduit produit in Model.Produits)
+                {
+                    @Html.Partial("Client/_Produits", produit)
+                }
+            }
+            else
+            {
+                <br/>
+                <div class="col-lg-10 col-lg-offset-1 alert alert-warning" role="alert">
+                    Il n'y a aucun produit à afficher
+                </div>
             }
         </div>
         @if (ViewBag.NbPage > 1)
         {
             @Html.Partial("_Pagination")
         }
+    </div>
+</div>
+<button onclick="topFunction()" id="backTop" title="Remonter au haut de la page"><span class="glyphicon glyphicon-menu-up"></span></button>
+<!-- Modal confirmation ajout panier-->
+<div class="modal fade" id="confirmationAjoutPanier" tabindex="-1" role="dialog" aria-labelledby="confirmationAjoutPanier">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmation
+            </div>
+            <div class="modal-body">
+                <h4>Le produit a été ajouté avec succès à votre panier</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
     </div>
 </div>
 <script>
@@ -193,7 +240,7 @@
         $('.Current').removeClass("Current");
         $("#Vendeur"+NoVendeur).first().addClass("Current");
         
-        /**
+        /**border border-primary
          * changer le url sans refresh
          */
         var PARAMS = "";
@@ -237,7 +284,7 @@
                 "Quantite": quantite
             },
             success: function(result) {
-                alert("Les produit est ajouté au panier")
+                $('#confirmationAjoutPanier').modal('show'); 
             },
             error: function(req, status, err) {
                 alert("Une erreure est survenue")
@@ -252,5 +299,20 @@
     function moinsQuantite(id) {
         if ($("#" + id).val() >= 1)
             $("#" + id).val(parseInt($("#" + id).val()) - 1);
+    }
+    //Quand scroll, afficher le button pour remonter en haut
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("backTop").style.display = "block";
+        } else {
+            document.getElementById("backTop").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
     }
 </script>

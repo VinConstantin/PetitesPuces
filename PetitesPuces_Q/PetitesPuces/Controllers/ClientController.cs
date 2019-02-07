@@ -172,6 +172,8 @@ namespace PetitesPuces.Controllers
 
             if (!requeteProduit.Any())
                 return HttpStatusCode.Gone;
+            
+            
 
             int noVendeur = (int) requeteProduit.First().NoVendeur;
             DateTime dateCreation = DateTime.Now;

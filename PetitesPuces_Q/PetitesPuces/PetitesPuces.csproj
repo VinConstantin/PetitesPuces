@@ -312,6 +312,7 @@
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
     <Content Include="Views\Courriel\Index.cshtml" />
+    <Content Include="Views\Courriel\_LayoutCourriel.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Confirmation.cshtml" />
@@ -391,7 +392,6 @@
     <Content Include="Views\Client\Profil.cshtml" />
     <Content Include="Views\Client\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Client\_LayoutClient.cshtml" />
-    <Content Include="Views\Shared\_Produits.cshtml" />
     <Content Include="Views\Shared\_ProduitsPanier.cshtml" />
     <Content Include="Views\Home\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Vendeur\_Produit.cshtml" />
