@@ -4,52 +4,27 @@
 
 <form>
     <div class="row" style="margin: 1px">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
-                    <table class="table table-hover">
-                        <thead>
-                        <td style="width: 10%"></td>
-                        <td>Nom</td>
-                        <td>Prix unitaire</td>
-                        <td>Quantité</td>
-                        <td>Prix</td>
-                        <td>Catégorie</td>
-                        <td>Poids (g)</td>
-                        </thead>
-                        @foreach (PPArticlesEnPanier article in @Model.Articles)
-                        {
-                            <tr>
-                                <td><img src="@Url.Content("/images/produits/" + article.PPProduit.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="width: 100%" alt="Image"></td>
-                                <td>@article.PPProduit.Nom</td>
-                                <td>@Formatter.Money(@article.PPProduit.PrixVente)</td>
-                                <td>x @article.NbItems</td>
-                                <td>@Formatter.Money(@article.PPProduit.PrixVente * @article.NbItems)</td>
-                                <td>@article.PPProduit.PPCategory.Description</td>
-                                <td>@article.PPProduit.Poids</td>                              
-                            </tr>
-                        }
-                    </table>
-                </div>
-            </div>
-        </div>
+        
         <div class="row">
             <div class="col-md-6">
                 <div class="well">
-                    <h4>Information sur la livraison</h4>
+                    <h4>Information personnelle</h4>
                     <hr/>
-                    <p>@Model.Client.Nom, @Model.Client.Prenom</p>
-                    <p>@Model.Client.Rue, @Model.Client.Province, @Model.Client.Pays</p>
-                    <p>@Model.Client.CodePostal</p>
-                    <p>@Model.Client.AdresseEmail</p>
-                    <p>@Model.Client.Tel1</p>
-                    <p>@Model.Client.Tel2</p>
+                    <p>@InfoCommande.InfoClient.nom, @InfoCommande.InfoClient.nom</p>
+                    <p>@InfoCommande.InfoClient.rue, @InfoCommande.InfoClient.province, Canada</p>
+                    <p>@InfoCommande.InfoClient.codePostal</p>
+                    <p>@InfoCommande.InfoClient.telephone</p>
+                    @if (InfoCommande.InfoClient.cellulaire != null)
+                    {
+                        <p>@InfoCommande.InfoClient.cellulaire</p>
+                    }
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="well">
-                    <h5>Information sur le mode de paiement</h5>
+                    <h4>Information sur le mode de paiement</h4>
                     <hr/>
+                    <p>XXXX XXXX XXXX @InfoCommande.InfoPaiement.NoCarteCredit.Tail(4)</p>
                 </div>
             </div>
         </div>
@@ -74,16 +49,14 @@
                 console.log(req, status, err);
             }
         });
-        var PARAMS = "?Etape="+"Paiement";
-        history.pushState(null, "", PARAMS);
     }
     function previous(){
         $('#Confirmation').removeClass('active');
-        $('#Paiement').addClass('active');
         $.ajax({
             url: URLPATH + "/Client/Paiement",
             type: "get",
             data: {
+                "noVendeur":@Model.Vendeur.NoVendeur
             },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
@@ -92,7 +65,5 @@
                 console.log(req, status, err);
             }
         });
-        var PARAMS = "?Etape="+"Paiement";
-        history.pushState(null, "", PARAMS);
     }
 </script>

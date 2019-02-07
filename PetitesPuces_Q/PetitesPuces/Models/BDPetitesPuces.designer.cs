@@ -75,6 +75,15 @@ namespace PetitesPuces.Models
     partial void InsertPPGestionnaire(PPGestionnaire instance);
     partial void UpdatePPGestionnaire(PPGestionnaire instance);
     partial void DeletePPGestionnaire(PPGestionnaire instance);
+    partial void InsertPPDestinataire(PPDestinataire instance);
+    partial void UpdatePPDestinataire(PPDestinataire instance);
+    partial void DeletePPDestinataire(PPDestinataire instance);
+    partial void InsertPPMessage(PPMessage instance);
+    partial void UpdatePPMessage(PPMessage instance);
+    partial void DeletePPMessage(PPMessage instance);
+    partial void InsertPPLieu(PPLieu instance);
+    partial void UpdatePPLieu(PPLieu instance);
+    partial void DeletePPLieu(PPLieu instance);
     #endregion
 		
 		public BDPetitesPucesDataContext() : 
@@ -232,6 +241,30 @@ namespace PetitesPuces.Models
 			get
 			{
 				return this.GetTable<PPGestionnaire>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PPDestinataire> PPDestinataires
+		{
+			get
+			{
+				return this.GetTable<PPDestinataire>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PPMessage> PPMessages
+		{
+			get
+			{
+				return this.GetTable<PPMessage>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PPLieu> PPLieus
+		{
+			get
+			{
+				return this.GetTable<PPLieu>();
 			}
 		}
 	}
@@ -4556,6 +4589,639 @@ namespace PetitesPuces.Models
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PPDestinataires")]
+	public partial class PPDestinataire : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _NoMsg;
+		
+		private int _NoDestinataire;
+		
+		private System.Nullable<short> _EtatLu;
+		
+		private System.Nullable<short> _Lieu;
+		
+		private EntityRef<PPMessage> _PPMessage;
+		
+		private EntityRef<PPLieu> _PPLieu;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNoMsgChanging(int value);
+    partial void OnNoMsgChanged();
+    partial void OnNoDestinataireChanging(int value);
+    partial void OnNoDestinataireChanged();
+    partial void OnEtatLuChanging(System.Nullable<short> value);
+    partial void OnEtatLuChanged();
+    partial void OnLieuChanging(System.Nullable<short> value);
+    partial void OnLieuChanged();
+    #endregion
+		
+		public PPDestinataire()
+		{
+			this._PPMessage = default(EntityRef<PPMessage>);
+			this._PPLieu = default(EntityRef<PPLieu>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoMsg", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int NoMsg
+		{
+			get
+			{
+				return this._NoMsg;
+			}
+			set
+			{
+				if ((this._NoMsg != value))
+				{
+					if (this._PPMessage.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnNoMsgChanging(value);
+					this.SendPropertyChanging();
+					this._NoMsg = value;
+					this.SendPropertyChanged("NoMsg");
+					this.OnNoMsgChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoDestinataire", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int NoDestinataire
+		{
+			get
+			{
+				return this._NoDestinataire;
+			}
+			set
+			{
+				if ((this._NoDestinataire != value))
+				{
+					this.OnNoDestinataireChanging(value);
+					this.SendPropertyChanging();
+					this._NoDestinataire = value;
+					this.SendPropertyChanged("NoDestinataire");
+					this.OnNoDestinataireChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EtatLu", DbType="SmallInt")]
+		public System.Nullable<short> EtatLu
+		{
+			get
+			{
+				return this._EtatLu;
+			}
+			set
+			{
+				if ((this._EtatLu != value))
+				{
+					this.OnEtatLuChanging(value);
+					this.SendPropertyChanging();
+					this._EtatLu = value;
+					this.SendPropertyChanged("EtatLu");
+					this.OnEtatLuChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lieu", DbType="SmallInt")]
+		public System.Nullable<short> Lieu
+		{
+			get
+			{
+				return this._Lieu;
+			}
+			set
+			{
+				if ((this._Lieu != value))
+				{
+					if (this._PPLieu.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLieuChanging(value);
+					this.SendPropertyChanging();
+					this._Lieu = value;
+					this.SendPropertyChanged("Lieu");
+					this.OnLieuChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PPMessage_PPDestinataire", Storage="_PPMessage", ThisKey="NoMsg", OtherKey="NoMsg", IsForeignKey=true)]
+		public PPMessage PPMessage
+		{
+			get
+			{
+				return this._PPMessage.Entity;
+			}
+			set
+			{
+				PPMessage previousValue = this._PPMessage.Entity;
+				if (((previousValue != value) 
+							|| (this._PPMessage.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PPMessage.Entity = null;
+						previousValue.PPDestinataires.Remove(this);
+					}
+					this._PPMessage.Entity = value;
+					if ((value != null))
+					{
+						value.PPDestinataires.Add(this);
+						this._NoMsg = value.NoMsg;
+					}
+					else
+					{
+						this._NoMsg = default(int);
+					}
+					this.SendPropertyChanged("PPMessage");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PPLieu_PPDestinataire", Storage="_PPLieu", ThisKey="Lieu", OtherKey="NoLieu", IsForeignKey=true)]
+		public PPLieu PPLieu
+		{
+			get
+			{
+				return this._PPLieu.Entity;
+			}
+			set
+			{
+				PPLieu previousValue = this._PPLieu.Entity;
+				if (((previousValue != value) 
+							|| (this._PPLieu.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PPLieu.Entity = null;
+						previousValue.PPDestinataires.Remove(this);
+					}
+					this._PPLieu.Entity = value;
+					if ((value != null))
+					{
+						value.PPDestinataires.Add(this);
+						this._Lieu = value.NoLieu;
+					}
+					else
+					{
+						this._Lieu = default(Nullable<short>);
+					}
+					this.SendPropertyChanged("PPLieu");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PPMessages")]
+	public partial class PPMessage : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _NoMsg;
+		
+		private System.Nullable<int> _NoExpediteur;
+		
+		private string _DescMsg;
+		
+		private object _FichierJoint;
+		
+		private System.Nullable<short> _Lieu;
+		
+		private System.Nullable<System.DateTime> _dateEnvoi;
+		
+		private string _objet;
+		
+		private EntitySet<PPDestinataire> _PPDestinataires;
+		
+		private EntityRef<PPLieu> _PPLieu;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNoMsgChanging(int value);
+    partial void OnNoMsgChanged();
+    partial void OnNoExpediteurChanging(System.Nullable<int> value);
+    partial void OnNoExpediteurChanged();
+    partial void OnDescMsgChanging(string value);
+    partial void OnDescMsgChanged();
+    partial void OnFichierJointChanging(object value);
+    partial void OnFichierJointChanged();
+    partial void OnLieuChanging(System.Nullable<short> value);
+    partial void OnLieuChanged();
+    partial void OndateEnvoiChanging(System.Nullable<System.DateTime> value);
+    partial void OndateEnvoiChanged();
+    partial void OnobjetChanging(string value);
+    partial void OnobjetChanged();
+    #endregion
+		
+		public PPMessage()
+		{
+			this._PPDestinataires = new EntitySet<PPDestinataire>(new Action<PPDestinataire>(this.attach_PPDestinataires), new Action<PPDestinataire>(this.detach_PPDestinataires));
+			this._PPLieu = default(EntityRef<PPLieu>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoMsg", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int NoMsg
+		{
+			get
+			{
+				return this._NoMsg;
+			}
+			set
+			{
+				if ((this._NoMsg != value))
+				{
+					this.OnNoMsgChanging(value);
+					this.SendPropertyChanging();
+					this._NoMsg = value;
+					this.SendPropertyChanged("NoMsg");
+					this.OnNoMsgChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoExpediteur", DbType="Int")]
+		public System.Nullable<int> NoExpediteur
+		{
+			get
+			{
+				return this._NoExpediteur;
+			}
+			set
+			{
+				if ((this._NoExpediteur != value))
+				{
+					this.OnNoExpediteurChanging(value);
+					this.SendPropertyChanging();
+					this._NoExpediteur = value;
+					this.SendPropertyChanged("NoExpediteur");
+					this.OnNoExpediteurChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DescMsg", DbType="NVarChar(MAX)")]
+		public string DescMsg
+		{
+			get
+			{
+				return this._DescMsg;
+			}
+			set
+			{
+				if ((this._DescMsg != value))
+				{
+					this.OnDescMsgChanging(value);
+					this.SendPropertyChanging();
+					this._DescMsg = value;
+					this.SendPropertyChanged("DescMsg");
+					this.OnDescMsgChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FichierJoint", DbType="Variant", UpdateCheck=UpdateCheck.Never)]
+		public object FichierJoint
+		{
+			get
+			{
+				return this._FichierJoint;
+			}
+			set
+			{
+				if ((this._FichierJoint != value))
+				{
+					this.OnFichierJointChanging(value);
+					this.SendPropertyChanging();
+					this._FichierJoint = value;
+					this.SendPropertyChanged("FichierJoint");
+					this.OnFichierJointChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lieu", DbType="SmallInt")]
+		public System.Nullable<short> Lieu
+		{
+			get
+			{
+				return this._Lieu;
+			}
+			set
+			{
+				if ((this._Lieu != value))
+				{
+					if (this._PPLieu.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLieuChanging(value);
+					this.SendPropertyChanging();
+					this._Lieu = value;
+					this.SendPropertyChanged("Lieu");
+					this.OnLieuChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dateEnvoi", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> dateEnvoi
+		{
+			get
+			{
+				return this._dateEnvoi;
+			}
+			set
+			{
+				if ((this._dateEnvoi != value))
+				{
+					this.OndateEnvoiChanging(value);
+					this.SendPropertyChanging();
+					this._dateEnvoi = value;
+					this.SendPropertyChanged("dateEnvoi");
+					this.OndateEnvoiChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_objet", DbType="NVarChar(50)")]
+		public string objet
+		{
+			get
+			{
+				return this._objet;
+			}
+			set
+			{
+				if ((this._objet != value))
+				{
+					this.OnobjetChanging(value);
+					this.SendPropertyChanging();
+					this._objet = value;
+					this.SendPropertyChanged("objet");
+					this.OnobjetChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PPMessage_PPDestinataire", Storage="_PPDestinataires", ThisKey="NoMsg", OtherKey="NoMsg")]
+		public EntitySet<PPDestinataire> PPDestinataires
+		{
+			get
+			{
+				return this._PPDestinataires;
+			}
+			set
+			{
+				this._PPDestinataires.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PPLieu_PPMessage", Storage="_PPLieu", ThisKey="Lieu", OtherKey="NoLieu", IsForeignKey=true)]
+		public PPLieu PPLieu
+		{
+			get
+			{
+				return this._PPLieu.Entity;
+			}
+			set
+			{
+				PPLieu previousValue = this._PPLieu.Entity;
+				if (((previousValue != value) 
+							|| (this._PPLieu.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PPLieu.Entity = null;
+						previousValue.PPMessages.Remove(this);
+					}
+					this._PPLieu.Entity = value;
+					if ((value != null))
+					{
+						value.PPMessages.Add(this);
+						this._Lieu = value.NoLieu;
+					}
+					else
+					{
+						this._Lieu = default(Nullable<short>);
+					}
+					this.SendPropertyChanged("PPLieu");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_PPDestinataires(PPDestinataire entity)
+		{
+			this.SendPropertyChanging();
+			entity.PPMessage = this;
+		}
+		
+		private void detach_PPDestinataires(PPDestinataire entity)
+		{
+			this.SendPropertyChanging();
+			entity.PPMessage = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PPLieu")]
+	public partial class PPLieu : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private short _NoLieu;
+		
+		private string _Description;
+		
+		private EntitySet<PPDestinataire> _PPDestinataires;
+		
+		private EntitySet<PPMessage> _PPMessages;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNoLieuChanging(short value);
+    partial void OnNoLieuChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public PPLieu()
+		{
+			this._PPDestinataires = new EntitySet<PPDestinataire>(new Action<PPDestinataire>(this.attach_PPDestinataires), new Action<PPDestinataire>(this.detach_PPDestinataires));
+			this._PPMessages = new EntitySet<PPMessage>(new Action<PPMessage>(this.attach_PPMessages), new Action<PPMessage>(this.detach_PPMessages));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoLieu", DbType="SmallInt NOT NULL", IsPrimaryKey=true)]
+		public short NoLieu
+		{
+			get
+			{
+				return this._NoLieu;
+			}
+			set
+			{
+				if ((this._NoLieu != value))
+				{
+					this.OnNoLieuChanging(value);
+					this.SendPropertyChanging();
+					this._NoLieu = value;
+					this.SendPropertyChanged("NoLieu");
+					this.OnNoLieuChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(50)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PPLieu_PPDestinataire", Storage="_PPDestinataires", ThisKey="NoLieu", OtherKey="Lieu")]
+		public EntitySet<PPDestinataire> PPDestinataires
+		{
+			get
+			{
+				return this._PPDestinataires;
+			}
+			set
+			{
+				this._PPDestinataires.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PPLieu_PPMessage", Storage="_PPMessages", ThisKey="NoLieu", OtherKey="Lieu")]
+		public EntitySet<PPMessage> PPMessages
+		{
+			get
+			{
+				return this._PPMessages;
+			}
+			set
+			{
+				this._PPMessages.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_PPDestinataires(PPDestinataire entity)
+		{
+			this.SendPropertyChanging();
+			entity.PPLieu = this;
+		}
+		
+		private void detach_PPDestinataires(PPDestinataire entity)
+		{
+			this.SendPropertyChanging();
+			entity.PPLieu = null;
+		}
+		
+		private void attach_PPMessages(PPMessage entity)
+		{
+			this.SendPropertyChanging();
+			entity.PPLieu = this;
+		}
+		
+		private void detach_PPMessages(PPMessage entity)
+		{
+			this.SendPropertyChanging();
+			entity.PPLieu = null;
 		}
 	}
 }

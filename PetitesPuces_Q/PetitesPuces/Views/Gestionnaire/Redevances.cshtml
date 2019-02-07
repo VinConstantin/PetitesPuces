@@ -1,31 +1,118 @@
-﻿@model IList<PetitesPuces.ViewModels.Gestionnaire.Redevance>
+﻿@model PetitesPuces.ViewModels.Gestionnaire.RedevancesViewModel
 <h2 class="row text-center">Redevances</h2>
 
 <div class="row">
-    <div class="col-xs-offset-1 col-xs-10">
+    <div id="redevancesGestion" class="col-xs-offset-1 col-xs-10">
         <h3 class="row text-center">Redevances dûes</h3>
         <div class="row well">
-            <table class="table bg-light">
-                <tr>
-                    <th>
-                        Nom du vendeur
-                    </th>
-                    <th class="text-right">
-                        Solde
-                    </th>
-                    <th class="text-right">
-                        Pourcentage de redevances
-                    </th>
-                    <th>
-                        Solde en souffrance depuis
-                    </th>
-                    <th></th>
-                </tr>
-                @foreach (var redevance in @Model)
-                {
-                    @Html.Partial("Gestionnaire/_Redevance", redevance)
-                }
-            </table>
+            @Html.Partial("Gestionnaire/Redevances/_ListeRedevances", @Model.Redevances)
+        </div>
+    </div>
+    <div id="modifTauxRedevances" class="col-xs-10 col-xs-offset-1">
+        <h3 class="text-center">Modification des taux de redevance</h3>
+        <div class="well row text-center">
+            @Html.Partial("Gestionnaire/Redevances/_ListeVendeurRedevance", @Model.Vendeurs)
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modalDetailsRedevances" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div id="contenuDetailsRedevances" class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        registerEvents();
+        
+        function registerEvents() {
+            registerPaymentEvent();
+            registerRedevanceEvent();
+        }
+    
+        function registerPaymentEvent() {
+            $('#redevancesGestion').find('tr').each(function() {
+                const id = $(this).children('td').eq(0).text().trim();
+                $(this).find('.btn-success').click(getDetailsForVendeur(id));
+            });
+        }
+    
+        function getDetailsForVendeur(id) {
+            return function() {
+                $.get(`/Gestionnaire/Redevances/${id}`, null, showDetailsForVendeur);
+            }
+        }  
+    
+        function registerRedevanceEvent() {
+            $('#modifTauxRedevances').find('tr').each(function() {
+                $(this).find('.btn-warning').click(toggleModify);
+            });
+        }
+    
+        function toggleModify() {
+            const DEFAULT = '<i class="glyphicon glyphicon-adjust"></i>';
+            const MODIFYING = '<i class="glyphicon glyphicon glyphicon-floppy-disk"></i>';
+            const tr = $(this).closest('tr');
+            const idVendeur = tr.children('td').first().text().trim();
+            
+            const modifyStart = () => {
+                $(this).html(MODIFYING);
+                tr.find('.pct-tb').prop('disabled', false);
+            }
+        
+            const modifyEnd = () => {
+                const pctForm = $(this).closest('tr').find('.redevances-form')[0];
+                if (!pctForm.checkValidity()) {
+                    $(pctForm).find('.fake-btn').click();
+                    return;
+                }
+                
+                $(this).html(DEFAULT);
+                const tbPct = tr.find('.pct-tb');
+                tbPct.prop('disabled', true);
+                const pctVal = tbPct.val();
+
+                $.ajax({
+                    url: `/Gestionnaire/Redevances/Vendeur/${idVendeur}`,
+                    contentType: "application/json",
+                    dataType: "json",
+                    method: 'PATCH',
+                    data: JSON.stringify({
+                        pourcentage: pctVal / 100,
+                    }),
+                    success: afficherRedevancesVendeur,
+                });
+            }
+            
+            if ($(this).html().trim() === DEFAULT) {
+                modifyStart();
+            } else {
+                modifyEnd();
+            }
+        }
+        
+        function updateRedevancesVendeur() {
+            $.get('/Gestionnaire/Redevances/Modifiables', null, afficherRedevancesVendeur);
+        }
+        
+        function afficherRedevancesVendeur(partial) {
+            $('#modifTauxRedevances').html(partial);
+        }
+        
+        function updateRedevancesPaiements() {
+            $.get('/Gestionnaire/Redevances/Modifiables', null, afficherRedevancesPaiements);
+        }
+        
+        function afficherRedevancesPaiements(partial) {
+            $('#redevancesGestion').html(partial);
+        }
+    
+        function showDetailsForVendeur(partial) {
+            $('#contenuDetailsRedevances').html(partial);
+            $('#modalDetailsRedevances').modal('show');
+        }
+    });
+</script>

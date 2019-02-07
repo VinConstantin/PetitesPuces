@@ -1,0 +1,114 @@
+﻿@model PetitesPuces.Models.PPVendeur
+
+@{
+    ViewBag.Title = "_DemandeVendeur";
+}
+
+<tr class="v-align-middle">
+    <th >
+        @Html.DisplayFor(model => model.NoVendeur)
+    </th>
+
+    <td>
+        @Html.DisplayFor(model => model.NomAffaires)
+    </td>
+
+    <td>
+        @Html.DisplayFor(model => model.Prenom)
+    </td>
+
+    <td>
+        @Html.DisplayFor(model => model.Nom)
+    </td>
+
+    <td>
+        @Html.DisplayFor(model => model.DateCreation)
+    </td>
+    <td class="text-right">
+        <form class="form-inline">
+            <button class="btn btn-success" id="btnAccepterDemandeQuick" onclick="afficherAccepter(@Model.NoVendeur)" data-toggle="modal" data-target="#modalGestion">
+                <i class="glyphicon glyphicon-ok v-align-middle"></i>
+            </button>
+            <button id="afficherDetails" data-toggle="modal" data-target="#modalDetails" type="button" class="btn btn-info">
+                <i class="glyphicon glyphicon-info-sign v-align-middle"></i>
+            </button>
+            <button id="btnRefuserDemandeQuick" class="btn btn-danger" onclick="afficherRefuser(@Model.NoVendeur)" data-toggle="modal" data-target="#modalGestion">
+                <i class="glyphicon glyphicon-remove v-align-middle"></i>
+            </button>
+        </form>
+    </td>
+</tr>
+
+<script>
+    $(document).ready(function() {
+        const idDemande = @Model.NoVendeur;
+        $('#btnRefuserDemandeQuick').click(afficherRefuser);
+        $('#btnAccepterDemandeQuick').click(afficherAccepter);
+        $('#afficherDetails').click(afficherDetails);
+
+        function remplirModal(partialView) {
+            $('#modalDetails').html(partialView);
+            start();
+        }
+
+        function afficherDetails(noVendeur) {
+            const actionUrl = URLPATH + `/Gestionnaire/GererDemande/Details/${idDemande}`;
+            const formData = $('#idForm').serialize();
+
+            $.ajax(actionUrl, {
+                method: "GET",
+                data: formData,
+                success: gererDetails,
+                error: genererErreur
+            });
+        }
+
+        function gererDetails(donnees) {
+            const modalDiv = $('#contenuDetails');
+            modalDiv[0].innerHTML = donnees;
+            start();
+        }
+        function genererErreur(donnees) {
+            const modalDiv = $('#contenuDetails');
+
+            modalDiv[0].innerHTML = "<P>Une erreure est survenue!</P>";
+        }
+        
+        function afficherAccepter() {
+            $.get(`/Gestionnaire/GererDemande/Accepter/${idDemande}`, null, remplirModal);
+        }
+
+        function afficherRefuser() {
+            $.get(`/Gestionnaire/GererDemande/Refuser/${idDemande}`, null, remplirModal);
+        }
+        
+        function start() {
+            const idDemande = @Model.NoVendeur;
+    
+            $('#btnAccepterDemande').click(function () { gererDemande(true) });
+            $('#btnRefuserDemande').click(function () { gererDemande(false) });
+    
+            function gererDemande(accepter) {
+                const message = $('#tbMsg').val();
+                const redevances = $('#tbPctRedevances').val();
+                const reponseDemande = {
+                    Accepte: accepter,
+                    Message: message,
+                    Redevances: redevances,
+                };
+
+                $.post(`/Gestionnaire/GererDemande/${idDemande}`, JSON.stringify(reponseDemande), actualiserDemandes);
+
+                $('#modalDetails').toggle('modal');
+            }
+
+            function actualiserDemandes() {
+                $.get(`/Gestionnaire/DemandesVendeur`, null, afficherDemandes);
+            }
+    
+            function afficherDemandes(partialView) {
+                $('#demandes').html(partialView);
+            }
+        }
+    })
+</script>

@@ -1,0 +1,29 @@
+@using PetitesPuces.Models
+@using PetitesPuces.Utilities
+@model Panier
+
+<div class="col-md-12">
+    <div class="well">
+        <table class="table table-hover">
+            <thead>
+            <td>Nom</td>
+            <td>Prix unitaire</td>
+            <td>Quantité</td>
+            <td>Prix</td>
+            <td>Catégorie</td>
+            <td>Poids (lbs)</td>
+            </thead>
+            @foreach (PPArticlesEnPanier article in @Model.Articles)
+            {
+                <tr>
+                    <td>@article.PPProduit.Nom</td>
+                    <td>@Formatter.Money(@article.PPProduit.PrixVente)</td>
+                    <td>x @article.NbItems</td>
+                    <td>@Formatter.Money(@article.PPProduit.PrixVente * @article.NbItems)</td>
+                    <td>@article.PPProduit.PPCategory.Description</td>
+                    <td>@article.PPProduit.Poids</td>                              
+                </tr>
+            }
+        </table>
+    </div>
+</div>

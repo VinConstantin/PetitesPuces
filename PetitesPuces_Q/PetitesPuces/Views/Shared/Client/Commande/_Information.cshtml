@@ -1,50 +1,64 @@
-@model PetitesPuces.Models.PPClient
-<form>
+@using PetitesPuces.Models
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.Panier
+<form id="FormLivraison">
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="nom">Nom</label>
-            <input type="text" class="form-control" id="nom" placeholder="Nom">
+            <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom" value="@Model.Client.Nom">
         </div>
         <div class="form-group col-md-6">
-            <label for="prenom">Pr√©nom</label>
-            <input type="text" class="form-control" id="prenom" placeholder="Pr√©nom">
+            <label for="prenom">PrÈnom</label>
+            <input type="text" class="form-control" name="prenom" id="prenom" placeholder="PrÈnom" value="@Model.Client.Prenom">
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="inputEmail4">Courriel</label>
-            <input disabled="disabled" type="text" class="form-control" id="inputEmail4" placeholder="Courriel">
+            <input disabled="disabled" type="text" class="form-control" name="courriel" id="courriel" placeholder="Courriel" value="@Model.Client.AdresseEmail">
         </div>
         <div class="form-group col-md-6">
-            <label for="inputPassword4">T√©l√©phone 1</label>
-            <input type="text" class="form-control" id="inputPassword4" placeholder="Telephone">
+            <label for="inputPassword4">TÈlÈphone</label>
+            <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Telephone" value="@Model.Client.Tel1">
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="inputEmail4">Adresse</label>
-            <input type="text" class="form-control" id="inputEmail4" placeholder="Adresse">
+            <input type="text" class="form-control" id="adresse" name="rue" placeholder="Adresse" value="@Model.Client.Rue">
         </div>
         <div class="form-group col-md-6">
-            <label for="inputPassword4">T√©l√©phone 2</label>
-            <input type="text" class="form-control" id="inputPassword4" placeholder="Telephone">
+            <label for="inputPassword4">(Cellulaire)</label>
+            <input type="text" class="form-control" id="cellulaire" name="cellulaire" placeholder="(XXX)XXX-XXXX" value="@Model.Client.Tel2">
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="inputCity">Ville</label>
-            <input type="text" class="form-control" id="inputCity">
+            <input type="text" class="form-control" name="ville" id="ville" value="@Model.Client.Ville">
         </div>
         <div class="form-group col-md-4">
             <label for="inputState">Province</label>
-            <select id="inputState" class="form-control">
-                <option selected>Choose...</option>
-                <option>...</option>
+            <select id="provinece" name="province" class="form-control">
+                @foreach (Province province in  Enum.GetValues(typeof(Province)))
+                {
+                    Province maProvince = Province.QC;
+                    Enum.TryParse(Model.Client.Province, out maProvince);
+                    if (maProvince == province)
+                    {
+                        <option selected="selected" value="@province">@province.GetDisplayName()</option>
+                    }
+                    else
+                    {
+                        <option value="@province">@province.GetDisplayName()</option>
+                    }
+
+                }
             </select>
         </div>
         <div class="form-group col-md-2">
             <label for="inputZip">Code Postal</label>
-            <input type="text" class="form-control" id="inputZip">
+            <input type="text" name="codePostal" class="form-control" id="codePostal" value="@Model.Client.CodePostal">
         </div>
 
     </div>
@@ -52,20 +66,31 @@
         <div class="col-md-12"><hr/></div>
         <div class="col-md-4 col-lg-offset-5">
             <button type="button" class="btn btn-danger"onclick="location.href = '@Url.Action("MonPanier", "Client")'">Retour</button>
-            <button type="button" class="btn btn-primary" onclick="next();">Continuer</button>
+            <button type="button" class="btn btn-primary" onclick="envoyerInfo();">Continuer</button>
         </div>
     </div>
 </form>
 
 <script>
-    function next(){
-        $('#Information').removeClass('active');
+    function envoyerInfo(){
+        var data = $("form").serialize();
+        
+        $.ajax({
+            url: URLPATH + "/Client/SetInfoClient",
+            type: "GET",
+            data: data, 
+            success: next,
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+    }
+    function next() {
         $('#Livraison').addClass('active');
         $.ajax({
             url: URLPATH + "/Client/Livraison",
-            type: "get",
-            data: {
-            },
+            type: "GET",
+            data: {"noVendeur":@Model.Vendeur.NoVendeur}, 
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
             },
@@ -73,8 +98,5 @@
                 console.log(req, status, err);
             }
         });
-        
-        var PARAMS = "?Etape="+"Livraison";
-        history.pushState(null, "", PARAMS);
     }
 </script>

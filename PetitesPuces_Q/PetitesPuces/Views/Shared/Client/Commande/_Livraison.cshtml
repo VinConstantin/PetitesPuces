@@ -1,22 +1,58 @@
 @using PetitesPuces.Utilities
-@model string
-
+@model PetitesPuces.Models.Panier
+@{
+    decimal poidsTotal = (decimal) Model.Articles.Sum(a => a.NbItems * a.PPProduit.Poids);
+    double poidsTotalDouble = (double) poidsTotal;
+    decimal prixTotal = (decimal) Model.Articles.Sum(a => a.PPProduit.PrixVente * a.NbItems);
+    double prixTotalDouble = (double) prixTotal;
+    decimal fraisLivraison = 0;
+}
 <form>
-    <div class="form-row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="radio">
-                <label><input type="radio" name="optradio" checked>Poste rÃ©guliÃ¨re</label>
+    <div class="center-block">     
+        <h4>Poids total : @Formatter.Poids(poidsTotal)</h4>
+        
+        
+        @if(prixTotal>=Model.Vendeur.LivraisonGratuite)
+        {
+            <div class="alert alert-success" role="alert">
+                <p>Vous bénificiez d'une livraison gratuite car le prix de votre commande est inférieur ou égale à :@Formatter.Money(Model.Vendeur.LivraisonGratuite, false)</p>
             </div>
+            
             <div class="radio">
-                <label><input type="radio" name="optradio">Poste prioritaire</label>
+                <label><input type="radio" value="1" checked="checked" onchange="getPrixLivraison()" name="optradio" checked>Poste régulière</label>
             </div>
-            <div class="radio">
-                <label><input type="radio" name="optradio">Compagnie de livraison</label>
+            <div class="radio disabled" >
+                <label><input type="radio" value="2" disabled onchange="getPrixLivraison()" name="optradio">Poste prioritaire</label>
             </div>
+            <div class="radio disabled">
+                <label><input type="radio" value="3" disabled onchange="getPrixLivraison()" name="optradio">Compagnie de livraison</label>
+            </div>
+            
             <hr/>
-            <div>
-                <h4>Frais de livraison : @Formatter.Money(23.00)</h4>
+        }
+        else
+        {
+            if (poidsTotal >Model.Vendeur.PoidsMaxLivraison)
+            {
+                <div class="alert alert-warning" role="alert">
+                    Le poids de votre commande dépasse le poids maximum fixé par le vendeur (@Formatter.Poids(Model.Vendeur.PoidsMaxLivraison))
+                </div>
+            }
+            
+            <div class="radio">
+                <label><input value="1" type="radio" onchange="getPrixLivraison()" name="optradio" checked>Poste régulière</label>
             </div>
+            <div class="radio">
+                <label><input value="2" type="radio" onchange="getPrixLivraison()" name="optradio">Poste prioritaire</label>
+            </div>
+            <div class="radio">
+                    <label><input value="3" type="radio" onchange="getPrixLivraison()" name="optradio">Compagnie de livraison</label>
+            </div>
+            
+            <hr/>
+        }
+        <div>
+            <h4 id="PRIXLIVRAISON">Frais de livraison : @Formatter.Money((decimal?)0.00, false)</h4>
         </div>
     </div>
     <div class="row">
@@ -28,13 +64,16 @@
     </div>
 </form>
 <script>
+    $(document).ready(function() {
+        getPrixLivraison();
+    });
     function next(){
-        $('#Livraison').removeClass('active');
         $('#Paiement').addClass('active');
         $.ajax({
             url: URLPATH + "/Client/Paiement",
             type: "get",
             data: {
+                "noVendeur":@Model.Vendeur.NoVendeur
             },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
@@ -43,17 +82,35 @@
                 console.log(req, status, err);
             }
         });
-        var PARAMS = "?Etape="+"Paiement";
-        history.pushState(null, "", PARAMS);
+    }
+    function getPrixLivraison() {
+        var selected = $('input[name=optradio]:checked', 'form').val()
+        var prix = @prixTotalDouble
+        var poids = @poidsTotalDouble
+        $.ajax({
+            url: URLPATH + "/Client/GetPrixLivraison",
+            type: "get",
+            data: {
+                "noVendeur":@Model.Vendeur.NoVendeur,
+                "selected": selected,
+                "prix": prix,
+                "poids": poids               
+            },
+            success: function(result) {
+                $('#PRIXLIVRAISON').html(result);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
     }
     function previous(){
         $('#Livraison').removeClass('active');
-        $('#Information').addClass('active');
         $.ajax({
             url: URLPATH + "/Client/Information",
-            type: "get",
+            type: "post",
             data: {
-                "NoClient":10100
+                noVendeur: @Model.Vendeur.NoVendeur
             },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
@@ -62,7 +119,5 @@
                 console.log(req, status, err);
             }
         });
-        var PARAMS = "?Etape="+"Information";
-        history.pushState(null, "", PARAMS);
     }
 </script>

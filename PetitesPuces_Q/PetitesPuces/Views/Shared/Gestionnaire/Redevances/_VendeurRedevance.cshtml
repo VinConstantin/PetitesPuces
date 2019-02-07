@@ -1,0 +1,38 @@
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPVendeur
+
+<tr>
+    <td class="text-left">
+        @Model.NoVendeur
+    </td>
+    <td class="text-left">
+        @Model.NomAffaires
+    </td>
+    <td class="text-left">
+        @Model.AdresseEmail
+    </td>
+    <td class="text-left">
+        @Model.Prenom
+    </td>
+    <td class="text-left">
+        @Model.Nom
+    </td>
+    <td class="text-right">
+        @{ string val = @Model.Pourcentage.HasValue ? (Model.Pourcentage.Value * 100).ToString("0") : ""; }
+        
+        <form onsubmit="return false;" class="form-inline redevances-form">
+            <div class="input-group">
+                <input type="number" min="1" max="99" disabled value="@val" required class="form-control text-right pct-tb">
+                <span class="input-group-addon">
+                    %
+                </span>
+            </div>
+            <button type="submit" class="d-none fake-btn"></button>
+        </form>
+    </td>
+    <td class="text-left">
+        <button class="btn btn-warning">
+            <i class="glyphicon glyphicon-adjust"></i>
+        </button>
+    </td>
+</tr>

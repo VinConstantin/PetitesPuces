@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using PetitesPuces.Models;
+using PetitesPuces.Utilities;
 using PetitesPuces.ViewModels.Vendeur;
 
 namespace PetitesPuces.Controllers
@@ -55,21 +57,29 @@ namespace PetitesPuces.Controllers
             //chercher le vendeur
             PPVendeur vendeur;
             int NoVendeur;
-            if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
+            if (Vendeur == "-1" || String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
             {
-                var requete = (from unVendeur in context.PPVendeurs select unVendeur);
-                vendeur = requete.FirstOrDefault();
+                vendeur = new PPVendeur
+                {
+                    NoVendeur = -1
+                };
+                
+                //creer la liste de produits
+                listeProduits = (from p in context.PPProduits select p)
+                    .Where(p => categorie == null || p.PPCategory == categorie);
             }
             else
             {
+                
                 var requete = (from unVendeur in context.PPVendeurs 
                     where unVendeur.NoVendeur == NoVendeur
                     select unVendeur);
                 vendeur = requete.FirstOrDefault();
+                //creer la liste de produits
+                listeProduits = vendeur.PPProduits
+                    .Where(p => categorie == null || p.PPCategory == categorie);
             }
-            //creer la liste de produits
-            listeProduits = vendeur.PPProduits
-                .Where(p => categorie == null || p.PPCategory == categorie);
+
             if(!String.IsNullOrEmpty(Filtre)) 
                 listeProduits = listeProduits.Where(p => p.Nom.ToLower().Contains(Filtre.ToLower()));
 
@@ -190,6 +200,7 @@ namespace PetitesPuces.Controllers
         }
         public ActionResult MonPanier(string No)
         {
+            ViewBag.NoClient = NOCLIENT;
             ViewBag.NoVendeur = No;
             List<Panier> lstPaniers = GetPaniersClient(NOCLIENT);
             //List<Panier> lstPaniers = new List<Panier>();
@@ -233,36 +244,119 @@ namespace PetitesPuces.Controllers
 
             return lstCommandes;
         }
-        public ActionResult Commande(string Etape)
-        {
-            ViewBag.Etape = Etape;
-            
-            return View();
-        }
 
-        public ActionResult Information(int NoClient=0)
+        private Panier GetPanierByVendeurClient(int noVendeur)
         {
-            PPClient client = (from cli in context.PPClients
-                where cli.NoClient == NOCLIENT
-                select cli).FirstOrDefault();
-            return PartialView("Client/Commande/_Information", client);
-        }
-        public ActionResult Livraison()
-        {
-            return PartialView("Client/Commande/_Livraison");
-        }
-        public ActionResult Paiement()
-        {
-            return PartialView("Client/Commande/_Paiement");
-        }
-        public ActionResult Confirmation()
-        {
+            var query = from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == noVendeur
+                orderby articles.DateCreation ascending
+                select articles;
+
             Panier panier = new Panier
             {
-                Vendeur = (from p in context.PPVendeurs select p).FirstOrDefault(),
-                Client = (from p in context.PPClients select p).FirstOrDefault(),
-                DateCreation = DateTime.Now,
-                Articles = (from p in context.PPArticlesEnPaniers select p).Take(4).ToList()
+                Vendeur = query.FirstOrDefault().PPVendeur,
+                Client = query.FirstOrDefault().PPClient,
+                Articles = query.ToList()
+            };
+
+            return panier;
+        }
+
+        private PPVendeur GetVendeurByNo(int no)
+        {
+            return
+                (from v in context.PPVendeurs
+                    where v.NoVendeur == no
+                    select v).FirstOrDefault();
+        }
+
+        public HtmlString GetPrixLivraison(int noVendeur, decimal poids, decimal prix, int selected)
+        {
+            var intervallePoids = (from p in context.PPTypesPoids select p).ToList();
+            PPTypesPoid codePoids = intervallePoids.FirstOrDefault();
+            foreach (var intervalle in intervallePoids)
+            {
+                if(poids>=intervalle.PoidsMin && poids<=intervalle.PoidsMax)
+                {
+                    codePoids = intervalle;
+                    break;
+                }
+            }
+            PPVendeur vendeur = GetVendeurByNo(noVendeur);
+
+            PPPoidsLivraison livraisons = codePoids.PPPoidsLivraisons.FirstOrDefault(p => p.CodeLivraison == selected);
+            decimal? prixLivraison = prix >= vendeur.LivraisonGratuite?(decimal?)0.00:livraisons.Tarif;
+            InfoCommande.PrixLivraison = prixLivraison;
+            
+            string str = "Frais de livraison : " + Formatter.Money( prixLivraison, false);
+            HtmlString html = new HtmlString(str);
+            return html;
+        }
+        public ActionResult Commande(string Etape, int noVendeur)
+        {
+            ViewBag.Etape = Etape;
+
+            Panier panier = GetPanierByVendeurClient(noVendeur);
+            return View(panier);
+        }
+
+        public ActionResult Information(int noVendeur)
+        {
+            Panier panier = GetPanierByVendeurClient(noVendeur);
+            
+            return PartialView("Client/Commande/_Information", panier);
+        }     
+        public ActionResult SetInfoClient(InfoClient info)
+        {
+            info.no = NOCLIENT;
+            InfoCommande.SetInfoClient(info);
+            
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+        public ActionResult SetInfoPaiement(InfoPaiement info)
+        {
+            if (info == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (!new Regex("^[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}$").Match(info.NoCarteCredit).Success
+                ||!new Regex("^[0-9]{2}/[0-9]{2}$").Match(info.DateExpirationCarteCredit).Success
+                ||!new Regex("^[0-9]{3,4}$").Match(info.NoSecuriteCarteCredit).Success)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotAcceptable);
+            }
+            InfoCommande.SetInfoPaiement(info);
+            System.Diagnostics.Debug.Write(InfoCommande.InfoClient);
+            
+            System.Diagnostics.Debug.Write(InfoCommande.InfoPaiement);
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+        public ActionResult Livraison(int noVendeur)
+        {
+            Panier panier = GetPanierByVendeurClient(noVendeur);
+            
+            return PartialView("Client/Commande/_Livraison",panier);
+        }
+        public ActionResult Paiement(int noVendeur)
+        {
+            Panier panier = GetPanierByVendeurClient(noVendeur);
+            return PartialView("Client/Commande/_Paiement",panier);
+        }
+        public ActionResult Confirmation(int noVendeur)
+        {
+            var query = from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == noVendeur
+                orderby articles.DateCreation ascending
+                select articles;
+
+            Panier panier = new Panier
+            {
+                Vendeur = query.FirstOrDefault().PPVendeur,
+                Client = query.FirstOrDefault().PPClient,
+                Articles = query.ToList()
             };
             return PartialView("Client/Commande/_Confirmation",panier);
         }
@@ -283,7 +377,92 @@ namespace PetitesPuces.Controllers
             };
             return PartialView("Client/_DetailPanier",panier);
         }
+        public ActionResult SupprimerArticle(int NoProduit, int NoVendeur)
+        {
+            var articleSuprimer = (from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == NoVendeur
+                      && articles.PPProduit.NoProduit == NoProduit
+                select articles).FirstOrDefault();
+            
+            context.PPArticlesEnPaniers.DeleteOnSubmit(articleSuprimer);         
+            context.SubmitChanges();
+            
+            var query = from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == NoVendeur
+                orderby articles.DateCreation ascending
+                select articles;
 
+            Panier panier = new Panier
+            {
+                Vendeur = query.FirstOrDefault().PPVendeur,
+                Client = query.FirstOrDefault().PPClient,
+                Articles = query.ToList()
+            };
+            
+            return PartialView("Client/_DetailPanier",panier);
+        }
+        public ActionResult SupprimerPanier(int NoVendeur)
+        {
+            var articlesSuprimer = (from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == NoVendeur
+                select articles).ToList();
+
+            foreach (var article in articlesSuprimer)
+            {
+                context.PPArticlesEnPaniers.DeleteOnSubmit(article);     
+            }    
+            context.SubmitChanges();
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+        public ActionResult ModifierQuantite(int NoProduit, int NoVendeur, bool aAugmenter)
+        {
+            var articleModifer = (from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == NoVendeur
+                      && articles.PPProduit.NoProduit == NoProduit
+                select articles).FirstOrDefault();
+            
+            //TODO: v'erifier si disponible
+
+            //augmenter
+            if (aAugmenter)
+            {
+                if (articleModifer.PPProduit.NombreItems > articleModifer.NbItems)
+                {
+                    articleModifer.NbItems += 1;
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Conflict);
+                }
+            }
+            //diminuer
+            else if(articleModifer.NbItems > 1)
+            {
+                articleModifer.NbItems -= 1;
+            }
+            
+            context.SubmitChanges();
+            
+            var query = from articles in context.PPArticlesEnPaniers
+                where articles.NoClient == NOCLIENT
+                      && articles.NoVendeur == NoVendeur
+                orderby articles.DateCreation ascending
+                select articles;
+
+            Panier panier = new Panier
+            {
+                Vendeur = query.FirstOrDefault().PPVendeur,
+                Client = query.FirstOrDefault().PPClient,
+                Articles = query.ToList()
+            };
+            
+            return PartialView("Client/_DetailPanier",panier);
+        }
         public ActionResult Profil()
         {
             return View();

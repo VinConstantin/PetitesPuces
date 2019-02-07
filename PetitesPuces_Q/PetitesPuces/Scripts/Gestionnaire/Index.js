@@ -17,7 +17,7 @@
                     }
                 }
             ]
-        }
+        }   
     };
 
     const ctxInactive = ctxtForSelector('#cvInactivite');

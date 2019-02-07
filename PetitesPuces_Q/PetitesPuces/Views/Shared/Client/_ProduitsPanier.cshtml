@@ -15,23 +15,28 @@
                 <p>@Formatter.Money(@Model.PPProduit.PrixVente)</p>
             </div>
             <div class="col-md-3">
-                <div class="quantity">
-                    <button class="minus-btn" type="button" name="button" onclick="moinsQuantite(@Model.PPProduit.NoProduit)">
+                <div class="row quantity">
+                    <button class="minus-btn" type="button" name="button" onclick="moinsQuantite(@Model.PPProduit.NoProduit, @Model.PPProduit.NoVendeur)">
                         <span class="glyphicon glyphicon-minus"></span>
                     </button>
-                    <input type="text" style="width: 30%;" pattern="\d*" name="name" value="1" width="50px" id="@Model.PPProduit.NoProduit">
-                    <button class="plus-btn" type="button" name="button" onclick="plusQuantite(@Model.PPProduit.NoProduit)">
+                    <input type="text" style="width: 30%;" pattern="\d*" name="name" value="@Model.NbItems" width="50px" id="@Model.PPProduit.NoProduit">
+                    <button class="plus-btn" type="button" name="button" onclick="plusQuantite(@Model.PPProduit.NoProduit, @Model.PPProduit.NoVendeur)">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>
-            </div>
-            <div class="col-md-1">
-                <button class="btn btn-link btn-lg" style="color: red" title="Retirer du panier" onclick="SupprimerProduit()">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
+                <div class="row">
+                    @{string id = "Erreur" + Model.NoProduit;}
+                    <span class="label label-warning" id="@id"></span>
+                </div>
             </div>
             <div class="col-md-2">
                 <p>@Formatter.Money(@Model.PPProduit.PrixVente*@Model.NbItems)</p>
+            </div>
+            
+            <div class="col-md-1">
+                <button class="btn btn-link btn-lg" style="color: red" title="Retirer du panier" onclick="supprimerArticles(@Model.PPProduit.NoProduit, @Model.PPProduit.NoVendeur)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
             </div>
         </div>
     </td>

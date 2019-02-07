@@ -23,6 +23,10 @@ textarea {
     max-width: 280px;
 }
 
+.d-none {
+    display: none;
+}
+
 .d-flex {
     display: flex;
 }

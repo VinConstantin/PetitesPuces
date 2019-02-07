@@ -10,6 +10,5 @@ namespace PetitesPuces.ViewModels.Gestionnaire
     {
         public PPVendeur Vendeur { get; set; }
         public decimal Solde { get; set; }
-        public DateTime EnSouffranceDepuis { get; set; }
     }
 }      

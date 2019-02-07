@@ -1,0 +1,21 @@
+﻿@using PetitesPuces.Utilities
+@model PetitesPuces.ViewModels.Gestionnaire.Redevance
+
+<tr class="v-align-middle">
+    <td class="text-left">@Model.Vendeur.NoVendeur</td>
+    <td class="text-left">@Model.Vendeur.NomAffaires</td>
+    <td class="text-right">@Formatter.Money(Model.Solde)</td>
+    @if (@Model.Vendeur.Pourcentage.HasValue)
+    {
+        <td class="text-right">@Formatter.Percentage((double)Model.Vendeur.Pourcentage.Value)</td>
+    }
+    else
+    {
+        <td class="text-right">N/A</td>
+    }
+    <td class="text-right">
+        <button id="btnGerer" class="btn btn-success">
+            Gérer redevances
+        </button>
+    </td>
+</tr>

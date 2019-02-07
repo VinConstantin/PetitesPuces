@@ -1,4 +1,4 @@
-﻿@using System.Security.Policy
+@using System.Security.Policy
 @model List<PetitesPuces.Models.PPVendeur>
 
 @{
@@ -15,57 +15,9 @@
 
 <h2 class="text-center">Demandes d'inscription en tant que vendeur</h2>
 
-@if (Model.Count > 0)
-{
-    <div class="well col-lg-10 col-lg-offset-1 ">
-        <div class="row">
-            <div class="text-center">
-                <form class="form-inline">
-                    <div class="input-group">
-                        <input type="search" class="form-control">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
-                                </span>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <table class="table lst-vendeurs mt-2 bg-light">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().NoVendeur)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().NomAffaires)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().Prenom)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().Nom)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().DateCreation)
-                </th>
-                <th>
-
-                </th>
-            </tr>
-            @foreach (var vendeur in Model)
-            {
-                @Html.Partial("Gestionnaire/_DemandeVendeur", vendeur);
-            }
-        </table>
-    </div>
-}
-else
-{
-    <h4 class="row text-center">Aucune demande de vendeur</h4>
-}
+<div id="demandes">
+    @Html.Partial("Gestionnaire/Demandes/_ListeDemandesVendeur", @Model)
+</div>
 
 <div class="modal fade" id="modalDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

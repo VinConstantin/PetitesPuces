@@ -1,0 +1,13 @@
+@model dynamic
+
+<div class="text-center">
+    <ul class="pagination">
+        <li class="page-item"><a onclick="previousPage()" class="page-link">&laquo</a></li>
+        @for (int i = 1; i <= ViewBag.NbPage; i++)
+        {
+            string cssClass = i.Equals(ViewBag.NoPage) ? "page-item active" : "page-item";
+            <li class="@cssClass"><a id="@i" class="page-link" onclick="changePage(this)">@i</a></li>
+        }
+        <li class="page-item"><a onclick="nextPage()" class="page-link">&raquo</a></li>
+    </ul>
+</div>
