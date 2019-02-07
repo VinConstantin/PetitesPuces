@@ -30,8 +30,9 @@ namespace PetitesPuces.Controllers
                     {RolesUtil.CLIENT, GetClientsAvecNom},
                 };
         }
-        
+       
         #region Index    
+        [Securise(RolesUtil.ADMIN)]
         public ActionResult Index()
         {
             return View(GetCategories());
@@ -292,7 +293,7 @@ namespace PetitesPuces.Controllers
                 return PartialView("Gestionnaire/Demandes/_GestionDemande",
                     new Tuple<int, TypesModal>(id, TypesModal.DETAILS));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return HttpNotFound();
             }

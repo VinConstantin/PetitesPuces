@@ -8,10 +8,6 @@
     <link rel="stylesheet" type="text/css" href="~/Content/Gestionnaire/DemandesVendeur.css" />
 }
 
-@section scripts {
-    <script type="text/javascript" src="@Url.Content("/Scripts/Gestionnaire/DemandeVendeur.js")"></script>
-}
-
 <h2 class="text-center">Demandes d'inscription en tant que vendeur</h2>
 
 <div id="demandes">
@@ -25,3 +21,88 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        registerEvents();        
+        
+        function registerEvents() {
+            $("#demandes").find('tr').each(function() {
+                const idVendeur = $(this).children().eq(0).text();
+
+                $(this).find('.btn-success').click(afficherAccepterPourId(idVendeur));
+                $(this).find('.btn-info').click(afficherDetailsPourId(idVendeur));
+                $(this).find('.btn-danger').click(afficherRefuserPourId(idVendeur));
+            });
+        }
+        
+        function remplirModal(partialView) {
+            $('#contenuDetails').html(partialView);
+            $('#modalDetails').modal('show');
+        }
+
+        function afficherDetailsPourId(noVendeur) {
+            return function() {
+                const actionUrl = `/Gestionnaire/GererDemande/Details/${noVendeur}`;
+
+                $.ajax(actionUrl,
+                {
+                    method: "GET",
+                    success: gererDetails,
+                    error: genererErreur
+                });
+            }            
+        }
+
+        function gererDetails(partial) {
+            const modalDiv = $('#contenuDetails');
+            modalDiv.html(partial);
+            start();
+        }
+
+        function genererErreur() {
+            const modalDiv = $('#contenuDetails');
+
+            modalDiv.html('<P>Une erreure est survenue!</P>');
+        }
+
+        function afficherAccepterPourId(id) {
+            return function() {
+                $.get(`/Gestionnaire/GererDemande/Accepter/${id}`, null, remplirModal);
+            };
+        }
+
+        function afficherRefuserPourId(id) {
+            return function() {
+                $.get(`/Gestionnaire/GererDemande/Refuser/${id}`, null, remplirModal);
+            };
+        }
+
+        function start() {
+            $('#btnAccepterDemande').click(function() { gererDemande(true) });
+            $('#btnRefuserDemande').click(function() { gererDemande(false) });
+
+            function gererDemande(accepter) {
+                const message = $('#tbMsg').val();
+                const redevances = $('#tbPctRedevances').val();
+                const reponseDemande = {
+                    Accepte: accepter,
+                    Message: message,
+                    Redevances: redevances,
+                };
+
+                $.post(`/Gestionnaire/GererDemande/${idDemande}`, JSON.stringify(reponseDemande), actualiserDemandes);
+
+                $('#modalDetails').modal('show');
+            }
+
+            function actualiserDemandes() {
+                $.get(`/Gestionnaire/DemandesVendeur`, null, afficherDemandes);
+            }
+
+            function afficherDemandes(partialView) {
+                $('#demandes').html(partialView);
+            }
+        }
+    });
+</script>
