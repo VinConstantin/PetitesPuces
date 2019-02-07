@@ -12,6 +12,9 @@ using PetitesPuces.ViewModels.Gestionnaire;
 
 namespace PetitesPuces.Controllers
 {
+    #if !DEBUG
+        [Securise(RolesUtil.ADMIN)]
+    #endif
     [System.Web.Mvc.RoutePrefix("Gestionnaire")]
     public class GestionnaireController : Controller
     {
@@ -32,7 +35,6 @@ namespace PetitesPuces.Controllers
         }
        
         #region Index    
-        [Securise(RolesUtil.ADMIN)]
         public ActionResult Index()
         {
             return View(GetCategories());

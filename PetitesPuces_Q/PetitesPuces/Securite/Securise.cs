@@ -7,7 +7,6 @@ using System.Web.Http.Controllers;
 
 namespace PetitesPuces.Securite
 {
-    [AttributeUsage(AttributeTargets.Method)]
     public class Securise: AuthorizeAttribute
     {
         private string[] rolesAutorises;

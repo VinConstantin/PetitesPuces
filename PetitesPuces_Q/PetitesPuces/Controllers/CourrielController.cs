@@ -4,11 +4,15 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web;
 using PetitesPuces.Models;
+using PetitesPuces.Securite;
 using PetitesPuces.ViewModels.Courriel;
 using PetitesPuces.ViewModels.Home;
 
 namespace PetitesPuces.Controllers
 {
+    #if !DEBUG
+        [Securise]
+    #endif
     public class CourrielController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
