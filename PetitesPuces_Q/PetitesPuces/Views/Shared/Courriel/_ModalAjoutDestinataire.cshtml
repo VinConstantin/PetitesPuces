@@ -11,7 +11,8 @@
             <div class="col-lg-4">
                 <h3>Vendeurs</h3>
                 <div class="sca">
-                    <table class="table table-hover">
+                    <input type="text" class="form-control" id="filterVendeur"/>
+                    <table id="tableVendeur" class="table table-hover">
                         @foreach (PPVendeur vendeur in Model.Vendeurs)
                         {
                             <tr id="@vendeur.NoVendeur">
@@ -19,7 +20,7 @@
                                     <p>@vendeur.NomAffaires</p>
                                 </td>
                                 <td>
-                                    <a onclick="ajouterDestinataire(@vendeur.NoVendeur,'@vendeur.NomAffaires');"><span class="glyphicon glyphicon-plus pull-right"></span></a>
+                                    <a onclick="ajouterDestinataire(@vendeur.NoVendeur, '@vendeur.NomAffaires');"><span class="glyphicon glyphicon-plus pull-right"></span></a>
                                 </td>
                             </tr>
                         }
@@ -29,7 +30,8 @@
             <div class="col-lg-4">
                 <h3>Clients</h3>
                 <div class="sca">
-                    <table class="table table-hover">
+                    <input type="text" class="form-control" id="filterClient"/>
+                    <table id="tableClient" class="table table-hover">
                         @foreach (PPClient client in Model.Clients)
                         {
                             <tr id="@client.NoClient">
@@ -70,4 +72,19 @@
     function retirerDestinataire(no) {
         $('#'+no).remove();
     }
+    $(document).ready(function () {
+        $("#filterClient").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tableClient tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+        $("#filterVendeur").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tableVendeur tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
 </script>
