@@ -8,23 +8,18 @@ namespace PetitesPuces.Securite
 {
     public static class SessionUtilisateur
     {
-        private static IUtilisateur _utilisateurCourant;
         private static readonly BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
 
         public static IUtilisateur UtilisateurCourant
         {
             get
             {
-                if (_utilisateurCourant != null) return _utilisateurCourant;
-
                 var userId = (long?)HttpContext.Current.Session["userId"];
 
                 if (!userId.HasValue) return null;
 
                 IUtilisateur infosUtil = GetAllUsersWithId(userId.Value)
                                             .FirstOrDefault();
-
-                _utilisateurCourant = infosUtil;
 
                 return infosUtil;
             }
