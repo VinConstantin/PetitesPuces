@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+
+@section scripts {
+    @RenderSection("scripts", false)
+}
+
+@section navbar {
+        <li>@Html.ActionLink("Accueil", "Index", "Client")</li>
+        <li>@Html.ActionLink("Catalogue", "Catalogue", "Client")</li>
+        <li>@Html.ActionLink("Mon panier", "MonPanier", "Client")</li>
+        <li>@Html.ActionLink("Profil", "Profil", "Client")</li>    
+}
+
+@RenderBody()
+
+@section styles {
+    @RenderSection("styles", false)
+}

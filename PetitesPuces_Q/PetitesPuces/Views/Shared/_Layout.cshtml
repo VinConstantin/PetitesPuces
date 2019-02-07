@@ -44,6 +44,7 @@ __________
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @RenderSection("navbar", false)
+                    <li><a href="@Url.Action( "Index", "Courriel")">Courriel</a></li>
                 </ul>
                 <ul class="nav navbar-nav pull-right">
                     @if (HttpContext.Current.Session["userId"] != null)
