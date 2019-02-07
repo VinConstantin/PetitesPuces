@@ -94,6 +94,14 @@ namespace PetitesPuces.Controllers
             return PartialView("Vendeur/_ConfirmationPanier", NoClient);
         }
 
+        public ActionResult GestionProduit(int NoProduit)
+        {
+            var query = from produit in context.PPProduits
+                        where produit.NoProduit == NoProduit
+                        select produit;
+            return PartialView("Vendeur/_GestionProduit", query.FirstOrDefault());
+        }
+
         public void Livraison(int NoCommande)
         {
             var query = from commandes in context.PPCommandes
@@ -142,13 +150,15 @@ namespace PetitesPuces.Controllers
                 Nom = nvc["Nom"],
                 PrixVente = decimal.Parse(nvc["PrixVente"]),
                 PrixDemande = decimal.Parse(nvc["PrixDemande"]),
-                DateVente = DateTime.Parse(nvc["DateVente"]),
                 Poids = decimal.Parse(nvc["Poids"]),
                 Description = nvc["Description"],
                 Disponibilité = nvc["Disponibilite"] == "on" ? true : false,
                 NoVendeur = 10,
                 DateMAJ = DateTime.Parse(nvc["DateCreation"])
             };
+
+            DateTime date;
+            if (DateTime.TryParse(nvc["DateVente"], out date)) produit.DateVente = date;
 
             HttpPostedFileBase hpfb = Request.Files.Get(0);
             if (hpfb.FileName != "") 

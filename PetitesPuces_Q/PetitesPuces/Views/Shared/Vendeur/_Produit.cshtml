@@ -1,12 +1,12 @@
 ﻿@model PetitesPuces.Models.PPProduit
 @using PetitesPuces.Utilities
-<tr style="height: 51px">
-    <td class="text-left">@Model.NoProduit</td>
-    <td class="text-left">@Model.Nom</td>
-    <td class="text-left">@Formatter.Money(Model.PrixVente)</td>
-    <td class="text-right">
-        <button class="btn btn-danger" title="Supprimer">
-            <i class="glyphicon glyphicon-remove v-align-middle"></i>
-        </button>
+<tr onclick="information(@Model.NoProduit)" style="height: 5vh; max-height: 5vh" class="text-right">
+    <td scope="row" class="rowHead">
+        <img src="@Url.Content("/images/produits/" + Model.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="height: 50px; width: 50px" alt="Image">
     </td>
+    <td class="text-left">@Model.Nom</td>
+    <td class="text-left" style="width: 40vh">@(Model.Description.Length >= 210 ? Model.Description.Substring(0, 125) + "..." : Model.Description)</td>
+    <td class="text-left">@Model.PPCategory.Description</td>
+    <td class="prixQuantite">@Model.NombreItems</td>
+    <td class="prixQuantite">@Formatter.PrixProduitAvecVente(Model)</td>
 </tr>
