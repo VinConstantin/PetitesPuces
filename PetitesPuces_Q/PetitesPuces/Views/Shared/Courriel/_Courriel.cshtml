@@ -1,0 +1,59 @@
+@using PetitesPuces.Models
+@model PetitesPuces.Models.PPMessage
+
+@{
+    var ctxt = new BDPetitesPucesDataContext();
+    var id = Model.NoExpediteur;
+                
+    var gestionnaires = (from util
+        in ctxt.PPGestionnaires
+        where util.NoGestionnaire == id
+        select util).ToList();
+                
+    var vendeurs = (from util
+        in ctxt.PPVendeurs
+        where util.NoVendeur == id
+        select util).ToList();
+                
+    var clients = (from util
+        in ctxt.PPClients
+        where util.NoClient == id
+        select util).ToList();
+    
+    IUtilisateur expediteur = clients.Concat<IUtilisateur>(vendeurs).Concat<IUtilisateur>(gestionnaires).FirstOrDefault();  
+}
+
+<div class="btn-group">
+    <button type="button" onclick="retour();" class="btn btn-info" ><span class="glyphicon glyphicon-menu-left"></span> Retour</button>
+    <button type="button" onclick="supprimerCourriel();" class="btn btn-info" ><span class="glyphicon glyphicon-share-alt"></span> Répondre</button>
+    <button type="button" onclick="supprimerCourriel();" class="btn btn-info" ><span class="glyphicon glyphicon glyphicon-trash"></span> Supprimer</button>
+</div>
+<h2>@Model.objet</h2>
+<hr/>
+<h5 style="width: 100%"><span>Envoyé par : @expediteur.DisplayName</span><span class="pull-right">@Model.dateEnvoi</span></h5>
+<div class="well">
+    @Model.DescMsg
+</div>
+<script>
+    function supprimerCourriel(id) {
+        $.ajax({
+            url: URLPATH + "/Courriel/Supprimer",
+            type: "DELETE",
+            data: {
+                NoCourriel : id
+            }, 
+            success: function(result) {
+                loadBoiteReception();
+            },
+            error: function(req, status, err) {
+                loadBoiteReception();
+            }
+        });
+    }
+    function repondre() {
+        
+    }
+    function retour() {
+        
+    }
+</script>

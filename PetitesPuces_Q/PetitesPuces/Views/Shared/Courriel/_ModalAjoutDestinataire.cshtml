@@ -10,8 +10,8 @@
         <div class="row">
             <div class="col-lg-4">
                 <h3>Vendeurs</h3>
+                <input type="text" class="form-control" id="filterVendeur"/>
                 <div class="sca">
-                    <input type="text" class="form-control" id="filterVendeur"/>
                     <table id="tableVendeur" class="table table-hover">
                         @foreach (PPVendeur vendeur in Model.Vendeurs)
                         {
@@ -20,7 +20,7 @@
                                     <p>@vendeur.NomAffaires</p>
                                 </td>
                                 <td>
-                                    <a onclick="ajouterDestinataire(@vendeur.NoVendeur, '@vendeur.NomAffaires');"><span class="glyphicon glyphicon-plus pull-right"></span></a>
+                                    <a onclick="ajouterDestinataireVendeur(@vendeur.NoVendeur, '@vendeur.NomAffaires');"><span class="glyphicon glyphicon-plus pull-right"></span></a>
                                 </td>
                             </tr>
                         }
@@ -29,8 +29,8 @@
             </div>
             <div class="col-lg-4">
                 <h3>Clients</h3>
-                <div class="sca">
-                    <input type="text" class="form-control" id="filterClient"/>
+                <input type="text" class="form-control" id="filterClient"/>
+                <div class="sca">                  
                     <table id="tableClient" class="table table-hover">
                         @foreach (PPClient client in Model.Clients)
                         {
@@ -39,7 +39,7 @@
                                     <p>@client.Nom, @client.Prenom</p>
                                 </td>
                                 <td>
-                                    <a onclick="ajouterDestinataire(@client.NoClient, '@client.Nom, @client.Prenom');"><span class="glyphicon glyphicon-plus pull-right"></span></a>
+                                    <a onclick="ajouterDestinataireClient(@client.NoClient, '@client.Nom, @client.Prenom');"><span class="glyphicon glyphicon-plus pull-right"></span></a>
                                 </td>
                             </tr>
                         }
@@ -48,7 +48,7 @@
             </div>
             <h3>Destinataires</h3>
             <div class="col-lg-4">
-                <div style="height: 50vh" class="well">
+                <div style="height: 50vh" class="well sca">
                     <table id="tableDestinataire" class="table table-hover">
                         <tbody>
                         </tbody>
@@ -60,17 +60,67 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-        <button type="button" class="btn btn-primary">Ajouter</button>
+        <button type="button" class="btn btn-primary" onclick="ConfirmerAjout()">Ajouter</button>
     </div>
 </div>
 <script>
-    function ajouterDestinataire(no, nom) {
+    let lstDestinataires = [];
+    function ConfirmerAjout() {
+        lstDestinataires.forEach(function(obj) {
+            let str = `<span id="${obj.No}">${obj.Nom}<a class="glyphicon glyphicon-remove"></a></span>`;
+            $("#destinataire").append(str);
+        }); 
+        $('#modalAjoutDestinataire').modal("show", false);
+    }
+    function ajouterDestinataireClient(no, nom) {
+        let desinataire = { No : no, Nom : nom };
+        lstDestinataires.push(desinataire);
         $('#'+no).remove();
         var table = $('#tableDestinataire');
-        table.append("<tr id='"+no+"'><td>" + nom + "</td><td><a onclick='retirerDestinataire("+no+")';><span style='color:red;' class='glyphicon glyphicon-minus pull-right'></span></a></td></tr>");
+        table.append("<tr id='"+no+"'>" +
+            "<td>" + nom + `</td><td><a onclick='retirerDestinataireClient(${no},"${nom}")';>` +
+            "<span style='color:red;' class='glyphicon glyphicon-minus pull-right'></span></a></td>" +
+            "</tr>");
+
+        console.log(lstDestinataires);
     }
-    function retirerDestinataire(no) {
+    function ajouterDestinataireVendeur(no, nom) {
+        let desinataire = { No : no, Nom : nom };
+        lstDestinataires.push(desinataire);
         $('#'+no).remove();
+        var table = $('#tableDestinataire');
+        table.append("<tr id='"+no+"'>" +
+            "<td>" + nom + `</td><td><a onclick='retirerDestinataire(${no},"${nom}")';>` +
+            "<span style='color:red;' class='glyphicon glyphicon-minus pull-right'></span></a></td>" +
+            "</tr>");
+        
+        console.log(lstDestinataires);
+    }
+    function retirerDestinataireClient(no, nom) {
+        let desinataire = { No : no, Nom : nom };     
+        let index = lstDestinataires.indexOf(desinataire);
+        lstDestinataires.splice(index, 1);
+        $('#'+no).remove();
+        var table = $('#tableClient');
+        table.append("<tr id='"+no+"'>" +
+            "<td>" + nom + `</td><td><a onclick='retirerDestinataireVendeur(${no},'${nom}')';>` +
+            "<span class='glyphicon glyphicon-plus pull-right'></span></a></td>" +
+            "</tr>");
+        
+        console.log(lstDestinataires);
+    }
+    function retirerDestinataireVendeur(no, nom) {
+        let desinataire = { No : no, Nom : nom };     
+        let index = lstDestinataires.indexOf(desinataire);
+        lstDestinataires.splice(index, 1);
+        $('#'+no).remove();
+        var table = $('#tableVendeur');
+        table.append("<tr id='"+no+"'>" +
+            "<td>" + nom + `</td><td><a onclick='ajouterDestinataire(${no},'${nom}')';>` +
+            "<span class='glyphicon glyphicon-plus pull-right'></span></a></td>" +
+            "</tr>");
+        
+        console.log(lstDestinataires);
     }
     $(document).ready(function () {
         $("#filterClient").on("keyup", function() {

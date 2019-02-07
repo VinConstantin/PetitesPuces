@@ -38,7 +38,22 @@
     $(document).ready(function() {
         loadBoiteReception();
     });
-    
+    function loadCourriel(id) {
+        $('.active').removeClass('active');
+        $.ajax({
+            url: URLPATH + "/Courriel/GetCourriel",
+            type: "GET",
+            data: {
+                NoCourriel : id
+            }, 
+            success: function(result) {
+                $('#PLACEHOLDER').html(result);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+    }
     function loadBoiteReception() {
         $('.active').removeClass('active');
         $('#BoiteReception').addClass('active');

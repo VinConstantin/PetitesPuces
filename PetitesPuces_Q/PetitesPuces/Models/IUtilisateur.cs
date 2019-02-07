@@ -20,6 +20,8 @@ namespace PetitesPuces.Models
 
         string Prenom { get; }
 
+        string DisplayName { get; }
+
         [DisplayName("Mot de passe")]
         [Required (ErrorMessage = "Veuillez rentrer votre mot de passe!")]
         string MotDePasse { get;  }

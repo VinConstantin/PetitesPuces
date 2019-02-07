@@ -333,6 +333,8 @@
     <Content Include="Views\Shared\Courriel\_BoiteReception.cshtml" />
     <Content Include="Views\Shared\Courriel\_Brouillons.cshtml" />
     <Content Include="Views\Shared\Courriel\_ComposerMessage.cshtml" />
+    <Content Include="Views\Shared\Courriel\_Courriel.cshtml" />
+    <Content Include="Views\Shared\Courriel\_CourrielInbox.cshtml" />
     <Content Include="Views\Shared\Courriel\_ElementsEnvoyes.cshtml" />
     <Content Include="Views\Shared\Courriel\_ElementsSupprimes.cshtml" />
     <Content Include="Views\Shared\Courriel\_ModalAjoutDestinataire.cshtml" />
