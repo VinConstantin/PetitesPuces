@@ -4,6 +4,10 @@
     ViewBag.Title = "Gestion du catalogue";
 }
 
+@section styles {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Vendeur/Index.css")" />
+}
+
 <script>
     function valider() {
         var form = document.getElementById("frmProduit");
@@ -14,7 +18,7 @@
             type: "post",
             data: formData,
             contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-            processData: false, 
+            processData: false,
             success: function (result) {
                 console.log(result);
                 //$("#PLACEHOLDERModalDescription").html(result);
@@ -24,6 +28,36 @@
             }
         });
     }
+    function information(NoProduit) {
+        $("#ModalDescription").modal('show');
+        $.ajax({
+            url: URLPATH +"/Vendeur/GestionProduit",
+            type: "get",
+            data: {
+                "NoProduit": NoProduit
+            },
+            success: function (result) {
+                console.log("success")
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+
+    $(function () {
+        $("input").oninvalid = function () {
+            this.setCustomValidity("Format invalide");
+        };
+    });
+
+    $(function () {
+        $("input").oninput = function () {
+            this.setCustomValidity("");
+        };
+    });
 </script>
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -60,7 +94,7 @@
         <div class="row">
             <div class="col-sm-6 text-left">
                 <span>Nom</span>
-                <input name="Nom" pattern="\p{L}{5}" class="form-control" style="float: right" type="text" />
+                <input name="Nom" required pattern="\p{L}{2,50}" maxlength="50" class="form-control" style="float: right" type="text" />
             </div>
             <div class="col-sm-6 text-left">
                 <span>Prix de vente</span>
@@ -70,7 +104,7 @@
         <div class="row">
             <div class="col-sm-6 text-left">
                 <span>Prix demandé</span>
-                <input name="PrixDemande" class="form-control" style="float: right" type="number" />
+                <input name="PrixDemande" required class="form-control" style="float: right" type="number" />
             </div>
             <div class="col-sm-6 text-left">
                 <span>Date de vente</span>
@@ -84,7 +118,7 @@
             </div>
             <div class="col-sm-6 text-left">
                 <span>Poids</span>
-                <input name="Poids" class="form-control" style="float: right;" type="number" />
+                <input name="Poids" required class="form-control" style="float: right;" type="number" />
             </div>
         </div>
         <div class="row">
@@ -105,27 +139,43 @@
     </form>
 </div>
 
-<h3 class="text-center col-xs-12">Vos produits</h3>
+<h3 class="text-center col-xs-12">Mon catalogue</h3>
 
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    <table class="table lst-vendeurs mt-2">
-        <tr>
-            <th>
-                No produit
-            </th>
-            <th>
-                Nom du produit
-            </th>
-            <th>
-                Prix unitaire
-            </th>
-            <th>
+    <table class="table m-0 bg-light table-hover">
+        <thead>
+            <tr>
+                <th>
 
-            </th>
-        </tr>
+                </th>
+                <th>
+                    Nom du produit
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Catégorie
+                </th>
+                <th class="prixQuantite">
+                    Quantité
+                </th>
+                <th class="prixQuantite">
+                    Prix
+                </th>
+            </tr>
+        </thead>
         @foreach (var produit in Model.Produits)
         {
             @Html.Partial("Vendeur/_Produit", produit);
         }
     </table>
+</div>
+
+<div class="modal fade" id="ModalDescription" tabindex="-1" role="dialog" aria-labelledby="ModalDescription" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div id="PLACEHOLDERModalDescription" class="modal-content">
+
+        </div>
+    </div>
 </div>

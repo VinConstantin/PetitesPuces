@@ -15,6 +15,9 @@ using PetitesPuces.ViewModels.Vendeur;
 
 namespace PetitesPuces.Controllers
 {
+    #if !DEBUG
+        [Securise(RolesUtil.CLIENT)]
+    #endif
     public class ClientController : Controller
     {
         //TODO:implémenter pour utiliser le bon no
@@ -471,12 +474,15 @@ namespace PetitesPuces.Controllers
             
             return PartialView("Client/_DetailPanier",panier);
         }
+       
         public ActionResult PasserCommande()
         {
             return PartialView("Client/Commande/_ResultatCommande");
         }
+
         public ActionResult Profil()
         {
+
             return View();
         }
         public ActionResult modificationMDP(FormCollection formCollection)

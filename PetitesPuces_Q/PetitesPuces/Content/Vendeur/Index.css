@@ -15,7 +15,7 @@ th {
     width: 145px;
 }
 
-tr, th{
+.prixQuantite{
     text-align:right;
 }
 

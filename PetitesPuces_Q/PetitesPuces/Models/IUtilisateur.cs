@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -12,12 +13,16 @@ namespace PetitesPuces.Models
         string Role { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer votre adresse courriel!")]
+        [DisplayName ("Votre adresse courriel")]
         string AdresseEmail { get; }
 
         string Nom { get; }
 
         string Prenom { get; }
 
+        string DisplayName { get; }
+
+        [DisplayName("Mot de passe")]
         [Required (ErrorMessage = "Veuillez rentrer votre mot de passe!")]
         string MotDePasse { get;  }
 

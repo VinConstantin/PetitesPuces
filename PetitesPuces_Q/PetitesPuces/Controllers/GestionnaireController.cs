@@ -12,6 +12,9 @@ using PetitesPuces.ViewModels.Gestionnaire;
 
 namespace PetitesPuces.Controllers
 {
+    #if !DEBUG
+        [Securise(RolesUtil.ADMIN)]
+    #endif
     [System.Web.Mvc.RoutePrefix("Gestionnaire")]
     public class GestionnaireController : Controller
     {
@@ -30,7 +33,7 @@ namespace PetitesPuces.Controllers
                     {RolesUtil.CLIENT, GetClientsAvecNom},
                 };
         }
-        
+       
         #region Index    
         public ActionResult Index()
         {
@@ -292,7 +295,7 @@ namespace PetitesPuces.Controllers
                 return PartialView("Gestionnaire/Demandes/_GestionDemande",
                     new Tuple<int, TypesModal>(id, TypesModal.DETAILS));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return HttpNotFound();
             }

@@ -1,4 +1,4 @@
-+@using PetitesPuces.Utilities
+@using PetitesPuces.Utilities
 @model PetitesPuces.Models.PPProduit
 
 
@@ -22,7 +22,7 @@
         <p>Poids : @Model.Poids lbs</p>
         <p>Catégorie : @Model.PPCategory.Description</p>
         <hr/>
-        <p>Date de création : @Model.DateCreation</p>
+        <p>Date de création : @Model.DateCreation.Value.ToShortDateString()</p>
         <p>Vendeur : @Model.PPVendeur.Nom</p>
     </div>
     <div class="modal-footer">
@@ -35,9 +35,15 @@
                 <span class="glyphicon glyphicon-shopping-cart" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());"></span>
             </button>
         </span>
-        <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Contacter @Model.PPVendeur.Nom" onclick="visualiser(@Model.NoProduit)">
+        <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Contacter @Model.PPVendeur.Nom" onclick="contacter()">
             <span class="glyphicon glyphicon-envelope"></span>
         </button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
     </div>
 </div>
+<script>
+    function contacter() {
+        var url = '@Url.Action("Index", "Courriel")';
+        window.location.href = url;
+    }
+</script>

@@ -1,5 +1,5 @@
 ﻿@using System.Web.UI.WebControls
-@model PetitesPuces.Models.PPClient_Validation
+@model PetitesPuces.ViewModels.InscriptionClient
 
 @{
     ViewBag.Title = "Inscription Client";
@@ -13,7 +13,7 @@
 
 @section scripts {
     <script type="text/javascript" src="@Url.Content("/Scripts/InscriptionEtConnexion/InscriptionClient.js")"></script>
-   
+
 }
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -49,7 +49,7 @@
                                     <br />
                                     <div class="row">
                                         <div class="col-md-4">
-                                            @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new { @class = "text-right w-100" })
+                                            @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new { @class = "text-right w-100 " })
 
                                         </div>
                                         <div class="form-group col-md-8">
@@ -57,18 +57,18 @@
                                             @Html.ValidationMessageFor(model => model.AdresseEmail, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                    @*
-        <div class="row">
-            <div class="col-md-4">
-              @Html.LabelFor(model=>model.ConfirmationCourriel, new { @class = "text-right w-100" })
 
-            </div>
-            <div class="form-group col-md-8">
-                @Html.EditorFor(model => model.ConfirmationCourriel, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer votre adresse courriel" } })
-                @Html.ValidationMessageFor(model => model.ConfirmationCourriel, "", new {@class = "text-danger"})
-            </div>
-        </div>
-                                    *@
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(model => model.ConfirmationCourriel, new { @class = "text-right w-100" })
+
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            @Html.EditorFor(model => model.ConfirmationCourriel, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Confirmer votre adresse courriel" } })
+                                            @Html.ValidationMessageFor(model => model.ConfirmationCourriel, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
                                     <div class="row">
                                         <div class="col-md-4">
                                             @Html.LabelFor(model => model.MotDePasse, htmlAttributes: new { @class = "text-right w-100" })
@@ -78,17 +78,17 @@
                                         </div>
                                     </div>
 
-                                    @*
-        <div class="row">
-            <div class="col-md-4">
-                @Html.LabelFor(model => model.confirmationMDP, htmlAttributes: new { @class = "text-right w-100" })
 
-            </div><div class="form-group col-md-8">
-                @Html.EditorFor(model => model.confirmationMDP, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Confirmer votre mot de passe" } })
-                @Html.ValidationMessageFor(model => model.confirmationMDP, "", new { @class = "text-danger" })
-            </div>
-        </div>
-                                    *@
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(model => model.ConfirmationMDP, htmlAttributes: new { @class = "text-right w-100" })
+
+                                        </div><div class="form-group col-md-8">
+                                            @Html.EditorFor(model => model.ConfirmationMDP, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Confirmer votre mot de passe" } })
+                                            @Html.ValidationMessageFor(model => model.ConfirmationMDP, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-6 col-sm-offset-3">

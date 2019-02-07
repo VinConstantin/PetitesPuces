@@ -47,9 +47,9 @@ __________
                     <li><a href="@Url.Action( "Index", "Courriel")">Courriel</a></li>
                 </ul>
                 <ul class="nav navbar-nav pull-right">
-                    @if (HttpContext.Current.Session["userId"] != null)
+                    @if (SessionUtilisateur.UtilisateurCourant != null)
                     {
-                        <li>@Html.ActionLink(HttpContext.Current.Session["userId"].ToString(), "Profil", "Client")</li>
+                        <li>@Html.ActionLink("Bienvenue, " + SessionUtilisateur.UtilisateurCourant.Prenom + "!", "Profil", "Client")</li>
                         <li><a href="@Url.Action( "Deconnexion", "Home")"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
                     }
                     else
