@@ -47,7 +47,9 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="mscorlib" />
-    <Reference Include="System" />
+    <Reference Include="System">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq">
       <Private>True</Private>
@@ -238,6 +240,8 @@
     <Compile Include="ViewModels\Gestionnaire\ReponseDemandeVendeur.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
     <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />
+    <Compile Include="ViewModels\InscriptionClient.cs" />
+    <Compile Include="ViewModels\InscriptionVendeur.cs" />
     <Compile Include="ViewModels\Vendeur\AccueilVendeurViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\GestionCatalogueViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\CommandesViewModel.cs" />
