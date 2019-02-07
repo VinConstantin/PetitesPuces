@@ -71,7 +71,7 @@ namespace PetitesPuces.Utilities
             var valueStrDemande = (prixDemande).ToString("0.00");
             var splitValDemande = valueStrDemande.Split(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator[0]);   
             
-            if (produit.DateVente > now)
+            if (produit.DateVente >= now)
             {
                 decimal prixVente = produit.PrixVente.GetValueOrDefault();
                 var valueStrVente = (prixVente).ToString("0.00");
