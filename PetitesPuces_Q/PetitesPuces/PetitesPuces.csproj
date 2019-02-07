@@ -410,6 +410,7 @@
     <Content Include="Views\Shared\Vendeur\_MenagePaniers.cshtml" />
     <Content Include="Views\Shared\Vendeur\_RecuCommande.cshtml" />
     <Content Include="Views\Shared\Vendeur\_ConfirmationPanier.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_GestionProduit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
