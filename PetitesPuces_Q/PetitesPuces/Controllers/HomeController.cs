@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web;
@@ -12,52 +13,40 @@ namespace PetitesPuces.Controllers
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
 
-        public ActionResult Index(string Vendeur)
+        public ActionResult Index()
         {
-            PPVendeur vendeur;
-            int NoVendeur;
-            if (String.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
+            AccueilHomeViewModel viewModel = new AccueilHomeViewModel
             {
-                var requete = (from unVendeur in context.PPVendeurs select unVendeur);
-                vendeur = requete.FirstOrDefault();
-            }
-            else
-            {
-                var requete = (from unVendeur in context.PPVendeurs
-                               where unVendeur.NoVendeur == NoVendeur
-                               select unVendeur);
-                vendeur = requete.FirstOrDefault();
-            }
-
-            AccueilHomeViewModel viewModel = new AccueilHomeViewModel(vendeur);
+                Produits = (from p in context.PPProduits
+                    orderby p.DateCreation
+                    select p).Take(12).ToList(),
+                Vendeurs = (from v in context.PPVendeurs select v).ToList(),
+                Categories = (from c in context.PPCategories select c).ToList()
+                
+            };
 
             return View(viewModel);
         }
 
-        public ActionResult ListeProduits(string Vendeur)
+        public ActionResult ListeProduits()
         {
-            PPVendeur vendeur;
-            int NoVendeur;
-            if (string.IsNullOrEmpty(Vendeur) || !int.TryParse(Vendeur, out NoVendeur))
-            {
-                var requete = (from unVendeur in context.PPVendeurs select unVendeur);
-                vendeur = requete.FirstOrDefault();
-            }
-            else
-            {
-                var requete = (from unVendeur in context.PPVendeurs
-                               where unVendeur.NoVendeur == NoVendeur
-                               select unVendeur);
-                vendeur = requete.FirstOrDefault();
-            }
+            List<PPProduit> produits = (from p in context.PPProduits
+                orderby p.DateCreation
+                select p).Take(12).ToList();
 
-            return View("Home/_ListeProduits", vendeur.PPProduits.ToList());
+            return View("Home/_ListeProduits", produits);
         }
 
         [HttpGet]
         public ActionResult Connexion()
         {
             return View();
+        }
+        public ActionResult Deconnexion()
+        {
+            HttpContext.Session["userId"] = null;           
+            
+            return RedirectToAction("Index","Home");
         }
 
 
@@ -162,7 +151,6 @@ namespace PetitesPuces.Controllers
 
             return View();
         }
-
         [HttpGet]
         public ActionResult InscriptionVendeur()
         {

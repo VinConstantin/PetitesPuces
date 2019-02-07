@@ -4,7 +4,8 @@
 
 <div class="modal-content">
     <div class="modal-header">
-        <h2 class="modal-title" id="exampleModalLabel">@Model.Nom</h2>
+        <h2 class="modal-title" id="exampleModalLabel" style="overflow: hidden;
+                                      text-overflow: ellipsis;">@Model.Nom</h2>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -15,13 +16,13 @@
         <p>@Model.Description</p>
          
         <p><div class="h3">
-            @Formatter.Money(@Model.PrixVente)
+            @Formatter.PrixProduitAvecVente(Model)
         </div></p>
         
-        <p>Poids : @Model.Poids g</p>
-        <p>CatÃ©gorie : @Model.PPCategory.Description</p>
+        <p>Poids : @Model.Poids lbs</p>
+        <p>Catégorie : @Model.PPCategory.Description</p>
         <hr/>
-        <p>Date de crÃ©ation : @Model.DateCreation</p>
+        <p>Date de création : @Model.DateCreation</p>
         <p>Vendeur : @Model.PPVendeur.Nom</p>
     </div>
     <div class="modal-footer">

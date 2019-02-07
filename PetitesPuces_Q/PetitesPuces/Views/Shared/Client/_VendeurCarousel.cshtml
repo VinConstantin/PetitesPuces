@@ -3,10 +3,10 @@
 @model PetitesPuces.Models.PPVendeur
 
 <div id="@("Vendeur" + @Model.NoVendeur)" class="item div_hover" style="cursor: pointer" onclick="updateListeProduits('@Model.NoVendeur')">
-    <div class="">    
+    <div style="height: 15vh;max-height: 15vh">    
         <div class="">
             <p style="line-height: 2.0;">@Model.NomAffaires</p>
-            <p>Nombre d'items : @Model.PPProduits.Count </p>
+            <p>(@Model.PPProduits.Count) </p>
         </div>
     </div>
 </div>

@@ -3,76 +3,32 @@
 
 @{
     ViewBag.Title = "Commander";
-    ViewBag.SousTotal = 234.23;
+    decimal SousTotal = Model.getPrixTotal();
     ViewBag.FraisLivraison = 25.00;
 }
 
 @section scripts {
     <link href="@Url.Content("/Content/Client/Commande.css")" rel="stylesheet" id="Commande-css">
     <script type="text/javascript" src="@Url.Content("/Scripts/Client/Commande.js")"></script>
-}<br/>
-    <div class="container">
-        <ul class="progressbar">
-            <li id="Information">Information</li>
-            <li id="Livraison">Livraison</li>
-            <li id="Paiement">Paiement</li>
-            <li id="Confirmation">Confirmation</li>
-        </ul>
-    </div>
-<br/>
-<hr/>
-<br/>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-9">
-            <div class="row">
-                @Html.Partial("Client/Commande/_ProduitsInformation",Model)
-            </div>
-            <div id="PLACEHOLDER">
-                
-            </div>
+}
+<div id="ConfirmationPLACEHOLDER">
+    <br/>
+        <div class="container">
+            <ul class="progressbar">
+                <li id="Information">Information</li>
+                <li id="Livraison">Livraison</li>
+                <li id="Paiement">Paiement</li>
+                <li id="Confirmation">Confirmation</li>
+            </ul>
         </div>
-        <div class="col-md-3">
+    <br/>
+    <hr/>
+    <br/>
+    
+    <div class="container" id="PLACEHOLDER">
 
-            <div class="panel panel-primary">
-                <div class="panel-heading">Récapitulaif (2 articles): </div>
-                <div class="panel-body">
-                    <div class="h4">
-                        <p class="row">
-                            <div class="col-xs-6">Articles :</div>
-                            <div class="col-xs-6">@Formatter.Money(ViewBag.SousTotal)</div></p>
-                        <p class="row">
-                            <div class="col-xs-6">Livraison :</div>
-                            <div class="col-xs-6"> @Formatter.Money(ViewBag.FraisLivraison)</div></p>
-
-                        <div class="row">
-                            <br/><hr/>
-                        </div>
-
-                        <p class="row">
-                            <div class="col-xs-6">Sous total:</div>
-                            <div class="col-xs-6"> @Formatter.Money(ViewBag.SousTotal + ViewBag.FraisLivraison)</div></p>
-                        <p class="row">
-                            <div class="col-xs-6">TPS :</div>
-                            <div class="col-xs-6"> @Formatter.Money((ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.05)</div></p>
-                        <p class="row">
-                            <div class="col-xs-6">tvq :</div>
-                            <div class="col-xs-6"> @Formatter.Money((ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.09975)</div></p>
-
-                        <div class="row">
-                            <br/><hr/>
-                        </div>
-
-                        <p>Montant total: @Formatter.Money(ViewBag.SousTotal + ViewBag.FraisLivraison + (ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.05 + (ViewBag.SousTotal + ViewBag.FraisLivraison) * 0.09975)</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-
 </div>
-
 <script>
     window.onload = function() {
         $('#Information').addClass('active');

@@ -25,12 +25,13 @@ namespace PetitesPuces.Securite
             }
         }
 
-        private static IQueryable<IUtilisateur> GetAllUsersWithId(long id)
+        private static List<IUtilisateur> GetAllUsersWithId(long id)
         {
-            var clientsWithId = GetClientsWithId(id);
-            var vendeursWithId = GetVendeursWithId(id);
-
-            return clientsWithId.Concat(vendeursWithId);
+            var clientsWithId = GetClientsWithId(id).ToList();
+            var vendeursWithId = GetVendeursWithId(id).ToList();
+            var gestionnaireWithId = GetAdminsWithId(id).ToList();
+            
+            return clientsWithId.Concat(vendeursWithId).Concat(gestionnaireWithId).ToList();
         }
 
         private static IQueryable<IUtilisateur> GetClientsWithId(long id)

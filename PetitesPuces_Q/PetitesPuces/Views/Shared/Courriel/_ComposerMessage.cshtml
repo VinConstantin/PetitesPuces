@@ -1,0 +1,77 @@
+@model dynamic
+<form>
+	<div class="btn-group">
+		<button type="button" class="btn btn-info" ><span class="glyphicon glyphicon-send"></span> Envoyer</button>
+		<button type="button" onclick="joindreFichier();" class="btn btn-info" ><span class="glyphicon glyphicon-paperclip"></span> Joindre</button>
+		<input style="visibility: hidden;" type="file" name="my_file" id="upload">
+	</div>
+	<h2>Composer un message</h2>
+
+	<div class="well">
+
+		<label>
+			Destinataires :
+			<button type="button" onclick="loadModalDestinataire();" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#modalAjoutDestinataire">
+				<span title="Ajouter des destinataires" class="glyphicon glyphicon-plus"></span>
+			</button>
+		</label>
+		<br/>
+		<div class="row" id="destinataire">
+			Francois<a class="glyphicon glyphicon-remove"></a>
+			Ginette<a class="glyphicon glyphicon-remove"></a>
+			Marc<a class="glyphicon glyphicon-remove"></a>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-lg-6">
+				<label>Objet : </label>
+				<div class="row"><input type="text" class="form-control"/></div>
+			</div>
+			<div class="col-lg-6" id="fileUploadText" hidden>
+				<label>Pièce jointe : </label>
+				<p id="non"></p>
+			</div>
+		</div>
+		<label>Message :</label>
+		<div class="row">
+			<textarea style="max-width: 100%" cols="300" rows="20"></textarea>
+		</div>
+
+	</div>
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAjoutDestinataire" tabindex="-1" role="dialog" aria-labelledby="modalAjoutDestinataire" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div id="ModalDestinatairePLACEHOLDER">
+
+		</div>
+	</div>
+</div>
+
+<script>
+    function joindreFichier() {
+	    $('#upload').click();
+    }
+    $('#upload').change(function() {
+	    $("#fileUploadText").show();
+	    var file = $('#upload')[0].files[0].name;
+	    $('#non').html(file);
+    });
+    function loadModalDestinataire() {
+	    $.ajax({
+		    url: URLPATH + "/Courriel/Destinataire",
+		    type: "GET",
+		    data: {
+                
+		    }, 
+		    success: function(result) {
+			    $('#ModalDestinatairePLACEHOLDER').html(result);
+		    },
+		    error: function(req, status, err) {
+			    console.log(req, status, err);
+		    }
+	    });
+    }
+</script>
+	
