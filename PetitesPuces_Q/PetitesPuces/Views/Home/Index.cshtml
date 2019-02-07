@@ -48,33 +48,6 @@
     </div>
     <div class="alert alert-info" role="alert"><a href="@Url.Action("Connexion", "Home")">Pour consulter le catalogue complet et passer des commandes, veuiller vous connecter</a></div>
     <div id="partialListeProduits">
-        @Html.Partial("Home/_ListeProduits",(List<PPProduit>)Model.Produits)
+        @Html.Partial("Home/_ListeProduits",Model.Produits)
     </div>
 </div>
-
-
-
-<script>
-    window.addEventListener("load",function(){
-            $('#Vendeur'+@Model.Vendeur.NoVendeur).first().addClass("Current");
-
-    },false);
-    
-    function updateListeProduits(NoVendeur) {
-        $.ajax({
-            url: "Home/ListeProduits",
-            type: "get",
-            data: { 
-                "Vendeur": NoVendeur
-            },
-            success: function (result) {
-                $("#partialListeProduits").html(result);
-            },
-            error: function() {
-                $("#partialListeProduits").html("@Html.Partial("_ErrorAlert")");
-            }
-        });
-        $('.Current').removeClass('Current');
-        $('#Vendeur'+NoVendeur).first().addClass("Current");
-    }
-</script>

@@ -17,34 +17,34 @@
         <strong class="text-bold mx-1">Inactif depuis:</strong>
         <div class="btn-group d-flex align-items-baseline">
             <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeClient" value="1" autocomplete="off" /> 1
+                <input type="radio" name="depuisClient" value="1m" autocomplete="off" /> 1
             </label>
             <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeClient" value="2" autocomplete="off" /> 2
+                <input type="radio" name="depuisClient" value="2m" autocomplete="off" /> 2
             </label>
             <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeClient" value="3" autocomplete="off" /> 3
+                <input type="radio" name="depuisClient" value="3m" autocomplete="off" /> 3
             </label>
             <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeClient" value="6" autocomplete="off" /> 6
+                <input type="radio" name="depuisClient" value="6m" autocomplete="off" /> 6
             </label>
             <strong class="mx-1">Mois</strong>
         </div>
         <div class="btn-group d-flex align-items-baseline">
             <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeClient" value="1" autocomplete="off" /> 1
+                <input type="radio" name="depuisClient" value="1y" autocomplete="off" /> 1
             </label>
             <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeClient" value="2" autocomplete="off" /> 2
+                <input type="radio" name="depuisClient" value="2y" autocomplete="off" /> 2
             </label>
             <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeClient" value="3" autocomplete="off" /> 3
+                <input type="radio" name="depuisClient" value="3y" autocomplete="off" /> 3
             </label>
             <strong class="mx-1">Ans</strong>
         </div>
         <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Toujours
+            <label type="button" class="btn btn-default active" >
+                <input type="radio" name="depuisClient" value="T" autocomplete="off" checked/> Toujours
             </label>
         </div>
     </div>
@@ -68,7 +68,7 @@
         </tr>
         @foreach (var client in Model.ClientsInactifs)
         {
-            @Html.Partial("Gestionnaire/_Client", client);
+            @Html.Partial("Gestionnaire/Inactivite/_Client", Tuple.Create(client, false));
         }
     </table>
     <button class="btn btn-danger btn-large center-block">Supprimer les clients inactifs visibles</button>
@@ -80,19 +80,19 @@
         <strong class="text-bold mx-1">Inactif depuis:</strong>
         <div class="btn-group d-flex align-items-baseline">
             <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeVendeur" value="1" autocomplete="off" /> 1
+                <input type="radio" name="depuisVendeur" value="1y" autocomplete="off" /> 1
             </label>
             <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeVendeur" value="2" autocomplete="off" /> 2
+                <input type="radio" name="depuisVendeur" value="2y" autocomplete="off" /> 2
             </label>
             <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeVendeur" value="3" autocomplete="off" /> 3
+                <input type="radio" name="depuisVendeur" value="3y" autocomplete="off" /> 3
             </label>
             <strong class="mx-1">Ans</strong>
         </div>
         <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="periodeVendeur" value="99" autocomplete="off" /> Toujours
+            <label type="button" class="btn btn-default active">
+                <input type="radio" name="depuisVendeur" value="T" autocomplete="off" checked/> Toujours
             </label>
         </div>
     </div>
@@ -113,7 +113,7 @@
         </tr>
         @foreach (var vendeur in Model.VendeursInactifs)
         {
-            @Html.Partial("Gestionnaire/_Vendeur", vendeur);
+            @Html.Partial("Gestionnaire/Inactivite/_Vendeur", Tuple.Create(vendeur, false));
         }
     </table>
     <button class="btn btn-danger btn-large center-block">Supprimer les vendeurs inactifs visibles</button>
@@ -134,19 +134,39 @@
         </div>
         <div class="btn-group" data-toggle="buttons" role="group">
             <label type="button" class="btn btn-default">
-                <input type="radio" name="critereInactivite" value="V" autocomplete="off" /> Vendeur
+                <input type="radio" name="critereInactivite" value="Vendeur" autocomplete="off" /> Vendeur
             </label>
             <label type="button" class="btn btn-default">
-                <input type="radio" name="critereInactivite" value="C" autocomplete="off" /> Client
+                <input type="radio" name="critereInactivite" value="Client" autocomplete="off" /> Client
             </label>
             <label type="button" class="btn btn-default active">
-                <input type="radio" name="critereInactivite" value="T" autocomplete="off" checked /> Tous
+                <input type="radio" name="critereInactivite" value="Utilisateur" autocomplete="off" checked /> Tous
             </label>
         </div>
     </form>
-    @Html.Partial("Gestionnaire/_ListeDisablePersonne", Model.UtilsRecherche);
+    <div id="listeGestionInactivite">
+        @Html.Partial("Gestionnaire/Inactivite/_ListeDisablePersonne", Tuple.Create(Model.UtilsRecherche, true));
+    </div>
 </div>
 
-<div class="col-xs-12"> 
-    <p>&copy; @DateTime.Now.Year - Les petites puces</p>
-</div>
+<script>
+    $(document).ready(function() {
+        const filtres = {};
+        
+        $('[name="critereInactivite"]').each(function() {
+            $(this).change(deleteUserFilterChanged);
+        });
+        
+        function deleteUserFilterChanged() {
+            if (!$(this).prop('checked')) return;
+
+            const selectedVal = $(this).val();
+
+            $.get(`/Gestionnaire/Inactivite/Liste/${selectedVal}`, null, displayFilteredView);
+        }
+        
+        function displayFilteredView(partial) {
+            $('#listeGestionInactivite').html(partial);
+        }
+    });
+</script>

@@ -2,54 +2,143 @@
 @using PetitesPuces.Utilities
 @model PetitesPuces.Models.Panier
 
-<form>
-    <div class="row" style="margin: 1px">
+@{
+    ViewBag.Title = "Commander";
+    decimal SousTotal = Model.getPrixTotal();
+    decimal FraisLivraison = (decimal)InfoCommande.PrixLivraison;
+    decimal TPS = (SousTotal + FraisLivraison) * (decimal) 0.05;
+    decimal TVQ = (SousTotal + FraisLivraison) * (decimal) 0.09975;
+
+    decimal PrixTotal = SousTotal + FraisLivraison + TPS + TVQ;
+    string dateExpiration = InfoCommande.InfoPaiement.DateExpirationCarteCredit.Substring(0,2)+"-20"+InfoCommande.InfoPaiement.DateExpirationCarteCredit.Tail(2);
+    string strPrixTotal = PrixTotal.ToString("0.00");
+}
+
+<div class="row">
+        <div class="col-md-9">
+            <div class="row">
+                @Html.Partial("Client/Commande/_ProduitsInformation",Model)
+            </div>
+            <form>
+                <div class="row" style="margin: 1px">
         
-        <div class="row">
-            <div class="col-md-6">
-                <div class="well">
-                    <h4>Information personnelle</h4>
-                    <hr/>
-                    <p>@InfoCommande.InfoClient.nom, @InfoCommande.InfoClient.nom</p>
-                    <p>@InfoCommande.InfoClient.rue, @InfoCommande.InfoClient.province, Canada</p>
-                    <p>@InfoCommande.InfoClient.codePostal</p>
-                    <p>@InfoCommande.InfoClient.telephone</p>
-                    @if (InfoCommande.InfoClient.cellulaire != null)
-                    {
-                        <p>@InfoCommande.InfoClient.cellulaire</p>
-                    }
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="well">
+                                <h4>Information personnelle</h4>
+                                <hr/>
+                                <p>@InfoCommande.InfoClient.nom, @InfoCommande.InfoClient.nom</p>
+                                <p>@InfoCommande.InfoClient.rue, @InfoCommande.InfoClient.province, Canada</p>
+                                <p>@InfoCommande.InfoClient.codePostal</p>
+                                <p>@InfoCommande.InfoClient.telephone</p>
+                                @if (InfoCommande.InfoClient.cellulaire != null)
+                                {
+                                    <p>@InfoCommande.InfoClient.cellulaire</p>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="well">
+                                <h4>Information sur le mode de paiement</h4>
+                                <hr/>
+                                <p>XXXX XXXX XXXX @InfoCommande.InfoPaiement.NoCarteCredit.Tail(4)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12"><hr/></div>
+                    <div class="col-md-4 col-lg-offset-5">
+                        <button type="button" class="btn btn-danger" onclick="previous()">Retour</button>
+                        <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#confirmationCommande">Passer la commande</button>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="well">
-                    <h4>Information sur le mode de paiement</h4>
-                    <hr/>
-                    <p>XXXX XXXX XXXX @InfoCommande.InfoPaiement.NoCarteCredit.Tail(4)</p>
-                </div>
-            </div>
+            </form>
         </div>
-        <div class="col-md-12"><hr/></div>
-        <div class="col-md-4 col-lg-offset-5">
-            <button type="button" class="btn btn-danger"onclick="previous()">Retour</button>
-            <button type="button" class="btn btn-primary" onclick="next()">Passer la commande</button>
+        <div class="col-md-3">
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">Récapitulaif (@Model.GetNbItems()): </div>
+                <div class="panel-body">
+                    <div class="h4">
+                        <p class="row">
+                            <div class="col-xs-6">Articles :</div>    
+                            <div class="col-xs-6">@Formatter.Money(SousTotal)</div></p>
+                        <p class="row">
+                            <div class="col-xs-6">Livraison :</div>
+                            <div class="col-xs-6">@Formatter.Money(FraisLivraison)</div></p>
+
+                        <div class="row">
+                            <br/><hr/>
+                        </div>
+
+                        <p class="row">
+                            <div class="col-xs-6">Sous total:</div>
+                            <div class="col-xs-6"> @Formatter.Money(SousTotal+FraisLivraison)</div></p>
+                        <p class="row">
+                            <div class="col-xs-6">TPS :</div>
+                            <div class="col-xs-6"> @Formatter.Money(TPS)</div></p>
+                        <p class="row">
+                            <div class="col-xs-6">tvq :</div>
+                            <div class="col-xs-6"> @Formatter.Money(TVQ)</div></p>
+
+                        <div class="row">
+                            <br/><hr/>
+                        </div>
+                        <p class="row">
+                            <div class="col-xs-6">Montant total: :</div>
+                            <div class="col-xs-6"> @Formatter.Money(PrixTotal)</div></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</form>
+<!-- Modal confirmation -->
+<div class="modal fade" id="confirmationCommande" tabindex="-1" role="dialog" aria-labelledby="confirmationCommande" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir commander ces articles?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="https://personnel.lmbrousseau.info/lesi-2019/lesi-effectue-paiement.php">
+                    <input hidden type="text" name="NoVendeur" value="@InfoCommande.Vendeur.No"/>
+                    <input hidden type="text" name="NomVendeur" value="@InfoCommande.Vendeur.NomAffaires"/>
+                    
+                    <input hidden type="text" name="NoCarteCredit" value="@InfoCommande.InfoPaiement.NoCarteCredit"/>
+                    <input hidden type="text" name="DateExpirationCarteCredit" value="@dateExpiration"/>
+                    <input hidden type="text" name="NoSecuriteCarteCredit" value="@InfoCommande.InfoPaiement.NoSecuriteCarteCredit"/>
+                    
+                    <input hidden type="text" name="MontantPaiement" value="@strPrixTotal"/>
+                    <input hidden type="text" name="NomPageRetour" value="http://424x.cgodin.qc.ca/lesi-2019/confirme-paiement.aspx"/>
+                    
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <input type="submit" class="btn btn-primary" value="Confirmer"/>
+                </form>              
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-    function next(){
+    function Confirmer(){
         $.ajax({
-            url: URLPATH + "/Client/Paiement",
+            url: URLPATH + "/Client/PasserCommande",
             type: "get",
             data: {
             },
             success: function(result) {
-                $('#PLACEHOLDER').html(result);
+                $('#ConfirmationPLACEHOLDER').html(result);
             },
             error: function(req, status, err) {
                 console.log(req, status, err);
             }
         });
     }
+
     function previous(){
         $('#Confirmation').removeClass('active');
         $.ajax({

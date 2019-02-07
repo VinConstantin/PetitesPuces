@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.Results;
 using System.Web.Mvc;
+using System.Web.Security;
 using PetitesPuces.Models;
 using PetitesPuces.Securite;
 using PetitesPuces.ViewModels.Gestionnaire;
@@ -19,6 +20,17 @@ namespace PetitesPuces.Controllers
         private readonly TimeSpan INDEX_STATS_PERIOD = new TimeSpan(7, 0, 0, 0);
         private readonly TimeSpan INDEX_STATS_INCREMENT = new TimeSpan(1, 0, 0, 0);
 
+        public GestionnaireController()
+        {
+            searchFuncs = 
+                new Dictionary<string, Func<string, List<IUtilisateur>>>
+                {
+                    {RolesUtil.UTIL, GetUtilsAvecNom},
+                    {RolesUtil.VEND, GetVendeursAvecNom},
+                    {RolesUtil.CLIENT, GetClientsAvecNom},
+                };
+        }
+        
         #region Index    
         public ActionResult Index()
         {
@@ -339,41 +351,118 @@ namespace PetitesPuces.Controllers
         }
         #endregion
         
-        public ActionResult Inactivite()
+        public ActionResult Inactivite(string depuisClient = "T", string depuisVendeur = "T", string typeUtilisateur = "Utilisateur")
         {
+            TimeSpan periodeClient = ParsePeriode(depuisClient);
+            TimeSpan periodeVendeur = ParsePeriode(depuisVendeur);
+            
             var viewModel = new InactiviteViewModel
             {
-                ClientsInactifs = new List<PPClient>
-                {
-                    new PPClient
-                    {
-                        NoClient = 1,
-                        AdresseEmail = "test@test.ca",
-                        DateDerniereConnexion = DateTime.Today,
-                        Nom = "Inactif",
-                        Prenom = "Client",
-                    }
-                },
-                VendeursInactifs = new List<PPVendeur>()
-                {
-                    new PPVendeur()
-                    {
-                        NoVendeur = 1,
-                        Nom = "Nom",
-                        NomAffaires =  "Magasin",
-                        Prenom = "Prenom",
-                        AdresseEmail = "vendeur@company.ca"
-                    }
-                }
-            };
-
-            viewModel.UtilsRecherche = new List<IUtilisateur>
-            {
-                viewModel.ClientsInactifs[0],
-                viewModel.VendeursInactifs[0],
+                ClientsInactifs = ClientsInactifsPour(periodeClient),
+                VendeursInactifs = VendeursInactifsPour(periodeVendeur),
+                UtilsRecherche = RechercheUtilisateurs(typeUtilisateur),
             };
 
             return View(viewModel);
+        }
+
+        private List<PPClient> ClientsInactifsPour(TimeSpan periode)
+        {
+            return
+                (from client
+                        in ctxt.PPClients
+                    select client)
+                .AsEnumerable()
+                .Where(UtilInactifDepuis<PPClient>(periode))
+                .ToList();
+        }
+
+        private Func<T, bool> UtilInactifDepuis<T>(TimeSpan periode) where T: IUtilisateur
+        {
+            return utilisateur =>
+            {
+                var tempsInactivite = DateTime.Now - utilisateur.DateDerniereActivite;
+                return tempsInactivite > periode;
+            };
+        }
+        
+        private List<PPVendeur> VendeursInactifsPour(TimeSpan periode)
+        {
+            return
+                (from vendeur
+                        in ctxt.PPVendeurs
+                    select vendeur)
+                .AsEnumerable()
+                .Where(UtilInactifDepuis<PPVendeur>(periode))
+                .ToList();
+        }
+
+        private readonly Dictionary<string, Func<string, List<IUtilisateur>>> searchFuncs;
+        
+        private List<IUtilisateur> RechercheUtilisateurs(string typeUtilisateur)
+        {
+            return searchFuncs[typeUtilisateur]("").ToList();
+        }
+
+        [System.Web.Mvc.Route("Inactivite/Liste/{typeUtilisateur}")]
+        public ActionResult RefreshInactifs(string typeUtilisateur)
+        {            
+            if (typeUtilisateur == RolesUtil.UTIL)
+            {
+                return PartialView("Gestionnaire/Inactivite/_ListeDisablePersonne", Tuple.Create(RechercheUtilisateurs(typeUtilisateur), true));
+            } 
+            else if (typeUtilisateur == RolesUtil.VEND)
+            {
+                return PartialView("Gestionnaire/Inactivite/_ListeDisableVendeur", Tuple.Create(RechercheUtilisateurs(typeUtilisateur).Cast<PPVendeur>().ToList(), true));
+            }
+            else if (typeUtilisateur == RolesUtil.CLIENT)
+            {
+                return PartialView("Gestionnaire/Inactivite/_ListeDisableClient", Tuple.Create(RechercheUtilisateurs(typeUtilisateur).Cast<PPClient>().ToList(), true)); 
+            }
+            else
+            {
+                return HttpBadRequest();
+            }
+        }
+       
+        private List<IUtilisateur> GetUtilsAvecNom(string nom)
+        {
+            return GetClientsAvecNom(nom).Concat(GetVendeursAvecNom(nom)).ToList();
+        }
+
+        private List<IUtilisateur> GetClientsAvecNom(string nom)
+        {
+            return
+                (from util
+                    in ctxt.PPClients
+                where (util.Nom + util.Prenom).Contains(nom)
+                select util).Cast<IUtilisateur>().ToList();
+        }
+
+        private List<IUtilisateur> GetVendeursAvecNom(string nom)
+        {
+            return
+                (from util
+                    in ctxt.PPVendeurs
+                where (util.Nom + util.Prenom).Contains(nom)
+                select util).Cast<IUtilisateur>().ToList();
+        }
+        
+        private TimeSpan ParsePeriode(string depuis)
+        {
+            if (depuis == "T")
+            {
+                return new TimeSpan(DateTime.Now.Ticks);
+            }
+            else
+            {
+                var nb = int.Parse(depuis[0].ToString());
+
+                DateTime spanEnd = DateTime.Now;
+                DateTime spanStart = depuis[1] == 'm' ? spanEnd.AddMonths(-nb) : spanEnd.AddYears(-nb);
+                
+                return spanEnd - spanStart;
+            }
         }
 
         public ActionResult Statistiques()

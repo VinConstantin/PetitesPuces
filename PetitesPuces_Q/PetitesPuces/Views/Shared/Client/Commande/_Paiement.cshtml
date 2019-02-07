@@ -1,42 +1,55 @@
 @model PetitesPuces.Models.Panier
-<form>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="NoCarteCredit">No de carte</label>
-            <input type="text" class="form-control" name="NoCarteCredit" id="NoCarteCredit" maxlength="19" placeholder="XXXX XXXX XXXX XXXX">
+<div class="row">
+    <div class="col-md-8 col-lg-offset-2">
+        <div class="row">
+            @Html.Partial("Client/Commande/_ProduitsInformation",Model)
         </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="DateExpirationCarteCredit">Expiration</label>
-            <input type="text" class="form-control" name="DateExpirationCarteCredit" id="DateExpirationCarteCredit" placeholder="MM/AA">
-        </div>
-        <div class="form-group col-md-6">
-            <label for="NoSecuriteCarteCredit">CVV</label>
-            <input type="text" class="form-control" name="NoSecuriteCarteCredit" id="NoSecuriteCarteCredit" placeholder="XXX">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div id="error" class="alert alert-danger" hidden role="alert">
-                Veuillez remplir tout les champs dans le bon format
+        <form onsubmit="return envoyerInfo()">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="NoCarteCredit">No de carte</label>
+                    <input pattern="^[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}$" type="text" class="form-control"
+                           name="NoCarteCredit" id="NoCarteCredit" maxlength="19" 
+                           placeholder="XXXX XXXX XXXX XXXX" title="XXXX XXXX XXXX XXXX" required>
+                </div>
             </div>
-            <hr/>
-        </div>
-        <div class="col-md-4 col-lg-offset-5">
-            <button type="button" class="btn btn-danger"onclick="previous()">Retour</button>
-            <button type="button" class="btn btn-primary" onclick="envoyerInfo()">Continuer</button>
-        </div>
-    </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="DateExpirationCarteCredit">Expiration</label>
+                    <input pattern="^[0-9]{2}/[0-9]{2}$" type="text" class="form-control" 
+                           name="DateExpirationCarteCredit" id="DateExpirationCarteCredit"
+                           placeholder="MM/AA"  title="MM/AA" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="NoSecuriteCarteCredit">CVV</label>
+                    <input pattern="^[0-9]{3,4}$" type="text" class="form-control"  name="NoSecuriteCarteCredit" id="NoSecuriteCarteCredit"
+                           placeholder="XXX" title="XXX" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="error" class="alert alert-danger" hidden role="alert">
+                        Veuillez remplir tout les champs dans le bon format
+                    </div>
+                    <hr/>
+                </div>
+                <div class="col-md-4 col-lg-offset-5">
+                    <button type="button" class="btn btn-danger"onclick="previous()">Retour</button>
+                    <button type="submit" class="btn btn-primary" >Continuer</button>
+                </div>
+            </div>
     
-</form>
+        </form>
+    </div>
+</div>
+
 <script>
     function envoyerInfo(){
         var data = $("form").serialize();
         
         $.ajax({
             url: URLPATH + "/Client/SetInfoPaiement",
-            type: "GET",
+            type: "POST",
             data: data, 
             success: next,
             error: function(req, status, err) {
@@ -44,6 +57,7 @@
                 console.log(req, status, err);
             }
         });
+        return false;
     }
     function next(){
         $('#Confirmation').addClass('active');

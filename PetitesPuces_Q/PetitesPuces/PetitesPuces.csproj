@@ -189,9 +189,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\CourrielController.cs" />
     <Compile Include="Controllers\GestionnaireController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="Controllers\VendeurController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -227,6 +227,7 @@
     <Compile Include="ViewModels\Client\AccueilViewModel.cs" />
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Client\LivraisonViewModel.cs" />
+    <Compile Include="ViewModels\Courriel\DestinataireViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DetailsRedevances.cs" />
     <Compile Include="ViewModels\Gestionnaire\InactiviteViewModel.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="ViewModels\InscriptionClient.cs" />
     <Compile Include="ViewModels\InscriptionVendeur.cs" />
     <Compile Include="ViewModels\Vendeur\AccueilVendeurViewModel.cs" />
+    <Compile Include="ViewModels\Vendeur\GestionCatalogueViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\CommandesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -309,6 +311,7 @@
     <Content Include="Views\Client\Catalogue.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
+    <Content Include="Views\Courriel\Index.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Confirmation.cshtml" />
@@ -316,6 +319,7 @@
     <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_ProduitsInformation.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_ResultatCommande.cshtml" />
     <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\_DetailPanier.cshtml" />
@@ -325,6 +329,12 @@
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
+    <Content Include="Views\Shared\Courriel\_BoiteReception.cshtml" />
+    <Content Include="Views\Shared\Courriel\_Brouillons.cshtml" />
+    <Content Include="Views\Shared\Courriel\_ComposerMessage.cshtml" />
+    <Content Include="Views\Shared\Courriel\_ElementsEnvoyes.cshtml" />
+    <Content Include="Views\Shared\Courriel\_ElementsSupprimes.cshtml" />
+    <Content Include="Views\Shared\Courriel\_ModalAjoutDestinataire.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DemandeVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DetailsVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_GestionDemande.cshtml" />
@@ -401,6 +411,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="images\produits\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

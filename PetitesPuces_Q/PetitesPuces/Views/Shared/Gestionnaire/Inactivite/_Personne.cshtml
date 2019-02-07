@@ -1,0 +1,17 @@
+﻿@model Tuple<PetitesPuces.Models.IUtilisateur, bool>
+
+<tr>
+    <th class="text-left">@Model.Item1.No</th>
+    <td class="text-left">@Model.Item1.Role</td>
+    <td class="text-left">@Model.Item1.AdresseEmail</td>
+    <td class="text-left">@Model.Item1.Prenom</td>
+    <td class="text-left">@Model.Item1.Nom</td>
+    @if (@Model.Item2)
+    {
+        <td class="text-right">
+            <button class="btn btn-danger">
+                <i class="glyphicon glyphicon-remove"></i>
+            </button>
+        </td>
+    }
+</tr>
