@@ -463,8 +463,10 @@ namespace PetitesPuces.Controllers
             
             return PartialView("Client/_DetailPanier",panier);
         }
+        [HttpGet]
         public ActionResult Profil()
         {
+
             return View();
         }
         public ActionResult modificationMDP(FormCollection formCollection)
