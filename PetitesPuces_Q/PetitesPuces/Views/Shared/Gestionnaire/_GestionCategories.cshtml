@@ -111,6 +111,7 @@
         }
         
         function handleAdd(e) {
+            $('#modalAjoutCategorie').modal("show", false);
             e.preventDefault();
             const titre = $('#tbCreerTitre').val();
             const details = $('#tbCreerDetails').val();

@@ -56,7 +56,13 @@
         }
     </div>
 </div>
-
+<div class="modal fade" id="ModalDescription" tabindex="-1" role="dialog" aria-labelledby="ModalDescription" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div id="PLACEHOLDERModalDescription">
+            
+        </div>
+    </div>
+</div>
 <script>
     function changePanier(no) {
         $.ajax({
@@ -151,6 +157,23 @@
             },
             error: function (req, status, err) {
                 window.location.href = "@Url.Action("MonPanier", "Client")";
+            }
+        });
+    }
+    //remplir le div template pour le modal de visualiser un produit
+    function visualiser(noProduit) {
+        $("#ModalDescription").modal('show');
+        $.ajax({
+            url: URLPATH+"/Client/InformationProduit",
+            type: "get",
+            data: { 
+                "NoProduit": noProduit
+            },
+            success: function (result) {
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
             }
         });
     }

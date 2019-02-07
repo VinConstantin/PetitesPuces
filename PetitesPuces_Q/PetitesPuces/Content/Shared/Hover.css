@@ -20,6 +20,6 @@
     background: rgba(254, 209, 54, 0.9);
 }
 .Current {
-    border: 2px solid blue;
-    border-radius: 5px;
+    border-bottom: 6px solid #0f69ff;
+    background-color: #e2e2e2;
 }
