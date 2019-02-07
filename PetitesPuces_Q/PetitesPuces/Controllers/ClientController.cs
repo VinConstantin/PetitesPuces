@@ -469,11 +469,12 @@ namespace PetitesPuces.Controllers
             
             return PartialView("Client/_DetailPanier",panier);
         }
-        [HttpGet]
+       
         public ActionResult PasserCommande()
         {
             return PartialView("Client/Commande/_ResultatCommande");
         }
+
         public ActionResult Profil()
         {
 

@@ -110,22 +110,22 @@
                                 </div>
 
                             </div>
-                            
-        <div class="row">
 
-            <div class="col-lg-4">
-                @Html.LabelFor(model => model.confirmationCourriel, htmlAttributes: new { @class = "text-right w-100" })
-            </div>
-            <div class="form-group col-lg-8">
+                            <div class="row">
 
-                @Html.EditorFor(model => model.confirmationCourriel, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Confirmer votre courriel" } })
-                @Html.ValidationMessageFor(model => model.confirmationCourriel, "", new { @class = "text-danger" })
+                                <div class="col-lg-4">
+                                    @Html.LabelFor(model => model.confirmationCourriel, htmlAttributes: new { @class = "text-right w-100" })
+                                </div>
+                                <div class="form-group col-lg-8">
+
+                                    @Html.EditorFor(model => model.confirmationCourriel, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Confirmer votre courriel" } })
+                                    @Html.ValidationMessageFor(model => model.confirmationCourriel, "", new { @class = "text-danger" })
 
 
 
-            </div>
-        </div>
-                            
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-lg-4">
                                     @Html.LabelFor(model => model.MotDePasse, htmlAttributes: new { @class = "text-right w-100" })
@@ -151,7 +151,7 @@
 
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-lg-4">
                                     @Html.LabelFor(model => model.Vendeur.Tel1, htmlAttributes: new { @class = "text-right w-100" })

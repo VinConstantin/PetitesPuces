@@ -141,7 +141,7 @@ namespace PetitesPuces.Models
 
         [Range(0, 10000, ErrorMessage = "S.V.P de rentrer un chiffre entre 0 à 10000 $")]
         [Required(ErrorMessage = "Veuillez rentrer un prix au moins pour une livraison graduite!")]
-        [DisplayName("Prix minimum")]
+        [DisplayName("Prix minimum livraison graduite ($)")]
         public int LivraisonGratuite { get;  set;}
 
 

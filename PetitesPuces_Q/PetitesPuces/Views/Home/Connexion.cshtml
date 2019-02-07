@@ -17,7 +17,7 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 @using (Html.BeginForm())
 {
-   
+
 
     <div class="container">
         <div class="row">
@@ -40,23 +40,32 @@
                         <div class="row">
                             <form id="login-form" method="post" role="form" style="display: block;">
 
-                                <h3 class=" text-center">Connexion</h3>
-                                <div class="form-group center-block text-center">
+                                <h1 class=" text-center">Connexion</h1>
+                                <br />
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-lg-offset-3">
 
-                                    @Html.EditorFor(model => model.AdresseEmail, new { id = "adresseEmail", @name = "adresseEmail", htmlAttributes = new { @PlaceHolder = "Adresse courriel", @class = "form-control center-block" } })
-                                    @Html.ValidationMessageFor(model => model.AdresseEmail, "", new { @class = "text-danger center-block" })
+                                        @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new { @class = "" })
+                                        @Html.EditorFor(model => model.AdresseEmail, new { id = "adresseEmail", @name = "adresseEmail", htmlAttributes = new { @PlaceHolder = "Adresse courriel", @class = " center-block form-control" } })
+                                        @Html.ValidationMessageFor(model => model.AdresseEmail, "", new { @class = "text-danger center-block" })
 
+                                    </div>
                                 </div>
-                                <div class="form-group center-block text-center">
-                                    @Html.EditorFor(model => model.MotDePasse, new { id = "motDePasse", @name = "motDePasse", htmlAttributes = new { @PlaceHolder = "Mot de passe", @class = "form-control center-block" } })
-                                    @Html.ValidationMessageFor(model => model.MotDePasse, "", new { @class = "text-danger" })
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-lg-offset-3">
 
+                                        @Html.LabelFor(model => model.MotDePasse, htmlAttributes: new { @class = "" })
+                                        @Html.PasswordFor(model => model.MotDePasse, new { id = "motDePasse", @name = "motDePasse", @PlaceHolder = "Mot de passe", @class = "form-control center-block" })
+                                        @Html.ValidationMessageFor(model => model.MotDePasse, "", new { @class = "text-danger" })
+
+                                    </div>
                                 </div>
 
-                                <div class="form-group text-center">
-                                    <input type="checkbox" tabindex="3" class="text-center" name="remember" id="remember">
-                                    <label for="remember"> Se souvenir de moi</label>
-                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-lg-offset-3">
+                                        <input type="checkbox" tabindex="3" class="text-center" name="remember" id="remember">
+                                        <label for="remember"> Se souvenir de moi</label>
+                                    </div></div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3">
