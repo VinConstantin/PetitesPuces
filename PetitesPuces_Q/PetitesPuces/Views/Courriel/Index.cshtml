@@ -4,11 +4,22 @@
 }
 @section styles
 {
-       
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
+ 
+    <!-- Include Editor style. -->
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
 }
-@section scripts {
-   
-}<div class="container">
+@section scripts
+{
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.2/js/froala_editor.pkgd.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/fr.js")"></script>
+}
+<div class="container">
     <div class="row">
         <div class="col-sm-9 col-md-10">
             <button type="button" class="btn btn-default" data-toggle="tooltip" title="Refresh">
@@ -28,7 +39,7 @@
                 <li id="ElementSupprimes" onclick="loadElementSupprimes();"><a href="#"><span class="glyphicon glyphicon-trash"></span> Éléments supprimés</a></li>
             </ul>
         </div>
-        <div class="col-sm-8 col-md-9" id="PLACEHOLDER">
+        <div class="col-sm-8 col-md-9" style="min-height: 60vh" id="PLACEHOLDER">
             
             
         </div>
@@ -38,6 +49,10 @@
     $(document).ready(function() {
         loadBoiteReception();
     });
+    function stopPropagation() {
+        event.stopPropagation();
+    }
+    
     function loadCourriel(id) {
         $('.active').removeClass('active');
         $.ajax({
@@ -139,3 +154,9 @@
         });
     }
 </script>
+<style>
+    .nonLu {
+        font-weight: bold;
+        background-color: rgba(179, 178, 184, 0.25);
+    }
+</style>

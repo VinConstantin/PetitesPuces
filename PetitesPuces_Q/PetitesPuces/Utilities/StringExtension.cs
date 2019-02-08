@@ -1,3 +1,5 @@
+using System.Web;
+
 namespace PetitesPuces.Utilities
 {
     public static class StringExtension
@@ -7,6 +9,10 @@ namespace PetitesPuces.Utilities
             if(tail_length >= source.Length)
                 return source;
             return source.Substring(source.Length - tail_length);
+        }
+        public static HtmlString ToHtml(this string source)
+        {
+            return new HtmlString(source);
         }
     }
 }

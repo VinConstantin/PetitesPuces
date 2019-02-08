@@ -1,0 +1,20 @@
+@using PetitesPuces.Models
+@model List<PetitesPuces.Models.PPMessage>
+<div class="tab-content">
+    <h2>Brouillons</h2>
+    <div class="tab-pane fade in active" id="home">
+        <div class="list-group">
+            @if (Model.Count > 0)
+            {
+                foreach (PPMessage message in Model)
+                 {
+                     @Html.Partial("Courriel/_CourrielInbox", message)
+                 }
+            }
+            else
+            {
+                @Html.Partial("Courriel/_BoiteVideAlert")
+            }
+        </div>
+    </div>
+</div>

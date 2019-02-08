@@ -206,6 +206,7 @@
     <Compile Include="Models\Commande\InfoClient.cs" />
     <Compile Include="Models\Commande\InfoCommande.cs" />
     <Compile Include="Models\Commande\InfoPaiement.cs" />
+    <Compile Include="Models\Courriel\Destinataire.cs" />
     <Compile Include="Models\Enums\Province.cs" />
     <Compile Include="Models\Enums\Tri.cs" />
     <Compile Include="Models\Ext\PPClient.cs" />
@@ -219,6 +220,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\DateTimeExtension.cs" />
     <Compile Include="Utilities\EnumExtensions.cs" />
     <Compile Include="Utilities\StringExtension.cs" />
     <Compile Include="Validations\ValidationCourriel.cs" />
@@ -290,6 +292,7 @@
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
     <Content Include="Scripts\constant.js" />
+    <Content Include="Scripts\fr.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
     <Content Include="Scripts\Gestionnaire\Statistiques.js" />
     <Content Include="Scripts\Home\Inscription.js" />
@@ -330,13 +333,15 @@
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
-    <Content Include="Views\Shared\Courriel\_BoiteReception.cshtml" />
-    <Content Include="Views\Shared\Courriel\_Brouillons.cshtml" />
+    <Content Include="Views\Shared\Courriel\Boites\_BoiteReception.cshtml" />
+    <Content Include="Views\Shared\Courriel\Boites\_Brouillons.cshtml" />
+    <Content Include="Views\Shared\Courriel\Boites\_ElementsEnvoyes.cshtml" />
+    <Content Include="Views\Shared\Courriel\Boites\_ElementsSupprimes.cshtml" />
+    <Content Include="Views\Shared\Courriel\_BoiteVideAlert.cshtml" />
     <Content Include="Views\Shared\Courriel\_ComposerMessage.cshtml" />
     <Content Include="Views\Shared\Courriel\_Courriel.cshtml" />
     <Content Include="Views\Shared\Courriel\_CourrielInbox.cshtml" />
-    <Content Include="Views\Shared\Courriel\_ElementsEnvoyes.cshtml" />
-    <Content Include="Views\Shared\Courriel\_ElementsSupprimes.cshtml" />
+    <Content Include="Views\Shared\Courriel\_CourrielInboxEnvoye.cshtml" />
     <Content Include="Views\Shared\Courriel\_ModalAjoutDestinataire.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DemandeVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DetailsVendeur.cshtml" />

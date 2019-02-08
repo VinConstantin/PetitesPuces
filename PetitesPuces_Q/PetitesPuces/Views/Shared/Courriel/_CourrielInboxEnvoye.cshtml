@@ -24,14 +24,8 @@
         select util).ToList();
     
     IUtilisateur expediteur = clients.Concat<IUtilisateur>(vendeurs).Concat<IUtilisateur>(gestionnaires).FirstOrDefault();
-
-    PPDestinataire destinataire = (from d in ctxt.PPDestinataires
-        where d.NoMsg == Model.NoMsg && d.NoDestinataire == SessionUtilisateur.UtilisateurCourant.No
-        select d).FirstOrDefault();
-
-    var style = destinataire.EtatLu == 0?"nonLu": "";
 }
-<a href="#" class="list-group-item @style" onclick="loadCourriel(@Model.NoMsg);">
+<a href="#" class="list-group-item" onclick="loadCourriel(@Model.NoMsg);">
     <div class="row">
         <div class="col-lg-4">
             <input onclick="stopPropagation();" id="@Model.NoMsg" type="checkbox">
