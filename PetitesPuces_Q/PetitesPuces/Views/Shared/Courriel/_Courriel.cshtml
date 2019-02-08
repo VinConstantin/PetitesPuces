@@ -28,7 +28,7 @@
     <button type="button" onclick="retour();" class="btn btn-info" ><span class="glyphicon glyphicon-menu-left"></span> Retour</button>
     <button type="button" onclick="repondre(@Model.NoMsg);" class="btn btn-info" ><span class="glyphicon glyphicon-share-alt"></span> Répondre</button>
     <button type="button" onclick="supprimerCourriel(@Model.NoMsg);" class="btn btn-info" ><span class="glyphicon glyphicon glyphicon-trash"></span> Supprimer</button>
-    <button type="button" onclick="marquerNonLu();" class="btn btn-info" ><span class="fas fa-envelope"></span> Marquer comme non-lu</button>
+    <button type="button" onclick="marquerNonLu(@Model.NoMsg);" class="btn btn-info" ><span class="fas fa-envelope"></span> Marquer comme non-lu</button>
 </div>
 <h2>@Model.objet</h2>
 <hr/>
@@ -56,9 +56,15 @@
         
     }
     function retour() {
-        
+        loadBoiteReception();
     }
-    function marquerNonLu() {
-        
+    function marquerNonLu(id) {
+        $.ajax({
+            url: URLPATH + "/Courriel/MarquerNonLu",
+            type: "POST",
+            data: {
+                NoCourriel : id
+            }
+        });
     }
 </script>

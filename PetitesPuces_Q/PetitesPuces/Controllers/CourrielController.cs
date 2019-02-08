@@ -31,6 +31,21 @@ namespace PetitesPuces.Controllers
             PPMessage messages = (from m in context.PPMessages
                 where m.NoMsg == NoCourriel
                 select m).FirstOrDefault();
+            
+            PPDestinataire message = (from m in context.PPDestinataires
+                where m.NoMsg == NoCourriel && m.NoDestinataire == noUtilisateur
+                select m).FirstOrDefault();
+            if (message != null) message.EtatLu = 1;
+            
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
 
             return PartialView("Courriel/_Courriel", messages);
         }
