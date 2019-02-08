@@ -25,7 +25,11 @@ namespace PetitesPuces.Controllers
         {                    
             return View();
         }
-
+        /// <summary>
+        /// Permete d'aller checker un courriel en particulier
+        /// </summary>
+        /// <param name="NoCourriel"></param>
+        /// <returns>le partialview du courriel</returns>
         public ActionResult GetCourriel(int NoCourriel = 0)
         {
             PPMessage messages = (from m in context.PPMessages
@@ -49,6 +53,11 @@ namespace PetitesPuces.Controllers
 
             return PartialView("Courriel/_Courriel", messages);
         }
+        /// <summary>
+        /// Marque les courriels lu
+        /// </summary>
+        /// <param name="NoCourriel"></param>
+        /// <returns>si ok</returns>
         [HttpPost]
         public ActionResult MarquerLu(List<int> NoCourriel)
         {
@@ -71,6 +80,11 @@ namespace PetitesPuces.Controllers
             
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+        /// <summary>
+        /// Marque les courriels non-lu
+        /// </summary>
+        /// <param name="NoCourriel"></param>
+        /// <returns>si ok</returns>
         [HttpPost]
         public ActionResult MarquerNonLu(List<int> NoCourriel)
         {
@@ -93,15 +107,20 @@ namespace PetitesPuces.Controllers
             
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-        [HttpDelete]
-        public ActionResult Supprimer(List<int> NoCourriel)
+        /// <summary>
+        /// deplace les couriels des elements suprimés à la boite de reception
+        /// </summary>
+        /// <param name="NoCourriel"></param>
+        /// <returns>si ok</returns>
+        [HttpPost]
+        public ActionResult Restaurer(List<int> NoCourriel)
         {
             foreach (int no in NoCourriel)
             {
                 PPDestinataire message = (from m in context.PPDestinataires
                     where m.NoMsg == no && m.NoDestinataire == noUtilisateur
                     select m).FirstOrDefault();
-                if (message != null) message.Lieu = 3;
+                if (message != null) message.Lieu = 1;
             }
             try
             {
@@ -115,6 +134,53 @@ namespace PetitesPuces.Controllers
             
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+        /// <summary>
+        /// deplace les couriels vers les elements supprimes ou si déja supprimé, supprime definitivemenet
+        /// </summary>
+        /// <param name="NoCourriel"></param>
+        /// <returns>si ok</returns>
+        [HttpDelete]
+        public ActionResult Supprimer(List<int> NoCourriel)
+        {
+            foreach (int no in NoCourriel)
+            {
+                PPDestinataire message = (from m in context.PPDestinataires
+                    where m.NoMsg == no && m.NoDestinataire == noUtilisateur
+                    select m).FirstOrDefault();
+                if (message != null)
+                {
+                    //si déja dans les elements supprimés, supprimer définitivement
+                    if (message.Lieu == 3)
+                    {
+                        message.Lieu = 5;
+                    }
+                    else
+                    {
+                        message.Lieu = 3;
+                    }
+                    //For some reason that doesn't work ... : message.Lieu = (message.Lieu == 3) ? (short)5 : (short)3;
+                }
+            }
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+            
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+        /// <summary>
+        /// Permet de creer le message et le destinataire et de les inserer dans la BD
+        /// </summary>
+        /// <param name="NoExpediteur"></param>
+        /// <param name="Objet"></param>
+        /// <param name="Description"></param>
+        /// <param name="Destinataire"></param>
+        /// <returns>si ok</returns>
         [HttpPost]
         [ValidateInput(false)] 
         public ActionResult Envoyer(int NoExpediteur, string Objet, string Description, List<Destinataire> Destinataire)
