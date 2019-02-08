@@ -36,7 +36,7 @@
                 <div class="panel-body">
                     <input class="form-control" value="@ViewBag.Filtre" style="width: 100%" type="text" id="tbRecherche" onchange="filtrerListe()">
 
-                    <div class="row">&nbsp;&nbsp;&nbsp;Par:
+                    <div class="row">&nbsp;&nbsp;&nbsp;
                         Nom <input type="checkbox" name="Nom"/>
                         Description <input type="checkbox"/>
                     </div>
@@ -46,14 +46,22 @@
                 <div class="panel-body">
                     <select id="Tri" class="form-control" onchange="updateTri()">
                         @foreach (Enum tri in  Enum.GetValues(typeof(Tri)))
-                        {
-                            <option value="@tri">@tri.GetDisplayName()</option>
+                        {    
+                            if (@ViewBag.Tri == tri.ToString())
+                            {
+                                <option selected value="@tri">@tri.GetDisplayName()</option>
+                            }
+                            else
+                            {
+                                <option value="@tri">@tri.GetDisplayName()</option>
+                            }
+
                         }
                     </select>
 
-                    <p>Nombre d'items par page : </p>
+                    <p>Nb d'items par page : </p>
                     <div class="nbItems">
-                        <select id="ddlNbItems" onchange="updateNbItems()">
+                        <select id="ddlNbItems" class="form-control" onchange="updateNbItems()">
                             @for (int i = 4; i <= 40; i += 4)
                             {
                                 if (@ViewBag.NbItems == i)
@@ -134,8 +142,9 @@
             else
             {
                 <br/>
-                <div class="col-lg-10 col-lg-offset-1 alert alert-warning" role="alert">
-                    Il n'y a aucun produit à afficher
+                <div class="col-lg-10 col-lg-offset-1 alert alert-warning" style="text-align: center" role="alert">
+                    <span style="font-size: 60px" class="glyphicon glyphicon-unchecked"></span>
+                    <h3>Il n'y a aucun produit à afficher</h3>
                 </div>
             }
         </div>
@@ -169,57 +178,62 @@
     },false);
     //gerer la recherche
     function filtrerListe(elem) {
-        console.log("recherche")
-        var value = $('#tbRecherche').val();
-        var NoVendeur=@Model.Vendeur.NoVendeur;
-        var NoCategorie = @ViewBag.NoCategorie;
-        var NbItems = @ViewBag.NbItems;
-        var NoPage = 1;
+        const value = $('#tbRecherche').val();
+        const NoVendeur=@Model.Vendeur.NoVendeur;
+        const NoCategorie = @ViewBag.NoCategorie;
+        const NbItems = @ViewBag.NbItems;
+        const NoPage = 1;
         updateListeProduits(NoVendeur, NoCategorie,NbItems,NoPage, value);
     }
     //gerer le changement de Tri
     function updateTri() {
-        
+        const val = $("#Tri").val();
+        const filrte = $('#tbRecherche').val();
+        const NoVendeur=@Model.Vendeur.NoVendeur;
+        const NoCategorie = @ViewBag.NoCategorie;
+        const NbItems = @ViewBag.NbItems;
+        const NoPage = 1;
+        updateListeProduits(NoVendeur, NoCategorie,NbItems,NoPage, filrte, val);
     }
     //gérer les clicks de categories
      
     function selectCategorie(noVendeur,elem) {
-        var id = $(elem).attr("id");
+        const id = $(elem).attr("id");
         updateListeProduits(noVendeur, id);
     }
     //gerer le changement de page avec le pager
     function changePage(elem) {
-        var id = $(elem).attr("id");
-        var NoVendeur=@Model.Vendeur.NoVendeur;
-        var NoCategorie = @ViewBag.NoCategorie;
+        const id = $(elem).attr("id");
+        const NoVendeur=@Model.Vendeur.NoVendeur;
+        const NoCategorie = @ViewBag.NoCategorie;
         updateListeProduits(NoVendeur, NoCategorie,@ViewBag.NbItems,id);
     }
     function previousPage() {
-        var NoVendeur=@Model.Vendeur.NoVendeur;
-        var NoCategorie = @ViewBag.NoCategorie;
+        const NoVendeur=@Model.Vendeur.NoVendeur;
+        const NoCategorie = @ViewBag.NoCategorie;
         updateListeProduits(NoVendeur, NoCategorie,@ViewBag.NbItems,@ViewBag.NoPage === 1?1:@ViewBag.NoPage-1);
     }
     function nextPage() {
-        var NoVendeur=@Model.Vendeur.NoVendeur;
-        var NoCategorie = @ViewBag.NoCategorie;
+        const NoVendeur=@Model.Vendeur.NoVendeur;
+        const NoCategorie = @ViewBag.NoCategorie;
         updateListeProduits(NoVendeur, NoCategorie,@ViewBag.NbItems,@ViewBag.NoPage === @ViewBag.NbPage?@ViewBag.NoPage:@ViewBag.NoPage+1);
     }
     //gerer le chamgement de nb d'items par page
     function updateNbItems() {
-        var elem = document.getElementById("ddlNbItems");
-        var nb = elem.options[elem.selectedIndex].value;
+        const elem = document.getElementById("ddlNbItems");
+        const nb = elem.options[elem.selectedIndex].value;
         
-        var NoVendeur=@Model.Vendeur.NoVendeur;
-        var NoCategorie = @ViewBag.NoCategorie;
+        const NoVendeur=@Model.Vendeur.NoVendeur;
+        const NoCategorie = @ViewBag.NoCategorie;
         console.log(NoCategorie)
-        var NoPage = 1;
+        const NoPage = 1;
 
         updateListeProduits(NoVendeur,NoCategorie,nb,NoPage);
     }
     /**
      * Update les produits selon le vendeur selectionner
      */
-    function updateListeProduits(NoVendeur, NoCategorie, nbItems=@ViewBag.NbItems, noPage=1, filtre = "") {
+    function updateListeProduits(NoVendeur, NoCategorie, nbItems=@ViewBag.NbItems, noPage=1, filtre = "", tri = "@ViewBag.Tri") {
         $.ajax({
             url: URLPATH+"/Client/ListeProduits",
             type: "get",
@@ -228,13 +242,15 @@
                 "Categorie": NoCategorie,
                 "Page":noPage,
                 "Size":nbItems,
-                "Filtre":filtre
+                "Filtre":filtre,
+                "TriPar":tri
             },
             success: function (result) {
                 $("#partialListeProduits").html(result);
             },
             error: function (req, status, err) {
                 $("#partialListeProduits").html("@Html.Partial("_ErrorAlert")");
+                console.log(req, status, err);
             }
         });
         $('.Current').removeClass("Current");
@@ -249,12 +265,14 @@
         PARAMS += noPage ? "&Page="+noPage : "";
         PARAMS += nbItems ? "&Size="+nbItems : "";
         PARAMS += filtre ? "&Filtre="+filtre : "";
+        PARAMS += tri ? "&TriPar="+tri : "";
         var objParams = {
             Vendeur:NoVendeur,
             Categorie:NoCategorie,
             Page:noPage,
             Size:nbItems,
-            Filtre:filtre
+            Filtre:filtre,
+            TriPar:tri
         }
         history.pushState(objParams, "", PARAMS);
     }
