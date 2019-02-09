@@ -19,6 +19,20 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
     <script type="text/javascript" src="@Url.Content("/Scripts/fr.js")"></script>
 }
+<style>
+    .buttonCompose {
+        background-color: brown;
+        border: none;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        border-radius: 50%;
+    }
+</style>
 <div class="container">
     <div class="row">
         <div class="col-sm-9 col-md-10">
@@ -30,7 +44,7 @@
     <br/>
     <div class="row">
         <div class="col-sm-4 col-md-3">
-            <a onclick="loadComposerMessage();" href="#" class="btn btn-danger btn-sm btn-block" role="button"><i class="glyphicon glyphicon-edit"></i> Composer</a>
+            <a onclick="loadComposerMessage();" href="#" class="buttonCompose" title="Composer un nouveau message"><i class="glyphicon glyphicon-envelope"></i></a>
             <hr>
             <ul class="nav nav-pills nav-stacked nav-tabs">
                 <li id="BoiteReception" class="active" onclick="loadBoiteReception();"><a href="#"><span class="glyphicon glyphicon-inbox"></span> Boîte de réception </a></li>
