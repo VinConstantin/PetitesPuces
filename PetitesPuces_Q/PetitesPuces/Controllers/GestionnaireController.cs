@@ -242,6 +242,7 @@ namespace PetitesPuces.Controllers
         }
         #endregion
 
+        
         #region DemandesVendeur
         public ActionResult DemandesVendeur(int? id)
         {
@@ -267,7 +268,8 @@ namespace PetitesPuces.Controllers
                 return HttpNotFound();
             }
         }
-        
+
+
         private ActionResult DemandesVendeur()
         {
             if (Request.IsAjaxRequest())
@@ -353,7 +355,9 @@ namespace PetitesPuces.Controllers
             }
         }
         #endregion
-        
+               
+        #region Inactivite
+        [System.Web.Mvc.Route("Inactivite")]
         public ActionResult Inactivite(string depuisClient = "T", string depuisVendeur = "T", string typeUtilisateur = "Utilisateur")
         {
             TimeSpan periodeClient = ParsePeriode(depuisClient);
@@ -368,12 +372,99 @@ namespace PetitesPuces.Controllers
 
             return View(viewModel);
         }
+        
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("Inactivite/RendreInactif")]
+        public ActionResult SupprimerById([FromBody]long[] nosASupprimer)
+        {
+            try
+            {
+                SupprimerUtilisateurs(nosASupprimer);
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, e.Message);
+            }
+        }
+
+        private void SupprimerUtilisateurs(long[] ids)
+        {
+            SupprimerClients(ids);
+            SupprimerVendeurs(ids);
+            
+            ctxt.SubmitChanges();
+        }
+
+        private void SupprimerClients(long[] ids)
+        { 
+            var clientsADelete =
+                from client
+                    in ctxt.PPClients
+                where ids.Contains(client.NoClient)
+                select client;
+
+            foreach (var client in clientsADelete)
+            {
+                if (!client.PPVendeursClients.Any())
+                {
+                    ctxt.PPClients.DeleteOnSubmit(client);
+                }
+                else if (!client.PPCommandes.Any())
+                {
+                    ctxt.PPVendeursClients.DeleteAllOnSubmit(client.PPVendeursClients);
+                    ctxt.PPArticlesEnPaniers.DeleteAllOnSubmit(client.PPArticlesEnPaniers);
+                    ctxt.PPClients.DeleteOnSubmit(client);
+                }
+                else
+                {
+                    client.Statut = (int)StatutCompte.DESACTIVE;
+                    ctxt.PPCommandes.DeleteAllOnSubmit(client.PPCommandes);
+                    foreach (var comm in client.PPCommandes)
+                    {
+                        ctxt.PPDetailsCommandes.DeleteAllOnSubmit(comm.PPDetailsCommandes);
+                    }
+                    ctxt.PPVendeursClients.DeleteAllOnSubmit(client.PPVendeursClients);
+                }
+            }
+            
+            ctxt.SubmitChanges();
+        }
+
+        private void SupprimerVendeurs(long[] ids)
+        {
+            var vendeursADelete =
+                from vendeur
+                    in ctxt.PPVendeurs
+                where ids.Contains(vendeur.NoVendeur)
+                select vendeur;
+
+            foreach (var vendeur in vendeursADelete)
+            {
+                vendeur.Statut = (int)StatutCompte.DESACTIVE;
+                foreach (var prod in vendeur.PPProduits)
+                {
+                    if (!prod.PPDetailsCommandes.Any())
+                    {
+                        ctxt.PPArticlesEnPaniers.DeleteAllOnSubmit(prod.PPArticlesEnPaniers);
+                        ctxt.PPProduits.DeleteOnSubmit(prod);
+                    }
+                    else
+                    {
+                        prod.Disponibilité = null;
+                    }
+                }
+            }
+            
+            ctxt.SubmitChanges();
+        }
 
         private List<PPClient> ClientsInactifsPour(TimeSpan periode)
         {
             return
                 (from client
                         in ctxt.PPClients
+                        where client.Statut == (int)StatutCompte.ACTIF
                     select client)
                 .AsEnumerable()
                 .Where(UtilInactifDepuis<PPClient>(periode))
@@ -394,6 +485,7 @@ namespace PetitesPuces.Controllers
             return
                 (from vendeur
                         in ctxt.PPVendeurs
+                        where vendeur.Statut == (int)StatutCompte.ACTIF
                     select vendeur)
                 .AsEnumerable()
                 .Where(UtilInactifDepuis<PPVendeur>(periode))
@@ -408,24 +500,42 @@ namespace PetitesPuces.Controllers
         }
 
         [System.Web.Mvc.Route("Inactivite/Liste/{typeUtilisateur}")]
-        public ActionResult RefreshInactifs(string typeUtilisateur)
+        public ActionResult RefreshInactifs([FromUri]string typeUtilisateur, string recherche)
         {            
             if (typeUtilisateur == RolesUtil.UTIL)
             {
                 return PartialView("Gestionnaire/Inactivite/_ListeDisablePersonne", Tuple.Create(RechercheUtilisateurs(typeUtilisateur), true));
             } 
-            else if (typeUtilisateur == RolesUtil.VEND)
+            if (typeUtilisateur == RolesUtil.VEND)
             {
                 return PartialView("Gestionnaire/Inactivite/_ListeDisableVendeur", Tuple.Create(RechercheUtilisateurs(typeUtilisateur).Cast<PPVendeur>().ToList(), true));
             }
-            else if (typeUtilisateur == RolesUtil.CLIENT)
+            if (typeUtilisateur == RolesUtil.CLIENT)
             {
                 return PartialView("Gestionnaire/Inactivite/_ListeDisableClient", Tuple.Create(RechercheUtilisateurs(typeUtilisateur).Cast<PPClient>().ToList(), true)); 
             }
-            else
-            {
-                return HttpBadRequest();
-            }
+            
+            return HttpBadRequest();
+        }
+        
+        [System.Web.Mvc.Route("Inactivite/Vendeurs")]
+        public ActionResult RefreshInactifsVendeur(string depuisVendeur  = "T")
+        {
+            TimeSpan periodeVendeur = ParsePeriode(depuisVendeur);
+
+            var viewModel = VendeursInactifsPour(periodeVendeur);
+
+            return PartialView("Gestionnaire/Inactivite/_ListeSuppressionVendeur", viewModel);
+        }
+
+        [System.Web.Mvc.Route("Inactivite/Clients")]
+        public ActionResult RefreshInactifsClient(string depuisClient  = "T")
+        {
+            TimeSpan periodeClient = ParsePeriode(depuisClient);
+
+            var viewModel = ClientsInactifsPour(periodeClient);
+
+            return PartialView("Gestionnaire/Inactivite/_ListeSuppressionClient", viewModel);
         }
        
         private List<IUtilisateur> GetUtilsAvecNom(string nom)
@@ -438,6 +548,7 @@ namespace PetitesPuces.Controllers
             return
                 (from util
                     in ctxt.PPClients
+                    where util.Statut == (int)StatutCompte.ACTIF
                 where (util.Nom + util.Prenom).Contains(nom)
                 select util).Cast<IUtilisateur>().ToList();
         }
@@ -447,7 +558,7 @@ namespace PetitesPuces.Controllers
             return
                 (from util
                     in ctxt.PPVendeurs
-                where (util.Nom + util.Prenom).Contains(nom)
+                where util.Statut == (int)StatutCompte.ACTIF && (util.Nom + util.Prenom).Contains(nom)
                 select util).Cast<IUtilisateur>().ToList();
         }
         
@@ -467,7 +578,9 @@ namespace PetitesPuces.Controllers
                 return spanEnd - spanStart;
             }
         }
+        #endregion
 
+        #region Statistiques
         public ActionResult Statistiques()
         {
             var viewModel = new StatsViewModel
@@ -596,5 +709,6 @@ namespace PetitesPuces.Controllers
         {
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
+        #endregion
     }
 }

@@ -34,5 +34,6 @@ namespace PetitesPuces.Models
     {
         INACTIF = 0,
         ACTIF = 1,
+        DESACTIVE = 2,
     }
 }

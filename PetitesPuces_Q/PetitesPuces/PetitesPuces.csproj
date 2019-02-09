@@ -344,6 +344,8 @@
     <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeDisableClient.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeDisablePersonne.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeDisableVendeur.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeSuppressionClient.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeSuppressionVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Inactivite\_Personne.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Inactivite\_Vendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_DetailsRedevances.cshtml" />
