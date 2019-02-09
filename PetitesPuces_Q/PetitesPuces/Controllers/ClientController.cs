@@ -20,7 +20,6 @@ namespace PetitesPuces.Controllers
     #endif
     public class ClientController : Controller
     {
-        //TODO:implémenter pour utiliser le bon no
         private long NOCLIENT = SessionUtilisateur.UtilisateurCourant.No;
         private const int DEFAULTITEMPARPAGE = 8;
         private BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
@@ -122,7 +121,7 @@ namespace PetitesPuces.Controllers
             };
             return viewModel;
         }
-        public ActionResult Catalogue(string Vendeur, string Categorie, string Page, string Size, string Filtre, string TriPar)
+        public ActionResult Catalogue(string Vendeur, string Categorie, string Page, string Size, string Filtre, string TriPar="Numero")
         {
             IEnumerable<PPProduit> listeProduits = new List<PPProduit>();
             int noPage = int.TryParse(Page, out noPage) ? noPage : 1;
@@ -137,9 +136,10 @@ namespace PetitesPuces.Controllers
             ViewBag.noPage = noPage;
             ViewBag.NbPage = (listeProduits.Count()-1)/nbItemsParPage+1;
             ViewBag.Filtre = Filtre;
+            ViewBag.Tri = TriPar;
             return View(viewModel);
         }
-        public ActionResult ListeProduits(string Vendeur, string Categorie, string Page, string Size, string Filtre, string TriPar)
+        public ActionResult ListeProduits(string Vendeur, string Categorie, string Page, string Size, string Filtre, string TriPar="Numero")
         {
             IEnumerable<PPProduit> listeProduits = new List<PPProduit>();
             int noPage = int.TryParse(Page, out noPage) ? noPage : 1;
@@ -154,6 +154,7 @@ namespace PetitesPuces.Controllers
             ViewBag.noPage = noPage;
             ViewBag.NbPage = (listeProduits.Count()-1)/nbItemsParPage+1;
             ViewBag.Filtre = Filtre;
+            ViewBag.Tri = TriPar;
             return PartialView("Client/_Catalogue",viewModel);
         }
 
