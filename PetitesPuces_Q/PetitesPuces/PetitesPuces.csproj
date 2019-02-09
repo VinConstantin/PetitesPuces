@@ -342,6 +342,7 @@
     <Content Include="Views\Shared\Courriel\_Courriel.cshtml" />
     <Content Include="Views\Shared\Courriel\_CourrielInbox.cshtml" />
     <Content Include="Views\Shared\Courriel\_CourrielInboxEnvoye.cshtml" />
+    <Content Include="Views\Shared\Courriel\_headerBoite.cshtml" />
     <Content Include="Views\Shared\Courriel\_ModalAjoutDestinataire.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DemandeVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DetailsVendeur.cshtml" />

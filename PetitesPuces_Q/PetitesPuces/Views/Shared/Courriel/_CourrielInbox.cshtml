@@ -33,7 +33,7 @@
 
     var style = destinataire.EtatLu == 0?"nonLu": "";
 }
-<a href="#" class="list-group-item @style" onclick="loadCourriel(@Model.NoMsg);">
+<a href="#" class="list-group-item @style" onclick="loadCourriel(@Model.NoMsg);" expediteur="@expediteur.DisplayName" objet="@Model.objet" date="@Model.dateEnvoi">
     <div class="row">
         <div class="col-lg-4">
             <input onclick="stopPropagation();" id="@Model.NoMsg" type="checkbox">
