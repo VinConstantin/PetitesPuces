@@ -24,7 +24,7 @@ namespace PetitesPuces.Controllers
 
         private readonly TimeSpan INDEX_STATS_PERIOD = new TimeSpan(7, 0, 0, 0);
         private readonly TimeSpan INDEX_STATS_INCREMENT = new TimeSpan(1, 0, 0, 0);
-        private readonly DateTime BEGINNING = new DateTime(2007, 01, 01);
+        private readonly DateTime BEGINNING = new DateTime(2000, 01, 01);
 
         public GestionnaireController()
         {
@@ -158,8 +158,7 @@ namespace PetitesPuces.Controllers
                 demandesVendeur,
                 (vendeur) => vendeur.DateCreation.GetValueOrDefault(),
                 (vendeurs) => vendeurs.Count(),
-                INDEX_STATS_PERIOD,
-                INDEX_STATS_INCREMENT
+                INDEX_STATS_PERIOD
             );
         }
 
@@ -168,26 +167,37 @@ namespace PetitesPuces.Controllers
             Func<TDonnees, DateTime> funcGetDate,
             Func<IEnumerable<TDonnees>, T> aggregationFunc,
             TimeSpan periode,
-            TimeSpan increment)
+            TimeSpan increment
+            )
         {
             DateTime cutoffDate = DateTime.Today - periode;
 
-            T baseLine = aggregationFunc(donnees.Where(p => funcGetDate(p) < cutoffDate).ToList());
+            T baseline = aggregationFunc(donnees.Where(p => funcGetDate(p) < cutoffDate).ToList());
             var recent = donnees.Where(p => funcGetDate(p) >= cutoffDate).ToList();
 
             var donneesParPeriode = new Dictionary<string, T>();
             for (var date = new DateTime(cutoffDate.Ticks);
                 date <= DateTime.Today;
-                date = new DateTime(date.Ticks + INDEX_STATS_INCREMENT.Ticks))
+                date = new DateTime(date.Ticks + increment.Ticks))
             {
-                T sommePeriode = aggregationFunc(recent.Where(p => funcGetDate(p) < cutoffDate).ToList());
+                T sommePeriode = aggregationFunc(recent.Where(p => funcGetDate(p) < date).ToList());
                 recent = recent.Where(p => funcGetDate(p) >= date).ToList();
-                donneesParPeriode.Add(date.ToShortDateString(), (dynamic)sommePeriode + baseLine);
+                donneesParPeriode.Add(date.ToShortDateString(), (dynamic)sommePeriode + baseline);
 
-                baseLine += (dynamic)sommePeriode;
+                baseline += (dynamic)sommePeriode;
             }
 
             return donneesParPeriode;
+        }
+
+        private Dictionary<string, T> ConvertirEnDictionnaire<T, TDonnees>(
+            IEnumerable<TDonnees> donnees,
+            Func<TDonnees, DateTime> funcGetDate,
+            Func<IEnumerable<TDonnees>, T> aggregationFunc,
+            TimeSpan periode
+        )
+        {
+            return ConvertirEnDictionnaire(donnees, funcGetDate, aggregationFunc, periode, INDEX_STATS_INCREMENT);
         }
 
         private Dictionary<string, decimal> CalculerRedevances()
@@ -201,8 +211,7 @@ namespace PetitesPuces.Controllers
                 paiements,
                 paiement => paiement.DateVente.GetValueOrDefault(),
                 tousLesPaiements => tousLesPaiements.Sum(p => p.MontantVenteAvantLivraison.GetValueOrDefault()),
-                INDEX_STATS_PERIOD,
-                INDEX_STATS_INCREMENT
+                INDEX_STATS_PERIOD
             );
         }
 
@@ -228,8 +237,7 @@ namespace PetitesPuces.Controllers
                     return u.DateDerniereActivite;
                 },
                 u => u.Count(),
-                INDEX_STATS_PERIOD,
-                INDEX_STATS_INCREMENT);
+                INDEX_STATS_PERIOD);
         }
 
         private IEnumerable<IUtilisateur> ClientsInactifs()
@@ -713,7 +721,7 @@ namespace PetitesPuces.Controllers
                 from vendeur
                     in ctxt.PPVendeurs
                 where vendeur.Statut == (int)StatutCompte.ACTIF ||
-                      vendeur.Statut == (int)StatutCompte.DESACTIVE && vendeur.DateMAJ < (DateTime.Now - tPeriode)
+                      vendeur.Statut == (int)StatutCompte.DESACTIVE && vendeur.DateMAJ < DateTime.Now - tPeriode
                 select vendeur;
             
             return Json(ConvertirEnDictionnaire(
@@ -721,8 +729,8 @@ namespace PetitesPuces.Controllers
                     v => v.DateCreation.GetValueOrDefault(BEGINNING),
                     tousVendeurs => tousVendeurs.Count(),
                     tPeriode,
-                    new TimeSpan(7, 0, 0)
-                ), JsonRequestBehavior.AllowGet);
+                    new TimeSpan(tPeriode.Ticks / 20)
+                    ), JsonRequestBehavior.AllowGet);
         }
         
         private TimeSpan GraphiqueParsePeriode(string periode) {
@@ -738,6 +746,7 @@ namespace PetitesPuces.Controllers
         public ActionResult NouveauxVendeurs(string periode)
         {
             TimeSpan tPeriode = GraphiqueParsePeriode(periode);
+            var increment = new TimeSpan(tPeriode.Ticks / 20);
             
             var demandesEnAttente =
                 from vendeur
@@ -758,7 +767,7 @@ namespace PetitesPuces.Controllers
                 v => v.DateCreation.GetValueOrDefault(BEGINNING),
                 tousVendeurs => tousVendeurs.Count(),
                 tPeriode,
-                new TimeSpan(7, 0, 0)
+                increment       
             );
             
             var dictEnAccepte = ConvertirEnDictionnaire(
@@ -766,7 +775,7 @@ namespace PetitesPuces.Controllers
                 v => v.DateMAJ.GetValueOrDefault(BEGINNING),
                 tousVendeurs => tousVendeurs.Count(),
                 tPeriode,
-                new TimeSpan(7, 0, 0)
+                increment
             );
             
             return Json(new []{dictEnAttente, dictEnAccepte}, JsonRequestBehavior.AllowGet);
@@ -819,7 +828,7 @@ namespace PetitesPuces.Controllers
                 c => c.DateCreation.GetValueOrDefault(BEGINNING),
                 cs => cs.Count(),
                 tPeriode,
-                new TimeSpan(7, 0 ,0)
+                new TimeSpan(tPeriode.Ticks / 20)
             ), JsonRequestBehavior.AllowGet);
         }
         #endregion
