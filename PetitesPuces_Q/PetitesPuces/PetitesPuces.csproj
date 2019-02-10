@@ -237,9 +237,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Formatter.cs" />
     <Compile Include="ViewModels\Gestionnaire\IndexStats.cs" />
+    <Compile Include="ViewModels\Gestionnaire\PageStatsViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\Redevance.cs" />
     <Compile Include="ViewModels\Gestionnaire\RedevancesViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\ReponseDemandeVendeur.cs" />
+    <Compile Include="ViewModels\Gestionnaire\SerializablePPClient.cs" />
+    <Compile Include="ViewModels\Gestionnaire\SerializablePPVendeur.cs" />
+    <Compile Include="ViewModels\Gestionnaire\StatsVendeurClient.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
     <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />
     <Compile Include="ViewModels\InscriptionClient.cs" />
@@ -294,7 +298,6 @@
     <Content Include="Scripts\constant.js" />
     <Content Include="Scripts\fr.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
-    <Content Include="Scripts\Gestionnaire\Statistiques.js" />
     <Content Include="Scripts\Home\Inscription.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionClient.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionVendeur.js" />
