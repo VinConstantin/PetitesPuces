@@ -315,7 +315,7 @@
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
     <Content Include="Views\Courriel\Index.cshtml" />
-    <Content Include="Views\Courriel\_LayoutCourriel.cshtml" />
+    <Content Include="Views\Courriel\_ViewStart.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Confirmation.cshtml" />
