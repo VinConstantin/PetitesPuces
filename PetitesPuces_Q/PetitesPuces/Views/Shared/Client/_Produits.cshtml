@@ -1,10 +1,39 @@
 ﻿@using System.Globalization
+@using PetitesPuces.Models
+@using PetitesPuces.Securite
 @using PetitesPuces.Utilities
 @model PetitesPuces.Models.PPProduit
 
-<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3"> 
-    <div class="panel panel-primary">
-        <div class="panel-footer"><p style="overflow: hidden;text-overflow: ellipsis;">@Model.Nom</p></div>
+@{
+    BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
+    short nbItemsEnPanier = 0;
+    try
+    {
+        nbItemsEnPanier = (short)(from a in ctxt.PPArticlesEnPaniers
+            where
+                a.NoClient == SessionUtilisateur.UtilisateurCourant.No & a.PPProduit == Model
+            select a).FirstOrDefault().NbItems;
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+    }
+
+}
+
+<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"> 
+    <div class="panel panel-primary" style="border-width: thin;">
+        <div class="panel-footer">
+            <span id="@("QuantitePLACEHOLDER" + Model.NoProduit)">
+            @if (nbItemsEnPanier > 0)
+            {
+                <span class="badge badge-primary pull-right" title="Vous avez @nbItemsEnPanier item(s) dans votre panier">
+                    <span id="@("Quantite" + Model.NoProduit)">@nbItemsEnPanier</span><span class="glyphicon glyphicon-shopping-cart"></span>
+                </span>
+            }
+            </span>
+            <h4 style="overflow: hidden; height: 4vh; text-overflow: ellipsis;">@Model.Nom</h4>
+        </div>
         <div class="panel-body" style="height: 30vh">
             <img src="@Url.Content("/images/produits/" + Model.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="width: 100%; max-height: 80%; object-fit: contain;" alt="Image">
             <div class="h3">

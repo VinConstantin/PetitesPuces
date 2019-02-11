@@ -6,18 +6,29 @@
     ViewBag.SousTotal = @Model.Articles.Sum(a => a.PPProduit.PrixVente * a.NbItems);
     ViewBag.FraisLivraison = (decimal)23.00;
 }
+
+
 <div class="row">
-    <div class="col-md-8" style="height: 70vh;
-                                      overflow: auto;">
+    <div class="col-md-8" style="height: 70vh; overflow-y: auto;">
+        @if (Model.DepassePoidsMaximum)
+        {
+            <div class="row">
+                <div class="alert alert-warning" role="alert">
+                    Votre panier dépasse le poids maximal défini par le vendeur (@Formatter.Poids(Model.Vendeur.PoidsMaxLivraison))
+                </div>
+            </div>
+        }
+
         <table class="table table-hover">
             <tbody>
-            @foreach(PPArticlesEnPanier article in @Model.Articles)
+            @foreach (PPArticlesEnPanier article in @Model.Articles)
             {
                 @Html.Partial("Client/_ProduitsPanier", article)
             }
             </tbody>
         </table>
     </div>
+    
     <div class="col-md-4">
         <button type="button" data-toggle="modal" data-target="#modalConfirmationSupprimer" class="btn btn-danger">Supprimer ce panier</button>
         <br/>
@@ -27,33 +38,54 @@
             <div class="panel-body">
                 <div class="h4">
                     <p class="row">
-                        <div class="col-xs-8">Nombre d'items :</div>
-                        <div class="col-xs-4" style="text-align: right">@Model.Articles.Sum(a=>a.NbItems)</div></p>
+                        <div class="col-xs-7">Nombre d'items :</div>
+                        <div class="col-xs-5" style="text-align: right">@Model.GetNbItems()</div></p>
                     
                     <p class="row">
-                        <div class="col-xs-8">Sous total :</div>
-                        <div class="col-xs-4">@Formatter.Money(@Model.Articles.Sum(a=>a.NbItems*a.PPProduit.PrixVente))</div></p>
+                        <div class="col-xs-7">Poids total :</div>
+                        <div class="col-xs-5" style="text-align: right">@Formatter.Poids(Model.GetPoidsTotal())</div></p>
+                    
+                    <p class="row">
+                        <div class="col-xs-7">Sous total :</div>
+                        <div class="col-xs-5">@Formatter.Money(Model.getPrixTotal())</div></p>
+
                     <div class="row">
                         <br/><hr/>
                     </div>
-
+                    @if (Model.EstEnRabais)
+                    {
+                        <div class="row" style="padding-right: 5px; padding-left: 5px">
+                            <div class="alert alert-info" role="alert">
+                                Vous sauvez @Formatter.Money(Model.GetPrixSauveRabais(),false)
+                            </div>
+                        </div>
+                    }
                 </div>
-
-                
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationCommande">
-                    Passer la commande
-                </button>
+                @if (Model.DepassePoidsMaximum)
+                {
+                    <button title="Poids maximal dépassé" disabled type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationCommande">
+                        Passer la commande
+                    </button>
+                }
+                else
+                {
+                    <button title="Passer le panier en commande" type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationCommande">
+                        Passer la commande
+                    </button>
+                }
             </div>
         </div>
         <div class="panel panel-success">
             <div class="panel-heading">Informations sur le vendeur: </div>
             <div class="panel-body">
                 <div class="h4">
-                    <p><a href="@Url.Action("Catalogue", "Client", new RouteValueDictionary(new { Vendeur= @ViewBag.Vendeur }))">@Model.Vendeur.NomAffaires</a></p>
-                    <p>Membre depuis @Model.Vendeur.DateCreation.ToString()</p>
+                    <p><strong>@Model.Vendeur.NomAffaires</strong></p>
+                    <p>Membre depuis le @Model.Vendeur.DateCreation.Value.ToLongDateString()</p>
 
                     <hr/>
-
+                    Prix minimal pour une livraison gratuite 
+                    @Formatter.Money(Model.Vendeur.LivraisonGratuite,true)
+                    <br/>
                     <p>Nombres de ventes : @Model.Vendeur.PPCommandes.Count</p>
                 </div>
             </div>

@@ -11,7 +11,7 @@
 
     decimal PrixTotal = SousTotal + FraisLivraison + TPS + TVQ;
     string dateExpiration = InfoCommande.InfoPaiement.DateExpirationCarteCredit.Substring(0,2)+"-20"+InfoCommande.InfoPaiement.DateExpirationCarteCredit.Tail(2);
-    string strPrixTotal = PrixTotal.ToString("0.00");
+    string strPrixTotal = PrixTotal.ToString("0.00").Replace(',','.');
     
     string URL = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
 }
@@ -56,41 +56,7 @@
             </form>
         </div>
         <div class="col-md-3">
-
-            <div class="panel panel-primary">
-                <div class="panel-heading">Récapitulaif (@Model.GetNbItems()): </div>
-                <div class="panel-body">
-                    <div class="h4">
-                        <p class="row">
-                            <div class="col-xs-6">Articles :</div>    
-                            <div class="col-xs-6">@Formatter.Money(SousTotal)</div></p>
-                        <p class="row">
-                            <div class="col-xs-6">Livraison :</div>
-                            <div class="col-xs-6">@Formatter.Money(FraisLivraison)</div></p>
-
-                        <div class="row">
-                            <br/><hr/>
-                        </div>
-
-                        <p class="row">
-                            <div class="col-xs-6">Sous total:</div>
-                            <div class="col-xs-6"> @Formatter.Money(SousTotal+FraisLivraison)</div></p>
-                        <p class="row">
-                            <div class="col-xs-6">TPS :</div>
-                            <div class="col-xs-6"> @Formatter.Money(TPS)</div></p>
-                        <p class="row">
-                            <div class="col-xs-6">tvq :</div>
-                            <div class="col-xs-6"> @Formatter.Money(TVQ)</div></p>
-
-                        <div class="row">
-                            <br/><hr/>
-                        </div>
-                        <p class="row">
-                            <div class="col-xs-6">Montant total: :</div>
-                            <div class="col-xs-6"> @Formatter.Money(PrixTotal)</div></p>
-                    </div>
-                </div>
-            </div>
+            @Html.Partial("Client/Commande/_RecapitulatifCommande", Model)
         </div>
     </div>
 <!-- Modal confirmation -->
