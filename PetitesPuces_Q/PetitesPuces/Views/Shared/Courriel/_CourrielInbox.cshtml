@@ -1,0 +1,62 @@
+@using PetitesPuces.Models
+@using PetitesPuces.Securite
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPMessage
+@*
+    Représente un élement dans la boite de reception
+*@
+
+@{
+    var ctxt = new BDPetitesPucesDataContext();
+    var id = Model.NoExpediteur;
+                
+    var gestionnaires = (from util
+        in ctxt.PPGestionnaires
+        where util.NoGestionnaire == id
+        select util).ToList();
+                
+    var vendeurs = (from util
+        in ctxt.PPVendeurs
+        where util.NoVendeur == id
+        select util).ToList();
+                
+    var clients = (from util
+        in ctxt.PPClients
+        where util.NoClient == id
+        select util).ToList();
+    
+    IUtilisateur expediteur = clients.Concat<IUtilisateur>(vendeurs).Concat<IUtilisateur>(gestionnaires).FirstOrDefault();
+
+    PPDestinataire destinataire = (from d in ctxt.PPDestinataires
+        where d.NoMsg == Model.NoMsg && d.NoDestinataire == SessionUtilisateur.UtilisateurCourant.No
+        select d).FirstOrDefault();
+
+    var style = destinataire.EtatLu == 0?"nonLu": "";
+}
+<a href="#" class="list-group-item @style" onclick="loadCourriel(@Model.NoMsg);" expediteur="@expediteur.DisplayName" objet="@Model.objet" date="@Model.dateEnvoi">
+    <div class="row">
+        <div class="col-lg-4">
+            <input onclick="stopPropagation();" id="@Model.NoMsg" type="checkbox">
+            <span class="input" style="min-width: 120px; display: inline-block;">@expediteur.DisplayName</span>
+        </div>
+        <div class="col-lg-4">
+            <span class="">@Model.objet</span>
+        </div>
+        <div class="col-lg-4">
+            <span class="pull-right">
+                @if (Model.FichierJoint != null)
+                {
+                    <span class="glyphicon glyphicon-paperclip"></span>
+                }
+                @if (@Model.dateEnvoi.Value.Date == DateTime.Today) //si la meme journee, afficher l'heure, sinon la date
+                {
+                    <span class="badge">@Model.dateEnvoi.ToShortTimeString()</span>
+                }
+                else
+                {
+                    <span class="badge">@Model.dateEnvoi.ToShortDateString()</span>
+                }
+            </span>
+        </div>       
+    </div>
+</a>

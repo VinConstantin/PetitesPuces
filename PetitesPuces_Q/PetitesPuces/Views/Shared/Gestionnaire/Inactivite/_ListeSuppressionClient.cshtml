@@ -1,0 +1,29 @@
+@model List<PetitesPuces.Models.PPClient>
+
+<table class="table lst-utils bg-light">
+    <thead>
+        <tr>
+            <th scope="col" class="text-left">
+                No Client
+            </th>
+            <th scope="col">
+                Adresse Courriel
+            </th>
+            <th scope="col">
+                Prénom
+            </th>
+            <th scope="col">
+                Nom
+            </th>
+            <th scope="col">
+                Date dernière activité
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in Model)
+        {
+            @Html.Partial("Gestionnaire/Inactivite/_Client", Tuple.Create(client, false))
+        }
+    </tbody>
+</table>

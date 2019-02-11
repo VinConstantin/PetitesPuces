@@ -14,7 +14,10 @@ namespace PetitesPuces.Models
         {
             get { return RolesUtil.ADMIN; }
         }
-
+        public string DisplayName
+        {
+            get { return Nom + ", " + Prenom; }
+        }
         public DateTime DateDerniereActivite
         {
             get

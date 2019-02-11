@@ -1,10 +1,12 @@
+@using PetitesPuces.Securite
 @model dynamic
+
 <form>
 	<div class="btn-group">
-		<button type="button" class="btn btn-info" ><span class="glyphicon glyphicon-send"></span> Envoyer</button>
+		<button type="button" onclick="envoyerMessage();" class="btn btn-info" ><span class="glyphicon glyphicon-send"></span> Envoyer</button>
 		<button type="button" onclick="joindreFichier();" class="btn btn-info" ><span class="glyphicon glyphicon-paperclip"></span> Joindre</button>
-		<input style="visibility: hidden;" type="file" name="my_file" id="upload">
 	</div>
+	<input style="visibility: hidden;" type="file" name="my_file" id="upload">
 	<h2>Composer un message</h2>
 
 	<div class="well">
@@ -17,24 +19,22 @@
 		</label>
 		<br/>
 		<div class="row" id="destinataire">
-			Francois<a class="glyphicon glyphicon-remove"></a>
-			Ginette<a class="glyphicon glyphicon-remove"></a>
-			Marc<a class="glyphicon glyphicon-remove"></a>
+
 		</div>
 		<br/>
 		<div class="row">
 			<div class="col-lg-6">
 				<label>Objet : </label>
-				<div class="row"><input type="text" class="form-control"/></div>
+				<div class="row"><input id="tbObjet" type="text" class="form-control"/></div>
 			</div>
 			<div class="col-lg-6" id="fileUploadText" hidden>
 				<label>Pièce jointe : </label>
-				<p id="non"></p>
+				<p id="nomFile"></p>
 			</div>
 		</div>
 		<label>Message :</label>
 		<div class="row">
-			<textarea style="max-width: 100%" cols="300" rows="20"></textarea>
+			<textarea id="textarea" style="max-width: 100%" cols="300" rows="20"></textarea>
 		</div>
 
 	</div>
@@ -48,30 +48,87 @@
 		</div>
 	</div>
 </div>
+<script>
+	/**
+     *  todo : retirer des liste ne retire pas le bon item...
+     */
+	var lstDestinataires = [];
+	function joindreFichier() {
+		$('#upload').click();
+	}
+	$('#upload').change(function() {
+		$("#fileUploadText").show();
+		const file = $('#upload')[0].files[0].name;
+		$('#nomFile').html(file);
+	});
+	function retirerDestinataire(no, nom) {
+		console.log(no);
+		const desinataire = { No : no, Nom : nom };     
+		const index = lstDestinataires.indexOf(desinataire);
+		lstDestinataires.splice(index, 1);
+		$('#Dest'+no).remove();
+	}
+	function envoyerMessage() {
+		const strMessage = $('#textarea').froalaEditor('html.get');
+		const objet = $("#tbObjet").val();
+		const data = ({
+			NoExpediteur: @SessionUtilisateur.UtilisateurCourant.No,
+			Objet: objet,
+			Description: strMessage,
+			Destinataire: lstDestinataires
+		});
+		const url = URLPATH + "/Courriel/Envoyer";
+		console.log(url);
+		$.ajax({
+			url: url,
+			type: "POST",
+			data: data,
+			success: function(result) {
+				console.log(result);
+			},
+			error: function(req, status, err) {
+				console.log(req, status, err);
+			}
+		});
+		
+	}
+	function loadModalDestinataire() {
+		$.ajax({
+			url: URLPATH + "/Courriel/Destinataire",
+			type: "GET",
+			data: {
+                
+			}, 
+			success: function(result) {
+				/** @@type{Object<>[]} */
+				lstDestinatairesTemp = [];
+				$('#ModalDestinatairePLACEHOLDER').html(result);
+			},
+			error: function(req, status, err) {
+				console.log(req, status, err);
+			}
+		});
+	}
+</script>
 
 <script>
-    function joindreFichier() {
-	    $('#upload').click();
-    }
-    $('#upload').change(function() {
-	    $("#fileUploadText").show();
-	    var file = $('#upload')[0].files[0].name;
-	    $('#non').html(file);
-    });
-    function loadModalDestinataire() {
-	    $.ajax({
-		    url: URLPATH + "/Courriel/Destinataire",
-		    type: "GET",
-		    data: {
-                
-		    }, 
-		    success: function(result) {
-			    $('#ModalDestinatairePLACEHOLDER').html(result);
-		    },
-		    error: function(req, status, err) {
-			    console.log(req, status, err);
-		    }
-	    });
-    }
+	$(function() {
+		/** @@type{Object<>[]} */
+		lstDestinataires = [];
+		$('textarea').froalaEditor({
+			language: 'fr',
+			toolbarButtons: [
+				'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize',
+				'|', 'color', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL',
+				'-', '|', 'quote', 'insertHR', 'undo', 'redo', 'clearFormatting', 'selectAll', 'html'
+			],
+			fontFamilySelection: true,
+			fontSizeSelection: true,
+			paragraphFormatSelection: true,
+			heightMin: 250,
+			quickInsertTags: [],
+			toolbarButtonsXS: ['undo', 'redo', 'bold', 'italic', 'underline']
+		});
+	});
 </script>
 	

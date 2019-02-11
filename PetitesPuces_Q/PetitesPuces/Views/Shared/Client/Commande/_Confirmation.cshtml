@@ -12,6 +12,8 @@
     decimal PrixTotal = SousTotal + FraisLivraison + TPS + TVQ;
     string dateExpiration = InfoCommande.InfoPaiement.DateExpirationCarteCredit.Substring(0,2)+"-20"+InfoCommande.InfoPaiement.DateExpirationCarteCredit.Tail(2);
     string strPrixTotal = PrixTotal.ToString("0.00");
+    
+    string URL = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
 }
 
 <div class="row">
@@ -109,12 +111,12 @@
                     <input hidden type="text" name="NoVendeur" value="@InfoCommande.Vendeur.No"/>
                     <input hidden type="text" name="NomVendeur" value="@InfoCommande.Vendeur.NomAffaires"/>
                     
-                    <input hidden type="text" name="NoCarteCredit" value="@InfoCommande.InfoPaiement.NoCarteCredit"/>
+                    <input hidden type="text" name="NoCarteCredit" value="@InfoCommande.InfoPaiement.NoCarteCredit.RemoveWhitespace()"/>
                     <input hidden type="text" name="DateExpirationCarteCredit" value="@dateExpiration"/>
                     <input hidden type="text" name="NoSecuriteCarteCredit" value="@InfoCommande.InfoPaiement.NoSecuriteCarteCredit"/>
                     
                     <input hidden type="text" name="MontantPaiement" value="@strPrixTotal"/>
-                    <input hidden type="text" name="NomPageRetour" value="http://424x.cgodin.qc.ca/lesi-2019/confirme-paiement.aspx"/>
+                    <input hidden type="text" name="NomPageRetour" value="@URL@Url.Action("ConfirmationPaiement","Client")"/>
                     
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                     <input type="submit" class="btn btn-primary" value="Confirmer"/>

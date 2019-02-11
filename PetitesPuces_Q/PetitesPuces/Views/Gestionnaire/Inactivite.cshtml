@@ -43,35 +43,15 @@
             <strong class="mx-1">Ans</strong>
         </div>
         <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default active" >
-                <input type="radio" name="depuisClient" value="T" autocomplete="off" checked/> Toujours
+            <label type="button" class="btn btn-default " >
+                <input type="radio" name="depuisClient" value="T" autocomplete="off" /> Toujours
             </label>
         </div>
     </div>
-    <table class="table lst-utils bg-light">
-        <tr>
-            <th scope="col" class="text-left">
-                No Client
-            </th>
-            <th scope="col">
-                Adresse Courriel
-            </th>
-            <th scope="col">
-                Prénom
-            </th>
-            <th scope="col">
-                Nom
-            </th>
-            <th scope="col">
-                Date dernière activité
-            </th>
-        </tr>
-        @foreach (var client in Model.ClientsInactifs)
-        {
-            @Html.Partial("Gestionnaire/Inactivite/_Client", Tuple.Create(client, false));
-        }
-    </table>
-    <button class="btn btn-danger btn-large center-block">Supprimer les clients inactifs visibles</button>
+    <div id="listeGestionClients">
+        @Html.Partial("Gestionnaire/Inactivite/_ListeSuppressionClient", @Model.ClientsInactifs)
+    </div>
+    <button id="supprimerClients" class="btn btn-danger btn-large center-block">Supprimer les clients inactifs visibles</button>
 </div>
 
 <h3 class="text-center col-xs-12">Vendeurs Inactifs</h3>
@@ -91,42 +71,25 @@
             <strong class="mx-1">Ans</strong>
         </div>
         <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default active">
-                <input type="radio" name="depuisVendeur" value="T" autocomplete="off" checked/> Toujours
+            <label type="button" class="btn btn-default ">
+                <input type="radio" name="depuisVendeur" value="T" autocomplete="off" /> Toujours
             </label>
         </div>
     </div>
-    <table class="table lst-utils mt-2 bg-light">
-        <tr>
-            <th scope="col" class="text-left">
-                No Client
-            </th>
-            <th scope="col">
-                Nom d'affaires
-            </th>
-            <th scope="col">
-                Prénom
-            </th>
-            <th scope="col">
-                Nom
-            </th>
-        </tr>
-        @foreach (var vendeur in Model.VendeursInactifs)
-        {
-            @Html.Partial("Gestionnaire/Inactivite/_Vendeur", Tuple.Create(vendeur, false));
-        }
-    </table>
-    <button class="btn btn-danger btn-large center-block">Supprimer les vendeurs inactifs visibles</button>
+    <div id="listeGestionVendeurs">
+        @Html.Partial("Gestionnaire/Inactivite/_ListeSuppressionVendeur", @Model.VendeursInactifs)
+    </div>
+    <button id="supprimerVendeurs" class="btn btn-danger btn-large center-block">Supprimer les vendeurs inactifs visibles</button>
 </div>
 
-<h3 class="text-center col-xs-12">Rendre un utilisateur inactif</h3>
+<h3 class="text-center col-xs-12">Désactiver un compte utilisateur</h3>
 
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    <form class="form-inline">
+    <div class="form-inline">
         <div class="input-group">
-            <input type="search" class="form-control">
+            <input id="tbRecherche" type="search" class="form-control">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
+                <button id="btnRecherche" class="btn btn-default" type="button">
                     <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
                     </span>
                 </button>    
@@ -139,22 +102,140 @@
             <label type="button" class="btn btn-default">
                 <input type="radio" name="critereInactivite" value="Client" autocomplete="off" /> Client
             </label>
-            <label type="button" class="btn btn-default active">
-                <input type="radio" name="critereInactivite" value="Utilisateur" autocomplete="off" checked /> Tous
+            <label type="button" class="btn btn-default ">
+                <input type="radio" name="critereInactivite" value="Utilisateur" autocomplete="off"  /> Tous
             </label>
         </div>
-    </form>
+    </div>
     <div id="listeGestionInactivite">
-        @Html.Partial("Gestionnaire/Inactivite/_ListeDisablePersonne", Tuple.Create(Model.UtilsRecherche, true));
+        @Html.Partial("Gestionnaire/Inactivite/_ListeDisablePersonne", Tuple.Create(Model.UtilsRecherche, true))
     </div>
 </div>
 
 <script>
     $(document).ready(function() {
-        const filtres = {};
+        const filtres = new URL(window.location.href).searchParams;
+        const filterDefaults = {
+            depuisClient: 'T',
+            depuisVendeur: 'T',
+            typeUtilisateur: 'Utilisateur',
+            recherche: '',
+        }
+        
+        for (let prop in filterDefaults) {
+            if (!filtres.has(prop)) {
+                filtres.append(prop, filterDefaults[prop]);
+            }
+        }
+
+        registerDeleteUserEvents();
+        
+        function registerDeleteUserEvents() {
+            $('#listeGestionInactivite').find('.btn-danger').each(function() {
+                const noUtilisateur = $(this).closest('tr').find('th').eq(0).text();
+                $(this).click(() => supprimerUtilisateurs([parseInt(noUtilisateur)]));
+            });
+        }
+
+        
+        $('#supprimerClients').click(function() {
+            viderTableau($('#listeGestionClients'));
+        });
+
+        $('#supprimerVendeurs').click(function() {
+            viderTableau($('#listeGestionVendeurs'));
+        });
+
+        function confirmerSuppression(nb, type) {
+            return confirm(`Êtes-vous certain de vouloir supprimer de façon permanente ${nb} comptes utilisateur?`);
+        }
+        
+        function viderTableau(tableau) {
+            const nbUtilisateurs = $('#listeGestionVendeurs').find('tbody').find('tr').length;
+            if (!confirmerSuppression(nbUtilisateurs)) return;
+            
+            const ids = [];
+            tableau.find('tbody').find('th').each(function() {
+                ids.push(parseInt($(this).text()));
+            });
+            
+            supprimerUtilisateurs(ids);
+        }
+        
+        function supprimerUtilisateurs(ids) {              
+            const data = JSON.stringify({
+                nosASupprimer: ids
+            });
+
+            $.ajax({
+                url: '/Gestionnaire/Inactivite/RendreInactif',
+                method: 'POST',
+                data: data,
+                complete: reloadAll,
+                dataType:'json',
+                contentType: 'application/json'
+            });
+        }
+        
+        function reloadAll() {
+            refreshUtilisateurs();
+            refreshListeVendeurs();
+            refreshListeClients();
+        }
+        
+        function refreshListeVendeurs() {
+            const searchParam = {
+                depuisVendeur: filtres.get('depuisVendeur')
+            };
+            $.get('/Gestionnaire/Inactivite/Vendeurs', searchParam, afficherVendeurs);
+        }
+        
+        function refreshListeClients() {
+            const searchParam = {
+                depuisClient: filtres.get('depuisClient')
+            };
+            $.get('/Gestionnaire/Inactivite/Clients', searchParam, afficherClients);     
+        }
+        
+        function refreshUtilisateurs() {
+            const searchParam = {
+                search: filtres.get('search')
+            }
+            $.get(`/Gestionnaire/Inactivite/Liste/${filtres.get('typeUtilisateur')}`, searchParam, afficherUtilisateurs);         
+        }
         
         $('[name="critereInactivite"]').each(function() {
             $(this).change(deleteUserFilterChanged);
+            initRadioButton($(this), 'typeUtilisateur');
+        });
+        
+        function initRadioButton(jqueryElem, searchParamKey) {
+            if (filtres.get(searchParamKey) === jqueryElem.val()) {
+                jqueryElem.prop('checked', true);
+                jqueryElem.parent().addClass('active');
+            }
+        }
+        
+        $('[name="depuisVendeur"]').each(function() {
+            $(this).change(deleteVendeurFilterChanged);
+            initRadioButton($(this), 'depuisVendeur');
+        });
+        
+        $('[name="depuisClient"]').each(function() {
+            $(this).change(deleteClientFilterChanged);
+            initRadioButton($(this), 'depuisClient');
+        });
+
+        $('#tbRecherche').change(function() {
+            const recherche = $(this).val();
+            filtres.set('recherche', recherche);
+            updatePageState();
+        });
+
+        $('#btnRecherche').click(function() {
+            const recherche = $('#tbRecherche').val();
+            filtres.set('recherche', recherche);
+            updatePageState();
         });
         
         function deleteUserFilterChanged() {
@@ -162,11 +243,48 @@
 
             const selectedVal = $(this).val();
 
-            $.get(`/Gestionnaire/Inactivite/Liste/${selectedVal}`, null, displayFilteredView);
+            $.get(`/Gestionnaire/Inactivite/Liste/${selectedVal}`, null, afficherUtilisateurs);
+            filtres.set('typeUtilisateur', selectedVal);
         }
         
-        function displayFilteredView(partial) {
+        function deleteVendeurFilterChanged() {
+            if (!$(this).prop('checked')) return;
+
+            const selectedVal = $(this).val();
+
+            $.get(`/Gestionnaire/Inactivite/Vendeurs`, {depuisVendeur: selectedVal}, afficherVendeurs);
+            filtres.set('depuisVendeur', selectedVal);
+        }
+        
+        function deleteClientFilterChanged() {
+            if (!$(this).prop('checked')) return;
+
+            const selectedVal = $(this).val();
+
+            $.get(`/Gestionnaire/Inactivite/Clients`, {depuisClient: selectedVal}, afficherClients);
+            filtres.set('depuisClient', selectedVal);
+        }
+        
+        function afficherUtilisateurs(partial) {
             $('#listeGestionInactivite').html(partial);
+            registerDeleteUserEvents();
+            updatePageState();
+        }
+        
+        function afficherClients(partial) {
+            $('#listeGestionClients').html(partial);
+            updatePageState();
+        }
+        
+        function afficherVendeurs(partial) {
+            $('#listeGestionVendeurs').html(partial);
+            updatePageState();
+        }
+        
+        function updatePageState() {
+            const url = new URL(window.location.href);
+            
+            history.replaceState(null,  'Inactivite - Gestionnaire - Les Petites Puces', '?' + filtres.toString());
         }
     });
 </script>

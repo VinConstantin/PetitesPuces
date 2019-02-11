@@ -1,0 +1,26 @@
+@model List<PetitesPuces.Models.PPVendeur>
+
+<table class="table lst-utils mt-2 bg-light">
+    <thead>
+        <tr>
+            <th scope="col" class="text-left">
+                No Client
+            </th>
+            <th scope="col">
+                Nom d'affaires
+            </th>
+            <th scope="col">
+                Prénom
+            </th>
+            <th scope="col">
+                Nom
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vendeur in Model)
+        {
+            @Html.Partial("Gestionnaire/Inactivite/_Vendeur", Tuple.Create(vendeur, false))
+        }
+    </tbody>
+</table>

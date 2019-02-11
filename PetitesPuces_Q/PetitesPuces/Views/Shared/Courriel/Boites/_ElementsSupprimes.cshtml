@@ -1,0 +1,120 @@
+@using PetitesPuces.Models
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="tab-content">
+            <div class="btn-group">
+                <button type="button" onclick="supprimer();" class="btn btn-info" ><span class="glyphicon glyphicon glyphicon-trash"></span> Supprimer</button>
+                <button type="button" onclick="marquerNonLu();" class="btn btn-info" ><span class="fas fa-envelope"></span> Marquer comme non-lu</button>
+                <button type="button" onclick="marquerLu();" class="btn btn-info" ><span class="fas fa-envelope-open"></span> Marquer comme lu</button>
+                <button type="button" onclick="restaurer();" class="btn btn-info" ><span class="fas fa-undo"></span> Restaurer</button>
+            </div>
+            @Html.Partial("Courriel/_headerBoite", "Éléments supprimés")
+            <div class="tab-pane fade in active" id="home">
+                <div class="list-group">
+                    @if (Model.Count > 0)
+                    {
+                        foreach (PPMessage message in Model)
+                        {
+                            @Html.Partial("Courriel/_CourrielInbox", message)
+                        }
+                    }
+                    else
+                    {
+                        @Html.Partial("Courriel/_BoiteVideAlert")
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function supprimer() {
+        const lstIdsChecked = getCheckedInput();
+        $.ajax({
+            url: URLPATH + "/Courriel/Supprimer",
+            type: "DELETE",
+            data: {
+                NoCourriel : lstIdsChecked
+            }, 
+            success: function(result) {
+                loadElementSupprimes();
+            },
+            error: function(req, status, err) {
+                loadElementSupprimes();
+            }
+        });
+        uncheckAllInput();
+    }
+    
+    function marquerLu() {
+        const lstIdsChecked = getCheckedInput();
+        $.ajax({
+            url: URLPATH + "/Courriel/MarquerLu",
+            type: "POST",
+            data: {
+                NoCourriel : lstIdsChecked
+            }, 
+            success: function(result) {
+                loadElementSupprimes();
+            },
+            error: function(req, status, err) {
+                loadElementSupprimes();
+            }
+        });
+        uncheckAllInput();
+    }
+
+    function marquerNonLu() {
+        const lstIdsChecked = getCheckedInput();
+        $.ajax({
+            url: URLPATH + "/Courriel/MarquerNonLu",
+            type: "POST",
+            data: {
+                NoCourriel : lstIdsChecked
+            }, 
+            success: function(result) {
+                loadElementSupprimes();
+            },
+            error: function(req, status, err) {
+                loadElementSupprimes();
+            }
+        });
+        uncheckAllInput();
+    }
+    function restaurer() {
+        const lstIdsChecked = getCheckedInput();
+        $.ajax({
+            url: URLPATH + "/Courriel/Restaurer",
+            type: "POST",
+            data: {
+                NoCourriel : lstIdsChecked
+            }, 
+            success: function(result) {
+                loadElementSupprimes();
+            },
+            error: function(req, status, err) {
+                loadElementSupprimes();
+            }
+        });
+        uncheckAllInput();
+    }
+
+    function  getCheckedInput() {
+        const lstIdsChecked = new Array();
+        $("input:checkbox:not(#checkAll)").each(function() {
+            const $this = $(this);
+            if ($this.is(":checked")) {
+                lstIdsChecked.push($this.attr("id"));
+            }
+        });
+        return lstIdsChecked;
+    }
+    
+    function uncheckAllInput() {
+        $("input:checkbox").prop('checked', false);
+    }
+    $("#checkAll").change(function () {
+        $("input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+</script>

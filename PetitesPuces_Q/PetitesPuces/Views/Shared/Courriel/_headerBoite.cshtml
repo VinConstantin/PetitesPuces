@@ -1,0 +1,64 @@
+@model string
+
+<div class=" row">
+    <div class="col-lg-5">
+        <h2>&nbsp;&nbsp;<input type="checkbox" id="checkAll"/> @Model</h2>
+    </div>
+    <div class="col-lg-7">
+        <div class="row">
+            <div class="col-lg-8">
+                <br/>
+                <input onkeyup="filter();" class="form-control form-control-sm" id="filtre" type="text" placeholder="Recherche" aria-label="Search">
+            </div>
+            <div class="col-lg-4">
+                <br/>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-sort"></span> Trier 
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" onclick="sortItemsDate();">Date</a></li>
+                        <li><a href="#" onclick="sortItemsObjet();">Objet</a></li>
+                        <li><a href="#" onclick="sortItemsExpediteur();">Expéditeur</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<script>
+    function sortItemsExpediteur()
+    {
+        $('.list-group .list-group-item').sort(function(a, b) {
+            const expA =$(a).attr('expediteur');
+            const expB =$(b).attr('expediteur');
+            
+            return expA < expB ? -1 : expA > expB;
+        }).appendTo('.list-group');
+    }
+    function sortItemsObjet()
+    {
+        $('.list-group .list-group-item').sort(function(a, b) {
+            const objetA =$(a).attr('objet');
+            const objetB =$(b).attr('objet');
+            
+            return objetA < objetB ? -1 : objetA > objetB;
+        }).appendTo('.list-group');
+    }
+    function sortItemsDate()
+    {
+        $('.list-group .list-group-item').sort(function(a, b) {
+            const dateA =$(a).attr('date');
+            const dateB =$(b).attr('date');
+            
+            return dateA < dateB ? -1 : dateA > dateB;
+        }).appendTo('.list-group');
+    }
+    function filter(){
+        const value = $("#filtre").val().toLowerCase();
+        
+        $(".list-group .list-group-item").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    }
+</script>

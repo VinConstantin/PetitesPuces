@@ -7,7 +7,6 @@
         <table class="table table-hover">
             <thead>
             <td>Nom</td>
-            <td>Catégorie</td>
             <td>Poids (lbs)</td>
             <td>Prix unitaire</td>
             <td>Quantité</td>
@@ -15,18 +14,17 @@
             </thead>
             @foreach (PPArticlesEnPanier article in @Model.Articles)
             {
+                var poidsTotal = article.PPProduit.Poids * article.NbItems;
                 <tr>
                     <td>@article.PPProduit.Nom</td>
-                    <td>@article.PPProduit.PPCategory.Description</td>
-                    <td>@article.PPProduit.Poids * @article.NbItems</td>   
+                    <td style="text-align: right">@poidsTotal</td>   
                     <td>@Formatter.Money(@article.PPProduit.PrixVente)</td>
-                    <td>x @article.NbItems</td>
+                    <td style="text-align: right">x @article.NbItems</td>
                     <td>@Formatter.Money(@article.PPProduit.PrixVente * @article.NbItems)</td>                           
                 </tr>
             }
             <hr/>
             <tr>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
