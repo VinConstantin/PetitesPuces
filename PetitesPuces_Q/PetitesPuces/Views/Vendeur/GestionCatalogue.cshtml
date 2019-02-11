@@ -8,58 +8,6 @@
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Vendeur/Index.css")" />
 }
 
-<script>
-    function valider() {
-        var form = document.getElementById("frmProduit");
-        var formData = new FormData(form);
-        console.log(formData);
-        $.ajax({
-            url: URLPATH +"/Vendeur/AjouterProduit",
-            type: "post",
-            data: formData,
-            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-            processData: false,
-            success: function (result) {
-                console.log(result);
-                //$("#PLACEHOLDERModalDescription").html(result);
-            },
-            error: function (req, status, err) {
-                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
-            }
-        });
-    }
-    function information(NoProduit) {
-        $("#ModalDescription").modal('show');
-        $.ajax({
-            url: URLPATH +"/Vendeur/GestionProduit",
-            type: "get",
-            data: {
-                "NoProduit": NoProduit
-            },
-            success: function (result) {
-                console.log("success")
-                $("#PLACEHOLDERModalDescription").html(result);
-            },
-            error: function (req, status, err) {
-                console.log("error")
-                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
-            }
-        });
-    }
-
-    $(function () {
-        $("input").oninvalid = function () {
-            this.setCustomValidity("Format invalide");
-        };
-    });
-
-    $(function () {
-        $("input").oninput = function () {
-            this.setCustomValidity("");
-        };
-    });
-</script>
-
 <h2 class="text-center">@ViewBag.Title</h2>
 
 <h3 class="text-center col-xs-12">Ajouter un produit</h3>
@@ -67,68 +15,95 @@
 <div class="well text-center col-xs-10 col-xs-offset-1">
     <form id="frmProduit" method="post">
         <div class="row">
-            <div class="col-sm-6 text-left">
-                <span>Numéro</span>
-                <input name="NoProduit" class="form-control" style="float: right" type="number" readonly value="@(Model.Produits.Last().NoProduit + 10)" />
+            <div class="col-sm-6">
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Numéro</span>
+                    <input name="NoProduit" class="form-control" style="float: right" type="number" readonly value="@Model.NoProduit" />
+                </div>
             </div>
-            <div class="col-sm-6 text-left">
-                <span>Date de création</span>
-                <input name="DateCreation" class="form-control" style="float: right" type="date" readonly value="@DateTime.Today.ToShortDateString()" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 text-left">
-                <span>Catégorie</span>
-                <select name="NoCategorie" class="form-control" style="float:right">
-                    @foreach (var categorie in Model.Categories)
-                    {
-                        <option value="@categorie.NoCategorie">@categorie.Description</option>
-                    }
-                </select>
-            </div>
-            <div class="col-sm-6 text-left">
-                <span>Nombre d'items</span>
-                <input name="NombreItems" min="0" class="form-control" style="float: right" type="number" value="1" />
+            <div class="col-sm-6">
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Date de création</span>
+                    <input name="DateCreation" class="form-control" style="float: right" type="date" readonly value="@DateTime.Today.ToShortDateString()" />
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6 text-left">
-                <span>Nom</span>
-                <input name="Nom" required pattern="\p{L}{2,50}" maxlength="50" class="form-control" style="float: right" type="text" />
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Catégorie</span>
+                    <select name="NoCategorie" class="form-control" style="float:right">
+                        @foreach (var categorie in Model.Categories)
+                        {
+                            <option value="@categorie.NoCategorie">@categorie.Description</option>
+                        }
+                    </select>
+                </div>
             </div>
             <div class="col-sm-6 text-left">
-                <span>Prix de vente</span>
-                <input name="PrixVente" class="form-control" style="float: right" type="number" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 text-left">
-                <span>Prix demandé</span>
-                <input name="PrixDemande" required class="form-control" style="float: right" type="number" />
-            </div>
-            <div class="col-sm-6 text-left">
-                <span>Date de vente</span>
-                <input name="DateVente" class="form-control" style="float: right" type="date" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 text-left">
-                <span>Photo</span>
-                <input name="Photo" class="form-control" style="float: right;" type="file" />
-            </div>
-            <div class="col-sm-6 text-left">
-                <span>Poids</span>
-                <input name="Poids" required class="form-control" style="float: right;" type="number" />
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Nombre d'items</span>
+                    <input name="NombreItems" min="0" class="form-control" type="number" value="1" />
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6 text-left">
-                <span>Description détaillée</span>
-                <textarea name="Description" class="form-control" style="float: right;" id="taDescription"></textarea>
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Nom</span>
+                    <input name="Nom" required pattern="\p{L}{2,50}" maxlength="50" class="form-control" type="text" />
+                </div>
             </div>
             <div class="col-sm-6 text-left">
-                <span>Disponibilité</span>
-                <input name="Disponibilite" class="form-control" style="float: right; width:34px; margin-right:120px" type="checkbox" checked />
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Prix de vente</span>
+                    <input name="PrixVente" class="form-control" type="number" />
+                    <span class="input-group-addon">$</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 text-left">
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Prix demandé</span>
+                    <input name="PrixDemande" required class="form-control" type="number" />
+                    <span class="input-group-addon">$</span>
+                </div>
+            </div>
+            <div class="col-sm-6 text-left">
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Date de vente</span>
+                    <input name="DateVente" class="form-control" type="date" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 text-left">
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Photo</span>
+                    <input name="Photo" class="form-control" type="file" />
+                </div>
+            </div>
+            <div class="col-sm-6 text-left">
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Poids</span>
+                    <input name="Poids" required class="form-control" type="number" />
+                    <span class="input-group-addon">lbs</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 text-left">
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Description détaillée</span>
+                    <textarea name="Description" class="form-control" id="taDescription"></textarea>
+                </div>
+            </div>
+            <div class="col-sm-6 text-left">
+                <div class="input-group" style="width:100%; padding:5px">
+                    <span class="input-group-addon" style="width:150px">Disponibilité</span>
+                    <input name="Disponibilite" class="form-control m-0" style="width:34px; margin-right:120px" type="checkbox" checked />
+                </div>
             </div>
         </div>
         <div class="row">
@@ -179,3 +154,126 @@
         </div>
     </div>
 </div>
+
+<script>
+    function valider() {
+        var form = document.getElementById("frmProduit");
+        var formData = new FormData(form);
+        $.ajax({
+            url: URLPATH +"/Vendeur/AjouterProduit",
+            type: "post",
+            data: formData,
+            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            processData: false,
+            success: function (result) {
+                console.log(result);
+                //$("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html(" @Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+    function information(NoProduit) {
+        $("#ModalDescription").modal('show');
+        $.ajax({
+            url: URLPATH +"/Vendeur/GestionProduit",
+            type: "get",
+            data: {
+                "NoProduit": NoProduit
+            },
+            success: function (result) {
+                console.log("success")
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+
+    function modifierProduit(NoProduit) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/ModalModifierProduit",
+            type: "get",
+            data: {
+                "NoProduit": NoProduit
+            },
+            success: function (result) {
+                console.log("success")
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+
+    function supprimerProduit(NoProduit) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/ModalSupprimerProduit",
+            type: "get",
+            data: {
+                "NoProduit": NoProduit
+            },
+            success: function (result) {
+                console.log("success")
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+
+    function confirmationSupprimer(NoProduit) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/SupprimerProduit",
+            type: "get",
+            data: {
+                "NoProduit": NoProduit
+            },
+            success: function (result) {
+                console.log("success")
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+
+    function confirmationModifier() {
+        var form = document.getElementById("frmModifierProduit");
+        var formData = new FormData(form);
+        $.ajax({
+            url: URLPATH +"/Vendeur/ModifierProduit",
+            type: "get",
+            data: formData,
+            success: function (result) {
+                console.log("success")
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+
+    $(function () {
+        $("input").oninvalid = function () {
+            this.setCustomValidity("Format invalide");
+        };
+    });
+
+    $(function () {
+        $("input").oninput = function () {
+            this.setCustomValidity("");
+        };
+    });
+</script>
