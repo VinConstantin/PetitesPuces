@@ -1,7 +1,7 @@
 @model List<PetitesPuces.ViewModels.Gestionnaire.Redevance>
 
 <table class="table bg-light">
-    <tr>
+    <tr class="v-align-middle">
         <th>
             No du vendeur
         </th>
@@ -18,6 +18,9 @@
     </tr>
     @foreach (var redevance in @Model)
     {
-        @Html.Partial("Gestionnaire/Redevances/_Redevance", redevance)
+        if (redevance.Solde > 0)
+        {
+            @Html.Partial("Gestionnaire/Redevances/_Redevance", redevance)
+        }
     }
 </table>

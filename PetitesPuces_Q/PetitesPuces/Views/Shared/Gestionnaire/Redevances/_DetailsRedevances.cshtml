@@ -23,14 +23,16 @@
         </tr>
         @foreach (var paiement in @Model.Paiements)
         {
-            <tr>
+            if (paiement.Redevance < 0){ continue;}
+            
+            <tr class="v-align-middle">
                 <td>
                     @paiement.NoCommande
                 </td>
                 @if (@paiement.DateVente.HasValue)
                 {
                     <td>
-                        @paiement.DateVente.Value.ToString("YYYY-MM-dd")
+                        @paiement.DateVente.Value.ToString("yyyy-MM-dd")
                     </td>
                 }
                 else
@@ -45,6 +47,11 @@
                 </td>
                 <td>
                     @Formatter.Money(paiement.Redevance)
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-success">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </button>
                 </td>
             </tr>
         }

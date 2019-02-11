@@ -918,6 +918,44 @@ namespace PetitesPuces.Controllers
             }
         }
         
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("Redevances/Paiement/{idCommande}")]
+        public ActionResult UpdateRedevancesVendeur([FromUri]int idCommande)
+        {
+            try
+            {
+                var commandeAUpdate =
+                    (from commande
+                            in ctxt.PPHistoriquePaiements
+                        where commande.NoCommande == idCommande
+                        select commande).First();
+
+                commandeAUpdate.Redevance *= -1;
+                
+                ctxt.SubmitChanges();
+                
+                DetailsRedevances details = 
+                    (from vendeur
+                        in ctxt.PPVendeurs
+                     join paiement
+                         in ctxt.PPHistoriquePaiements
+                         on vendeur.NoVendeur equals paiement.NoVendeur
+                         into paiementsVendeur
+                    where vendeur.NoVendeur == commandeAUpdate.NoVendeur
+                    select new DetailsRedevances
+                    {
+                        Paiements = paiementsVendeur.ToList(),
+                        Vendeur = vendeur,
+                    }).First();
+                
+                return PartialView("Gestionnaire/Redevances/_DetailsRedevances", details);
+            }
+            catch (InvalidOperationException e)
+            {
+                return HttpBadRequest();
+            }
+        }
+        
         private List<Redevance> GetRedevances()
         {
             return
