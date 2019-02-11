@@ -6,10 +6,9 @@ using PetitesPuces.Models;
 
 namespace PetitesPuces.ViewModels.Vendeur
 {
-    public class GestionCatalogueViewModel
+    public class ModifierProduitViewModel
     {
-        public long NoProduit { get; set; }
+        public PPProduit Produit { get; set; }
         public List<PPCategory> Categories { get; set; }
-        public List<PPProduit> Produits { get; set; }
     }
 }

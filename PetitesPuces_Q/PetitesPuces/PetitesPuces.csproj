@@ -245,6 +245,7 @@
     <Compile Include="ViewModels\Vendeur\AccueilVendeurViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\GestionCatalogueViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\CommandesViewModel.cs" />
+    <Compile Include="ViewModels\Vendeur\ModifierProduitViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -409,6 +410,8 @@
     <Content Include="Views\Shared\Vendeur\_RecuCommande.cshtml" />
     <Content Include="Views\Shared\Vendeur\_ConfirmationPanier.cshtml" />
     <Content Include="Views\Shared\Vendeur\_GestionProduit.cshtml" />
+    <Content Include="Views\Shared\Vendeur\ModalModifierProduit.cshtml" />
+    <Content Include="Views\Shared\Vendeur\ModalSupprimerProduit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
