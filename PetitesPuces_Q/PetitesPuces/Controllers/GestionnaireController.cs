@@ -6,6 +6,8 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Xml;
+using System.Xml.Linq;
 using PetitesPuces.Models;
 using PetitesPuces.Securite;
 using PetitesPuces.ViewModels.Gestionnaire;
@@ -592,6 +594,13 @@ namespace PetitesPuces.Controllers
         private HttpStatusCodeResult HttpBadRequest()
         {
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        private ActionResult XMLBD()
+        {
+           
+            return View();
+
         }
     }
 }
