@@ -469,7 +469,7 @@ namespace PetitesPuces.Controllers
                     }
                     else
                     {
-                        prod.Disponibilité = null;
+                        prod.DisponibilitÃ© = null;
                     }
                 }
             }

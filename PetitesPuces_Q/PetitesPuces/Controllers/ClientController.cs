@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
@@ -176,7 +177,9 @@ namespace PetitesPuces.Controllers
 
             if (!requeteProduit.Any())
                 return HttpStatusCode.Gone;
-            
+
+            if (Quantite > requeteProduit.FirstOrDefault().NombreItems)
+                return HttpStatusCode.Conflict;
             
 
             int noVendeur = (int) requeteProduit.First().NoVendeur;
@@ -206,6 +209,20 @@ namespace PetitesPuces.Controllers
             }         
             return HttpStatusCode.OK;
         }
+
+        public ActionResult CheckDisponibiliteArticlesPanier(int NoVendeur)
+        {
+            Panier panier = GetPanierByVendeurClient(NoVendeur);
+
+            foreach (PPArticlesEnPanier article in panier.Articles)
+            {
+                if (article.NbItems > article.PPProduit.NombreItems)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Conflict);
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        } 
         public ActionResult MonPanier(string No)
         {
             ViewBag.NoClient = NOCLIENT;
@@ -438,8 +455,6 @@ namespace PetitesPuces.Controllers
                       && articles.PPProduit.NoProduit == NoProduit
                 select articles).FirstOrDefault();
             
-            //TODO: v'erifier si disponible
-
             //augmenter
             if (aAugmenter)
             {
@@ -476,10 +491,10 @@ namespace PetitesPuces.Controllers
             return PartialView("Client/_DetailPanier",panier);
         }
        
-        public ActionResult ConfirmationPaiement(int NoAutorisation, DateTime DateAutorisation, decimal FraisMarchand, string InfoSuppl)
+        public ActionResult ConfirmationPaiement(int? NoAutorisation, DateTime? DateAutorisation, decimal? FraisMarchand, string InfoSuppl)
         {
             
-            return View("ResultatCommande",InfoSuppl);
+            return View("ResultatCommande");
         }
         public ActionResult Profil()
         {
