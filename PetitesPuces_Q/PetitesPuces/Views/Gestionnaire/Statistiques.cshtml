@@ -1,5 +1,4 @@
-﻿@model PetitesPuces.ViewModels.Gestionnaire.StatsViewModel
-@{
+﻿@{
     ViewBag.Title = "Statistiques - Gestionnaire";
 }
 
@@ -13,28 +12,28 @@
                 <strong class="mx-1">Periode:</strong>
                 <div class="btn-group d-flex align-items-baseline">
                     <label type="button" class="btn btn-default active">
-                        <input type="radio" name="periodeTotalVendeur" value="1" autocomplete="off" checked /> 1
+                        <input type="radio" name="periodeTotalVendeur" value="1m" autocomplete="off" checked /> 1
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalVendeur" value="2" autocomplete="off" /> 2
+                        <input type="radio" name="periodeTotalVendeur" value="2m" autocomplete="off" /> 2
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalVendeur" value="3" autocomplete="off" /> 3
+                        <input type="radio" name="periodeTotalVendeur" value="3m" autocomplete="off" /> 3
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalVendeur" value="6" autocomplete="off" /> 6
+                        <input type="radio" name="periodeTotalVendeur" value="6m" autocomplete="off" /> 6
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalVendeur" value="9" autocomplete="off" /> 9
+                        <input type="radio" name="periodeTotalVendeur" value="9m" autocomplete="off" /> 9
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalVendeur" value="12" autocomplete="off" /> 12
+                        <input type="radio" name="periodeTotalVendeur" value="12m" autocomplete="off" /> 12
                     </label>
                     <strong class="mx-1">Mois</strong>
                 </div>
                 <div class="btn-group d-flex align-items-baseline">
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Début du site
+                        <input type="radio" name="periodeTotalVendeur" value="T" autocomplete="off" /> Début du site
                     </label>
                 </div>
             </div>
@@ -49,30 +48,29 @@
                 <strong class="mx-1">Rejoins depuis:</strong>
                 <div class="btn-group d-flex align-items-baseline">
                     <label type="button" class="btn btn-default active">
-                        <input type="radio" name="periodeTotalVendeur" value="1" autocomplete="off" checked /> 1
+                        <input type="radio" name="periodeNouveauxVendeurs" value="1m" autocomplete="off" checked /> 1
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalVendeur" value="2" autocomplete="off" /> 2
+                        <input type="radio" name="periodeNouveauxVendeurs" value="2m" autocomplete="off" /> 2
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalVendeur" value="3" autocomplete="off" /> 3
+                        <input type="radio" name="periodeNouveauxVendeurs" value="3m" autocomplete="off" /> 3
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalVendeur" value="6" autocomplete="off" /> 6
+                        <input type="radio" name="periodeNouveauxVendeurs" value="6m" autocomplete="off" /> 6
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalVendeur" value="9" autocomplete="off" /> 9
+                        <input type="radio" name="periodeNouveauxVendeurs" value="9m" autocomplete="off" /> 9
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalVendeur" value="12" autocomplete="off" /> 12
+                        <input type="radio" name="periodeNouveauxVendeurs" value="12m" autocomplete="off" /> 12
                     </label>
                     <strong class="mx-1">Mois</strong>
                 </div>
                 <div class="btn-group d-flex align-items-baseline">
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Toujours
+                        <input type="radio" name="periodeNouveauxVendeurs" value="T" autocomplete="off" /> Toujours
                     </label>
-                    <strong class="mx-1">Mois</strong>
                 </div>
             </div>
             <canvas id="cvNouveauVendeurs"></canvas>
@@ -85,7 +83,7 @@
         <h3 class="text-center">Total des clients</h3>
         <div class="well row text-center">
             <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
-                <strong class="mx-1">Periode:</strong>
+                <strong class="mx-1">Grand Total: </strong>
             </div>
             <canvas id="cvTotalClients"></canvas>
         </div>
@@ -98,29 +96,28 @@
                 <div class="btn-group d-flex align-items-baseline" data-toggle="buttons">
                     <strong class="text-bold mx-1">Rejoins depuis:</strong>
                     <label type="button" class="btn btn-default active">
-                        <input type="radio" name="periodeTotalClient" value="1" autocomplete="off" checked /> 1
+                        <input type="radio" name="periodeNouveauxClients" value="1m" autocomplete="off" checked /> 1
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalClient" value="2" autocomplete="off" /> 2
+                        <input type="radio" name="periodeNouveauxClients" value="2m" autocomplete="off" /> 2
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalClient" value="3" autocomplete="off" /> 3
+                        <input type="radio" name="periodeNouveauxClients" value="3m" autocomplete="off" /> 3
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalClient" value="6" autocomplete="off" /> 6
+                        <input type="radio" name="periodeNouveauxClients" value="6m" autocomplete="off" /> 6
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalClient" value="9" autocomplete="off" /> 9
+                        <input type="radio" name="periodeNouveauxClients" value="9m" autocomplete="off" /> 9
                     </label>
                     <label type="button" class="btn btn-default">
-                        <input type="radio" name="periodeTotalClient" value="12" autocomplete="off" /> 12
+                        <input type="radio" name="periodeNouveauxClients" value="12m" autocomplete="off" /> 12
                     </label>
                     <strong class="mx-1">Mois</strong>
                     <div class="btn-group d-flex align-items-baseline">
                         <label type="button" class="btn btn-default">
-                            <input type="radio" name="periodeTotalClient" value="99" autocomplete="off" /> Toujours
+                            <input type="radio" name="periodeNouveauxClients" value="T" autocomplete="off" /> Toujours
                         </label>
-                        <strong class="mx-1">Mois</strong>
                     </div>
                 </div>
             </div>
@@ -129,59 +126,12 @@
     </div>
 </div>
 
-<div class="col-xs-10 col-xs-offset-1 col-lg-offset-3 col-lg-6">
-    <h3 class="text-center">Nombre de connexions au site</h3>
-    <div class="well row text-center">
-        <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
-            <strong class="mx-1">Periode:</strong>
-            <div class="btn-group d-flex align-items-baseline">
-                <label type="button" class="btn btn-default active">
-                    <input type="radio" name="periodeTotalVendeur" value="1" autocomplete="off" checked /> 1
-                </label>
-                <label type="button" class="btn btn-default">
-                    <input type="radio" name="periodeTotalVendeur" value="2" autocomplete="off" /> 2
-                </label>
-                <label type="button" class="btn btn-default">
-                    <input type="radio" name="periodeTotalVendeur" value="3" autocomplete="off" /> 3
-                </label>
-                <label type="button" class="btn btn-default">
-                    <input type="radio" name="periodeTotalVendeur" value="6" autocomplete="off" /> 6
-                </label>
-                <label type="button" class="btn btn-default">
-                    <input type="radio" name="periodeTotalVendeur" value="9" autocomplete="off" /> 9
-                </label>
-                <label type="button" class="btn btn-default">
-                    <input type="radio" name="periodeTotalVendeur" value="12" autocomplete="off" /> 12
-                </label>
-                <strong class="mx-1">Mois</strong>
-            </div>
-            <div class="btn-group d-flex align-items-baseline">
-                <label type="button" class="btn btn-default">
-                    <input type="radio" name="periodeClient" value="99" autocomplete="off" /> Début du site
-                </label>
-            </div>
-        </div>
-        <canvas id="cvConnexionsClients"></canvas>
-    </div>
-</div>
-
 <h2 class="col-xs-12 text-center">Rapports</h2>
 
 <div class="col-xs-10 col-xs-offset-1">
     <h3 class="text-center">Nombre de connexions par client</h3>
     <div class="well row text-center">
-        <form class="form-inline">
-            <div class="input-group">
-                <input type="search" class="form-control">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
-                        </span>
-                    </button>
-                </span>
-            </div>
-        </form>
-        <table class="table w-100">
+        <table id="nbConnexionClient" class="table w-100">
             <tr>
                 <th>
                     Courriel
@@ -192,23 +142,9 @@
                 <th>
                     Nom
                 </th>
-                <th>
+                <th class="text-right">
                     Nb. connexions
                 </th>
-            </tr>
-            <tr>
-                <td>
-                    test@test.ca
-                </td>
-                <td>
-                    M.
-                </td>
-                <td>
-                    Tout le monde
-                </td>
-                <td>
-                    ##
-                </td>
             </tr>
         </table>
     </div>
@@ -220,11 +156,11 @@
         <div class="d-flex justify-content-center align-items-center">
             <strong class="mx-1">Afficher les</strong>
             <strong class="mx-1">0</strong>
-            <input class="d-inline-block mx-1" type="range" class="form-control-range" id="formControlRange">
+            <input class="d-inline-block mx-1" min="1" value="15" max="30" type="range" class="form-control-range" id="formControlRange">
             <strong class="mx-1">30</strong>
             <strong class="mx-1">dernières connexions</strong>
         </div>
-        <table class="table w-100">
+        <table id="connexionsRecentes" class="table w-100">
             <tr>
                 <th>
                     Courriel
@@ -235,23 +171,9 @@
                 <th>
                     Nom
                 </th>
-                <th>
-                    Nb. connexions
+                <th class="text-right">
+                    Date
                 </th>
-            </tr>
-            <tr>
-                <td class="text-left">
-                    test@test.ca
-                </td>
-                <td class="text-left">
-                    M.
-                </td>
-                <td class="text-left">
-                    Tout le monde
-                </td>
-                <td class="text-left">
-                    ##
-                </td>
             </tr>
         </table>
     </div>
@@ -261,51 +183,26 @@
 <div class="col-xs-10 col-xs-offset-1">
     <h3 class="text-center">Total des commandes d'un client par vendeur</h3>
     <div class="well row text-center">
-        <form class="form-inline">
-            <div class="input-group">
-                <input type="search" class="form-control">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
-                        </span>
-                    </button>
-                </span>
-            </div>
-        </form>
-        <table class="table w-100">
+        <table id="totalCommandes" class="table w-100">
             <tr>
                 <th>
-                    Courriel
+                    No Client
                 </th>
                 <th>
-                    Prénom
+                    Nom Client
                 </th>
                 <th>
-                    Nom
+                    Total commande
                 </th>
                 <th>
-                    Nom d'affaires du vendeur
+                    Date derniere commande
                 </th>
                 <th>
-                    Nb. connexions
+                    No Vendeur
                 </th>
-            </tr>
-            <tr>
-                <td class="text-left">
-                    test@test.ca
-                </td>
-                <td class="text-left">
-                    M.
-                </td>
-                <td class="text-left">
-                    Tout le monde
-                </td>
-                <td class="text-left">
-                    Magasin
-                </td>
-                <td class="text-left">
-                    ##.##$
-                </td>
+                <th>
+                    Nom vendeur
+                </th>
             </tr>
         </table>
     </div>
@@ -314,19 +211,11 @@
 <div class="col-xs-10 col-xs-offset-1">
     <h3 class="text-center">Nombre de clients par vendeur</h3>
     <div class="well row text-center">
-        <form class="form-inline">
-            <div class="input-group">
-                <input type="search" class="form-control">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
-                        </span>
-                    </button>
-                </span>
-            </div>
-        </form>
-        <table class="table w-100">
+        <table id="nbClientsVendeur" class="table w-100">
             <tr>
+                <th>
+                    No vendeur
+                </th>
                 <th>
                     Nom d'affaire
                 </th>
@@ -340,25 +229,14 @@
                     Nom
                 </th>
                 <th>
-                    Nb. de clients
+                    Nb. clients actifs
                 </th>
-            </tr>
-            <tr>
-                <td class="text-left">
-                    Magasin
-                </td>
-                <td class="text-left">
-                    test@test.ca
-                </td>
-                <td class="text-left">
-                    M.
-                </td>
-                <td class="text-left">
-                    Tout le monde
-                </td>
-                <td class="text-left">
-                    ##
-                </td>
+                <th>
+                    Nb. clients potentiels
+                </th>
+                <th>
+                    Nb. visiteurs
+                </th>
             </tr>
         </table>
     </div>
@@ -367,18 +245,7 @@
 <div class="col-xs-10 col-xs-offset-1">
     <h3 class="text-center">Clients et vendeurs selon ventes</h3>
     <div class="well row text-center">
-        <form class="form-inline">
-            <div class="input-group">
-                <input type="search" class="form-control">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
-                        </span>
-                    </button>
-                </span>
-            </div>
-        </form>
-        <table class="table w-100">
+        <table id="clientsVendeursVente" class="table w-100">
             <tr>
                 <th>
                     Role
@@ -392,50 +259,401 @@
                 <th>
                     Nom
                 </th>
-                <th>
+                <th class="text-right">
                     Total ventes/Achats
                 </th>
-            </tr>
-            <tr>
-                <td>
-                    Vendeur
-                </td>
-                <td class="text-left">
-                    test@test.ca
-                </td>
-                <td class="text-left">
-                    M.
-                </td>
-                <td class="text-left">
-                    LeVendeur
-                </td>
-                <td class="text-left">
-                    ##.##$
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Client
-                </td>
-                <td class="text-left">
-                    test@test.ca
-                </td>
-                <td class="text-left">
-                    M.
-                </td>
-                <td class="text-left">
-                    LeClient
-                </td>
-                <td class="text-left">
-                    ##.##$
-                </td>
             </tr>
         </table>
     </div>
 </div>
 
-
-@section scripts {
+@section scripts{
     @Scripts.Render("~/bundles/chart");
-    <script type="text/javascript" src="@Url.Content("~/Scripts/Gestionnaire/Statistiques.js")"></script>
 }
+
+<script>
+    $(document).ready(function() {
+        const filtres = {
+            periodeTousVendeurs: '1m',
+            periodeNouveauxVendeurs: '1m',
+            periodeNouveauxClients: '1m',
+        }
+
+        let totVendChart;
+        let totNClientsChart;
+        let totNVendChart;
+
+        $('[name="periodeTotalVendeur"]').change(function() {
+            if (!$(this).prop('checked')) return;
+            filtres.periodeTousVendeurs = $(this).val();
+            getTousVendeurs();
+        });
+        
+        $('[name="periodeNouveauxClients"]').change(function() {
+            if (!$(this).prop('checked')) return;
+            filtres.periodeNouveauxClients = $(this).val();
+            getNouveauxClients();
+        });
+        
+        $('[name="periodeNouveauxVendeurs"]').change(function() {
+            if (!$(this).prop('checked')) return;
+            filtres.periodeNouveauxVendeurs = $(this).val();
+            getNouveauxVendeurs();
+        });;
+        
+        const DEFAULT_OPTIONS = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 10
+                    }
+                }]
+            }
+        }
+        
+        const COLORS = {
+            BLUE: {
+                fill: 'rgba(54, 162, 235, 0.2)',
+                outline: 'rgba(54, 162, 235, 1)'
+            },
+            RED:{
+                fill: 'rgba(255, 99, 132, 0.2)',
+                outline: 'rgba(255, 99, 132, 1)'
+            },
+            YELLOW:{
+                fill: 'rgba(255, 206, 86, 0.2)',
+                outline: 'rgba(255, 206, 86, 1)'
+            },
+            GREEN:{
+                fill: 'rgba(133, 187, 101, 0.2)',
+                outline: 'rgba(133, 187, 101, 1)'
+            },
+        }
+        
+        const L_ALIGN = 'text-left';
+        const R_ALIGN = 'text-right';
+        
+        getTousVendeurs();
+        getNouveauxVendeurs();
+        getTousClients();
+        getNouveauxClients();
+        $.get('/Gestionnaire/Statistiques/Donnees', null, initReports);
+        
+        function initReports(data) {
+            data = JSON.parse(data);
+            const clientsParDateConnexion = data.Clients.slice();
+            clientsParDateConnexion.sort((a, b) => {
+                const aTime = Date.parse(a.DateDerniereConnexion);
+                const bTime = Date.parse(b.DateDerniereConnexion);
+                if (aTime < bTime) {
+                    return 1;
+                }
+                
+                if (aTime > bTime) {
+                    return -1;
+                }
+
+                return 0;
+            });
+            
+            initConnexionReport(data.Clients);
+            initRecentConnexionReport(clientsParDateConnexion);
+            initOrderTotalsReport(data.Clients);
+            initClientsReport(data.Vendeurs);
+            initSalesReport(data);
+            
+            $('#formControlRange').change(() => initRecentConnexionReport(clientsParDateConnexion));
+        }
+        
+        function initConnexionReport(data) {
+            const targetTable = $('#nbConnexionClient');
+            targetTable.find('.data-row').remove();
+            
+            for (let i = 0; i < data.length; i++) {
+                const elem = data[i];
+                const row = $('<tr>', {class: 'data-row'});
+                
+                row.append($('<td>', {class: L_ALIGN, text: elem.NoClient}));
+                row.append($('<td>', {class: L_ALIGN, text: elem.Prenom}));
+                row.append($('<td>', {class: L_ALIGN, text: elem.Nom}));
+                row.append($('<td>', {class: R_ALIGN, text: elem.NbConnexions}));
+
+                targetTable.append(row);
+            }
+        }
+        
+        function initRecentConnexionReport(data) {
+            const nbConnexions = $('#formControlRange').val();
+            const targetTable = $('#connexionsRecentes');
+            targetTable.find('.data-row').remove();
+
+            data = data.slice(0, nbConnexions);
+            
+            for (let i = 0; i < data.length; i++) {
+                const elem = data[i];
+                const row = $('<tr>', {class: 'data-row'});
+                
+                row.append($('<td>', {class: L_ALIGN, text: elem.AdresseEmail}));
+                row.append($('<td>', {class: L_ALIGN, text: elem.Prenom}));
+                row.append($('<td>', {class: L_ALIGN, text: elem.Nom}));
+                row.append($('<td>', {class: R_ALIGN, text: formatDateStr(elem.DateDerniereConnexion)}));
+
+                targetTable.append(row);
+            }
+        }
+        
+        function initOrderTotalsReport(data) {
+            const targetTable = $('#totalCommandes');
+            targetTable.find('.data-row').remove();
+
+            for (let i = 0; i < data.length; i++) {
+                const elem = data[i];
+                
+                for (let noVendeur in data.TotalCommandesParVendeur) {
+                    const stats = data.TotalCommandesParVendeur[noVendeur];
+                    const row = $('<tr>', {class: 'data-row'});
+                
+                    row.append($('<td>', {class: L_ALIGN, text: elem.NoClient}));
+                    row.append($('<td>', {class: L_ALIGN, text: elem.Prenom + ' ' + elem.Nom}));
+                    row.append($('<td>', {class: L_ALIGN, html: formatMoney(stats.TotalCommandes)}));
+                    row.append($('<td>', {class: R_ALIGN, text: formatDateStr(stats.DateDerniereCommande)}));
+                    row.append($('<td>', {class: R_ALIGN, text: noVendeur}));
+                    row.append($('<td>', {class: R_ALIGN, text: stats.Vendeur.NomAffaires}));
+
+                    targetTable.append(row);
+                }
+            }
+        }
+        
+        function formatMoney(amount) {
+            const toFixedString = Math.round(amount, 2).toFixed(2);
+            const separatedStr = toFixedString.split('.');
+            const htmlVal = '<b>' + separatedStr[0] + '<sup>' + separatedStr[1] + '</sup>$</b>';
+            
+            return htmlVal;
+        }
+        
+        function formatDateStr(dateStr) {
+            const date = new Date(Date.parse(dateStr));
+            const options = {
+                day : '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            };
+
+            return date.toLocaleString('fr-CA' ,options);
+        }
+        
+        function initClientsReport(data) {
+            const targetTable = $('#nbClientsVendeur');
+            targetTable.find('.data-row').remove();
+
+            for (let i = 0; i < data.length; i++) {
+                const elem = data[i];
+                const row = $('<tr>');
+                
+                row.append($('<td>', {class: L_ALIGN, text: elem.NoVendeur}));
+                row.append($('<td>', {class: L_ALIGN, text: elem.NomAffaires}));
+                row.append($('<td>', {class: L_ALIGN, text: elem.AdresseEmail}));
+                row.append($('<td>', {class: L_ALIGN, text: elem.Prenom}));
+                row.append($('<td>', {class: L_ALIGN, text: elem.Nom}));
+
+                for (let type in elem.typesClient) {
+                    const nbDuType = elem.typesClient[type];
+                    row.append($('<td>', {class: R_ALIGN, text: nbDuType}));
+                }
+
+                targetTable.append(row);
+            }
+        }
+        
+        function initSalesReport(data) {
+            const targetTable = $('#clientsVendeursVente');
+            targetTable.find('.data-row').remove();
+            const tous = data.Clients.concat(data.Vendeurs);
+            tous.sort((a, b) => {
+                if (a.TotalCommandes < b.TotalCommandes) {
+                    return 1;
+                }
+                
+                if (a.TotalCommandes > b.TotalCommandes) {
+                    return -1;
+                }
+
+                return 0;
+            });
+            
+            for (let i = 0; i < tous.length; i++) {
+                const elem = tous[i];
+                const row = $('<tr>');
+                
+                row.append($('<td>', {class: L_ALIGN, text: elem.Role}));
+                row.append($('<td>', {class: L_ALIGN, text: elem.AdresseEmail}));
+                row.append($('<td>', {class: L_ALIGN, text: elem.Prenom}));
+                row.append($('<td>', {class: L_ALIGN, text: elem.Nom}));
+                row.append($('<td>', {class: R_ALIGN, html: formatMoney(elem.TotalCommandes)}));
+
+                targetTable.append(row);
+            }
+        }
+        
+        function getTousVendeurs() {
+            $.get(
+                '/Gestionnaire/Statistiques/TousVendeurs',
+                {periode: filtres.periodeTousVendeurs},
+                (data) => {
+                    let [ctx, config] = creerGraphique($('#cvTotalVendeurs'), [['Nb. de vendeurs', data]]);
+                    
+                    if (totVendChart) {
+                        totVendChart.data = config.data;
+                        totVendChart.update();
+                    } else {
+                        totVendChart = new Chart(ctx, config);
+                    }
+                }
+            );
+        }
+        
+        function creerGraphique(canvas, datasets, colors = [COLORS.BLUE], type = 'line') {
+            const ctx = canvas[0].getContext('2d');
+            const labels = extractLabelsFromDataset(datasets);
+            datasets = formatDatasets(datasets);
+            datasets = addColorsToDatasets(datasets, colors);
+    
+            const chartConfig = {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: DEFAULT_OPTIONS
+            };
+    
+            return [ctx, chartConfig];
+        }
+        
+        function formatDatasets(datasets) {
+            const formattedDatasets = [];
+            
+            for (let i = 0; i < datasets.length; i++) {
+                const elem = datasets[i];
+                const data = [];
+                
+                for (let key in elem[1]) {
+                    data.push(elem[1][key]);
+                }
+    
+                formattedDatasets.push({
+                    label: elem[0],
+                    data: data
+                });
+            }
+            
+            return formattedDatasets;
+        }
+        
+        function addColorsToDatasets(datasets, colors) {
+            for (let i = 0; i < datasets.length; i++) {
+                const clr = colors[i];
+                datasets[i].borderColor = [clr.outline];
+                datasets[i].backgroundColor = [clr.fill];
+                datasets[i].borderWidth = 1;
+            }
+    
+            return datasets;
+        }
+        
+        function extractLabelsFromDataset(datasets) {
+            labels = [];
+            const data = datasets[0][1];
+            const options = {
+                day : '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            };
+            
+            for (let key in data) {
+                labels.push(formatDateStr(key));
+            }
+    
+            return labels;
+        }
+        
+        function getNouveauxVendeurs() {
+            $.get(
+                '/Gestionnaire/Statistiques/NouveauxVendeurs',
+                {periode: filtres.periodeNouveauxVendeurs},
+                (data) => {
+                    let [ctx, config] = creerGraphique($('#cvNouveauVendeurs'), [['Demandes en attente', data[0]], ['Demandes acceptées', data[1]]], [COLORS.RED, COLORS.GREEN]);
+                    if (totNVendChart) {
+                        totNVendChart.data = config.data;
+                        totNVendChart.update();
+                    } else {
+                        totNVendChart = new Chart(ctx, config);
+                    }
+                }
+            );
+        }
+        
+        function getTousClients() {
+            $.get(
+                '/Gestionnaire/Statistiques/TousClients',
+                {periode: filtres.periodeTousClients},
+                (data) => {
+                    const ctx = $('#cvTotalClients')[0].getContext('2d');
+                    
+                    const chartConfig ={
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Clients actifs', 'Clients potentiels', 'Clients visiteurs'],
+                            datasets: [{
+                                data: [data.Item1, data.Item2, data.Item3],
+                                backgroundColor: [
+                                    COLORS.GREEN.fill,
+                                    COLORS.BLUE.fill,
+                                    COLORS.YELLOW.fill,
+                                ],
+                                borderColor: [
+                                    COLORS.GREEN.outline,
+                                    COLORS.BLUE.outline,
+                                    COLORS.YELLOW.outline,
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            
+                        }
+                    };
+                    
+                    new Chart(ctx, chartConfig);
+                }
+            );
+        }
+        
+        function getNouveauxClients() {
+            $.get(
+                '/Gestionnaire/Statistiques/NouveauxClients',
+                {periode: filtres.periodeNouveauxClients},
+                (data) => {
+                    [ctx, config] = creerGraphique($('#cvNouveauxClients'), [['Nb. de comptes', data]]);
+                    
+                    console.log('updating nouveaux clients chart');
+                    if (totNClientsChart) {
+                        totNClientsChart.data.labels = config.labels;
+                        totNClientsChart.data = config.data;
+                        totNClientsChart.update();
+                    } else {
+                        totNClientsChart = new Chart(ctx, config);
+                    }
+                }
+            );
+        }
+    });
+</script>
