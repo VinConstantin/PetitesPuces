@@ -276,8 +276,9 @@ namespace PetitesPuces.Controllers
                 PPVendeur demandeVendeur =
                     (from vendeur
                             in ctxt.PPVendeurs
-                        where vendeur.NoVendeur == id
-                        select vendeur).First();
+                    orderby vendeur.DateCreation descending
+                    where vendeur.NoVendeur == id
+                    select vendeur).First();
 
                 return PartialView("Gestionnaire/Demandes/_DetailsVendeur", demandeVendeur);
             }
@@ -302,6 +303,7 @@ namespace PetitesPuces.Controllers
         {
             return (from vendeur
                     in ctxt.PPVendeurs
+                    orderby vendeur.DateCreation descending
                 where vendeur.Statut == 0
                 select vendeur).AsEnumerable().ToList();
         }
