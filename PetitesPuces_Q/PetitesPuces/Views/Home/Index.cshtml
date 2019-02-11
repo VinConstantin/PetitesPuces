@@ -46,7 +46,9 @@
             <button class="btn btn-primary rightLst">></button>
         </div>
     </div>
-    <div class="alert alert-info" role="alert"><a href="@Url.Action("Connexion", "Home")">Pour consulter le catalogue complet et passer des commandes, veuiller vous connecter</a></div>
+    <div class="alert alert-info" role="alert"><a href="@Url.Action("Connexion", "Home")">
+        <h3 style="color: black">Pour consulter le catalogue complet et passer des commandes, veuiller vous connecter</h3>
+    </a></div>
     <div id="partialListeProduits">
         @Html.Partial("Home/_ListeProduits",Model.Produits)
     </div>

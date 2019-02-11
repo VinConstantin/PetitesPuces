@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
@@ -15,9 +16,11 @@ using PetitesPuces.ViewModels.Vendeur;
 
 namespace PetitesPuces.Controllers
 {
+    #if !DEBUG
+        [Securise(RolesUtil.CLIENT)]
+    #endif
     public class ClientController : Controller
     {
-        //TODO:implémenter pour utiliser le bon no
         private long NOCLIENT = SessionUtilisateur.UtilisateurCourant.No;
         private const int DEFAULTITEMPARPAGE = 8;
         private BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
@@ -119,7 +122,7 @@ namespace PetitesPuces.Controllers
             };
             return viewModel;
         }
-        public ActionResult Catalogue(string Vendeur, string Categorie, string Page, string Size, string Filtre, string TriPar)
+        public ActionResult Catalogue(string Vendeur, string Categorie, string Page, string Size, string Filtre, string TriPar="Numero")
         {
             IEnumerable<PPProduit> listeProduits = new List<PPProduit>();
             int noPage = int.TryParse(Page, out noPage) ? noPage : 1;
@@ -134,9 +137,10 @@ namespace PetitesPuces.Controllers
             ViewBag.noPage = noPage;
             ViewBag.NbPage = (listeProduits.Count()-1)/nbItemsParPage+1;
             ViewBag.Filtre = Filtre;
+            ViewBag.Tri = TriPar;
             return View(viewModel);
         }
-        public ActionResult ListeProduits(string Vendeur, string Categorie, string Page, string Size, string Filtre, string TriPar)
+        public ActionResult ListeProduits(string Vendeur, string Categorie, string Page, string Size, string Filtre, string TriPar="Numero")
         {
             IEnumerable<PPProduit> listeProduits = new List<PPProduit>();
             int noPage = int.TryParse(Page, out noPage) ? noPage : 1;
@@ -151,6 +155,7 @@ namespace PetitesPuces.Controllers
             ViewBag.noPage = noPage;
             ViewBag.NbPage = (listeProduits.Count()-1)/nbItemsParPage+1;
             ViewBag.Filtre = Filtre;
+            ViewBag.Tri = TriPar;
             return PartialView("Client/_Catalogue",viewModel);
         }
 
@@ -172,7 +177,9 @@ namespace PetitesPuces.Controllers
 
             if (!requeteProduit.Any())
                 return HttpStatusCode.Gone;
-            
+
+            if (Quantite > requeteProduit.FirstOrDefault().NombreItems)
+                return HttpStatusCode.Conflict;
             
 
             int noVendeur = (int) requeteProduit.First().NoVendeur;
@@ -202,6 +209,20 @@ namespace PetitesPuces.Controllers
             }         
             return HttpStatusCode.OK;
         }
+
+        public ActionResult CheckDisponibiliteArticlesPanier(int NoVendeur)
+        {
+            Panier panier = GetPanierByVendeurClient(NoVendeur);
+
+            foreach (PPArticlesEnPanier article in panier.Articles)
+            {
+                if (article.NbItems > article.PPProduit.NombreItems)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Conflict);
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        } 
         public ActionResult MonPanier(string No)
         {
             ViewBag.NoClient = NOCLIENT;
@@ -434,8 +455,6 @@ namespace PetitesPuces.Controllers
                       && articles.PPProduit.NoProduit == NoProduit
                 select articles).FirstOrDefault();
             
-            //TODO: v'erifier si disponible
-
             //augmenter
             if (aAugmenter)
             {
@@ -472,11 +491,11 @@ namespace PetitesPuces.Controllers
             return PartialView("Client/_DetailPanier",panier);
         }
        
-        public ActionResult PasserCommande()
+        public ActionResult ConfirmationPaiement(int? NoAutorisation, DateTime? DateAutorisation, decimal? FraisMarchand, string InfoSuppl)
         {
-            return PartialView("Client/Commande/_ResultatCommande");
+            
+            return View("ResultatCommande");
         }
-
         public ActionResult Profil()
         {
 

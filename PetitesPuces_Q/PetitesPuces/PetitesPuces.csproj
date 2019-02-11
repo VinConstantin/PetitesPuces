@@ -210,6 +210,7 @@
     <Compile Include="Models\Commande\InfoClient.cs" />
     <Compile Include="Models\Commande\InfoCommande.cs" />
     <Compile Include="Models\Commande\InfoPaiement.cs" />
+    <Compile Include="Models\Courriel\Destinataire.cs" />
     <Compile Include="Models\Enums\Province.cs" />
     <Compile Include="Models\Enums\Tri.cs" />
     <Compile Include="Models\Ext\PPClient.cs" />
@@ -223,6 +224,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\DateTimeExtension.cs" />
     <Compile Include="Utilities\EnumExtensions.cs" />
     <Compile Include="Utilities\StringExtension.cs" />
     <Compile Include="Validations\ValidationCourriel.cs" />
@@ -239,9 +241,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Formatter.cs" />
     <Compile Include="ViewModels\Gestionnaire\IndexStats.cs" />
+    <Compile Include="ViewModels\Gestionnaire\PageStatsViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\Redevance.cs" />
     <Compile Include="ViewModels\Gestionnaire\RedevancesViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\ReponseDemandeVendeur.cs" />
+    <Compile Include="ViewModels\Gestionnaire\SerializablePPClient.cs" />
+    <Compile Include="ViewModels\Gestionnaire\SerializablePPVendeur.cs" />
+    <Compile Include="ViewModels\Gestionnaire\StatsVendeurClient.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
     <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />
     <Compile Include="ViewModels\InscriptionClient.cs" />
@@ -294,8 +300,8 @@
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
     <Content Include="Scripts\constant.js" />
+    <Content Include="Scripts\fr.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
-    <Content Include="Scripts\Gestionnaire\Statistiques.js" />
     <Content Include="Scripts\Home\Inscription.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionClient.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionVendeur.js" />
@@ -315,8 +321,9 @@
     <Content Include="Views\Client\Catalogue.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
+    <Content Include="Views\Client\ResultatCommande.cshtml" />
     <Content Include="Views\Courriel\Index.cshtml" />
-    <Content Include="Views\Courriel\_LayoutCourriel.cshtml" />
+    <Content Include="Views\Courriel\_ViewStart.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Confirmation.cshtml" />
@@ -324,7 +331,6 @@
     <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_ProduitsInformation.cshtml" />
-    <Content Include="Views\Shared\Client\Commande\_ResultatCommande.cshtml" />
     <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\_DetailPanier.cshtml" />
@@ -334,11 +340,16 @@
     <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
     <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
-    <Content Include="Views\Shared\Courriel\_BoiteReception.cshtml" />
-    <Content Include="Views\Shared\Courriel\_Brouillons.cshtml" />
+    <Content Include="Views\Shared\Courriel\Boites\_BoiteReception.cshtml" />
+    <Content Include="Views\Shared\Courriel\Boites\_Brouillons.cshtml" />
+    <Content Include="Views\Shared\Courriel\Boites\_ElementsEnvoyes.cshtml" />
+    <Content Include="Views\Shared\Courriel\Boites\_ElementsSupprimes.cshtml" />
+    <Content Include="Views\Shared\Courriel\_BoiteVideAlert.cshtml" />
     <Content Include="Views\Shared\Courriel\_ComposerMessage.cshtml" />
-    <Content Include="Views\Shared\Courriel\_ElementsEnvoyes.cshtml" />
-    <Content Include="Views\Shared\Courriel\_ElementsSupprimes.cshtml" />
+    <Content Include="Views\Shared\Courriel\_Courriel.cshtml" />
+    <Content Include="Views\Shared\Courriel\_CourrielInbox.cshtml" />
+    <Content Include="Views\Shared\Courriel\_CourrielInboxEnvoye.cshtml" />
+    <Content Include="Views\Shared\Courriel\_headerBoite.cshtml" />
     <Content Include="Views\Shared\Courriel\_ModalAjoutDestinataire.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DemandeVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DetailsVendeur.cshtml" />
@@ -348,6 +359,8 @@
     <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeDisableClient.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeDisablePersonne.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeDisableVendeur.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeSuppressionClient.cshtml" />
+    <Content Include="Views\Shared\Gestionnaire\Inactivite\_ListeSuppressionVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Inactivite\_Personne.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Inactivite\_Vendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_DetailsRedevances.cshtml" />
@@ -413,6 +426,7 @@
     <Content Include="Views\Shared\Vendeur\_RecuCommande.cshtml" />
     <Content Include="Views\Shared\Vendeur\_ConfirmationPanier.cshtml" />
     <Content Include="Views\JeuDessai\Index.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_GestionProduit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

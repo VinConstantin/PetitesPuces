@@ -88,6 +88,7 @@
         history.pushState(objParams, "", PARAMS);
     }
     function plusQuantite(id, noVendeur) {
+        event.stopPropagation();
         $.ajax({
             url: URLPATH+"/Client/ModifierQuantite",
             type: "get",
@@ -113,6 +114,7 @@
         
     }
     function moinsQuantite(id, noVendeur) {
+        event.stopPropagation();
         $.ajax({
             url: URLPATH+"/Client/ModifierQuantite",
             type: "get",
@@ -130,6 +132,7 @@
         });
     }
     function supprimerArticles(id, noVendeur) {
+        event.stopPropagation();
         $.ajax({
             url: URLPATH+"/Client/SupprimerArticle",
             type: "get",

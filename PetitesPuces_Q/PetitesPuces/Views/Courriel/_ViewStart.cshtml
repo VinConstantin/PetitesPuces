@@ -1,0 +1,19 @@
+﻿@using PetitesPuces.Securite
+@{
+    switch (SessionUtilisateur.UtilisateurCourant.Role)
+    {
+        case "Utilisateur":
+            Layout = "~/Views/Shared/Home/_LayoutHome.cshtml";
+            break;
+        case "Vendeur":
+            Layout = "~/Views/Shared/Vendeur/_LayoutVendeur.cshtml";
+            break;
+        case "Admin":
+            Layout = "~/Views/Shared/Gestionnaire/_LayoutGestionnaire.cshtml";
+            break;
+        case "Client":
+            Layout = "~/Views/Shared/Client/_LayoutClient.cshtml";
+            break;
+    }
+
+}

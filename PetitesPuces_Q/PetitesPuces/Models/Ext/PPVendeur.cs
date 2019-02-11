@@ -19,7 +19,10 @@ namespace PetitesPuces.Models
         {
             get { return RolesUtil.VEND; }
         }
-
+        public string DisplayName
+        {
+            get { return NomAffaires; }
+        }
         public long No
         {
             get { return NoVendeur; }
