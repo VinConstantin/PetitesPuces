@@ -476,11 +476,11 @@ namespace PetitesPuces.Controllers
             return PartialView("Client/_DetailPanier",panier);
         }
        
-        public ActionResult PasserCommande()
+        public ActionResult ConfirmationPaiement(int NoAutorisation, DateTime DateAutorisation, decimal FraisMarchand, string InfoSuppl)
         {
-            return PartialView("Client/Commande/_ResultatCommande");
+            
+            return View("ResultatCommande",InfoSuppl);
         }
-
         public ActionResult Profil()
         {
 

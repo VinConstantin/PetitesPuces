@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Web;
 
 namespace PetitesPuces.Utilities
@@ -13,6 +15,12 @@ namespace PetitesPuces.Utilities
         public static HtmlString ToHtml(this string source)
         {
             return new HtmlString(source);
+        }
+        public static string RemoveWhitespace(this string input)
+        {
+            return new string(input.ToCharArray()
+                .Where(c => !Char.IsWhiteSpace(c))
+                .ToArray());
         }
     }
 }
