@@ -1,0 +1,36 @@
+@model int
+
+<div class="container">
+    <div class="jumbotron">
+        <h3>Désolé, La commande n'a pu être traité</h3>
+    </div>
+@switch (Model)
+{
+    case 1:
+        <div class="alert alert-danger" role="alert">
+            La date d'expiration de votre carte est dépassé
+        </div>
+        break;
+    case 2:
+        <div class="alert alert-danger" role="alert">
+            La limite de votre crédit a été atteinte
+        </div>
+        break;
+    case 3:
+        <div class="alert alert-danger" role="alert">
+            SVP. contactez notre bureau (514-626-2666)
+        </div>
+        break;
+    case 4:
+        <div class="alert alert-danger" role="alert">
+            Un des produits de votre commande n'est plus disponible
+        </div>
+        break;
+    case 9999:
+        Html.Partial("_ErrorAlert");
+        break;
+    default:
+        Html.Partial("_ErrorAlert");
+        break;
+}
+</div>

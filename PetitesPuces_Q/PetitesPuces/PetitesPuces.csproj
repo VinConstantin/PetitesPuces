@@ -330,6 +330,7 @@
     <Content Include="Scripts\Shared\Carousel.js" />
     <Content Include="Scripts\profilPersonnel.js" />
     <Content Include="Views\Client\Catalogue.cshtml" />
+    <Content Include="Views\Client\ErreurCommande.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
     <Content Include="Views\Client\ResultatCommande.cshtml" />
