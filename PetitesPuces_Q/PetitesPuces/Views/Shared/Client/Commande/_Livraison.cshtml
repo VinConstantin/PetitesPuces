@@ -97,8 +97,8 @@
     }
     function getPrixLivraison() {
         var selected = $('input[name=optradio]:checked', 'form').val()
-        var prix = @prixTotalDouble
-        var poids = @poidsTotalDouble
+        var prix = @prixTotalDouble.ToString().Replace(',','.');
+        var poids = @poidsTotalDouble.ToString().Replace(',','.');
         $.ajax({
             url: URLPATH + "/Client/GetPrixLivraison",
             type: "get",

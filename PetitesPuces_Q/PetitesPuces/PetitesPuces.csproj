@@ -47,6 +47,10 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="mscorlib" />
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Rotativa.1.7.4-rc\lib\net45\Rotativa.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll</HintPath>
     </Reference>
@@ -278,6 +282,8 @@
     <Content Include="images\carouselPublicite\retour.jpg" />
     <Content Include="images\carouselPublicite\sante.jpg" />
     <Content Include="images\carouselPublicite\ste.jpg" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -288,6 +294,7 @@
       <LastGenOutput>BDPetitesPuces.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="App_Browsers\qt.browser" />
     <None Include="Models\BDPetitesPuces.dbml.layout">
       <DependentUpon>BDPetitesPuces.dbml</DependentUpon>
     </None>
@@ -298,6 +305,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Rotativa\wkhtmltoimage.exe" />
+    <None Include="Rotativa\wkhtmltopdf.exe" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
