@@ -3,11 +3,39 @@
 
 <br/>
 <br/>
-<br/>
 <div class="container">
     <div class="row">
-        <h1>Confirmation de votre commande</h1>
-        <h5>Votre commande a Ã©tÃ© passÃ© avec succÃ¨s</h5>
+        <div class="col-lg-9">
+            <h1>Confirmation de votre commande</h1>
+            <h5>Votre commande a été passé avec succès</h5>
+        </div>
+        <div class="col-lg-3">
+            <div class="btn-group">
+                <a type="button" onclick="imprimer();" class="btn btn-link btn-lg"><span class="glyphicon glyphicon-print"></span></a>
+                <a type="button" onclick="save();" class="btn btn-link btn-lg"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+            </div>
+        </div>
     </div>
+    <br/>
 </div>
 @Html.Partial("Vendeur/_RecuCommande",Model)
+
+<script>
+    function imprimer() {
+        window.print();
+    }
+    var doc = new jsPDF();
+    function save() {
+
+        doc.fromHTML($('#receipt').html(), 15, 15, {
+            'width': 170,
+            'elementHandlers': specialElementHandlers
+        });
+        doc.save('sample-file.pdf');
+    }
+    var specialElementHandlers = {
+        '#receipt': function (element, renderer) {
+            return true;
+        }
+    };
+</script>
