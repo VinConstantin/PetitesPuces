@@ -510,34 +510,32 @@
 
                 targetTable.append(row);
             }
-            
-            rowsConnexionsRecentes = targetTable.children();
         }
         
         function initOrderTotalsReport(data) {
             const targetTable = $('#totalCommandes').find('tbody');
             targetTable.empty();
-
+            
             for (let i = 0; i < data.length; i++) {
                 const elem = data[i];
                 
-                for (let noVendeur in data.TotalCommandesParVendeur) {
-                    const stats = data.TotalCommandesParVendeur[noVendeur];
+                for (let noVendeur in elem.TotalCommandesParVendeur) {
+                    const stats = elem.TotalCommandesParVendeur[noVendeur];
                     const row = $('<tr>', {class: 'data-row'});
                 
                     row.append($('<td>', {class: L_ALIGN, text: elem.NoClient}));
                     row.append($('<td>', {class: L_ALIGN, text: elem.Prenom + ' ' + elem.Nom}));
                     row.append($('<td>', {class: L_ALIGN, html: formatMoney(stats.TotalCommandes)}));
-                    row.append($('<td>', {class: R_ALIGN, text: formatDateStr(stats.DateDerniereCommande)}));
-                    row.append($('<td>', {class: R_ALIGN, text: noVendeur}));
-                    row.append($('<td>', {class: R_ALIGN, text: stats.Vendeur.NomAffaires}));
+                    row.append($('<td>', {class: L_ALIGN, text: formatDateStr(stats.DateDerniereCommande)}));
+                    row.append($('<td>', {class: L_ALIGN, text: noVendeur}));
+                    row.append($('<td>', {class: L_ALIGN, text: stats.Vendeur.NomAffaires}));
 
                     targetTable.append(row);
                 }
             }
             
             const rowsTotalsCommandesClients = targetTable.children();
-            setRecherche($('#tbRechercheTotCommandesClient'), $('#btnRechercheTotCommandesClient'), $('#totalClients'), rowsTotalsCommandesClients, [1,2,3]);
+            setRecherche($('#tbRechercheTotCommandesClient'), $('#btnRechercheTotCommandesClient'), $('#totalCommandes'), rowsTotalsCommandesClients, [0,1,4,5]);
         }
         
         function formatMoney(amount) {
