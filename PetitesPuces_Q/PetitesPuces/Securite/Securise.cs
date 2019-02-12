@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Http.Controllers;
+using System.Web.Routing;
 
 namespace PetitesPuces.Securite
 {
@@ -28,6 +29,17 @@ namespace PetitesPuces.Securite
             if (user == null) return false;
 
             return rolesAutorises.Contains(user.Role);
+        }
+
+        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+        {
+            filterContext.Result = new RedirectToRouteResult(
+                new RouteValueDictionary
+                {
+                    {"Controller", "Home"},
+                    {"Action", "Connexion"}
+                }
+            );
         }
     }
 }
