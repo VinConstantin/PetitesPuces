@@ -226,6 +226,7 @@
     </Compile>
     <Compile Include="Utilities\DateTimeExtension.cs" />
     <Compile Include="Utilities\EnumExtensions.cs" />
+    <Compile Include="Utilities\PPProduitExtensions.cs" />
     <Compile Include="Utilities\StringExtension.cs" />
     <Compile Include="Validations\ValidationCourriel.cs" />
     <Compile Include="Securite\Securise.cs" />
@@ -301,8 +302,8 @@
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
     <Content Include="Scripts\constant.js" />
-    <Content Include="Scripts\fr.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
+    <Content Include="Scripts\Gestionnaire\Statistiques.js" />
     <Content Include="Scripts\Home\Inscription.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionClient.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionVendeur.js" />
@@ -332,6 +333,7 @@
     <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_ProduitsInformation.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_RecapitulatifCommande.cshtml" />
     <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\_DetailPanier.cshtml" />

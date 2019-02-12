@@ -5,8 +5,8 @@
 <tr style="height: 10vh; max-height: 10vh" onclick="visualiser(@Model.NoProduit)">
     <td>
         <div class="row">
-            <div class="col-md-2">
-                <img src="@Url.Content("/images/produits/" + Model.PPProduit.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="max-width: 50%; max-height: 100%" alt="Image">
+            <div class="col-md-1">
+                <img src="@Url.Content("/images/produits/" + Model.PPProduit.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="max-width: 100%; max-height: 100%" alt="Image">
 
             </div>
             <div class="col-md-2">
@@ -14,16 +14,19 @@
                     <p>@Model.PPProduit.Nom</p>
                 </div>
             </div>
-            <div class="col-md-2">
-                <p>@Formatter.Money(@Model.PPProduit.PrixVente)</p>
+            <div class="col-md-1">
+                <p>@Formatter.Poids(Model.PPProduit.Poids)</p>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <p>@Formatter.PrixProduitAvecVente(Model.PPProduit)</p>
+            </div>
+            <div class="col-md-2">
                 <div class="row quantity">
-                    <button class="minus-btn" type="button" name="button" onclick="moinsQuantite(@Model.PPProduit.NoProduit, @Model.PPProduit.NoVendeur)">
+                    <button class="btn btn-link" type="button" name="button" onclick="moinsQuantite(@Model.PPProduit.NoProduit, @Model.PPProduit.NoVendeur)">
                         <span class="glyphicon glyphicon-minus"></span>
-                    </button>
-                    <input type="text" style="width: 30%;" pattern="\d*" name="name" value="@Model.NbItems" width="50px" id="@Model.PPProduit.NoProduit">
-                    <button class="plus-btn" type="button" name="button" onclick="plusQuantite(@Model.PPProduit.NoProduit, @Model.PPProduit.NoVendeur)">
+                    </button>&nbsp;
+                    <lable type="text" style="width: 30%;" pattern="\d*" name="name" value="@Model.NbItems" width="50px" id="@Model.PPProduit.NoProduit"> @Model.NbItems </lable>
+                    &nbsp;<button class="btn btn-link" type="button" name="button" onclick="plusQuantite(@Model.PPProduit.NoProduit, @Model.PPProduit.NoVendeur)">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>
@@ -33,7 +36,10 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <p>@Formatter.Money(@Model.PPProduit.PrixVente*@Model.NbItems)</p>
+                <p></p>
+
+                    <p>@Formatter.Money(@Model.PPProduit.GetPrixCourant() * @Model.NbItems)</p>
+
             </div>
             
             <div class="col-md-1">
