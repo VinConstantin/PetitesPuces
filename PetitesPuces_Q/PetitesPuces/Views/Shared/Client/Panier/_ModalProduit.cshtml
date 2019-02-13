@@ -1,0 +1,37 @@
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPProduit
+
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLabel" style="overflow: hidden;
+                                      text-overflow: ellipsis;">@Model.Nom</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <img src="@Url.Content("/images/produits/" + Model.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="width: 100%" alt="Image">
+        <br/>
+        <p>@Model.Description</p>
+         
+        <p><div class="h3">
+            @Formatter.PrixProduitAvecVente(Model)
+        </div></p>
+        
+        <p>Poids : @Model.Poids lbs</p>
+        <p>Catégorie : @Model.PPCategory.Description</p>
+        <hr/>
+        <p>Date de création : @Model.DateCreation.Value.ToShortDateString()</p>
+        <p>Vendeur : @Model.PPVendeur.NomAffaires</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+    </div>
+</div>
+<script>
+    function contacter() {
+        var url = '@Url.Action("Index", "Courriel")';
+        window.location.href = url;
+    }
+</script>

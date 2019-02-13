@@ -282,8 +282,6 @@
     <Content Include="images\carouselPublicite\retour.jpg" />
     <Content Include="images\carouselPublicite\sante.jpg" />
     <Content Include="images\carouselPublicite\ste.jpg" />
-    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
-    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -305,8 +303,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Rotativa\wkhtmltoimage.exe" />
-    <None Include="Rotativa\wkhtmltopdf.exe" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
@@ -338,6 +334,7 @@
     <Content Include="Views\Courriel\_ViewStart.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_RatingTooltip.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Confirmation.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Information.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
@@ -345,7 +342,9 @@
     <Content Include="Views\Shared\Client\Commande\_ProduitsInformation.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_RecapitulatifCommande.cshtml" />
     <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
+    <Content Include="Views\Shared\Client\Panier\_ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
+    <Content Include="Views\Shared\Client\_Commande.cshtml" />
     <Content Include="Views\Shared\Client\_DetailPanier.cshtml" />
     <Content Include="Views\Shared\Client\_ModalConfirmation.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />

@@ -52,6 +52,7 @@
       <Association Name="PPClient_PPArticlesEnPanier" Member="PPArticlesEnPaniers" ThisKey="NoClient" OtherKey="NoClient" Type="PPArticlesEnPanier" />
       <Association Name="PPClient_PPCommande" Member="PPCommandes" ThisKey="NoClient" OtherKey="NoClient" Type="PPCommande" />
       <Association Name="PPClient_PPVendeursClient" Member="PPVendeursClients" ThisKey="NoClient" OtherKey="NoClient" Type="PPVendeursClient" />
+      <Association Name="PPClient_PPEvaluation" Member="PPEvaluations" ThisKey="NoClient" OtherKey="NoClient" Type="PPEvaluation" />
     </Type>
   </Table>
   <Table Name="dbo.PPCommandes" Member="PPCommandes">
@@ -128,6 +129,7 @@
       <Column Name="DateMAJ" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
       <Association Name="PPProduit_PPArticlesEnPanier" Member="PPArticlesEnPaniers" ThisKey="NoProduit" OtherKey="NoProduit" Type="PPArticlesEnPanier" />
       <Association Name="PPProduit_PPDetailsCommande" Member="PPDetailsCommandes" ThisKey="NoProduit" OtherKey="NoProduit" Type="PPDetailsCommande" />
+      <Association Name="PPProduit_PPEvaluation" Member="PPEvaluations" ThisKey="NoProduit" OtherKey="NoProduit" Type="PPEvaluation" />
       <Association Name="PPCategory_PPProduit" Member="PPCategory" ThisKey="NoCategorie" OtherKey="NoCategorie" Type="PPCategory" IsForeignKey="true" />
       <Association Name="PPVendeur_PPProduit" Member="PPVendeur" ThisKey="NoVendeur" OtherKey="NoVendeur" Type="PPVendeur" IsForeignKey="true" />
     </Type>
@@ -238,6 +240,18 @@
       <Column Name="Description" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="PPLieu_PPDestinataire" Member="PPDestinataires" ThisKey="NoLieu" OtherKey="Lieu" Type="PPDestinataire" />
       <Association Name="PPLieu_PPMessage" Member="PPMessages" ThisKey="NoLieu" OtherKey="Lieu" Type="PPMessage" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PPEvaluations" Member="PPEvaluations">
+    <Type Name="PPEvaluation">
+      <Column Name="NoClient" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NoProduit" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="[Cote ]" Member="Cote_" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="[Commentaire ]" Member="Commentaire_" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="[DateMAJ ]" Member="DateMAJ_" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="[DateCreation ]" Member="DateCreation_" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Association Name="PPClient_PPEvaluation" Member="PPClient" ThisKey="NoClient" OtherKey="NoClient" Type="PPClient" IsForeignKey="true" />
+      <Association Name="PPProduit_PPEvaluation" Member="PPProduit" ThisKey="NoProduit" OtherKey="NoProduit" Type="PPProduit" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

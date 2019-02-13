@@ -171,6 +171,15 @@ namespace PetitesPuces.Controllers
             return PartialView("Client/ModalProduit", produit);
 
         }
+        public ActionResult InformationProduitPanier(int NoProduit)
+        {
+            PPProduit produit = (from unProduit in context.PPProduits
+                where unProduit.NoProduit == NoProduit
+                select unProduit).FirstOrDefault();
+
+            return PartialView("Client/Panier/_ModalProduit", produit);
+
+        }
         [System.Web.Mvc.HttpPost]
         public HttpStatusCode AjouterProduitAuPanier(int NoProduit, short Quantite)
         {
@@ -653,7 +662,7 @@ namespace PetitesPuces.Controllers
                 }  
 
                 context.SubmitChanges();
-                return RedirectToAction("Recapitulatif", "Client",
+                return RedirectToAction("Recu", "Client",
                     new RouteValueDictionary(new { noCommande = commande.NoCommande}));
             }
             catch (Exception e)
@@ -663,7 +672,7 @@ namespace PetitesPuces.Controllers
             }
         }
         
-        public ActionResult Recapitulatif(int noCommande)
+        public ActionResult Recu(int noCommande)
         {
             var commande = (from c in context.PPCommandes 
                 where c.NoCommande == noCommande && c.NoClient==NOCLIENT

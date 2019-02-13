@@ -132,3 +132,12 @@
 .justify-self-end {
     justify-self: flex-end;
 }
+.hoverDiv{
+    border: 2px groove transparent;
+    border-radius: 5px
+}
+.hoverDiv:hover {
+    border: 2px groove #18bc9c;
+    border-radius: 5px;
+    cursor: pointer;
+}
