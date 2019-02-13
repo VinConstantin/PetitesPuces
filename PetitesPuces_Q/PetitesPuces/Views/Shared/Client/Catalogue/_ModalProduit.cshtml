@@ -7,17 +7,6 @@
 @{
     BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
 
-    //toutes les evaluations
-    List<PPEvaluation> evaluations = (from e in ctxt.PPEvaluations
-        where e.NoProduit == Model.NoProduit
-        select e).ToList();
-
-    int nbEtoile = 0;
-    if (evaluations.Count > 0)
-    {
-        decimal average = evaluations.Average(e => e.Cote_);
-        nbEtoile = (int) Math.Round(average);
-    }
     PPEvaluation monEvaluation = null;
     //si le client a deja acheté ce produit
     var requeteCommande = (from c in ctxt.PPDetailsCommandes
@@ -56,17 +45,8 @@
                     </button>
                 }
             </div>
-            <div class="col-md-6" style="font-size: 32px; text-align: right; padding-right: 10px">
-                <span id="rating">
-                    @for (int i = 1; i <= nbEtoile; i++)
-                    {
-                        <span class="glyphicon glyphicon-star"></span>
-                    }
-                    @for (int i = 1; i <= 5 - nbEtoile; i++)
-                    {
-                        <span class="glyphicon glyphicon-star-empty"></span>
-                    }
-                </span>
+            <div id="EtoileRating" class="col-md-6" style="font-size: 32px; text-align: right; padding-right: 10px">
+                @Html.Partial("Client/Catalogue/_EtoilesRating",Model)
             </div>
         </div>
         @if (requeteCommande.Any())
@@ -89,12 +69,22 @@
                                     <span id="@("Etoile" + i)" data-no-etoile="@i" class="glyphicon glyphicon-star-empty" onclick="selectNbEtoiles(this);" onmouseover="onHoverEtoile(this);"></span>
                                 }
                             </span>
-                            <input type="hidden" id="nbEtoiles"/>
+                            <input type="hidden" id="nbEtoiles" value="1"/>
                             <textarea id="commentaire" class="form-control" style="resize: none;">@monEvaluation.Commentaire_</textarea>
                         </div>
                         <br/>
-                        <div class="">
-                            <button type="button" onclick="modifierEvaluation();" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Modifier </button>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button type="button" onclick="modifierEvaluation();" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Modifier </button>
+                            </div>
+                            <div class="col-md-5">
+                                <div id="successEvaluation" class="alert alert-success" role="alert" hidden>
+                                    Évaluation modifiée
+                                </div>
+                                <div id="errorEvaluation" class="alert alert-warning" role="alert" hidden>
+                                    Erreure
+                                </div>
+                            </div>
                         </div>
                     }
                     else
@@ -113,8 +103,18 @@
                             <textarea id="commentaire" class="form-control" style="resize: none;"></textarea>
                         </div>
                         <br/>
-                        <div class="">
-                            <button type="button" onclick="envoyerEvaluation();" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Envoyer </button>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button type="button" onclick="envoyerEvaluation();" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Envoyer </button>
+                            </div>
+                            <div class="col-md-5">
+                                <div id="successEvaluation" class="alert alert-success" role="alert" hidden>
+                                    Évaluation envoyée
+                                </div>
+                                <div id="errorEvaluation" class="alert alert-warning" role="alert" hidden>
+                                    Erreure
+                                </div>
+                            </div>
                         </div>
                     }
     
@@ -153,9 +153,7 @@
     </div>
 </div>
 
-<div id="ratingTooltip">
-    @Html.Partial("Client/Catalogue/_RatingTooltip",evaluations)
-</div>
+
 <script>
     function contacter() {
         var url = '@Url.Action("Index", "Courriel")';
@@ -171,10 +169,13 @@
                 noProduit:@Model.NoProduit
             },
             success: function (result) {
-                console.log(result);
+                $("#EtoileRating").html(result);
+                $("#successEvaluation").show();
+                $("#errorEvaluation").hide();
             },
             error: function (req, status, err) {
-                console.log(req, status, err);
+                $("#errorEvaluation").show();
+                $("#successEvaluation").hide();
             }
         });
     }
@@ -188,10 +189,13 @@
                 noProduit:@Model.NoProduit
             },
             success: function (result) {
-                console.log(result);
+                $("#EtoileRating").html(result);
+                $("#successEvaluation").show();
+                $("#errorEvaluation").hide();
             },
             error: function (req, status, err) {
-                console.log(req, status, err);
+                $("#errorEvaluation").show();
+                $("#successEvaluation").hide();
             }
         });
     }
@@ -220,32 +224,6 @@
         }
     }
     //tooltip
-    tippy('#rating', {
-        animation: 'scale',
-        duration: [800, 500],
-        delay: [0,200],
-        arrow: true,
-        placement: "bottom",
-        content: document.getElementById("ratingTooltip"),
-        allowHTML: true,
-        interactive: true,
-        onMount: function() {
-            $('.progress .progress-bar').css("width",
-                function() {
-                    return $(this).attr("aria-valuenow") + "%";
-                }
-            );
-        },
-        onHide: function() {
-            $('.progress .progress-bar').css("width",
-                function() {
-                    return "0%";
-                }
-            );
-        },
-        size: "large",
-        theme: "google"
-    });
     tippy('#ecrireCommentaire',{
         animation: 'scale',
         duration: [800, 500],

@@ -337,6 +337,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Client\Accueil\_Commande.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_Catalogue.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_EtoilesRating.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_Produits.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_RatingTooltip.cshtml" />

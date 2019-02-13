@@ -691,13 +691,14 @@ namespace PetitesPuces.Controllers
                 };
                 context.PPEvaluations.InsertOnSubmit(evaluation);
                 context.SubmitChanges();
+                
+                return PartialView("Client/Catalogue/_EtoilesRating", evaluation.PPProduit);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);;
             }
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
         
         [System.Web.Http.HttpPost]
@@ -717,13 +718,14 @@ namespace PetitesPuces.Controllers
                 evaluation.DateMAJ_ = DateTime.Now;
                 
                 context.SubmitChanges();
+
+                return PartialView("Client/Catalogue/_EtoilesRating", evaluation.PPProduit);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);;
             }
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
         public ActionResult Recu(int noCommande)
         {
