@@ -671,7 +671,60 @@ namespace PetitesPuces.Controllers
                 return View("ErreurCommande",101);
             }
         }
+
+        [System.Web.Http.HttpPost]
+        public ActionResult EnvoyerEvaluation(int cote, string commentaire, int noProduit)
+        {
+            try
+            {
+                if(cote>5||cote<0)
+                    return new HttpStatusCodeResult(HttpStatusCode.NotAcceptable);
+                
+                PPEvaluation evaluation = new PPEvaluation
+                {
+                    Cote_ = cote,
+                    Commentaire_ = commentaire,
+                    NoClient = NOCLIENT,
+                    NoProduit = noProduit,
+                    DateCreation_ = DateTime.Now,
+                    DateMAJ_ = DateTime.Now
+                };
+                context.PPEvaluations.InsertOnSubmit(evaluation);
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);;
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
         
+        [System.Web.Http.HttpPost]
+        public ActionResult ModifierEvaluation(int cote, string commentaire, int noProduit)
+        {
+            try
+            {
+                if(cote>5||cote<0)
+                    return new HttpStatusCodeResult(HttpStatusCode.NotAcceptable);
+                
+                PPEvaluation evaluation = (from e in context.PPEvaluations
+                    where e.NoProduit == noProduit && e.NoClient == NOCLIENT
+                    select e).First();
+
+                evaluation.Cote_ = cote;
+                evaluation.Commentaire_ = commentaire;
+                evaluation.DateMAJ_ = DateTime.Now;
+                
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);;
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
         public ActionResult Recu(int noCommande)
         {
             var commande = (from c in context.PPCommandes 
