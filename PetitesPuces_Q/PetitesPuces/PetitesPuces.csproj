@@ -379,6 +379,7 @@
     <Content Include="Views\Shared\Gestionnaire\Redevances\_ListeVendeurRedevance.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_Redevance.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_VendeurRedevance.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_RatingTooltip.cshtml" />
     <Content Include="Views\Shared\_ErrorAlert.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
     <Content Include="Views\Shared\Home\_CategorieCarousel.cshtml" />
