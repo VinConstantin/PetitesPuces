@@ -1,4 +1,5 @@
-
+@using PetitesPuces.Controllers
+@model EtatCourriel
 @{
    ViewBag.Title = "Courriel";
 }
@@ -31,15 +32,31 @@
     <br/>
     <div class="row">
         <div class="col-sm-4 col-md-3">
-            <a onclick="loadComposerMessage();" href="#" class="btn btn-danger" title="Composer un nouveau message">
-                <i class="glyphicon glyphicon-envelope"> Composer</i>
-            </a>
-            <hr>
             <ul class="nav nav-pills nav-stacked nav-tabs">
-                <li id="BoiteReception" class="active" onclick="loadBoiteReception();"><a href="#"><span class="glyphicon glyphicon-inbox"></span> Boîte de réception </a></li>
-                <li id="Brouillons" onclick="loadBrouillons();"><a href="#"><span class="glyphicon glyphicon-pencil"></span> Brouillons</a></li>
-                <li id="ElementsEnvoyes" onclick="loadElementsEnvoyes();"><a href="#"><span class="glyphicon glyphicon-send"></span> Éléments envoyés</a></li>
-                <li id="ElementSupprimes" onclick="loadElementSupprimes();"><a href="#"><span class="glyphicon glyphicon-trash"></span> Éléments supprimés</a></li>
+                <li id="Composer" data-state="Composer" href="#" title="Composer un nouveau message" class="btn btn-danger text-left">
+                    <i class="glyphicon glyphicon-envelope"></i> Composer
+                </li>
+                <hr/>
+                <li id="BoiteReception" data-state="Reception" class="active">
+                    <a href="javascript:void(0)">
+                        <span class="glyphicon glyphicon-inbox"></span> Boîte de réception
+                    </a>
+                </li>
+                <li id="Brouillons" data-state="Brouillon">
+                    <a href="javascript:void(0)">
+                        <span class="glyphicon glyphicon-pencil"></span>Brouillons
+                    </a>
+                </li>
+                <li id="ElementsEnvoyes" data-state="Envoye">
+                    <a href="javascript:void(0)">
+                        <span class="glyphicon glyphicon-send"></span> Éléments envoyés
+                    </a>
+                </li>
+                <li id="ElementSupprimes" data-state="Supprime">
+                    <a href="javascript:void(0)">
+                        <span class="glyphicon glyphicon-trash"></span> Éléments supprimés
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="col-sm-8 col-md-9" style="min-height: 60vh" id="PLACEHOLDER">
@@ -48,9 +65,47 @@
     </div>
 </div>
 <script>
-    $(document).ready(function() {
-        loadBoiteReception();
+    const etats = Object.freeze({
+        Composer: new Etat(loadComposerMessage),
+        Reception: new Etat(loadBoiteReception),
+        Brouillon: new Etat(loadBrouillons),
+        Envoye: new Etat(loadElementsEnvoyes),
+        Supprime: new Etat(loadElementSupprimes)
     });
+    const stateName = (history.state || 'Reception').toString();
+    let etat = etats[stateName];
+    let selected;
+
+    function Etat(loadFunc) {
+        this.load = loadFunc;
+    }
+    
+    $('[data-state]').each(function() {
+        if ($(this).hasClass('active')) {
+            selected = $(this);
+        }
+        
+        $(this).click(function() {
+            selected.removeClass('active');
+            $(this).addClass('active');
+            const stateName = $(this).attr('data-state');
+            displayPageState(stateName);
+        });
+    });
+    
+    function displayPageState(stateName) {
+        etat = etats[stateName];
+        history.pushState(stateName, `${stateName} - Courriel - Les Petites Puces`, `/Courriel/Boite/${stateName}`);
+        etat.load();
+    }
+    
+    $(document).ready(function() {
+        etat.load();
+        window.onpopstate = function(event) {
+            displayPageState(history.state || 'Receptiom');
+        }
+    });
+    
     function stopPropagation() {
         event.stopPropagation();
     }
@@ -75,7 +130,7 @@
         $('.active').removeClass('active');
         $('#BoiteReception').addClass('active');
         $.ajax({
-            url: URLPATH + "/Courriel/BoiteReception",
+            url: URLPATH + "/Courriel/Boite/Reception",
             type: "GET",
             data: {
                 
@@ -92,7 +147,7 @@
         $('.active').removeClass('active');
         $('#Brouillons').addClass('active');
         $.ajax({
-            url: URLPATH + "/Courriel/Brouillons",
+            url: URLPATH + "/Courriel/Boite/Brouillon",
             type: "GET",
             data: {
                 
@@ -109,7 +164,7 @@
         $('.active').removeClass('active');
         $('#ElementsEnvoyes').addClass('active');
         $.ajax({
-            url: URLPATH + "/Courriel/ElementsEnvoyes",
+            url: URLPATH + "/Courriel/Boite/Envoye",
             type: "GET",
             data: {
                 
@@ -126,7 +181,7 @@
         $('.active').removeClass('active');
         $('#ElementSupprimes').addClass('active');
         $.ajax({
-            url: URLPATH + "/Courriel/ElementsSupprimes",
+            url: URLPATH + "/Courriel/Boite/Supprime",
             type: "GET",
             data: {
                 
@@ -142,7 +197,7 @@
     function loadComposerMessage() {
         $('.active').removeClass('active');
         $.ajax({
-            url: URLPATH + "/Courriel/ComposerMessage",
+            url: URLPATH + "/Courriel/Boite/Composer",
             type: "GET",
             data: {
                 
