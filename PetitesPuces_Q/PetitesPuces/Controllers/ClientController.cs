@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Microsoft.Ajax.Utilities;
 using PetitesPuces.Models;
 using PetitesPuces.Securite;
@@ -600,67 +601,78 @@ namespace PetitesPuces.Controllers
             };
             return paiement;
         }
-        public ActionResult ConfirmationPaiement(string NoAutorisation, DateTime DateAutorisation, string FraisMarchand, string InfoSuppl)
+
+        public ActionResult ConfirmationPaiement(string NoAutorisation, DateTime DateAutorisation, string FraisMarchand,
+            string InfoSuppl)
         {
-            UpdateInfoClient();
-
-            PPCommande commande = CreateCommande(DateAutorisation,NoAutorisation);
-            context.PPCommandes.InsertOnSubmit(commande);
-
-            PPHistoriquePaiement paiement = CreatePaiement(commande, NoAutorisation, FraisMarchand);
-            context.PPHistoriquePaiements.InsertOnSubmit(paiement);
-
-            long noDetail = GetNextNoDetailsCommande();
-            foreach (PPArticlesEnPanier article in InfoCommande.Panier.Articles)
+            if (NoAutorisation == "9999" || NoAutorisation == "1" || NoAutorisation == "2" || NoAutorisation == "3")
             {
-                PPArticlesEnPanier articleASupprimer =
-                    (from c in context.PPArticlesEnPaniers 
-                        where c.NoPanier == article.NoPanier
-                        select c).FirstOrDefault();
+                int intNoAutorisation;
+                int.TryParse(NoAutorisation, out intNoAutorisation);
+                return View("ErreurCommande", intNoAutorisation);
+            }
 
-                context.PPArticlesEnPaniers.DeleteOnSubmit(articleASupprimer);
-                
-                PPDetailsCommande detailsCommande = new PPDetailsCommande
-                {
-                    NoDetailCommandes = noDetail++,
-                    NoCommande = commande.NoCommande,
-                    NoProduit = article.NoProduit,
-                    PrixVente = article.PPProduit.GetPrixCourant(),
-                    Quantité = article.NbItems
-                };
-                context.PPDetailsCommandes.InsertOnSubmit(detailsCommande);
-            }          
             try
             {
+                UpdateInfoClient();
+    
+                PPCommande commande = CreateCommande(DateAutorisation, NoAutorisation);
+                context.PPCommandes.InsertOnSubmit(commande);
+    
+                PPHistoriquePaiement paiement = CreatePaiement(commande, NoAutorisation, FraisMarchand);
+                context.PPHistoriquePaiements.InsertOnSubmit(paiement);
+    
+                long noDetail = GetNextNoDetailsCommande();
+                foreach (PPArticlesEnPanier article in InfoCommande.Panier.Articles)
+                {
+                    PPArticlesEnPanier articleASupprimer =
+                        (from c in context.PPArticlesEnPaniers
+                            where c.NoPanier == article.NoPanier
+                            select c).FirstOrDefault();
+    
+                    context.PPArticlesEnPaniers.DeleteOnSubmit(articleASupprimer);
+    
+                    PPDetailsCommande detailsCommande = new PPDetailsCommande
+                    {
+                        NoDetailCommandes = noDetail++,
+                        NoCommande = commande.NoCommande,
+                        NoProduit = article.NoProduit,
+                        PrixVente = article.PPProduit.GetPrixCourant(),
+                        Quantité = article.NbItems
+                    };
+    
+                    PPProduit produitAModifier = (from p in context.PPProduits
+                        where p.NoProduit == article.PPProduit.NoProduit
+                        select p).First();
+                    
+                    produitAModifier.NombreItems -= article.NbItems;
+                    if(produitAModifier.NombreItems < 0)
+                        return View("ErreurCommande",4);
+                    
+                    context.PPDetailsCommandes.InsertOnSubmit(detailsCommande);
+                }  
+
                 context.SubmitChanges();
+                return RedirectToAction("Recapitulatif", "Client",
+                    new RouteValueDictionary(new { noCommande = commande.NoCommande}));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw;
+                return View("ErreurCommande",101);
             }
-            
-            var PDF = new ActionAsPdf(
-                    "GetRecuCommande", 
-                    new { noCommande= commande.NoCommande }) 
-                { FileName = "Invoice.pdf" };
-            
-            return View("ResultatCommande",commande);
         }
-
-        public ActionResult GetRecuCommande(int noCommande)
+        
+        public ActionResult Recapitulatif(int noCommande)
         {
-            PPCommande commande = (from c in context.PPCommandes
-                where c.NoCommande == noCommande
-                      && c.NoClient == NOCLIENT
-                select c).First();
+            var commande = (from c in context.PPCommandes 
+                where c.NoCommande == noCommande && c.NoClient==NOCLIENT
+                select c);
             
-            return PartialView("Vendeur/_RecuCommande", commande);
-        }
-        public ActionResult Recapitulatif()
-        {
-            Panier panier = GetPanierByVendeurClient((int)InfoCommande.Vendeur.No);
-            return PartialView("Client/Commande/_RecapitulatifCommande",panier);
+            if(!commande.Any())
+                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            
+            return View("ResultatCommande", commande.First());
         }
         public ActionResult Profil()
         {
