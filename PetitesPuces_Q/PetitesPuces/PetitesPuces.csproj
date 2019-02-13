@@ -239,6 +239,7 @@
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Client\LivraisonViewModel.cs" />
     <Compile Include="ViewModels\Courriel\DestinataireViewModel.cs" />
+    <Compile Include="ViewModels\Courriel\BrouillonViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DetailsRedevances.cs" />
     <Compile Include="ViewModels\Gestionnaire\InactiviteViewModel.cs" />

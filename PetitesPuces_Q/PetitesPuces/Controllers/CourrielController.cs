@@ -1,10 +1,13 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Data.Linq;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using System.Web;
+using System.Web.Http.Results;
 using PetitesPuces.Models;
 using PetitesPuces.Models.Courriel;
 using PetitesPuces.Securite;
@@ -20,6 +23,7 @@ namespace PetitesPuces.Controllers
     {
         private readonly long noUtilisateur = SessionUtilisateur.UtilisateurCourant.No;
         private readonly BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
+        private const string ATTACHMENTS_FOLDER = "~/Attachments/";
 
         [Route("Courriel")]
         public ActionResult Index()
@@ -63,6 +67,82 @@ namespace PetitesPuces.Controllers
             
             return HttpNotFound();
         }
+
+        [HttpPost]
+        public ActionResult Televerser(long id)
+        {
+            try
+            {
+                var attachment = GetFileFromRequest();
+                var message = GetMessageById(id);
+                SaveAttachmentToMessage(attachment, message);
+
+                return new HttpStatusCodeResult(200);
+            }
+            catch (InvalidDataException e)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, e.Message);
+            }
+            catch (InvalidOperationException e)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid message ID");
+            }
+        }
+        
+        [HttpGet]
+        public ActionResult PieceJointe(long id)
+        {
+            try
+            {
+                var message = GetMessageById(id);
+
+                FileStream fs = new FileStream(Server.MapPath($"{ATTACHMENTS_FOLDER}/attachment-{message.NoMsg}"), FileMode.Open, FileAccess.Read);
+                
+                return File(fs, "application/octet-stream", (string)message.FichierJoint);
+            }
+            catch (InvalidOperationException e)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid message ID");
+            }
+        }
+        
+        private HttpPostedFileBase GetFileFromRequest()
+        {
+            if (Request.Files.Count == 0)
+            {
+                throw new InvalidDataException("No file posted");
+            }
+
+            var file = Request.Files[0];
+
+            if (file == null)
+            {
+                throw new InvalidDataException( "No file posted");
+            }
+
+            return file;
+        }
+
+        private PPMessage GetMessageById(long id)
+        {
+            return
+                (from msg
+                    in context.PPMessages
+                where msg.NoMsg == id
+                select msg).First();
+        }
+
+        private void SaveAttachmentToMessage(HttpPostedFileBase file, PPMessage msg)
+        {
+            MemoryStream target = new MemoryStream();
+            file.InputStream.CopyTo(target);
+
+            byte[] data = target.ToArray();
+            msg.FichierJoint = new Binary(data);
+
+            context.SubmitChanges();
+        }
+        
         /** PPLieu
             1	Boîte de réception
             2	Boîte envoyé
@@ -335,6 +415,73 @@ namespace PetitesPuces.Controllers
 
             
             return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
+        [Route("Enregistrer")]
+        public ActionResult CreerBrouillon(BrouillonViewModel brouillon)
+        {
+            brouillon.NoMsg = (from msg in context.PPMessages select msg.NoMsg).Max() + 1;
+            var message = EnregistrerMessage(brouillon);
+
+            context.PPMessages.InsertOnSubmit(message);
+            context.SubmitChanges();
+
+            return Json(brouillon);
+        }
+        
+        [HttpPut]
+        [Route("Enregistrer")]
+        public ActionResult EnregistrerBrouillon(BrouillonViewModel brouillon)
+        {
+            var ogMessage = (from msg in context.PPMessages where msg.NoMsg == brouillon.NoMsg select msg).First();
+            var message = EnregistrerMessage(brouillon, ogMessage);
+
+            context.SubmitChanges();
+
+            return Json(brouillon);
+        }
+
+        private PPMessage EnregistrerMessage(BrouillonViewModel brouillon, PPMessage msg = null)
+        {
+            if (msg == null)
+            {
+                msg = new PPMessage();
+            }
+
+            msg.DescMsg = brouillon.DescMsg;
+            msg.Lieu = brouillon.Lieu;
+            msg.objet = brouillon.objet;
+            msg.NoExpediteur = (int)SessionUtilisateur.UtilisateurCourant.No;
+
+            var destinataires = msg.PPDestinataires.ToList();
+            List<int> NosDestinatairesAAjouter = new List<int>(brouillon.destinataires);
+            for (int i = 0; i < destinataires.Count; i++)
+            {
+                var dest = destinataires[i];
+
+                if (!brouillon.destinataires.Contains(dest.NoDestinataire))
+                {
+                    msg.PPDestinataires.Remove(dest);
+                }
+                else
+                {
+                    NosDestinatairesAAjouter.Remove(dest.NoDestinataire);
+                }
+            }
+
+            foreach (var NoDest in NosDestinatairesAAjouter)
+            {
+                context.PPDestinataires.InsertOnSubmit(
+                    new PPDestinataire
+                    {
+                        NoMsg = msg.NoMsg,
+                        NoDestinataire = NoDest
+                    }
+                );
+            }
+
+            return msg;
         }
     }
     
