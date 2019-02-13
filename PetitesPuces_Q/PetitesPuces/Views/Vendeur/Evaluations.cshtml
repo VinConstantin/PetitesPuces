@@ -1,0 +1,58 @@
+@using PetitesPuces.Models
+@model Tuple<List<PetitesPuces.Models.PPEvaluation>,PetitesPuces.Models.PPProduit>
+
+<div class="jumbotron">
+    <h2>Évaluations pour @Model.Item2.Nom</h2>
+</div>
+<div class="container">
+    <div class="row">
+        @if (Model.Item1.Any())
+        {           
+            <div class="list-group">
+                @foreach (PPEvaluation evaluation in Model.Item1)
+                {
+                    <a href="#" class="list-group-item row" style="font-size: 20px">
+                        <div class="col-md-3 text-left">
+                            <button class="btn btn-link" data-toggle="modal" data-target="#ModalDescription" title="Contacter @evaluation.PPClient.DisplayName" onclick="contacter(@evaluation.NoClient)">
+                                <span class="glyphicon glyphicon-envelope"></span>
+                            </button>
+                            @evaluation.PPClient.DisplayName
+                        </div>
+                        <div class="col-md-2">
+                            <span id="rating">
+                                @for (int i = 1; i <= evaluation.Cote_; i++)
+                                {
+                                    <span class="glyphicon glyphicon-star"></span>
+                                }
+                                @for (int i = 1; i <= 5 - evaluation.Cote_; i++)
+                                {
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                }
+                            </span>
+                        </div>
+                        <div class="col-md-5">
+                            @evaluation.Commentaire_
+                        </div>
+                        <div class="col-md-1" style="text-align: right">
+                            @evaluation.DateCreation_.ToShortDateString()
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <br/>
+            <div class="col-lg-10 col-lg-offset-1 alert alert-warning" style="text-align: center" role="alert">
+                <span style="font-size: 60px" class="glyphicon glyphicon-unchecked"></span>
+                <h3>Il n'y a aucune évaluation pour ce produit</h3>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    function contacter(no) {
+        var url = '@Url.Action("Index", "Courriel")';
+        window.location.href = url;
+    }
+</script>

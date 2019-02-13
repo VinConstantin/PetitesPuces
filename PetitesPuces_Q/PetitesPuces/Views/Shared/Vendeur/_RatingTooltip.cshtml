@@ -1,16 +1,16 @@
 @using PetitesPuces.Models
-@model List<PPEvaluation>
+@model Tuple<List<PPEvaluation>,PPProduit>
 @{  
-    string pourcentage5 = string.Format("{0:0}",(Model.Count(e => e.Cote_ == 5) / (double)Model.Count)*100);
-    string pourcentage4 = string.Format("{0:0}",(Model.Count(e => e.Cote_ == 4) / (double)Model.Count)*100);
-    string pourcentage3 = string.Format("{0:0}",(Model.Count(e => e.Cote_ == 3) / (double)Model.Count)*100);
-    string pourcentage2 = string.Format("{0:0}",(Model.Count(e => e.Cote_ == 2) / (double)Model.Count)*100);
-    string pourcentage1 = string.Format("{0:0}",(Model.Count(e => e.Cote_ == 1) / (double)Model.Count)*100);
+    string pourcentage5 = string.Format("{0:0}",(Model.Item1.Count(e => e.Cote_ == 5) / (double)Model.Item1.Count)*100);
+    string pourcentage4 = string.Format("{0:0}",(Model.Item1.Count(e => e.Cote_ == 4) / (double)Model.Item1.Count)*100);
+    string pourcentage3 = string.Format("{0:0}",(Model.Item1.Count(e => e.Cote_ == 3) / (double)Model.Item1.Count)*100);
+    string pourcentage2 = string.Format("{0:0}",(Model.Item1.Count(e => e.Cote_ == 2) / (double)Model.Item1.Count)*100);
+    string pourcentage1 = string.Format("{0:0}",(Model.Item1.Count(e => e.Cote_ == 1) / (double)Model.Item1.Count)*100);
     
 }
 <div class="row" style="font-size: 12px">
     <br/>
-    <h4>@Model.Count @(Model.Count>1?" évaluations":" évaluation")</h4>
+    <h4>@Model.Item1.Count @(Model.Item1.Count>1?" évaluations":" évaluation")</h4>
     <!-- 5 étoiles -->
     <div class="col-md-2 text-right">
         <span class="glyphicon glyphicon-star"></span> 5
@@ -68,7 +68,7 @@
     </div>
     
     <div class="col-md-12">
-        <a href="@Url.Action("Index","Vendeur")">Consulter toutes les évaluations</a>
+        <a href="@Url.Action("Evaluations","Vendeur", new { NoProduit = Model.Item2.NoProduit})">Consulter toutes les évaluations</a>
     </div>
     <br/>
     <!-- end 1 -->

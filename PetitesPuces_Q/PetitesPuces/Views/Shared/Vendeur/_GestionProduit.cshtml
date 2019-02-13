@@ -65,7 +65,7 @@
 </div>
 
 <div id="ratingTooltip">
-    @Html.Partial("Vendeur/_RatingTooltip",evaluations)
+    @Html.Partial("Vendeur/_RatingTooltip",new Tuple<List<PPEvaluation>,PPProduit>(evaluations,Model))
 </div>
 <script>
     //tooltip
