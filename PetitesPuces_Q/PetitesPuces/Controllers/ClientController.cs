@@ -159,7 +159,7 @@ namespace PetitesPuces.Controllers
             ViewBag.NbPage = (listeProduits.Count()-1)/nbItemsParPage+1;
             ViewBag.Filtre = Filtre;
             ViewBag.Tri = TriPar;
-            return PartialView("Client/_Catalogue",viewModel);
+            return PartialView("Client/Catalogue/_Catalogue",viewModel);
         }
 
         public ActionResult InformationProduit(int NoProduit)
@@ -168,7 +168,16 @@ namespace PetitesPuces.Controllers
                 where unProduit.NoProduit == NoProduit
                 select unProduit).FirstOrDefault();
 
-            return PartialView("Client/ModalProduit", produit);
+            return PartialView("Client/Catalogue/_ModalProduit", produit);
+
+        }
+        public ActionResult InformationProduitPanier(int NoProduit)
+        {
+            PPProduit produit = (from unProduit in context.PPProduits
+                where unProduit.NoProduit == NoProduit
+                select unProduit).FirstOrDefault();
+
+            return PartialView("Client/Panier/_ModalProduit", produit);
 
         }
         [System.Web.Mvc.HttpPost]
@@ -426,7 +435,7 @@ namespace PetitesPuces.Controllers
                 Client = query.FirstOrDefault().PPClient,
                 Articles = query.ToList()
             };
-            return PartialView("Client/_DetailPanier",panier);
+            return PartialView("Client/Panier/_DetailPanier",panier);
         }
         public ActionResult SupprimerArticle(int NoProduit, int NoVendeur)
         {
@@ -452,7 +461,7 @@ namespace PetitesPuces.Controllers
                 Articles = query.ToList()
             };
             
-            return PartialView("Client/_DetailPanier",panier);
+            return PartialView("Client/Panier/_DetailPanier",panier);
         }
         public ActionResult SupprimerPanier(int NoVendeur)
         {
@@ -510,7 +519,7 @@ namespace PetitesPuces.Controllers
                 Articles = query.ToList()
             };
             
-            return PartialView("Client/_DetailPanier",panier);
+            return PartialView("Client/Panier/_DetailPanier",panier);
         }
 
         private int GetNextNoCommande()
@@ -653,7 +662,7 @@ namespace PetitesPuces.Controllers
                 }  
 
                 context.SubmitChanges();
-                return RedirectToAction("Recapitulatif", "Client",
+                return RedirectToAction("Recu", "Client",
                     new RouteValueDictionary(new { noCommande = commande.NoCommande}));
             }
             catch (Exception e)
@@ -663,7 +672,7 @@ namespace PetitesPuces.Controllers
             }
         }
         
-        public ActionResult Recapitulatif(int noCommande)
+        public ActionResult Recu(int noCommande)
         {
             var commande = (from c in context.PPCommandes 
                 where c.NoCommande == noCommande && c.NoClient==NOCLIENT

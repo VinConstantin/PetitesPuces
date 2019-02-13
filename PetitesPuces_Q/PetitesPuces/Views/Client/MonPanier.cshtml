@@ -46,7 +46,7 @@
     <div id="PLACEHOLDERDetailPanier">
         @if (Model.Count > 0)
         {
-                    @Html.Partial("Client/_DetailPanier", @Model.FirstOrDefault())
+                    @Html.Partial("Client/Panier/_DetailPanier", @Model.FirstOrDefault())
         }
         else
         {
@@ -167,7 +167,7 @@
     function visualiser(noProduit) {
         $("#ModalDescription").modal('show');
         $.ajax({
-            url: URLPATH+"/Client/InformationProduit",
+            url: URLPATH+"/Client/InformationProduitPanier",
             type: "get",
             data: { 
                 "NoProduit": noProduit

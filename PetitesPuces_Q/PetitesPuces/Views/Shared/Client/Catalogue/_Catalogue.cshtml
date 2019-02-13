@@ -136,7 +136,7 @@
             {
                 foreach (PPProduit produit in Model.Produits)
                 {
-                    @Html.Partial("Client/_Produits", produit)
+                    @Html.Partial("Client/Catalogue/_Produits", produit)
                 }
             }
             else
@@ -363,4 +363,6 @@
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
+    
+    
 </script>

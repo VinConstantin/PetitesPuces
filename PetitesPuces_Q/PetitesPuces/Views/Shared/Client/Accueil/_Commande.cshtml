@@ -1,0 +1,23 @@
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPCommande
+
+
+<div class="col-lg-12">
+    <div class="well hoverDiv row" onclick="afficherCommande(@Model.NoCommande);">
+        <div class="col-lg-3">
+            <h4>@Model.DateCommande.ToShortDateString()</h4>
+        </div>
+        <div class="col-lg-3">
+            <h4>@Model.PPVendeur.NomAffaires</h4>
+        </div>
+        <div class="col-lg-3">
+            <h4>@Formatter.Money(Model.MontantTotAvantTaxes)</h4>
+        </div>
+        <div class="col-lg-3">
+            <h4>
+                @{ string statut = Model.Statut == 'L' ? "Livré" : "En traitement"; }
+                @statut
+            </h4>
+        </div>
+    </div>
+</div>

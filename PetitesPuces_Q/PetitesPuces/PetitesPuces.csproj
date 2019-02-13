@@ -283,8 +283,6 @@
     <Content Include="images\carouselPublicite\retour.jpg" />
     <Content Include="images\carouselPublicite\sante.jpg" />
     <Content Include="images\carouselPublicite\ste.jpg" />
-    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
-    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -306,8 +304,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Rotativa\wkhtmltoimage.exe" />
-    <None Include="Rotativa\wkhtmltopdf.exe" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
@@ -339,21 +335,23 @@
     <Content Include="Views\Courriel\_ViewStart.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Client\Accueil\_Commande.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_Catalogue.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_ModalProduit.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_Produits.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_RatingTooltip.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Confirmation.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Information.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_ModalConfirmation.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_ProduitsInformation.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_RecapitulatifCommande.cshtml" />
-    <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
-    <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
-    <Content Include="Views\Shared\Client\_DetailPanier.cshtml" />
-    <Content Include="Views\Shared\Client\_ModalConfirmation.cshtml" />
+    <Content Include="Views\Shared\Client\Panier\_DetailPanier.cshtml" />
+    <Content Include="Views\Shared\Client\Panier\_ModalProduit.cshtml" />
+    <Content Include="Views\Shared\Client\Panier\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
-    <Content Include="Views\Shared\Client\_Produits.cshtml" />
-    <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
-    <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
-    <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_BoiteReception.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_Brouillons.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_ElementsEnvoyes.cshtml" />
@@ -382,6 +380,7 @@
     <Content Include="Views\Shared\Gestionnaire\Redevances\_ListeVendeurRedevance.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_Redevance.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_VendeurRedevance.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_RatingTooltip.cshtml" />
     <Content Include="Views\Shared\_ErrorAlert.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
     <Content Include="Views\Shared\Home\_CategorieCarousel.cshtml" />
@@ -391,6 +390,7 @@
     <Content Include="Views\Shared\Home\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\_Pagination.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
+    <Content Include="Views\Vendeur\Evaluations.cshtml" />
     <Content Include="Views\Vendeur\Index.cshtml" />
     <Content Include="Views\Vendeur\Profil.cshtml" />
     <Content Include="Web.config" />

@@ -1,0 +1,109 @@
+@using PetitesPuces.Models
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPProduit
+
+@{
+    BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
+
+    List<PPEvaluation> evaluations = (from e in ctxt.PPEvaluations
+        where e.NoProduit == Model.NoProduit
+        select e).ToList();
+
+    int nbEtoile = 0;
+    if (evaluations.Count > 0)
+    {
+        decimal average = evaluations.Average(e => e.Cote_);
+        nbEtoile = (int) Math.Round(average);
+    }
+
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLabel" style="overflow: hidden;
+                                      text-overflow: ellipsis;">@Model.Nom</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row" style="font-size: 32px; text-align: right; padding-right: 10px">
+            <span id="rating">
+                @for (int i = 1; i <= nbEtoile; i++)
+                {
+                    <span class="glyphicon glyphicon-star"></span>
+                }
+                @for (int i = 1; i <= 5-nbEtoile; i++)
+                {
+                    <span class="glyphicon glyphicon-star-empty"></span>
+                }
+            </span>
+        </div>
+        <img src="@Url.Content("/images/produits/" + Model.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="width: 100%" alt="Image">
+        <br/>
+        <p>@Model.Description</p>
+
+        <p>
+            <div class="h3">
+                @Formatter.PrixProduitAvecVente(Model)
+            </div></p>
+
+        <p>Poids : @Model.Poids lbs</p>
+        <p>Catégorie : @Model.PPCategory.Description</p>
+        <hr/>
+        <p>Date de création : @Model.DateCreation.Value.ToShortDateString()</p>
+        <p>Vendeur : @Model.PPVendeur.NomAffaires</p>
+    </div>
+    <div class="modal-footer">
+        <span style="border-right: 1px solid #ccc;">
+            <span class="btn btn-link glyphicon glyphicon-minus" onclick="moinsQuantite(@Model.NoProduit)" title="Diminuer la quantité"></span>
+            <input disabled type="text" style="width: 10%;" pattern="\d*" name="name" value="1" width="50px" id="@Model.NoProduit">
+            <span class="btn btn-link glyphicon glyphicon-plus" onclick="plusQuantite(@Model.NoProduit)"  title="Augmenter la quantité"></span>
+            
+            <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());">
+                <span class="glyphicon glyphicon-shopping-cart" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());"></span>
+            </button>
+        </span>
+        <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Contacter @Model.PPVendeur.NomAffaires" onclick="contacter()">
+            <span class="glyphicon glyphicon-envelope"></span>
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+    </div>
+</div>
+
+<div id="ratingTooltip">
+    @Html.Partial("Client/Catalogue/_RatingTooltip",evaluations)
+</div>
+<script>
+    function contacter() {
+        var url = '@Url.Action("Index", "Courriel")';
+        window.location.href = url;
+    }
+    //tooltip
+    tippy('#rating', {
+        animation: 'scale',
+        duration: [800, 500],
+        delay: [0,200],
+        arrow: true,
+        placement: "bottom",
+        content: document.getElementById("ratingTooltip"),
+        allowHTML: true,
+        interactive: true,
+        onMount: function() {
+            $('.progress .progress-bar').css("width",
+                function() {
+                    return $(this).attr("aria-valuenow") + "%";
+                }
+            );
+        },
+        onHide: function() {
+            $('.progress .progress-bar').css("width",
+                function() {
+                    return "0%";
+                }
+            );
+        },
+        size: "large",
+        theme: "google"
+    });
+</script>
