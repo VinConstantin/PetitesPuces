@@ -31,7 +31,7 @@
 
                 @foreach (PPVendeur vendeur in @Model.Vendeurs)
                 {
-                    @Html.Partial("Client/_VendeurCarousel", vendeur)
+                    @Html.Partial("Client/Catalogue/_VendeurCarousel", vendeur)
                 }
 
             </div>
@@ -41,7 +41,7 @@
     </div>
     
     <div id="partialListeProduits">
-        @Html.Partial("Client/_Catalogue", @Model)
+        @Html.Partial("Client/Catalogue/_Catalogue", @Model)
     </div>
 </div>
 

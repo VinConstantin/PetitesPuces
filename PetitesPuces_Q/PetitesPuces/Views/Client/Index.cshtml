@@ -41,7 +41,7 @@
         {
             foreach (PPCommande commande in @Model.Commandes.OrderByDescending(c=>c.DateCommande))
              {
-                @Html.Partial("Client/_Commande",commande)    
+                @Html.Partial("Client/Accueil/_Commande",commande)    
              }
         }
         else
