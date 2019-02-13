@@ -89,14 +89,15 @@ namespace PetitesPuces.Models
         public string confirmationMDP { get; set; }
 
     */
-        [Required(ErrorMessage = "Veuillez rentrer votre nom!")]
-        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
-        [DisplayName("Nom")]
+     
+       // [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
+        
+       [DisplayName("Nom")]
         public string Nom { get; set; }
 
 
-        [Required(ErrorMessage = "Veuillez rentrer votre prénom!")]
-        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
+      
+       //     [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
         [DisplayName("Prénom")]
         public string Prenom { get; set; }
 
@@ -108,9 +109,14 @@ namespace PetitesPuces.Models
 
         public string Rue { get; set; }
         public string Ville { get;  set;}
+       
         public string Province { get;  set;}
         public string CodePostal { get;  set;}
         public string Pays { get;  set;}
+        public string Tel1 { get;  set;}
+        public string Tel2 { get;  set;}
+  
+
         public DateTime? DateCreation { get;  set;}
         public DateTime DateDerniereActivite { get;  set;}
         public DateTime DateMAJ { get;  set;}

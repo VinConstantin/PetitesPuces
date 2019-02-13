@@ -153,13 +153,13 @@ namespace PetitesPuces.Models
 
         [Required(ErrorMessage = "Veuillez rentrer votre numéro de téléphone!")]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 10 caractères.", MinimumLength = 10)]
-        [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
+        [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:9999999999/  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
         [DisplayName("Téléphone No1")]
         public string Tel1 { get;  set;}
 
         [Required(ErrorMessage = "Veuillez rentrer un autre numéro de téléphone!")]
         [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 10 caractères.", MinimumLength = 10)]
-        [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
+        [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:9999999999/  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
         [DisplayName("Téléphone No2")]
         public string Tel2 { get;  set;}
 

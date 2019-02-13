@@ -1,4 +1,5 @@
-﻿using PetitesPuces.Models;
+﻿
+using PetitesPuces.Models;
 using PetitesPuces.ViewModels.Vendeur;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,15 @@ using PetitesPuces.Securite;
 
 namespace PetitesPuces.Controllers
 {
-    #if !DEBUG
+#if !DEBUG
         [Securise(RolesUtil.VEND)]
-    #endif
+#endif
     public class VendeurController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
+
+        private long NOVENDEUR = SessionUtilisateur.UtilisateurCourant.No;
+
         // GET: Vendeur
         public ActionResult Index()
         {
@@ -73,8 +77,68 @@ namespace PetitesPuces.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public ActionResult Profil()
         {
+            var objVendeur = (from unVendeur in context.PPVendeurs
+                where unVendeur.NoVendeur == NOVENDEUR
+                select unVendeur).FirstOrDefault();
+
+            ModiProfilVendeur modiProfilVendeur = new ModiProfilVendeur
+            {
+                NomAffaires = objVendeur.NomAffaires,
+                Nom = objVendeur.Nom,
+                Prenom = objVendeur.Prenom,
+                Rue = objVendeur.Rue,
+                Ville = objVendeur.Ville,
+                Province = objVendeur.Province,
+                Pays = objVendeur.Pays,
+                CodePostal = objVendeur.CodePostal,
+                Tel1 = objVendeur.Tel1,
+                Tel2 = objVendeur.Tel2,
+                PoidsMaxLivraison = Convert.ToInt32(objVendeur.PoidsMaxLivraison),
+                LivraisonGratuite = Convert.ToInt32(objVendeur.LivraisonGratuite),
+                Taxes = Convert.ToBoolean(objVendeur.Taxes)
+            };
+            return View(modiProfilVendeur);
+        }
+
+        [HttpPost]
+        public ActionResult Profil(ModiProfilVendeur modiProfilVendeur)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var objVendeur = (from unVendeur in context.PPVendeurs
+                        where unVendeur.NoVendeur == NOVENDEUR
+                        select unVendeur).FirstOrDefault();
+
+                    if (modiProfilVendeur.NomAffaires != "") objVendeur.NomAffaires = modiProfilVendeur.NomAffaires;
+                    if (modiProfilVendeur.Nom != "") objVendeur.Nom = modiProfilVendeur.Nom;
+                    if (modiProfilVendeur.Prenom != "") objVendeur.Prenom = modiProfilVendeur.Prenom;
+                    if (modiProfilVendeur.Rue != "") objVendeur.Rue = modiProfilVendeur.Rue;
+                    if (modiProfilVendeur.Ville != "") objVendeur.Ville = modiProfilVendeur.Ville;
+                    if (modiProfilVendeur.Province != "") objVendeur.Province = modiProfilVendeur.Province;
+                    if (modiProfilVendeur.Pays != "") objVendeur.Pays = modiProfilVendeur.Pays;
+                    if (modiProfilVendeur.CodePostal != "") objVendeur.CodePostal = modiProfilVendeur.CodePostal;
+                    if (modiProfilVendeur.Tel1 != "") objVendeur.Tel1 = modiProfilVendeur.Tel1;
+                    if (modiProfilVendeur.Tel2 != "") objVendeur.Tel2 = modiProfilVendeur.Tel2;
+                    if (modiProfilVendeur.PoidsMaxLivraison != null)
+                        objVendeur.PoidsMaxLivraison = modiProfilVendeur.PoidsMaxLivraison;
+                    if (modiProfilVendeur.LivraisonGratuite != null)
+                        objVendeur.LivraisonGratuite = modiProfilVendeur.LivraisonGratuite;
+                    if (modiProfilVendeur.Taxes != null) objVendeur.Taxes = modiProfilVendeur.Taxes;
+
+                    context.SubmitChanges();
+                    ViewBag.SuccessMessage = "Modification réussite!";
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                }
+            }
+
             return View();
         }
 
@@ -85,6 +149,7 @@ namespace PetitesPuces.Controllers
             {
                 paniers = paniers.Where(p => DateTime.Today.AddMonths(-NbMois) <= p.DateCreation).ToList();
             }
+
             return PartialView("Vendeur/_PaniersMois", paniers);
         }
 
@@ -101,16 +166,16 @@ namespace PetitesPuces.Controllers
         public ActionResult GestionProduit(int NoProduit)
         {
             var query = from produit in context.PPProduits
-                        where produit.NoProduit == NoProduit
-                        select produit;
+                where produit.NoProduit == NoProduit
+                select produit;
             return PartialView("Vendeur/_GestionProduit", query.FirstOrDefault());
         }
 
         public void Livraison(int NoCommande)
         {
             var query = from commandes in context.PPCommandes
-                        where commandes.NoCommande == NoCommande
-                        select commandes;
+                where commandes.NoCommande == NoCommande
+                select commandes;
 
             query.FirstOrDefault().Statut = 'L';
             try
@@ -126,8 +191,8 @@ namespace PetitesPuces.Controllers
         public void SuppressionPanier(int NoClient)
         {
             var query = from articles in context.PPArticlesEnPaniers
-                        where articles.NoVendeur == 10 && articles.NoClient == NoClient
-                        select articles;
+                where articles.NoVendeur == 10 && articles.NoClient == NoClient
+                select articles;
 
             context.PPArticlesEnPaniers.DeleteAllOnSubmit(query.ToList());
 
@@ -165,7 +230,7 @@ namespace PetitesPuces.Controllers
             if (DateTime.TryParse(nvc["DateVente"], out date)) produit.DateVente = date;
 
             HttpPostedFileBase hpfb = Request.Files.Get(0);
-            if (hpfb.FileName != "") 
+            if (hpfb.FileName != "")
             {
                 string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
                 string filename = produit.NoProduit.ToString() + Path.GetExtension(hpfb.FileName);
@@ -189,7 +254,7 @@ namespace PetitesPuces.Controllers
         private List<PPCategory> GetCategories()
         {
             var query = from categories in context.PPCategories
-                        select categories;
+                select categories;
 
             return query.ToList();
         }
@@ -197,8 +262,8 @@ namespace PetitesPuces.Controllers
         private List<PPProduit> GetProduitsVendeurs(int NoVendeur)
         {
             var query = from produits in context.PPProduits
-                        where produits.NoVendeur == NoVendeur
-                        select produits;
+                where produits.NoVendeur == NoVendeur
+                select produits;
 
             return query.ToList();
         }
@@ -206,8 +271,8 @@ namespace PetitesPuces.Controllers
         private List<PPCommande> GetCommandesVendeurs(int NoVendeur)
         {
             var query = from commandes in context.PPCommandes
-                        where commandes.NoVendeur == NoVendeur
-                        select commandes;
+                where commandes.NoVendeur == NoVendeur
+                select commandes;
 
             return query.ToList();
         }
@@ -215,10 +280,11 @@ namespace PetitesPuces.Controllers
         private List<Panier> GetPaniersVendeurs(int NoVendeur)
         {
             var query = from articles in context.PPArticlesEnPaniers
-                        where articles.NoVendeur == NoVendeur
-                        orderby articles.DateCreation ascending
-                        group articles by articles.NoClient into g
-                        select g;
+                where articles.NoVendeur == NoVendeur
+                orderby articles.DateCreation ascending
+                group articles by articles.NoClient
+                into g
+                select g;
 
             var paniers = query.ToList();
 
@@ -230,7 +296,7 @@ namespace PetitesPuces.Controllers
                 {
                     Client = pan.FirstOrDefault().PPClient,
                     Vendeur = pan.FirstOrDefault().PPVendeur,
-                    DateCreation = (DateTime)pan.FirstOrDefault().DateCreation,
+                    DateCreation = (DateTime) pan.FirstOrDefault().DateCreation,
                     Articles = pan.ToList()
                 };
                 lstPaniers.Add(panier);
@@ -242,12 +308,17 @@ namespace PetitesPuces.Controllers
         private int GetNbVisiteurs(int NoVendeur)
         {
             var query = from visiteurs in context.PPVendeursClients
-                        where visiteurs.NoVendeur == NoVendeur
-                        select visiteurs;
+                where visiteurs.NoVendeur == NoVendeur
+                select visiteurs;
 
             var reponse = query.ToList();
 
             return reponse.Count();
+        }
+
+        public ActionResult modificationMDP()
+        {
+            return View();
         }
     }
 }

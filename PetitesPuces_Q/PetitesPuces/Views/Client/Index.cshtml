@@ -12,6 +12,11 @@
 <br/>
 <br/>
 <div class="container">
+    @if (!string.IsNullOrWhiteSpace(ViewBag.SuccessMessage)) {
+
+        <p class="pagination pagination-lg label label-info">@ViewBag.SuccessMessage</p>
+
+    }
     @Html.Partial("_CarouselPublicitaire")
     <div class="row">
         <h2>Mes paniers</h2>
@@ -35,32 +40,32 @@
                 Vous n'avez aucun panier
             </div>
         }
-        
+
         <h2>Mes commandes</h2>
         @if (Model.Commandes.Count > 0)
         {
             foreach (PPCommande commande in @Model.Commandes)
-             {
-                 <div class="col-lg-12">
-                     <div class="well row">
-                         <div class="col-lg-3">
-                             <h3>@commande.DateCommande.ToString()</h3>
-                         </div>
-                         <div class="col-lg-3">
-                             <h3>@commande.PPVendeur.Nom</h3>
-                         </div>
-                         <div class="col-lg-3">
-                             <h3>@commande.PPDetailsCommandes.Sum(p => p.PrixVente * p.Quantité)</h3>
-                         </div>
-                         <div class="col-lg-3">
-                             <h3>
-                                 @{ string statut = commande.Statut == 'L' ? "Livré" : "En traitement"; }
-                                 @statut</h3>
-                         </div>
-                     </div>
-                 </div>
-    
-             }
+            {
+                <div class="col-lg-12">
+                    <div class="well row">
+                        <div class="col-lg-3">
+                            <h3>@commande.DateCommande.ToString()</h3>
+                        </div>
+                        <div class="col-lg-3">
+                            <h3>@commande.PPVendeur.Nom</h3>
+                        </div>
+                        <div class="col-lg-3">
+                            <h3>@commande.PPDetailsCommandes.Sum(p => p.PrixVente * p.Quantité)</h3>
+                        </div>
+                        <div class="col-lg-3">
+                            <h3>
+                                @{ string statut = commande.Statut == 'L' ? "Livré" : "En traitement"; }
+                                @statut</h3>
+                        </div>
+                    </div>
+                </div>
+
+            }
         }
         else
         {

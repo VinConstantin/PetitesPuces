@@ -1,18 +1,10 @@
 ﻿@using System.Security.Policy
-@model PetitesPuces.Models.PPClient
-
-
-
+@model PetitesPuces.Models.ModiProfilClient
 @{
     ViewBag.Title = "Profil";
 }
 
-@section styles {
-    <link rel="stylesheet" type="text/css" href="@Url.Content("/Content/ProfilPersonnel/Profilpersonnel.css")" />
-}
-@section scripts {
-    <script type="text/javascript" src="@Url.Content("/Scripts/profilPersonnel.js")"></script>\
-}
+
 <div class="jumbotron">
     <div class="container">
         <h1>Mon Profil</h1>
@@ -20,128 +12,29 @@
 </div>
 @using (Html.BeginForm())
 {
-    @*
-        <form id="card-form" method="post" role="form" style="display: block" ; class="text-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 col-lg-offset-3">
-                        <div class="well">
-
-
-                            <div class="row">
-
-                                <div class="col-md-6 text-center col-lg-offset-3">
-                                    <h1 id="prenom" class="text-secondary"></h1>
-                                </div>
-                            </div>
-                            <br />
-
-                            <div class="row">
-                                <div class="col-md-6 text-right">
-                                    <h4>Numéro civique:</h4>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <h4 id="noCivique" class="text-secondary">777</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 text-right">
-                                    <h4>Rue:</h4>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <h4 id="rue" class="text-secondary">Samuel</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 text-right">
-                                    <h4>Appartement:</h4>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <h4 id="appartement" class="text-secondary">443</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 text-right">
-                                    <h4>Ville:</h4>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <h4 id="ville" class="text-secondary">Montreal</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 text-right">
-                                    <h4>Province:</h4>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <h4 id="province" class="text-secondary">Quebec</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 text-right">
-                                    <h4>Pays:</h4>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <h4 id="pays" class="text-secondary">Canada</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 text-right">
-                                    <h4>Code postal:</h4>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <h4 id="codePostal" class="text-secondary">j7T2D2</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 text-right">
-                                    <h4>Téléphone:</h4>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <h4 id="telephone" class="text-secondary">514-666-8888</h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 text-right">
-                                    <h4>Cellulaire:</h4>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <h4 id="cellulaire" class="text-secondary">514-222-2222</h4>
-                                </div>
-                            </div>
-
-
-                            <br />
-
-                            <a href="@Url.Action("modificationMDP","Client")" class="text-white bg-dark">Modifier Mot de passe</a>
-                            <br /><br />
-                            <p><button id="btnModifier" class="btn btn-lg btn-primary btn-block">Modifier mon profil</button></p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </form>
-    *@
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    
     <form id="modifierProfil-form" method="post" role="form" class="text-center">
         <div class="container">
             <div class="form-row">
                 <div class="form-group col-md-6">
 
 
+            
+                    @Html.LabelFor(model=>model.Nom, htmlAttributes: new { @class = "" })
 
-                    @Html.LabelFor(model => model.Nom, htmlAttributes: new { @class = "" })
 
-
-                    @Html.EditorFor(model => model.Nom, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Nom" } })
-                    @Html.ValidationMessageFor(model => model.Nom, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Nom, new { htmlAttributes = new { @class = "form-control" ,@PlaceHolder = "Nom"} })
+                  
                 </div>
 
                 <div class="form-group col-md-6">
                     @Html.LabelFor(model => model.Prenom, htmlAttributes: new { @class = "" })
 
 
-                    @Html.EditorFor(model => model.Prenom, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Prénom" } })
-                    @Html.ValidationMessageFor(model => model.Prenom, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Prenom, new { htmlAttributes = new { @class = "form-control",@PlaceHolder = "Prénom"} })
+                   
                 </div>
             </div>
             <div class="form-row">
@@ -150,33 +43,24 @@
 
 
                     @Html.EditorFor(model => model.Rue, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Rue" } })
-                    @Html.ValidationMessageFor(model => model.Rue, "", new { @class = "text-danger" })
-
-                </div>
-
+                 </div>
                 <div class="form-group col-md-6">
                     @Html.LabelFor(model => model.Ville, htmlAttributes: new { @class = "" })
 
 
                     @Html.EditorFor(model => model.Ville, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Ville" } })
-                    @Html.ValidationMessageFor(model => model.Ville, "", new { @class = "text-danger" })
                 </div>
+              
             </div>
             <div class="form-row">
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Ville, htmlAttributes: new { @class = "" })
-
-
-                    @Html.EditorFor(model => model.Ville, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Ville" } })
-                    @Html.ValidationMessageFor(model => model.Ville, "", new { @class = "text-danger" })
-                </div>
+                
                 <div class="form-group col-md-6">
                     @Html.LabelFor(model => model.Province, htmlAttributes: new { @class = "" })
 
 
                     @Html.DropDownListFor(model => model.Province, new List<SelectListItem>()
                     {
-                        new SelectListItem() {Text = "Choisir votre province", Value = ""},
+                        new SelectListItem() {Text = "Choissez votre province", Value = ""},
                         new SelectListItem() {Text = "Québec", Value = "QC"},
                         new SelectListItem() {Text = "Ontario", Value = "ON"},
                         new SelectListItem() {Text = "Alberta", Value = "AB"},
@@ -192,8 +76,27 @@
                         new SelectListItem() {Text = "Yukon", Value = "YT"},
                     }, new {@class = "form-control text-primary"})
 
-                    @Html.ValidationMessageFor(model => model.Province, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Pays, htmlAttributes: new { @class = "" })
 
+
+                    @Html.EditorFor(model => model.Pays, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Pays" } })
+                </div>
+            </div>
+           
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Tel1, htmlAttributes: new { @class = "" })
+
+
+                    @Html.EditorFor(model => model.Tel1, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Tel1" } })
+                  </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Tel2, htmlAttributes: new { @class = "" })
+
+
+                    @Html.EditorFor(model => model.Tel2, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Tel2" } })
                 </div>
             </div>
             <div class="form-row">
@@ -202,45 +105,21 @@
 
 
                     @Html.EditorFor(model => model.CodePostal, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Code Postal" } })
-                    @Html.ValidationMessageFor(model => model.CodePostal, "", new { @class = "text-danger" })
                 </div>
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Pays, htmlAttributes: new { @class = "" })
-
-
-                    @Html.EditorFor(model => model.Pays, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Pays" } })
-                    @Html.ValidationMessageFor(model => model.Pays, "", new { @class = "text-danger" })
+                <div class="col-md-6 form-group">
+                    @Html.ActionLink("Changer mot de passe","modificationMDP","client",new {@class="btn btn-sm btn-primary"})
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Tel1, htmlAttributes: new { @class = "" })
-
-
-                    @Html.EditorFor(model => model.Tel1, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Tel1" } })
-                    @Html.ValidationMessageFor(model => model.Tel1, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Tel2, htmlAttributes: new { @class = "" })
-
-
-                    @Html.EditorFor(model => model.Tel2, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Tel2" } })
-                    @Html.ValidationMessageFor(model => model.Tel2, "", new { @class = "text-danger" })
-                </div>
-                    
-               
-              
-            </div>
-            <div class="row">
-                <div class="col-md-2 form-group col-lg-offset-4">
-                    <button id="btnRetour" class="btn btn-lg btn-primary btn-block">Modifier</button>
-
-                </div>
-
-                <div class="col-md-2 form-group ">
-                    <button id="btnRetour" class="btn btn-lg btn-block btn-outline-primary">Retour</button>
-                </div>
-            </div>
+           
         </div>
+        <div class="form-row">
+            <div class="col-md-3 form-group col-lg-offset-6">
+                <input type="submit" value="Modifier" class="btn btn-lg btn-info" />
+                @Html.ActionLink("Retour","Index","client",new {@class="btn btn-lg btn-danger"})
+            </div>
+           
+           
+        </div>
+        
     </form>
 }
