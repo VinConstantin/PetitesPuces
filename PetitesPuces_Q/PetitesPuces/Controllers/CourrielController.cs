@@ -207,7 +207,17 @@ namespace PetitesPuces.Controllers
                 Clients = (from c in context.PPClients select c).ToList(),
                 Vendeurs = (from v in context.PPVendeurs select v).ToList()
             };
-            return PartialView("Courriel/_ModalAjoutDestinataire",viewModel);
+            switch (SessionUtilisateur.UtilisateurCourant.Role)
+            {
+                case RolesUtil.CLIENT:
+                    return PartialView("Courriel/AjoutDestinataire/_ModalAjoutDestinataireClient",viewModel);
+                case RolesUtil.VEND:
+                    return PartialView("Courriel/AjoutDestinataire/_ModalAjoutDestinataireVendeur",viewModel);
+                case RolesUtil.ADMIN:
+                    return PartialView("Courriel/AjoutDestinataire/_ModalAjoutDestinataireGestionnaire",viewModel);
+                default:
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Role introuvable");
+            }
         }
         
         /// <summary>

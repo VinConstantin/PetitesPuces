@@ -353,6 +353,9 @@
     <Content Include="Views\Shared\Client\Panier\_ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
+    <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireClient.cshtml" />
+    <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireGestionnaire.cshtml" />
+    <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireVendeur.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_BoiteReception.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_Brouillons.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_ElementsEnvoyes.cshtml" />
@@ -363,7 +366,6 @@
     <Content Include="Views\Shared\Courriel\_CourrielInbox.cshtml" />
     <Content Include="Views\Shared\Courriel\_CourrielInboxEnvoye.cshtml" />
     <Content Include="Views\Shared\Courriel\_headerBoite.cshtml" />
-    <Content Include="Views\Shared\Courriel\_ModalAjoutDestinataire.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DemandeVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DetailsVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_GestionDemande.cshtml" />
