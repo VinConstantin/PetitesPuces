@@ -73,7 +73,7 @@ namespace PetitesPuces.Controllers
                 };
                 
                 //creer la liste de produits
-                listeProduits = (from p in context.PPProduits select p)
+                listeProduits = (from p in context.PPProduits.Where(p=>p.Disponibilité==true) select p)
                     .Where(p => categorie == null || p.PPCategory == categorie);
             }
             else
@@ -84,8 +84,8 @@ namespace PetitesPuces.Controllers
                     select unVendeur);
                 vendeur = requete.FirstOrDefault();
                 //creer la liste de produits
-                listeProduits = vendeur.PPProduits
-                    .Where(p => categorie == null || p.PPCategory == categorie);
+                listeProduits = vendeur.PPProduits.Where(p=>p.Disponibilité==true)
+                    .Where(p => (categorie == null || p.PPCategory == categorie) && p.Disponibilité==true);
             }
 
             if(!String.IsNullOrEmpty(Filtre)) 
@@ -180,18 +180,18 @@ namespace PetitesPuces.Controllers
             return PartialView("Client/Panier/_ModalProduit", produit);
 
         }
-        [System.Web.Mvc.HttpPost]
-        public HttpStatusCode AjouterProduitAuPanier(int NoProduit, short Quantite)
+        [System.Web.Http.HttpPost]
+        public HttpStatusCodeResult AjouterProduitAuPanier(int NoProduit, short Quantite)
         {
             var requeteProduit = (from unProduit in context.PPProduits
                 where unProduit.NoProduit == NoProduit
                 select unProduit);
 
             if (!requeteProduit.Any())
-                return HttpStatusCode.Gone;
+                return new HttpStatusCodeResult(HttpStatusCode.Gone);
 
             if (Quantite > requeteProduit.FirstOrDefault().NombreItems)
-                return HttpStatusCode.Conflict;
+                return new HttpStatusCodeResult(HttpStatusCode.Conflict);
 
             var articlePresent = (from a in context.PPArticlesEnPaniers
                 where a.NoClient == NOCLIENT && a.PPProduit.NoProduit == NoProduit
@@ -201,7 +201,7 @@ namespace PetitesPuces.Controllers
             {
                 PPArticlesEnPanier art = articlePresent.FirstOrDefault();
                 if (art.NbItems + Quantite > requeteProduit.FirstOrDefault().NombreItems)
-                    return HttpStatusCode.Conflict;
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
 
                 art.NbItems += Quantite;
             }
@@ -234,9 +234,9 @@ namespace PetitesPuces.Controllers
             }
             catch (Exception e)
             {
-                return HttpStatusCode.InternalServerError;
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }         
-            return HttpStatusCode.OK;
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         public ActionResult CheckDisponibiliteArticlesPanier(int NoVendeur)

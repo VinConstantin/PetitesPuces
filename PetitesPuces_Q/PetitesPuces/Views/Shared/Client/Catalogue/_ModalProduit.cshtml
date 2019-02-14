@@ -136,21 +136,37 @@
         <p>Date de création : @Model.DateCreation.Value.ToShortDateString()</p>
         <p>Vendeur : @Model.PPVendeur.NomAffaires</p>
     </div>
-    <div class="modal-footer">
-        <span style="border-right: 1px solid #ccc;">
-            <span class="btn btn-link glyphicon glyphicon-minus" onclick="moinsQuantite(@Model.NoProduit)" title="Diminuer la quantité"></span>
-            <input disabled type="text" style="width: 10%;" pattern="\d*" name="name" value="1" width="50px" id="@Model.NoProduit">
-            <span class="btn btn-link glyphicon glyphicon-plus" onclick="plusQuantite(@Model.NoProduit)"  title="Augmenter la quantité"></span>
-            
-            <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());">
-                <span class="glyphicon glyphicon-shopping-cart" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());"></span>
-            </button>
-        </span>
-        <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Contacter @Model.PPVendeur.NomAffaires" onclick="contacter()">
-            <span class="glyphicon glyphicon-envelope"></span>
-        </button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-    </div>
+    <div class="modal-footer" style="padding: 0";>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class=" col-md-6 text-center">
+                @if (Model.NombreItems > 0)
+                {
+                    <span style="border-right: 1px solid #ccc;">
+                        <span class="btn btn-link glyphicon glyphicon-minus" onclick="moinsQuantite(@Model.NoProduit)" title="Diminuer la quantité"></span>
+                        <input disabled type="text" style="width: 10%;" pattern="\d*" name="name" value="1" width="50px" id="@Model.NoProduit">
+                        <span class="btn btn-link glyphicon glyphicon-plus" onclick="plusQuantite(@Model.NoProduit)" title="Augmenter la quantité"></span>
+
+                        <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());">
+                            <span class="glyphicon glyphicon-shopping-cart" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());"></span>
+                        </button>
+                    </span>
+                }
+                else
+                {
+                    <div class="alert alert-warning" style="height: 55px; margin: 5px;" role="alert">
+                        <span class="glyphicon glyphicon-alert"></span> Rupture de stock
+                    </div>
+                }
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Contacter @Model.PPVendeur.NomAffaires" onclick="contacter()">
+                    <span class="glyphicon glyphicon-envelope"></span>
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+
+        </div>
 </div>
 
 

@@ -7,7 +7,7 @@
         <div class="">
             <p style="line-height: 2.0;">@Model.NomAffaires</p>
             <hr/>
-            <p>@Model.PPProduits.Count items</p>
+            <p>@Model.PPProduits.Count(p => p.Disponibilité==true) items</p>
         </div>
     </div>
 </div>
