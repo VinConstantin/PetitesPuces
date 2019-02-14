@@ -1,19 +1,16 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Data.Linq;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Authentication;
 using System.Web.Mvc;
 using System.Web;
-using System.Web.Http.Results;
 using PetitesPuces.Models;
 using PetitesPuces.Models.Courriel;
 using PetitesPuces.Securite;
 using PetitesPuces.ViewModels.Courriel;
-using PetitesPuces.ViewModels.Home;
 
 namespace PetitesPuces.Controllers
 {
@@ -36,7 +33,7 @@ namespace PetitesPuces.Controllers
             }
             else
             {
-                return View(EtatCourriel.Reception);
+                return View(Tuple.Create<EtatCourriel, PPMessage>(EtatCourriel.Reception, null));
             }
         }
 
@@ -45,9 +42,11 @@ namespace PetitesPuces.Controllers
         {
             if (Request.IsAjaxRequest()) return IndexAjax(etatCourriel, id);
 
+            var message = GetMessageById(id);
+
             if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat))
             {
-                return View(enumEtat);
+                return View(Tuple.Create(enumEtat, message));
             }
 
             return HttpNotFound();
@@ -60,7 +59,7 @@ namespace PetitesPuces.Controllers
             
             if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat)) 
             {
-                return View(enumEtat);
+                return View(Tuple.Create<EtatCourriel, PPMessage>(enumEtat, null));
             }
             
             return HttpNotFound();
@@ -74,9 +73,9 @@ namespace PetitesPuces.Controllers
                 {
                     case EtatCourriel.Envoye   : return ElementsEnvoyes();
                     case EtatCourriel.Reception: return BoiteReception();
-                    case EtatCourriel.Composer : return ComposerMessage();
+                    case EtatCourriel.Composer : return ComposerMessage(id);
                     case EtatCourriel.Supprime : return ElementsSupprimes();
-                    case EtatCourriel.Brouillon: return Brouillons(id);
+                    case EtatCourriel.Brouillon: return Brouillons();
                 }
             }
             
@@ -120,7 +119,7 @@ namespace PetitesPuces.Controllers
 
             if (file.ContentLength > MAX_FILE_SIZE_BYTES)
             {
-                throw new InvalidDataException("La grandeur du fichier doit être inférieure à 8Mo");
+                throw new InvalidDataException("La grandeur du fichier doit être inférieure 50Mo");
             }
 
             return file;
@@ -193,7 +192,7 @@ namespace PetitesPuces.Controllers
             
             return PartialView("Courriel/Boites/_BoiteReception",messages);
         }
-        public ActionResult Brouillons(int? id)
+        public ActionResult Brouillons()
         {        
             List<PPMessage> messages = (from m in context.PPMessages
                 orderby m.dateEnvoi descending 
@@ -201,14 +200,8 @@ namespace PetitesPuces.Controllers
                       && m.Lieu == 4
                 select m).ToList();
 
-            if (id.HasValue)
-            {
-                return PartialView("Courriel/_ComposerMessage", messages.First());
-            }
-            else
-            {
-                return PartialView("Courriel/Boites/_Brouillons", messages);
-            }
+
+            return PartialView("Courriel/Boites/_Brouillons", messages);
         }
         public ActionResult ElementsEnvoyes()
         {         
@@ -229,14 +222,21 @@ namespace PetitesPuces.Controllers
             
             return PartialView("Courriel/Boites/_ElementsSupprimes",messages);
         }
-        public ActionResult ComposerMessage()
+        public ActionResult ComposerMessage(int? id = null)
         {      
             List<PPMessage> messages = (from m in context.PPMessages
                 where m.PPDestinataires.Any(d=>d.NoDestinataire == noUtilisateur
                                                && d.Lieu == 1)
                 select m).ToList();
-            
-            return PartialView("Courriel/_ComposerMessage");
+
+            if (id.HasValue)
+            {
+                return PartialView("Courriel/_ComposerMessage", GetMessageById(id.Value));
+            }
+            else
+            {
+                return PartialView("Courriel/_ComposerMessage");
+            }
         }
         public ActionResult Destinataire()
         {

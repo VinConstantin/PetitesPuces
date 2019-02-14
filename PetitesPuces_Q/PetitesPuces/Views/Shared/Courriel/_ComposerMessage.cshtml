@@ -1,6 +1,5 @@
 @using PetitesPuces.Securite
 @model PetitesPuces.Models.PPMessage
-
 <style>
 	.btn-file {
 		position: relative;
@@ -56,15 +55,17 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-7"> 
-				<input id="tbObjet" type="text" class="form-control"/>
+				<input id="tbObjet" value="@(Model != null ? (Model.objet ?? "") : "")" type="text" class="form-control"/>
 			</div>
 			<form id="fileForm" class="col-xs-5">
 				<div class="input-group w-100">
-					<a id="pieceJointeLink" href="javascript:void(0)"><input name="fichierJoint" id="fileUploadText" readonly class="form-control t-overflow-ellipsis"/></a>
+                    <a id="pieceJointeLink" href="@(Model != null ? "/Courriel/PieceJointe/" + Model.NoMsg : "javascript:void(0)")">
+                        <input name="fichierJoint" value="@(Model != null ? Model.FichierJoint.ToString() : "")" id="fileUploadText" readonly class="form-control t-overflow-ellipsis"/>
+                    </a>
 					<span class="input-group-btn">
 						<button class="btn btn-primary btn-file">
 							<i class="glyphicon glyphicon-paperclip"></i>
-							<input id="upload" type="file"/>
+							<input id="upload" value="" type="file"/>
 						</button>
 					</span>
 				</div>
@@ -77,7 +78,9 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<textarea id="textarea" style="max-width: 100%" cols="300" rows="20"></textarea>
+                <textarea id="textarea" style="max-width: 100%" cols="300" rows="20">
+                    @(Model != null ? (Model.DescMsg ?? "") : "")
+                </textarea>
 			</div>
 		</div>
 
