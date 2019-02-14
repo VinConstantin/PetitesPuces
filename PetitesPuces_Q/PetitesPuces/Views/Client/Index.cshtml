@@ -55,7 +55,7 @@
 
 <script>
     function changePanier(no) {
-        window.location.href = `@Url.Action("MonPanier", "Client")/${no}`;
+        window.location.href = `@Url.Action("MonPanier", "Client")?No=${no}`;
     }
     function afficherCommande(no) {
         window.location.href = `@Url.Action("Recu", "Client")?noCommande=${no}`;

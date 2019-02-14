@@ -255,7 +255,7 @@ namespace PetitesPuces.Controllers
 
             return true;
         } 
-        public ActionResult MonPanier(string No)
+        public ActionResult MonPanier(int No=0)
         {
             ViewBag.NoClient = NOCLIENT;
             ViewBag.NoVendeur = No;
@@ -328,6 +328,13 @@ namespace PetitesPuces.Controllers
                     select v).FirstOrDefault();
         }
 
+        public ActionResult Recapitulatif()
+        {
+
+            Panier panier = GetPanierByVendeurClient((int)InfoCommande.Panier.Vendeur.No);
+            return PartialView("Client/Commande/_RecapitulatifCommande",panier);
+        }
+
         public HtmlString GetPrixLivraison(int noVendeur, decimal poids, decimal prix, int selected)
         {
             var intervallePoids = (from p in context.PPTypesPoids select p).ToList();
@@ -352,12 +359,13 @@ namespace PetitesPuces.Controllers
             HtmlString html = new HtmlString(str);
             return html;
         }
-        public ActionResult Commande(string Etape, int noVendeur)
+        public ActionResult Commande(int noVendeur)
         {
-            ViewBag.Etape = Etape;
-
             Panier panier = GetPanierByVendeurClient(noVendeur);
             InfoCommande.Panier = panier;
+
+            if (!CheckDisponibiliteArticlesPanier(noVendeur))
+                return RedirectToAction("MonPanier", new{No = noVendeur});
             return View(panier);
         }
 
@@ -365,6 +373,9 @@ namespace PetitesPuces.Controllers
         {
             Panier panier = GetPanierByVendeurClient(noVendeur);
             InfoCommande.Vendeur = panier.Vendeur;
+            
+            if (!CheckDisponibiliteArticlesPanier(noVendeur))
+                return RedirectToAction("MonPanier", new{No = noVendeur});
             
             return PartialView("Client/Commande/_Information", panier);
         }     
@@ -400,11 +411,18 @@ namespace PetitesPuces.Controllers
         {
             Panier panier = GetPanierByVendeurClient(noVendeur);
             
+            if (!CheckDisponibiliteArticlesPanier(noVendeur))
+                return RedirectToRoute("MonPanier", new{No = noVendeur});
+            
             return PartialView("Client/Commande/_Livraison",panier);
         }
         public ActionResult Paiement(int noVendeur)
         {
             Panier panier = GetPanierByVendeurClient(noVendeur);
+            
+            if (!CheckDisponibiliteArticlesPanier(noVendeur))
+                return RedirectToAction("MonPanier", new{No = noVendeur});
+            
             return PartialView("Client/Commande/_Paiement",panier);
         }
         public ActionResult Confirmation(int noVendeur)
@@ -414,6 +432,9 @@ namespace PetitesPuces.Controllers
                       && articles.NoVendeur == noVendeur
                 orderby articles.DateCreation ascending
                 select articles;
+            
+            if (!CheckDisponibiliteArticlesPanier(noVendeur))
+                return RedirectToAction("MonPanier", new{No = noVendeur});
 
             Panier panier = new Panier
             {
@@ -426,6 +447,12 @@ namespace PetitesPuces.Controllers
 
         public ActionResult DetailPanier(int noVendeur)
         {
+            if (noVendeur == 0)
+            {
+                Panier panierFirst = GetPaniersClient(NOCLIENT).FirstOrDefault();
+                return PartialView("Client/Panier/_DetailPanier",panierFirst);
+            }
+            
             var query = from articles in context.PPArticlesEnPaniers
                 where articles.NoClient == NOCLIENT
                       && articles.NoVendeur == noVendeur
@@ -617,6 +644,9 @@ namespace PetitesPuces.Controllers
         public ActionResult ConfirmationPaiement(string NoAutorisation, DateTime DateAutorisation, string FraisMarchand,
             string InfoSuppl)
         {
+            if (!CheckDisponibiliteArticlesPanier(InfoCommande.Vendeur.No))
+                return View("ErreurCommande", 9999);
+            
             if (NoAutorisation == "9999" || NoAutorisation == "1" || NoAutorisation == "2" || NoAutorisation == "3")
             {
                 int intNoAutorisation;
