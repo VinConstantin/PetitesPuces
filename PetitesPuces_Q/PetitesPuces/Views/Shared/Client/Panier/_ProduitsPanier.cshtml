@@ -1,7 +1,6 @@
 ﻿@using System.Globalization
 @using PetitesPuces.Utilities
 @model PetitesPuces.Models.PPArticlesEnPanier
-
 <tr style="height: 10vh; max-height: 10vh" onclick="visualiser(@Model.NoProduit)">
     <td>
         <div class="row">
@@ -31,14 +30,29 @@
                     </button>
                 </div>
                 <div class="row">
-                    @{string id = "Erreur" + Model.NoProduit;}
-                    <span class="label label-warning" id="@id"></span>
+                    @{
+                        string id = "Erreur" + Model.NoProduit;
+                        if (Model.PPProduit.Disponibilité != true)
+                        {
+                            
+                            <span class="label label-warning" id="@id">Le produit n'est plus disponible</span>
+                        }
+                        else if (Model.PPProduit.NombreItems< Model.NbItems)
+                        {
+                            <span class="label label-warning" id="@id">Il n'y a que @Model.PPProduit.NombreItems items en stock</span>
+                        }
+                        else
+                        {
+                            <span class="label label-warning" id="@id"></span>
+                        }
+                    }
+
                 </div>
             </div>
             <div class="col-md-2">
                 <p></p>
 
-                    <p>@Formatter.Money(@Model.PPProduit.GetPrixCourant() * @Model.NbItems)</p>
+                <p>@Formatter.Money(@Model.PPProduit.GetPrixCourant() * @Model.NbItems)</p>
 
             </div>
             

@@ -239,18 +239,21 @@ namespace PetitesPuces.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        public ActionResult CheckDisponibiliteArticlesPanier(int NoVendeur)
+        public bool CheckDisponibiliteArticlesPanier(long NoVendeur)
         {
-            Panier panier = GetPanierByVendeurClient(NoVendeur);
+            Panier panier = GetPanierByVendeurClient((int)NoVendeur);
 
+            if(panier.DepassePoidsMaximum)
+                return false;
             foreach (PPArticlesEnPanier article in panier.Articles)
             {
                 if (article.NbItems > article.PPProduit.NombreItems)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.Conflict);
-                }
+                    return false;
+                if(article.PPProduit.Disponibilité!=true)
+                    return false;
             }
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+
+            return true;
         } 
         public ActionResult MonPanier(string No)
         {
