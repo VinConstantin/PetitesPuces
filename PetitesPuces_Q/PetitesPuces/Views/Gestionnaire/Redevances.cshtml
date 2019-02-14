@@ -1,16 +1,38 @@
 ﻿@model PetitesPuces.ViewModels.Gestionnaire.RedevancesViewModel
 <h2 class="row text-center">Redevances</h2>
 
-<div class="row">
+<div class="row text-center">
     <div class="col-xs-offset-1 col-xs-10">
-        <h3 class="row text-center">Redevances dûes</h3>
+        <h3 class="row">Redevances dûes</h3>
         <div id="redevancesGestion" class="row well">
+            <div class="form-inline">
+                <div class="input-group">
+                    <input id="tbRechercheRedevances" type="search" class="form-control">
+                    <span class="input-group-btn">
+                        <button id="btnRechercheRedevances" class="btn btn-default" type="button">
+                            <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                            </span>
+                        </button>
+                    </span>
+                </div>
+            </div>
             @Html.Partial("Gestionnaire/Redevances/_ListeRedevances", @Model.Redevances)
         </div>
     </div>
     <div class="col-xs-10 col-xs-offset-1">
-        <h3 class="text-center">Modification des taux de redevance</h3>
+        <h3 class="row">Modification des taux de redevance</h3>
         <div id="modifTauxRedevances" class="well row text-center">
+            <div class="form-inline">
+                <div class="input-group">
+                    <input id="tbRechercheModifRedevances" type="search" class="form-control">
+                    <span class="input-group-btn">
+                        <button id="btnRechercheModifRedevances" class="btn btn-default" type="button">
+                            <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                            </span>
+                        </button>
+                    </span>
+                </div>
+            </div>
             @Html.Partial("Gestionnaire/Redevances/_ListeVendeurRedevance", @Model.Vendeurs)
         </div>
     </div>
@@ -27,6 +49,52 @@
 <script>
     $(document).ready(function() {
         registerEvents();
+        let redevancesModifiables = $('#modifTauxRedevances').find('tbody').find('tr');   
+        let redevancesDues = $('#redevancesGestion').find('tbody').find('tr');   
+
+        $('#tbRechercheModifRedevances').change(() => {
+            rechercheModifRedevances();
+            $(this).blur();
+        });
+        $('#tbRechercheModifRedevances').keyup(rechercheModifRedevances);
+        $('#btnRechercheModifRedevances').click(rechercheModifRedevances);
+        
+        function rechercheModifRedevances() {
+            const queryText = $('#tbRechercheModifRedevances').val().toLowerCase();
+        
+            const tbody = $('#modifTauxRedevances').find('tbody');
+            tbody.empty();
+
+            redevancesModifiables.each(function() {
+                const searchableText = $(this).find('td').slice(0, 5).text().toLowerCase();
+                
+                if (searchableText.includes(queryText)) {
+                    tbody.append($(this));
+                }
+            });
+        }
+        
+        $('#tbRechercheRedevances').change(() => {
+            rechercheRedevances();
+            $(this).blur();
+        });
+        $('#tbRechercheRedevances').keyup(rechercheRedevances);
+        $('#btnRechercheRedevances').click(rechercheRedevances);
+        
+        function rechercheRedevances() {
+            const queryText = $('#tbRechercheRedevances').val().toLowerCase();
+        
+            const tbody = $('#redevancesGestion').find('tbody');
+            tbody.empty();
+
+            redevancesDues.each(function() {
+                const searchableText = $(this).find('td').slice(0, 5).text().toLowerCase();
+                
+                if (searchableText.includes(queryText)) {
+                    tbody.append($(this));
+                }
+            });
+        }
         
         function registerEvents() {
             registerPaymentEvent();
@@ -96,11 +164,13 @@
         
         function afficherRedevancesModifiables(partial) {
             $('#modifTauxRedevances').html(partial);
+            redevancesModifiables = $('#modifTauxRedevances').find('tbody').find('tr');
             registerRedevanceEvent();
         }
         
         function afficherRedevancesPaiements(partial) {
             $('#redevancesGestion').html(partial);
+            redevancesDues = $('#redevancesGestion').find('tbody').find('tr');
             registerPaymentEvent();
         }
     

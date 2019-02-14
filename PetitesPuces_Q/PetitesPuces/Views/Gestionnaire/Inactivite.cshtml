@@ -119,8 +119,8 @@
             depuisClient: 'T',
             depuisVendeur: 'T',
             typeUtilisateur: 'Utilisateur',
-            recherche: '',
         }
+        let utilisateursSupprimable = $('#listeGestionInactivite').find('tbody').find('tr');
         
         for (let prop in filterDefaults) {
             if (!filtres.has(prop)) {
@@ -136,7 +136,6 @@
                 $(this).click(() => supprimerUtilisateurs([parseInt(noUtilisateur)]));
             });
         }
-
         
         $('#supprimerClients').click(function() {
             viderTableau($('#listeGestionClients'));
@@ -226,17 +225,45 @@
             initRadioButton($(this), 'depuisClient');
         });
 
-        $('#tbRecherche').change(function() {
-            const recherche = $(this).val();
-            filtres.set('recherche', recherche);
-            updatePageState();
+        $('#tbRecherche').keyup(recherche);
+        $('#tbRecherche').change(() => {
+            recherche();
+            $('#tbRecherche').blur();
         });
+        $('#btnRecherche').click(recherche);
+        
+        function recherche() {
+            const queryText = $('#tbRecherche').val();
 
-        $('#btnRecherche').click(function() {
-            const recherche = $('#tbRecherche').val();
-            filtres.set('recherche', recherche);
-            updatePageState();
-        });
+            const colsUtil = [0, 4];
+            const colsClient = [0, 4];
+            const colsVendeur = [0, 5];
+
+            let searchableColRange;
+            switch (filtres.get('typeUtilisateur')) {
+                case 'Utilisateur':
+                    searchableColRange = colsUtil;
+                    break;
+                case 'Client':
+                    searchableColRange = colsClient;
+                    break;
+                case 'Vendeur':
+                    searchableColRange = colsVendeur;
+                    break;
+            }
+
+            const corpsTableau = $('#listeGestionInactivite').find('tbody');
+            corpsTableau.empty();
+            
+
+            utilisateursSupprimable.each(function() {
+                const searchableText = $(this).slice(searchableColRange[0], searchableColRange[1]).text();
+                
+                if (searchableText.toLowerCase().includes(queryText.toLowerCase())) {
+                    corpsTableau.append($(this));
+                }
+            });
+        }
         
         function deleteUserFilterChanged() {
             if (!$(this).prop('checked')) return;
@@ -267,7 +294,9 @@
         
         function afficherUtilisateurs(partial) {
             $('#listeGestionInactivite').html(partial);
+            utilisateursSupprimable = $('#listeGestionInactivite').find('tbody').find('tr');
             registerDeleteUserEvents();
+            recherche();
             updatePageState();
         }
         
@@ -282,8 +311,6 @@
         }
         
         function updatePageState() {
-            const url = new URL(window.location.href);
-            
             history.replaceState(null,  'Inactivite - Gestionnaire - Les Petites Puces', '?' + filtres.toString());
         }
     });

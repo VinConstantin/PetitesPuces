@@ -2,12 +2,7 @@
 @using PetitesPuces.Utilities
 @model List<PetitesPuces.Models.Panier>
 
-@{
-    ViewBag.Title = "Vos paniers";
-    ViewBag.Vendeur = "Simon";
-    ViewBag.SousTotal = 323.45;
-    ViewBag.FraisLivraison = 23.00;
-}
+
 @section scripts {
     <link href="@Url.Content("/Content/Shared/Carousel.css")" rel="stylesheet" id="Carousel-css">
     <link href="@Url.Content("/Content/Shared/Hover.css")" rel="stylesheet" id="Hover-css">
@@ -46,7 +41,7 @@
     <div id="PLACEHOLDERDetailPanier">
         @if (Model.Count > 0)
         {
-                    @Html.Partial("Client/_DetailPanier", @Model.FirstOrDefault())
+                    
         }
         else
         {
@@ -63,6 +58,14 @@
         </div>
     </div>
 </div>
+@if (Model.Count > 0)
+{      
+    <script>
+        window.addEventListener("load",function() {
+            changePanier(@ViewBag.NoVendeur);
+        },false);
+    </script>
+}
 <script>
     function changePanier(no) {
         $.ajax({
@@ -81,9 +84,9 @@
         $('.Current').removeClass("Current");
         $('#Panier'+no).first().addClass("Current");
         
-        var PARAMS = "?Vendeur="+no;
+        var PARAMS = "?No="+no;
         var objParams = {
-            NoVendeur:no
+            No:no
         }
         history.pushState(objParams, "", PARAMS);
     }
@@ -103,10 +106,10 @@
             error: function (req, status, err) {
                 var strErreure = "Une erreure est survenue";
                 switch (err) {
-                    case "Conflict":
-                        strErreure = "L'item n'a pas assez de stock";
-                        break;
-                    }
+                case "Conflict":
+                    strErreure = "L'item n'a pas assez de stock";
+                    break;
+                }
   
                 $("#Erreur"+id).html(strErreure);
             }
@@ -167,7 +170,7 @@
     function visualiser(noProduit) {
         $("#ModalDescription").modal('show');
         $.ajax({
-            url: URLPATH+"/Client/InformationProduit",
+            url: URLPATH+"/Client/InformationProduitPanier",
             type: "get",
             data: { 
                 "NoProduit": noProduit

@@ -3,6 +3,36 @@
 @using PetitesPuces.Models
 @model Tuple<int, PetitesPuces.Controllers.GestionnaireController.TypesModal>
 
+@{
+    const string DEFAUT_DETAILS = "Si vous ne modifiez rien, un message par défaut sera envoyé selon votre décision";
+    const string DEFAULT_ACCEPT = "Bonjour,\n" +
+                                  "\n" +
+                                  "Il me fait plaisir de vous annoncer que votre demande de compte vendeur a été acceptée!\n" +
+                                  "\n" +
+                                  "Vous pourrez dorénavant vendre vos produit sur notre avec un taux de redevances de X%.\n" +
+                                  "\n" +
+                                  "Merci d'avoir choisi \"Les Petites Puces\"";
+    const string DEFAULT_REFUSER = "Bonjour,\n" +
+                                   "\n" +
+                                   "Il me fait plaisir de vous annoncer que votre demande de compte vendeur a été acceptée!\n" +
+                                   "\n" +
+                                   "Vous pourrez dorénavant vendre vos produit sur notre avec un taux de redevances de X%.\n" +
+                                   "\n" +
+                                   "Merci d'avoir choisi \"Les Petites Puces\"";
+    
+    string MSG_DEFAUT = "";
+    switch (@Model.Item2){
+        case GestionnaireController.TypesModal.DETAILS:
+            MSG_DEFAUT = DEFAUT_DETAILS;
+            break;
+        case GestionnaireController.TypesModal.ACCEPTER:
+            MSG_DEFAUT = DEFAULT_ACCEPT;
+            break;
+        case GestionnaireController.TypesModal.REFUSER:
+            MSG_DEFAUT = DEFAULT_REFUSER;
+            break;
+   }
+}
 <div class="modal-header">
     @{
         var ctx = new BDPetitesPucesDataContext();
@@ -32,8 +62,14 @@
     }
     <div class="row text-center">
         <label for="tbMsg">Inscrire un message à envoyer au vendeur</label>
-        <textarea id="tbMsg" class="center-block text-left" rows="5" cols="150" class="form-inline text-center">
-         </textarea>
+        @if (Model.Item2 == GestionnaireController.TypesModal.DETAILS)
+        {
+            <textarea id="tbMsg" class="center-block text-left w-100" placeholder="@MSG_DEFAUT" rows="10" cols="90" class="form-inline text-center"></textarea>
+        }
+        else
+        {
+            <textarea id="tbMsg" class="center-block text-left w-100" rows="10" cols="90" class="form-inline text-center">@MSG_DEFAUT</textarea>
+        }
     </div>
 </div>
 <div class="modal-footer">

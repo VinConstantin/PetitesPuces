@@ -1,0 +1,255 @@
+@using System.Web.Http
+@using PetitesPuces.Models
+@using PetitesPuces.Securite
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPProduit
+
+@{
+    BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
+
+    PPEvaluation monEvaluation = null;
+    //si le client a deja acheté ce produit
+    var requeteCommande = (from c in ctxt.PPDetailsCommandes
+        where c.NoProduit == Model.NoProduit && c.PPCommande.NoClient == SessionUtilisateur.UtilisateurCourant.No
+        select c);
+
+    if (requeteCommande.Any())
+    {           
+        //si il a deja ecrit une evaluation
+        var requeteEvaluation = (from e in ctxt.PPEvaluations
+            where e.NoProduit == Model.NoProduit && e.NoClient == SessionUtilisateur.UtilisateurCourant.No
+            select e);
+        
+        if (requeteEvaluation.Any())
+        {
+            monEvaluation  = requeteEvaluation.First();
+        }  
+    }
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLabel" style="overflow: hidden;
+                                      text-overflow: ellipsis;">@Model.Nom</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row" >
+            <div class="col-md-6" style="font-size: 28px; text-align: left">
+                @if (requeteCommande.Any())
+                {
+                    <button id="btnCommentaire" class="btn btn-link btn-lg text-success" data-toggle="collapse" data-target="#commentaire" style="padding-top: 0px">
+                        <span id="ecrireCommentaire" style="font-size: 32px;" class="glyphicon glyphicon-comment"></span>
+                    </button>
+                }
+            </div>
+            <div id="EtoileRating" class="col-md-6" style="font-size: 32px; text-align: right; padding-right: 10px">
+                @Html.Partial("Client/Catalogue/_EtoilesRating",Model)
+            </div>
+        </div>
+        @if (requeteCommande.Any())
+        {
+            <div id="commentaire" class="panel-collapse collapse">
+                <div class="well">
+                    @if (monEvaluation != null)
+                    {
+                        <div class="">
+                            <h4>Modifier une évaluation</h4>
+                        </div>
+                        <div class="">
+                            <span style="font-size: 25px; color: #18bc9c" onmouseout="onOutsideEtoile()">
+                                @for (int i = 1; i <= monEvaluation.Cote_; i++)
+                                {
+                                    <span id="@("Etoile" + i)" data-no-etoile="@i" class="glyphicon glyphicon-star" onclick="selectNbEtoiles(this);" onmouseover="onHoverEtoile(this);"></span>
+                                }
+                                @for (int i = (int) (monEvaluation.Cote_ + 1); i <= 5; i++)
+                                {
+                                    <span id="@("Etoile" + i)" data-no-etoile="@i" class="glyphicon glyphicon-star-empty" onclick="selectNbEtoiles(this);" onmouseover="onHoverEtoile(this);"></span>
+                                }
+                            </span>
+                            <input type="hidden" id="nbEtoiles" value="1"/>
+                            <textarea id="commentaire" class="form-control" style="resize: none;">@monEvaluation.Commentaire_</textarea>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button type="button" onclick="modifierEvaluation();" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Modifier </button>
+                            </div>
+                            <div class="col-md-5">
+                                <div id="successEvaluation" class="alert alert-success" role="alert" hidden>
+                                    Évaluation modifiée
+                                </div>
+                                <div id="errorEvaluation" class="alert alert-warning" role="alert" hidden>
+                                    Erreure
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="">
+                            <h4>Envoyer une évaluation</h4>
+                        </div>
+                        <div class="">
+                            <span style="font-size: 25px; color: #18bc9c" onmouseout="onOutsideEtoile()">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <span id="@("Etoile" + i)" data-no-etoile="@i" class="glyphicon glyphicon-star-empty" onclick="selectNbEtoiles(this);" onmouseover="onHoverEtoile(this);"></span>
+                                }
+                            </span>
+                            <input type="hidden" id="nbEtoiles"/>
+                            <textarea id="commentaire" class="form-control" style="resize: none;"></textarea>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button type="button" onclick="envoyerEvaluation();" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Envoyer </button>
+                            </div>
+                            <div class="col-md-5">
+                                <div id="successEvaluation" class="alert alert-success" role="alert" hidden>
+                                    Évaluation envoyée
+                                </div>
+                                <div id="errorEvaluation" class="alert alert-warning" role="alert" hidden>
+                                    Erreure
+                                </div>
+                            </div>
+                        </div>
+                    }
+    
+                </div>
+            </div>
+        }    
+        <img src="@Url.Content("/images/produits/" + Model.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="width: 100%" alt="Image">
+        <br/>
+        <p>@Model.Description</p>
+
+        <p>
+            <div class="h3">
+                @Formatter.PrixProduitAvecVente(Model)
+            </div></p>
+
+        <p>Poids : @Model.Poids lbs</p>
+        <p>Catégorie : @Model.PPCategory.Description</p>
+        <hr/>
+        <p>Date de création : @Model.DateCreation.Value.ToShortDateString()</p>
+        <p>Vendeur : @Model.PPVendeur.NomAffaires</p>
+    </div>
+    <div class="modal-footer" style="padding: 0";>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class=" col-md-6 text-center">
+                @if (Model.NombreItems > 0)
+                {
+                    <span style="border-right: 1px solid #ccc;">
+                        <span class="btn btn-link glyphicon glyphicon-minus" onclick="moinsQuantite(@Model.NoProduit)" title="Diminuer la quantité"></span>
+                        <input disabled type="text" style="width: 10%;" pattern="\d*" name="name" value="1" width="50px" id="@Model.NoProduit">
+                        <span class="btn btn-link glyphicon glyphicon-plus" onclick="plusQuantite(@Model.NoProduit)" title="Augmenter la quantité"></span>
+
+                        <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());">
+                            <span class="glyphicon glyphicon-shopping-cart" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());"></span>
+                        </button>
+                    </span>
+                }
+                else
+                {
+                    <div class="alert alert-warning" style="height: 55px; margin: 5px;" role="alert">
+                        <span class="glyphicon glyphicon-alert"></span> Rupture de stock
+                    </div>
+                }
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Contacter @Model.PPVendeur.NomAffaires" onclick="contacter()">
+                    <span class="glyphicon glyphicon-envelope"></span>
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+
+        </div>
+        </div>
+</div>
+
+
+<script>
+    function contacter() {
+        var url = '@Url.Action("Index", "Courriel")';
+        window.location.href = url;
+    }
+    function envoyerEvaluation() {
+        $.ajax({
+            url: URLPATH+"/Client/EnvoyerEvaluation",
+            type: "POST",
+            data: { 
+                cote: $(`#nbEtoiles`).val(),
+                commentaire: $('textarea#commentaire').val(),
+                noProduit:@Model.NoProduit
+            },
+            success: function (result) {
+                $("#EtoileRating").html(result);
+                $("#successEvaluation").show();
+                $("#errorEvaluation").hide();
+            },
+            error: function (req, status, err) {
+                $("#errorEvaluation").show();
+                $("#successEvaluation").hide();
+            }
+        });
+    }
+    function modifierEvaluation() {
+        $.ajax({
+            url: URLPATH+"/Client/ModifierEvaluation",
+            type: "POST",
+            data: { 
+                cote: $(`#nbEtoiles`).val(),
+                commentaire: $('textarea#commentaire').val(),
+                noProduit:@Model.NoProduit
+            },
+            success: function (result) {
+                $("#EtoileRating").html(result);
+                $("#successEvaluation").show();
+                $("#errorEvaluation").hide();
+            },
+            error: function (req, status, err) {
+                $("#errorEvaluation").show();
+                $("#successEvaluation").hide();
+            }
+        });
+    }
+    //remplace la couleur du btn d'évaluation
+    $("#btnCommentaire").click(function() {
+        $(this).toggleClass('text-success text-primary');
+    });
+    function onHoverEtoile(elem) {
+
+        let current = elem.getAttribute("data-no-etoile");
+        afficherEtoile(current);
+    }
+    function onOutsideEtoile() {
+        afficherEtoile($(`#nbEtoiles`).val());
+    }
+    
+    function selectNbEtoiles(elem) {
+        $(`#nbEtoiles`).val(elem.getAttribute("data-no-etoile"));
+    }
+    function afficherEtoile(nb) {
+        for (var i = 1; i <= nb;i++) {
+            $(`#Etoile${i}`).removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+        }
+        for (var i = 5; i > nb;i--) {
+            $(`#Etoile${i}`).removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+        }
+    }
+    //tooltip
+    tippy('#ecrireCommentaire',{
+        animation: 'scale',
+        duration: [800, 500],
+        delay: [0,200],
+        content:"<h5>Écrire une évaluation</h5>",
+        size: "large",
+        theme: "google",
+        placement: "bottom",
+        arrow: true,
+        allowHTML: true,
+    });
+</script>

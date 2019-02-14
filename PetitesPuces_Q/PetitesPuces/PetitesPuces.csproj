@@ -50,6 +50,10 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="mscorlib" />
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Rotativa.1.7.4-rc\lib\net45\Rotativa.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll</HintPath>
     </Reference>
@@ -229,6 +233,7 @@
     </Compile>
     <Compile Include="Utilities\DateTimeExtension.cs" />
     <Compile Include="Utilities\EnumExtensions.cs" />
+    <Compile Include="Utilities\PPProduitExtensions.cs" />
     <Compile Include="Utilities\StringExtension.cs" />
     <Compile Include="Validations\ValidationCourriel.cs" />
     <Compile Include="Securite\Securise.cs" />
@@ -237,6 +242,7 @@
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Client\LivraisonViewModel.cs" />
     <Compile Include="ViewModels\Courriel\DestinataireViewModel.cs" />
+    <Compile Include="ViewModels\Courriel\BrouillonViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DetailsRedevances.cs" />
     <Compile Include="ViewModels\Gestionnaire\InactiviteViewModel.cs" />
@@ -291,6 +297,7 @@
       <LastGenOutput>BDPetitesPuces.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="App_Browsers\qt.browser" />
     <None Include="Models\BDPetitesPuces.dbml.layout">
       <DependentUpon>BDPetitesPuces.dbml</DependentUpon>
     </None>
@@ -305,8 +312,8 @@
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
     <Content Include="Scripts\constant.js" />
-    <Content Include="Scripts\fr.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
+    <Content Include="Scripts\Gestionnaire\Statistiques.js" />
     <Content Include="Scripts\Home\Inscription.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionClient.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionVendeur.js" />
@@ -324,6 +331,7 @@
     <Content Include="Scripts\Shared\Carousel.js" />
     <Content Include="Scripts\profilPersonnel.js" />
     <Content Include="Views\Client\Catalogue.cshtml" />
+    <Content Include="Views\Client\ErreurCommande.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
     <Content Include="Views\Client\ResultatCommande.cshtml" />
@@ -331,20 +339,24 @@
     <Content Include="Views\Courriel\_ViewStart.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Client\Accueil\_Commande.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_Catalogue.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_EtoilesRating.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_ModalProduit.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_Produits.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_RatingTooltip.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Confirmation.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Information.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Livraison.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_ModalConfirmation.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_ProduitsInformation.cshtml" />
-    <Content Include="Views\Shared\Client\ModalProduit.cshtml" />
-    <Content Include="Views\Shared\Client\_Catalogue.cshtml" />
-    <Content Include="Views\Shared\Client\_DetailPanier.cshtml" />
-    <Content Include="Views\Shared\Client\_ModalConfirmation.cshtml" />
+    <Content Include="Views\Shared\Client\Commande\_RecapitulatifCommande.cshtml" />
+    <Content Include="Views\Shared\Client\Panier\_DetailPanier.cshtml" />
+    <Content Include="Views\Shared\Client\Panier\_ModalProduit.cshtml" />
+    <Content Include="Views\Shared\Client\Panier\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
-    <Content Include="Views\Shared\Client\_Produits.cshtml" />
-    <Content Include="Views\Shared\Client\_ProduitsCarousel.cshtml" />
-    <Content Include="Views\Shared\Client\_ProduitsPanier.cshtml" />
-    <Content Include="Views\Shared\Client\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_BoiteReception.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_Brouillons.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_ElementsEnvoyes.cshtml" />
@@ -373,6 +385,7 @@
     <Content Include="Views\Shared\Gestionnaire\Redevances\_ListeVendeurRedevance.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_Redevance.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_VendeurRedevance.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_RatingTooltip.cshtml" />
     <Content Include="Views\Shared\_ErrorAlert.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
     <Content Include="Views\Shared\Home\_CategorieCarousel.cshtml" />
@@ -382,6 +395,7 @@
     <Content Include="Views\Shared\Home\_VendeurCarousel.cshtml" />
     <Content Include="Views\Shared\_Pagination.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
+    <Content Include="Views\Vendeur\Evaluations.cshtml" />
     <Content Include="Views\Vendeur\Index.cshtml" />
     <Content Include="Views\Vendeur\Profil.cshtml" />
     <Content Include="Web.config" />

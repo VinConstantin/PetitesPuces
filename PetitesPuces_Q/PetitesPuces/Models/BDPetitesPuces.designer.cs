@@ -84,6 +84,9 @@ namespace PetitesPuces.Models
     partial void InsertPPLieu(PPLieu instance);
     partial void UpdatePPLieu(PPLieu instance);
     partial void DeletePPLieu(PPLieu instance);
+    partial void InsertPPEvaluation(PPEvaluation instance);
+    partial void UpdatePPEvaluation(PPEvaluation instance);
+    partial void DeletePPEvaluation(PPEvaluation instance);
     #endregion
 		
 		public BDPetitesPucesDataContext() : 
@@ -265,6 +268,14 @@ namespace PetitesPuces.Models
 			get
 			{
 				return this.GetTable<PPLieu>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PPEvaluation> PPEvaluations
+		{
+			get
+			{
+				return this.GetTable<PPEvaluation>();
 			}
 		}
 	}
@@ -857,6 +868,8 @@ namespace PetitesPuces.Models
 		
 		private EntitySet<PPVendeursClient> _PPVendeursClients;
 		
+		private EntitySet<PPEvaluation> _PPEvaluations;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -902,6 +915,7 @@ namespace PetitesPuces.Models
 			this._PPArticlesEnPaniers = new EntitySet<PPArticlesEnPanier>(new Action<PPArticlesEnPanier>(this.attach_PPArticlesEnPaniers), new Action<PPArticlesEnPanier>(this.detach_PPArticlesEnPaniers));
 			this._PPCommandes = new EntitySet<PPCommande>(new Action<PPCommande>(this.attach_PPCommandes), new Action<PPCommande>(this.detach_PPCommandes));
 			this._PPVendeursClients = new EntitySet<PPVendeursClient>(new Action<PPVendeursClient>(this.attach_PPVendeursClients), new Action<PPVendeursClient>(this.detach_PPVendeursClients));
+			this._PPEvaluations = new EntitySet<PPEvaluation>(new Action<PPEvaluation>(this.attach_PPEvaluations), new Action<PPEvaluation>(this.detach_PPEvaluations));
 			OnCreated();
 		}
 		
@@ -1284,6 +1298,19 @@ namespace PetitesPuces.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PPClient_PPEvaluation", Storage="_PPEvaluations", ThisKey="NoClient", OtherKey="NoClient")]
+		public EntitySet<PPEvaluation> PPEvaluations
+		{
+			get
+			{
+				return this._PPEvaluations;
+			}
+			set
+			{
+				this._PPEvaluations.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1335,6 +1362,18 @@ namespace PetitesPuces.Models
 		}
 		
 		private void detach_PPVendeursClients(PPVendeursClient entity)
+		{
+			this.SendPropertyChanging();
+			entity.PPClient = null;
+		}
+		
+		private void attach_PPEvaluations(PPEvaluation entity)
+		{
+			this.SendPropertyChanging();
+			entity.PPClient = this;
+		}
+		
+		private void detach_PPEvaluations(PPEvaluation entity)
 		{
 			this.SendPropertyChanging();
 			entity.PPClient = null;
@@ -2614,6 +2653,8 @@ namespace PetitesPuces.Models
 		
 		private EntitySet<PPDetailsCommande> _PPDetailsCommandes;
 		
+		private EntitySet<PPEvaluation> _PPEvaluations;
+		
 		private EntityRef<PPCategory> _PPCategory;
 		
 		private EntityRef<PPVendeur> _PPVendeur;
@@ -2656,6 +2697,7 @@ namespace PetitesPuces.Models
 		{
 			this._PPArticlesEnPaniers = new EntitySet<PPArticlesEnPanier>(new Action<PPArticlesEnPanier>(this.attach_PPArticlesEnPaniers), new Action<PPArticlesEnPanier>(this.detach_PPArticlesEnPaniers));
 			this._PPDetailsCommandes = new EntitySet<PPDetailsCommande>(new Action<PPDetailsCommande>(this.attach_PPDetailsCommandes), new Action<PPDetailsCommande>(this.detach_PPDetailsCommandes));
+			this._PPEvaluations = new EntitySet<PPEvaluation>(new Action<PPEvaluation>(this.attach_PPEvaluations), new Action<PPEvaluation>(this.detach_PPEvaluations));
 			this._PPCategory = default(EntityRef<PPCategory>);
 			this._PPVendeur = default(EntityRef<PPVendeur>);
 			OnCreated();
@@ -2975,6 +3017,19 @@ namespace PetitesPuces.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PPProduit_PPEvaluation", Storage="_PPEvaluations", ThisKey="NoProduit", OtherKey="NoProduit")]
+		public EntitySet<PPEvaluation> PPEvaluations
+		{
+			get
+			{
+				return this._PPEvaluations;
+			}
+			set
+			{
+				this._PPEvaluations.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PPCategory_PPProduit", Storage="_PPCategory", ThisKey="NoCategorie", OtherKey="NoCategorie", IsForeignKey=true)]
 		public PPCategory PPCategory
 		{
@@ -3082,6 +3137,18 @@ namespace PetitesPuces.Models
 		}
 		
 		private void detach_PPDetailsCommandes(PPDetailsCommande entity)
+		{
+			this.SendPropertyChanging();
+			entity.PPProduit = null;
+		}
+		
+		private void attach_PPEvaluations(PPEvaluation entity)
+		{
+			this.SendPropertyChanging();
+			entity.PPProduit = this;
+		}
+		
+		private void detach_PPEvaluations(PPEvaluation entity)
 		{
 			this.SendPropertyChanging();
 			entity.PPProduit = null;
@@ -5222,6 +5289,270 @@ namespace PetitesPuces.Models
 		{
 			this.SendPropertyChanging();
 			entity.PPLieu = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PPEvaluations")]
+	public partial class PPEvaluation : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private long _NoClient;
+		
+		private long _NoProduit;
+		
+		private decimal _Cote_;
+		
+		private string _Commentaire_;
+		
+		private System.Nullable<System.DateTime> _DateMAJ_;
+		
+		private System.DateTime _DateCreation_;
+		
+		private EntityRef<PPClient> _PPClient;
+		
+		private EntityRef<PPProduit> _PPProduit;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNoClientChanging(long value);
+    partial void OnNoClientChanged();
+    partial void OnNoProduitChanging(long value);
+    partial void OnNoProduitChanged();
+    partial void OnCote_Changing(decimal value);
+    partial void OnCote_Changed();
+    partial void OnCommentaire_Changing(string value);
+    partial void OnCommentaire_Changed();
+    partial void OnDateMAJ_Changing(System.Nullable<System.DateTime> value);
+    partial void OnDateMAJ_Changed();
+    partial void OnDateCreation_Changing(System.DateTime value);
+    partial void OnDateCreation_Changed();
+    #endregion
+		
+		public PPEvaluation()
+		{
+			this._PPClient = default(EntityRef<PPClient>);
+			this._PPProduit = default(EntityRef<PPProduit>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoClient", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long NoClient
+		{
+			get
+			{
+				return this._NoClient;
+			}
+			set
+			{
+				if ((this._NoClient != value))
+				{
+					if (this._PPClient.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnNoClientChanging(value);
+					this.SendPropertyChanging();
+					this._NoClient = value;
+					this.SendPropertyChanged("NoClient");
+					this.OnNoClientChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoProduit", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long NoProduit
+		{
+			get
+			{
+				return this._NoProduit;
+			}
+			set
+			{
+				if ((this._NoProduit != value))
+				{
+					if (this._PPProduit.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnNoProduitChanging(value);
+					this.SendPropertyChanging();
+					this._NoProduit = value;
+					this.SendPropertyChanged("NoProduit");
+					this.OnNoProduitChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Cote ]", Storage="_Cote_", DbType="Decimal(18,0) NOT NULL")]
+		public decimal Cote_
+		{
+			get
+			{
+				return this._Cote_;
+			}
+			set
+			{
+				if ((this._Cote_ != value))
+				{
+					this.OnCote_Changing(value);
+					this.SendPropertyChanging();
+					this._Cote_ = value;
+					this.SendPropertyChanged("Cote_");
+					this.OnCote_Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Commentaire ]", Storage="_Commentaire_", DbType="VarChar(150)")]
+		public string Commentaire_
+		{
+			get
+			{
+				return this._Commentaire_;
+			}
+			set
+			{
+				if ((this._Commentaire_ != value))
+				{
+					this.OnCommentaire_Changing(value);
+					this.SendPropertyChanging();
+					this._Commentaire_ = value;
+					this.SendPropertyChanged("Commentaire_");
+					this.OnCommentaire_Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[DateMAJ ]", Storage="_DateMAJ_", DbType="SmallDateTime")]
+		public System.Nullable<System.DateTime> DateMAJ_
+		{
+			get
+			{
+				return this._DateMAJ_;
+			}
+			set
+			{
+				if ((this._DateMAJ_ != value))
+				{
+					this.OnDateMAJ_Changing(value);
+					this.SendPropertyChanging();
+					this._DateMAJ_ = value;
+					this.SendPropertyChanged("DateMAJ_");
+					this.OnDateMAJ_Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[DateCreation ]", Storage="_DateCreation_", DbType="SmallDateTime NOT NULL")]
+		public System.DateTime DateCreation_
+		{
+			get
+			{
+				return this._DateCreation_;
+			}
+			set
+			{
+				if ((this._DateCreation_ != value))
+				{
+					this.OnDateCreation_Changing(value);
+					this.SendPropertyChanging();
+					this._DateCreation_ = value;
+					this.SendPropertyChanged("DateCreation_");
+					this.OnDateCreation_Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PPClient_PPEvaluation", Storage="_PPClient", ThisKey="NoClient", OtherKey="NoClient", IsForeignKey=true)]
+		public PPClient PPClient
+		{
+			get
+			{
+				return this._PPClient.Entity;
+			}
+			set
+			{
+				PPClient previousValue = this._PPClient.Entity;
+				if (((previousValue != value) 
+							|| (this._PPClient.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PPClient.Entity = null;
+						previousValue.PPEvaluations.Remove(this);
+					}
+					this._PPClient.Entity = value;
+					if ((value != null))
+					{
+						value.PPEvaluations.Add(this);
+						this._NoClient = value.NoClient;
+					}
+					else
+					{
+						this._NoClient = default(long);
+					}
+					this.SendPropertyChanged("PPClient");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PPProduit_PPEvaluation", Storage="_PPProduit", ThisKey="NoProduit", OtherKey="NoProduit", IsForeignKey=true)]
+		public PPProduit PPProduit
+		{
+			get
+			{
+				return this._PPProduit.Entity;
+			}
+			set
+			{
+				PPProduit previousValue = this._PPProduit.Entity;
+				if (((previousValue != value) 
+							|| (this._PPProduit.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PPProduit.Entity = null;
+						previousValue.PPEvaluations.Remove(this);
+					}
+					this._PPProduit.Entity = value;
+					if ((value != null))
+					{
+						value.PPEvaluations.Add(this);
+						this._NoProduit = value.NoProduit;
+					}
+					else
+					{
+						this._NoProduit = default(long);
+					}
+					this.SendPropertyChanged("PPProduit");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

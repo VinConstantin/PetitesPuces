@@ -1,0 +1,70 @@
+﻿@using System.Globalization
+@using PetitesPuces.Models
+@using PetitesPuces.Securite
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPProduit
+
+@{
+    BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
+    short nbItemsEnPanier = 0;
+    try
+    {
+        nbItemsEnPanier = (short)(from a in ctxt.PPArticlesEnPaniers
+            where
+                a.NoClient == SessionUtilisateur.UtilisateurCourant.No & a.PPProduit == Model
+            select a).FirstOrDefault().NbItems;
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+    }
+
+}
+
+<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"> 
+    <div class="panel panel-primary" style="border-width: thin;">
+        <div class="panel-footer">
+            <span id="@("QuantitePLACEHOLDER" + Model.NoProduit)">
+            @if (nbItemsEnPanier > 0)
+            {
+                <span class="badge badge-primary pull-right" title="Vous avez @nbItemsEnPanier item(s) dans votre panier">
+                    <span id="@("Quantite" + Model.NoProduit)">@nbItemsEnPanier</span><span class="glyphicon glyphicon-shopping-cart"></span>
+                </span>
+            }
+            </span>
+            <h4 style="overflow: hidden; height: 4vh; text-overflow: ellipsis;">@Model.Nom</h4>
+        </div>
+        <div class="panel-body" style="height: 260px">
+            <img src="@Url.Content("/images/produits/" + Model.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive"
+                 style="width: 100%; max-height: 60%; object-fit: contain;" alt="Image">
+            <div class="h3">
+                @Formatter.PrixProduitAvecVente(Model)
+            </div>
+            
+        </div>
+        <div class="panel-footer" style="padding: 0";>
+            <div class="row">
+                <div class=" col-md-8">
+                    @if (Model.NombreItems > 0)
+                    {
+                        <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit)">
+                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                        </button>
+                        
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning" style="height: 55px;margin: 5px;text-overflow: ellipsis;overflow: hidden;" role="alert">
+                            <span class="glyphicon glyphicon-alert"></span> Rupture de stock
+                        </div>
+                    }
+                </div>
+                <div class=" col-md-2">
+                    <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Visualiser le produit" onclick="visualiser(@Model.NoProduit)">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

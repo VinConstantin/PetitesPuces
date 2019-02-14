@@ -1,3 +1,4 @@
+@using PetitesPuces.Models
 @using PetitesPuces.Utilities
 @model PetitesPuces.Models.Panier
 @{
@@ -8,7 +9,7 @@
     decimal fraisLivraison = 0;
 }
 <div class="row">
-    <div class="col-md-8 col-lg-offset-2">
+    <div class="col-md-9">
         <div class="row">
             @Html.Partial("Client/Commande/_ProduitsInformation",Model)
         </div>
@@ -20,17 +21,17 @@
                 @if(prixTotal>=Model.Vendeur.LivraisonGratuite)
                 {
                     <div class="alert alert-success" role="alert">
-                        <p>Vous bénificiez d'une livraison gratuite car le prix de votre commande est inférieur ou égale à :@Formatter.Money(Model.Vendeur.LivraisonGratuite, false)</p>
+                        <p>Vous bénificiez d'une livraison gratuite par poste régulière car le prix de votre commande est supérieur à @Formatter.Money(Model.Vendeur.LivraisonGratuite, false)</p>
                     </div>
             
                     <div class="radio">
                         <label><input type="radio" value="1" checked="checked" onchange="getPrixLivraison()" name="optradio" checked>Poste régulière</label>
                     </div>
-                    <div class="radio disabled" >
-                        <label><input type="radio" value="2" disabled onchange="getPrixLivraison()" name="optradio">Poste prioritaire</label>
+                    <div class="radio" >
+                        <label><input type="radio" value="2" onchange="getPrixLivraison()" name="optradio">Poste prioritaire</label>
                     </div>
-                    <div class="radio disabled">
-                        <label><input type="radio" value="3" disabled onchange="getPrixLivraison()" name="optradio">Compagnie de livraison</label>
+                    <div class="radio">
+                        <label><input type="radio" value="3" onchange="getPrixLivraison()" name="optradio">Compagnie de livraison</label>
                     </div>
             
                     <hr/>
@@ -69,6 +70,9 @@
             </div>
         </form>
     </div>
+    <div class="col-md-3" id="RECAPITULATIF">
+        @Html.Partial("Client/Commande/_RecapitulatifCommande",Model)
+    </div>
 </div>
 
 <script>
@@ -93,8 +97,8 @@
     }
     function getPrixLivraison() {
         var selected = $('input[name=optradio]:checked', 'form').val()
-        var prix = @prixTotalDouble
-        var poids = @poidsTotalDouble
+        var prix = @prixTotalDouble.ToString().Replace(',','.');
+        var poids = @poidsTotalDouble.ToString().Replace(',','.');
         $.ajax({
             url: URLPATH + "/Client/GetPrixLivraison",
             type: "get",
@@ -106,6 +110,22 @@
             },
             success: function(result) {
                 $('#PRIXLIVRAISON').html(result);
+                updateRecapitulatif();
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });      
+    }
+    function updateRecapitulatif() {
+        $.ajax({
+            url: URLPATH + "/Client/Recapitulatif",
+            type: "get",
+            data: {
+            
+            },
+            success: function(result) {
+                $('#RECAPITULATIF').html(result);
             },
             error: function(req, status, err) {
                 console.log(req, status, err);

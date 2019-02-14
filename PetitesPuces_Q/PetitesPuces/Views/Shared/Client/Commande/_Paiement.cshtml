@@ -1,6 +1,6 @@
 @model PetitesPuces.Models.Panier
 <div class="row">
-    <div class="col-md-8 col-lg-offset-2">
+    <div class="col-md-9">
         <div class="row">
             @Html.Partial("Client/Commande/_ProduitsInformation",Model)
         </div>
@@ -40,6 +40,9 @@
             </div>
     
         </form>
+    </div>
+    <div class="col-md-3">
+        @Html.Partial("Client/Commande/_RecapitulatifCommande",Model)
     </div>
 </div>
 

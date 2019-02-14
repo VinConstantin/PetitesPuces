@@ -22,7 +22,11 @@ namespace PetitesPuces
 
         void Session_Start(object sender, EventArgs e)
         {
-            HttpContext.Current.Session.Add("userId", null);
+            long? defaultId = null;
+            #if DEBUG
+            defaultId = 101;
+            #endif
+            HttpContext.Current.Session.Add("userId", defaultId);
         }
     }
 }

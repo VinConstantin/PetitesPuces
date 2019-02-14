@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -8,11 +9,13 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Microsoft.Ajax.Utilities;
 using PetitesPuces.Models;
 using PetitesPuces.Securite;
 using PetitesPuces.Utilities;
 using PetitesPuces.ViewModels.Vendeur;
+using Rotativa;
 
 namespace PetitesPuces.Controllers
 {
@@ -70,7 +73,7 @@ namespace PetitesPuces.Controllers
                 };
                 
                 //creer la liste de produits
-                listeProduits = (from p in context.PPProduits select p)
+                listeProduits = (from p in context.PPProduits.Where(p=>p.Disponibilité==true) select p)
                     .Where(p => categorie == null || p.PPCategory == categorie);
             }
             else
@@ -81,8 +84,8 @@ namespace PetitesPuces.Controllers
                     select unVendeur);
                 vendeur = requete.FirstOrDefault();
                 //creer la liste de produits
-                listeProduits = vendeur.PPProduits
-                    .Where(p => categorie == null || p.PPCategory == categorie);
+                listeProduits = vendeur.PPProduits.Where(p=>p.Disponibilité==true)
+                    .Where(p => (categorie == null || p.PPCategory == categorie) && p.Disponibilité==true);
             }
 
             if(!String.IsNullOrEmpty(Filtre)) 
@@ -156,7 +159,7 @@ namespace PetitesPuces.Controllers
             ViewBag.NbPage = (listeProduits.Count()-1)/nbItemsParPage+1;
             ViewBag.Filtre = Filtre;
             ViewBag.Tri = TriPar;
-            return PartialView("Client/_Catalogue",viewModel);
+            return PartialView("Client/Catalogue/_Catalogue",viewModel);
         }
 
         public ActionResult InformationProduit(int NoProduit)
@@ -165,70 +168,107 @@ namespace PetitesPuces.Controllers
                 where unProduit.NoProduit == NoProduit
                 select unProduit).FirstOrDefault();
 
-            return PartialView("Client/ModalProduit", produit);
+            return PartialView("Client/Catalogue/_ModalProduit", produit);
 
         }
-        [System.Web.Mvc.HttpPost]
-        public HttpStatusCode AjouterProduitAuPanier(int NoProduit, short Quantite)
+        public ActionResult InformationProduitPanier(int NoProduit)
+        {
+            PPProduit produit = (from unProduit in context.PPProduits
+                where unProduit.NoProduit == NoProduit
+                select unProduit).FirstOrDefault();
+
+            return PartialView("Client/Panier/_ModalProduit", produit);
+
+        }
+        [System.Web.Http.HttpPost]
+        public HttpStatusCodeResult AjouterProduitAuPanier(int NoProduit, short Quantite)
         {
             var requeteProduit = (from unProduit in context.PPProduits
                 where unProduit.NoProduit == NoProduit
                 select unProduit);
 
             if (!requeteProduit.Any())
-                return HttpStatusCode.Gone;
+                return new HttpStatusCodeResult(HttpStatusCode.Gone);
 
             if (Quantite > requeteProduit.FirstOrDefault().NombreItems)
-                return HttpStatusCode.Conflict;
-            
+                return new HttpStatusCodeResult(HttpStatusCode.Conflict);
 
-            int noVendeur = (int) requeteProduit.First().NoVendeur;
-            DateTime dateCreation = DateTime.Now;
-            short nbItems = Quantite;
+            var articlePresent = (from a in context.PPArticlesEnPaniers
+                where a.NoClient == NOCLIENT && a.PPProduit.NoProduit == NoProduit
+                select a);
             
-            long noPanier = (from unPanier in context.PPArticlesEnPaniers
-                select unPanier.NoPanier).Max() + 1;
-
-            PPArticlesEnPanier article = new PPArticlesEnPanier
+            if (articlePresent.Any())
             {
-                NoPanier = noPanier,
-                NoClient = NOCLIENT,
-                NoVendeur = noVendeur,
-                DateCreation = dateCreation,
-                NbItems = nbItems,
-                NoProduit = NoProduit
-            };        
-            context.PPArticlesEnPaniers.InsertOnSubmit(article);            
+                PPArticlesEnPanier art = articlePresent.FirstOrDefault();
+                if (art.NbItems + Quantite > requeteProduit.FirstOrDefault().NombreItems)
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+
+                art.NbItems += Quantite;
+            }
+            else
+            {
+                int noVendeur = (int) requeteProduit.First().NoVendeur;
+                DateTime dateCreation = DateTime.Now;
+                short nbItems = Quantite;
+                
+                long noPanier = (from unPanier in context.PPArticlesEnPaniers
+                    select unPanier.NoPanier).Max() + 1;
+    
+                PPArticlesEnPanier article = new PPArticlesEnPanier
+                {
+                    NoPanier = noPanier,
+                    NoClient = NOCLIENT,
+                    NoVendeur = noVendeur,
+                    DateCreation = dateCreation,
+                    NbItems = nbItems,
+                    NoProduit = NoProduit
+                };        
+                context.PPArticlesEnPaniers.InsertOnSubmit(article);
+            }
+            
+
+            
             try
             {
                 context.SubmitChanges();
             }
             catch (Exception e)
             {
-                return HttpStatusCode.InternalServerError;
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }         
-            return HttpStatusCode.OK;
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        public ActionResult CheckDisponibiliteArticlesPanier(int NoVendeur)
+        public bool CheckDisponibiliteArticlesPanier(long NoVendeur)
         {
-            Panier panier = GetPanierByVendeurClient(NoVendeur);
+            Panier panier = GetPanierByVendeurClient((int)NoVendeur);
 
+            if(panier.DepassePoidsMaximum)
+                return false;
             foreach (PPArticlesEnPanier article in panier.Articles)
             {
                 if (article.NbItems > article.PPProduit.NombreItems)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.Conflict);
-                }
+                    return false;
+                if(article.PPProduit.Disponibilité!=true)
+                    return false;
             }
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+
+            return true;
         } 
-        public ActionResult MonPanier(string No)
+        public ActionResult MonPanier(int No=0)
         {
             ViewBag.NoClient = NOCLIENT;
             ViewBag.NoVendeur = No;
             List<Panier> lstPaniers = GetPaniersClient(NOCLIENT);
-            //List<Panier> lstPaniers = new List<Panier>();
+
+            try
+            {
+                ViewBag.NoVendeur = No==0?lstPaniers.FirstOrDefault().Vendeur.No : No;
+            }
+            catch (Exception e)
+            {
+                ViewBag.NoVendeur = 0;
+            }
             return View(lstPaniers);
         }
         private List<Panier> GetPaniersClient(long NoClient)
@@ -296,6 +336,13 @@ namespace PetitesPuces.Controllers
                     select v).FirstOrDefault();
         }
 
+        public ActionResult Recapitulatif()
+        {
+
+            Panier panier = GetPanierByVendeurClient((int)InfoCommande.Panier.Vendeur.No);
+            return PartialView("Client/Commande/_RecapitulatifCommande",panier);
+        }
+
         public HtmlString GetPrixLivraison(int noVendeur, decimal poids, decimal prix, int selected)
         {
             var intervallePoids = (from p in context.PPTypesPoids select p).ToList();
@@ -311,7 +358,8 @@ namespace PetitesPuces.Controllers
             PPVendeur vendeur = GetVendeurByNo(noVendeur);
 
             PPPoidsLivraison livraisons = codePoids.PPPoidsLivraisons.FirstOrDefault(p => p.CodeLivraison == selected);
-            decimal? prixLivraison = prix >= vendeur.LivraisonGratuite?(decimal?)0.00:livraisons.Tarif;
+            decimal? prixLivraison = (prix >= vendeur.LivraisonGratuite && selected==1)?
+                (decimal?)0.00:livraisons.Tarif;
             InfoCommande.PrixLivraison = prixLivraison;
             InfoCommande.CodeLivraison = selected;
             
@@ -319,11 +367,13 @@ namespace PetitesPuces.Controllers
             HtmlString html = new HtmlString(str);
             return html;
         }
-        public ActionResult Commande(string Etape, int noVendeur)
+        public ActionResult Commande(int noVendeur)
         {
-            ViewBag.Etape = Etape;
-
             Panier panier = GetPanierByVendeurClient(noVendeur);
+            InfoCommande.Panier = panier;
+
+            if (!CheckDisponibiliteArticlesPanier(noVendeur))
+                return RedirectToAction("MonPanier", new{No = noVendeur});
             return View(panier);
         }
 
@@ -331,6 +381,9 @@ namespace PetitesPuces.Controllers
         {
             Panier panier = GetPanierByVendeurClient(noVendeur);
             InfoCommande.Vendeur = panier.Vendeur;
+            
+            if (!CheckDisponibiliteArticlesPanier(noVendeur))
+                return RedirectToAction("MonPanier", new{No = noVendeur});
             
             return PartialView("Client/Commande/_Information", panier);
         }     
@@ -362,15 +415,25 @@ namespace PetitesPuces.Controllers
             System.Diagnostics.Debug.Write(InfoCommande.InfoPaiement);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+
         public ActionResult Livraison(int noVendeur)
         {
             Panier panier = GetPanierByVendeurClient(noVendeur);
+
+            //it's bad, but it works
+            if (!CheckDisponibiliteArticlesPanier(noVendeur))
+                return Content("<script>window.location= '/Client/MonPanier?No="+noVendeur+"'</script>");
             
             return PartialView("Client/Commande/_Livraison",panier);
         }
         public ActionResult Paiement(int noVendeur)
         {
             Panier panier = GetPanierByVendeurClient(noVendeur);
+            
+            //it's bad, but it works
+            if (!CheckDisponibiliteArticlesPanier(noVendeur))
+                return Content("<script>window.location= '/Client/MonPanier?No="+noVendeur+"'</script>");
+            
             return PartialView("Client/Commande/_Paiement",panier);
         }
         public ActionResult Confirmation(int noVendeur)
@@ -380,6 +443,10 @@ namespace PetitesPuces.Controllers
                       && articles.NoVendeur == noVendeur
                 orderby articles.DateCreation ascending
                 select articles;
+            
+            //it's bad, but it works
+            if (!CheckDisponibiliteArticlesPanier(noVendeur))
+                return Content("<script>window.location= '/Client/MonPanier?No="+noVendeur+"'</script>");
 
             Panier panier = new Panier
             {
@@ -392,6 +459,12 @@ namespace PetitesPuces.Controllers
 
         public ActionResult DetailPanier(int noVendeur)
         {
+            if (noVendeur == 0)
+            {
+                Panier panierFirst = GetPaniersClient(NOCLIENT).FirstOrDefault();
+                return PartialView("Client/Panier/_DetailPanier",panierFirst);
+            }
+            
             var query = from articles in context.PPArticlesEnPaniers
                 where articles.NoClient == NOCLIENT
                       && articles.NoVendeur == noVendeur
@@ -404,7 +477,7 @@ namespace PetitesPuces.Controllers
                 Client = query.FirstOrDefault().PPClient,
                 Articles = query.ToList()
             };
-            return PartialView("Client/_DetailPanier",panier);
+            return PartialView("Client/Panier/_DetailPanier",panier);
         }
         public ActionResult SupprimerArticle(int NoProduit, int NoVendeur)
         {
@@ -430,7 +503,7 @@ namespace PetitesPuces.Controllers
                 Articles = query.ToList()
             };
             
-            return PartialView("Client/_DetailPanier",panier);
+            return PartialView("Client/Panier/_DetailPanier",panier);
         }
         public ActionResult SupprimerPanier(int NoVendeur)
         {
@@ -488,13 +561,245 @@ namespace PetitesPuces.Controllers
                 Articles = query.ToList()
             };
             
-            return PartialView("Client/_DetailPanier",panier);
+            return PartialView("Client/Panier/_DetailPanier",panier);
         }
-       
-        public ActionResult ConfirmationPaiement(int? NoAutorisation, DateTime? DateAutorisation, decimal? FraisMarchand, string InfoSuppl)
+
+        private int GetNextNoCommande()
         {
+            var requete = (context.PPCommandes.OrderByDescending(c => c.NoCommande));
+            if (requete.Any())
+            {
+                return (int) (requete.FirstOrDefault().NoCommande + 1);
+            }
+
+            return 1;
+        }
+        private long GetNextNoHistoriquePaiement()
+        {
+            var requete = (context.PPHistoriquePaiements.OrderByDescending(c => c.NoHistorique));
+            if (requete.Any())
+            {
+                return (long) (requete.FirstOrDefault().NoHistorique + 1);
+            }
+
+            return 1;
+        }
+        private long GetNextNoDetailsCommande()
+        {
+            var requete = (context.PPDetailsCommandes.OrderByDescending(c => c.NoDetailCommandes));
+            if (requete.Any())
+            {
+                return (long) (requete.FirstOrDefault().NoDetailCommandes + 1);
+            }
+
+            return 1;
+        }
+        private void UpdateInfoClient()
+        {
+            PPClient clientAModifier = (from c in context.PPClients
+                where c.NoClient == NOCLIENT
+                select c).FirstOrDefault();
+
+            if (clientAModifier != null)
+            {
+                clientAModifier.Nom = InfoCommande.InfoClient.nom;
+                clientAModifier.Prenom = InfoCommande.InfoClient.prenom;
+                clientAModifier.Tel1 = InfoCommande.InfoClient.telephone;
+                clientAModifier.Tel2 = InfoCommande.InfoClient.cellulaire;
+                clientAModifier.Rue = InfoCommande.InfoClient.rue;
+                clientAModifier.Ville = InfoCommande.InfoClient.ville;
+                clientAModifier.Province = InfoCommande.InfoClient.province;
+                clientAModifier.Pays = "Canada";
+                clientAModifier.CodePostal = InfoCommande.InfoClient.codePostal;
+            }
+        }
+
+        private PPCommande CreateCommande(DateTime DateAutorisation,string NoAutorisation)
+        {
+            PPCommande commande = new PPCommande
+            {
+                NoCommande = GetNextNoCommande(),
+                NoClient = NOCLIENT,
+                NoVendeur = InfoCommande.Vendeur.No,
+                DateCommande = DateAutorisation,
+                CoutLivraison = InfoCommande.PrixLivraison,
+                TypeLivraison = (short)InfoCommande.CodeLivraison,
+                MontantTotAvantTaxes = InfoCommande.Panier.getPrixTotal() + InfoCommande.PrixLivraison,
+                TPS = (decimal)((double)(InfoCommande.Panier.getPrixTotal() + InfoCommande.PrixLivraison)*0.05),
+                TVQ = (decimal)((double)(InfoCommande.Panier.getPrixTotal() + InfoCommande.PrixLivraison)*0.0975),
+                PoidsTotal = InfoCommande.Panier.GetPoidsTotal(),
+                Statut = 'T',
+                NoAutorisation = NoAutorisation
+            };
+            return commande;
+        }
+
+        private PPHistoriquePaiement CreatePaiement(PPCommande commande, string NoAutorisation, string FraisMarchand)
+        {
+            PPHistoriquePaiement paiement = new PPHistoriquePaiement
+            {
+                NoHistorique = GetNextNoHistoriquePaiement(),
+                MontantVenteAvantLivraison = InfoCommande.Panier.getPrixTotal(),
+                NoVendeur = commande.NoVendeur,
+                NoClient = commande.NoClient,
+                NoCommande = commande.NoCommande,
+                DateVente = commande.DateCommande,
+                NoAutorisation = NoAutorisation,
+                FraisLesi = Convert.ToDecimal(FraisMarchand,new CultureInfo("en-CA")),
+                Redevance = InfoCommande.Vendeur.Pourcentage*InfoCommande.Panier.getPrixTotal(),
+                FraisTPS = commande.TPS,
+                FraisTVQ = commande.TVQ
+            };
+            return paiement;
+        }
+
+        public ActionResult ConfirmationPaiement(string NoAutorisation, DateTime DateAutorisation, string FraisMarchand,
+            string InfoSuppl)
+        {
+            if (!CheckDisponibiliteArticlesPanier(InfoCommande.Vendeur.No))
+                return View("ErreurCommande", 9999);
+
+            Panier panVerif = GetPanierByVendeurClient((int) InfoCommande.Vendeur.No);
+            if(panVerif.Articles.Count != InfoCommande.Panier.Articles.Count)
+                return View("ErreurCommande", 9999);
+            foreach (PPArticlesEnPanier article in panVerif.Articles)
+            {
+                PPArticlesEnPanier artVerif = InfoCommande.Panier.Articles.First(a => a.NoProduit == article.NoProduit);
+                
+                if(artVerif == null)
+                    return View("ErreurCommande", 9999);
+                if(artVerif.NbItems != article.NbItems)
+                    return View("ErreurCommande", 9999);
+            }
             
-            return View("ResultatCommande");
+            {
+                if(GetPanierByVendeurClient((int) InfoCommande.Vendeur.No) == InfoCommande.Panier)
+                    return View("ErreurCommande", 9999);
+                
+            }
+            if (NoAutorisation == "9999" || NoAutorisation == "1" || NoAutorisation == "2" || NoAutorisation == "3")
+            {
+                int intNoAutorisation;
+                int.TryParse(NoAutorisation, out intNoAutorisation);
+                return View("ErreurCommande", intNoAutorisation);
+            }
+
+            try
+            {
+                UpdateInfoClient();
+    
+                PPCommande commande = CreateCommande(DateAutorisation, NoAutorisation);
+                context.PPCommandes.InsertOnSubmit(commande);
+    
+                PPHistoriquePaiement paiement = CreatePaiement(commande, NoAutorisation, FraisMarchand);
+                context.PPHistoriquePaiements.InsertOnSubmit(paiement);
+    
+                long noDetail = GetNextNoDetailsCommande();
+                foreach (PPArticlesEnPanier article in GetPanierByVendeurClient((int)InfoCommande.Panier.Vendeur.No).Articles)
+                {
+                    PPArticlesEnPanier articleASupprimer =
+                        (from c in context.PPArticlesEnPaniers
+                            where c.NoPanier == article.NoPanier
+                            select c).FirstOrDefault();
+    
+                    context.PPArticlesEnPaniers.DeleteOnSubmit(articleASupprimer);
+    
+                    PPDetailsCommande detailsCommande = new PPDetailsCommande
+                    {
+                        NoDetailCommandes = noDetail++,
+                        NoCommande = commande.NoCommande,
+                        NoProduit = article.NoProduit,
+                        PrixVente = article.PPProduit.GetPrixCourant(),
+                        Quantité = article.NbItems
+                    };
+    
+                    PPProduit produitAModifier = (from p in context.PPProduits
+                        where p.NoProduit == article.PPProduit.NoProduit
+                        select p).First();
+                    
+                    produitAModifier.NombreItems -= article.NbItems;
+                    if(produitAModifier.NombreItems < 0)
+                        return View("ErreurCommande",4);
+                    
+                    context.PPDetailsCommandes.InsertOnSubmit(detailsCommande);
+                }  
+
+                context.SubmitChanges();
+                return RedirectToAction("Recu", "Client",
+                    new RouteValueDictionary(new { noCommande = commande.NoCommande}));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return View("ErreurCommande",101);
+            }
+        }
+
+        [System.Web.Http.HttpPost]
+        public ActionResult EnvoyerEvaluation(int cote, string commentaire, int noProduit)
+        {
+            try
+            {
+                if(cote>5||cote<0)
+                    return new HttpStatusCodeResult(HttpStatusCode.NotAcceptable);
+                
+                PPEvaluation evaluation = new PPEvaluation
+                {
+                    Cote_ = cote,
+                    Commentaire_ = commentaire,
+                    NoClient = NOCLIENT,
+                    NoProduit = noProduit,
+                    DateCreation_ = DateTime.Now,
+                    DateMAJ_ = DateTime.Now
+                };
+                context.PPEvaluations.InsertOnSubmit(evaluation);
+                context.SubmitChanges();
+                
+                return PartialView("Client/Catalogue/_EtoilesRating", evaluation.PPProduit);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);;
+            }
+        }
+        
+        [System.Web.Http.HttpPost]
+        public ActionResult ModifierEvaluation(int cote, string commentaire, int noProduit)
+        {
+            try
+            {
+                if(cote>5||cote<0)
+                    return new HttpStatusCodeResult(HttpStatusCode.NotAcceptable);
+                
+                PPEvaluation evaluation = (from e in context.PPEvaluations
+                    where e.NoProduit == noProduit && e.NoClient == NOCLIENT
+                    select e).First();
+
+                evaluation.Cote_ = cote;
+                evaluation.Commentaire_ = commentaire;
+                evaluation.DateMAJ_ = DateTime.Now;
+                
+                context.SubmitChanges();
+
+                return PartialView("Client/Catalogue/_EtoilesRating", evaluation.PPProduit);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);;
+            }
+        }
+        public ActionResult Recu(int noCommande)
+        {
+            var commande = (from c in context.PPCommandes 
+                where c.NoCommande == noCommande && c.NoClient==NOCLIENT
+                select c);
+            
+            if(!commande.Any())
+                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            
+            return View("ResultatCommande", commande.First());
         }
         public ActionResult Profil()
         {

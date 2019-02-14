@@ -4,15 +4,15 @@
 
 <div class="row">
     <div class="col-md-8 col-lg-offset-2">
-        <form id="FormLivraison">
+        <form id="FormLivraison" onsubmit="return envoyerInfo()">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="nom">Nom</label>
-                    <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom" value="@Model.Client.Nom">
+                    <input required type="text" class="form-control" name="nom" id="nom" placeholder="Nom" value="@Model.Client.Nom">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="prenom">Prénom</label>
-                    <input type="text" class="form-control" name="prenom" id="prenom" placeholder="Prénom" value="@Model.Client.Prenom">
+                    <input required type="text" class="form-control" name="prenom" id="prenom" placeholder="Prénom" value="@Model.Client.Prenom">
                 </div>
             </div>
             <div class="form-row">
@@ -22,7 +22,10 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputPassword4">Téléphone</label>
-                    <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Telephone" value="@Model.Client.Tel1">
+                    <input type="tel" class="form-control" id="telephone" name="telephone" 
+                           placeholder="XXX-XXX-XXXX"
+                           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                           required value="@Model.Client.Tel1">
                 </div>
             </div>
             <div class="form-row">
@@ -32,17 +35,20 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputPassword4">(Cellulaire)</label>
-                    <input type="text" class="form-control" id="cellulaire" name="cellulaire" placeholder="(XXX)XXX-XXXX" value="@Model.Client.Tel2">
+                    <input type="tel" class="form-control" id="cellulaire" name="cellulaire" 
+                           placeholder="XXX-XXX-XXXX" 
+                           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                           value="@Model.Client.Tel2">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="inputCity">Ville</label>
-                    <input type="text" class="form-control" name="ville" id="ville" value="@Model.Client.Ville">
+                    <input required type="text" placeholder="Ville" class="form-control" name="ville" id="ville" value="@Model.Client.Ville">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputState">Province</label>
-                    <select id="provinece" name="province" class="form-control">
+                    <select required id="provinece" name="province" class="form-control">
                         @foreach (Province province in  Enum.GetValues(typeof(Province)))
                         {
                             Province maProvince = Province.QC;
@@ -61,7 +67,9 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label for="inputZip">Code Postal</label>
-                    <input type="text" name="codePostal" class="form-control" id="codePostal" value="@Model.Client.CodePostal">
+                    <input required type="text" name="codePostal" class="form-control" id="codePostal" 
+                           placeholder="X9X-9X9" pattern="[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]"
+                           value="@Model.Client.CodePostal">
                 </div>
 
             </div>
@@ -69,7 +77,7 @@
                 <div class="col-md-12"><hr/></div>
                 <div class="col-md-4 col-lg-offset-5">
                     <button type="button" class="btn btn-danger"onclick="location.href = '@Url.Action("MonPanier", "Client")'">Retour</button>
-                    <button type="button" class="btn btn-primary" onclick="envoyerInfo();">Continuer</button>
+                    <button type="submit" class="btn btn-primary">Continuer</button>
                 </div>
             </div>
         </form>
@@ -80,7 +88,7 @@
 <script>
     function envoyerInfo(){
         var data = $("form").serialize();
-        
+        event.preventDefault();
         $.ajax({
             url: URLPATH + "/Client/SetInfoClient",
             type: "POST",
@@ -90,6 +98,7 @@
                 console.log(req, status, err);
             }
         });
+        return false;
     }
     function next() {
         $('#Livraison').addClass('active');

@@ -91,10 +91,10 @@
                 <div class="panel-body" style="height: 40vh; overflow: auto;">
                     @if (Model.Vendeur.NoVendeur == -1)
                     {
-                        <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur, -1)" id="-1">Tous (@Model.Categories.Sum(c => c.PPProduits.Count))</a></p>
+                        <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur, -1)" id="-1">Tous (@Model.Categories.Sum(c => c.PPProduits.Count(p=>p.Disponibilité==true)))</a></p>
                         foreach (PPCategory category in @Model.Categories)
                         {
-                            var nb = category.PPProduits.Count;
+                            var nb = category.PPProduits.Count(c=>c.Disponibilité==true);
                             if (nb > 0)
                             {
                                 <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur, this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
@@ -104,10 +104,10 @@
                     }
                     else
                     {
-                        <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,-1)" id="-1">Tous (@Model.Vendeur.PPProduits.Count)</a></p>   
+                        <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,-1)" id="-1">Tous (@Model.Vendeur.PPProduits.Count(p=>p.Disponibilité==true)))</a></p>   
                         foreach (PPCategory category in @Model.Categories)
                         {
-                            var nb = Model.Vendeur.PPProduits.Count(c => c.PPCategory == category);
+                            var nb = Model.Vendeur.PPProduits.Count(c => c.PPCategory == category && c.Disponibilité==true);
                             if (nb > 0)
                             {
                                 <p><a class="categorie" onclick="selectCategorie(@Model.Vendeur.NoVendeur,this)" id="@category.NoCategorie">@category.Description (@nb)</a></p>
@@ -136,7 +136,7 @@
             {
                 foreach (PPProduit produit in Model.Produits)
                 {
-                    @Html.Partial("Client/_Produits", produit)
+                    @Html.Partial("Client/Catalogue/_Produits", produit)
                 }
             }
             else
@@ -164,6 +164,22 @@
             </div>
             <div class="modal-body">
                 <h4>Le produit a été ajouté avec succès à votre panier</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal erreur ajout panier-->
+<div class="modal fade" id="erreurAjoutPanier" tabindex="-1" role="dialog" aria-labelledby="erreurAjoutPanier">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                Erreure
+            </div>
+            <div class="modal-body">
+                <h4><span class="glyphicon glyphicon-alert"></span>Le produit n'a pas assez de quantité pour être ajouté au panier</h4>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
@@ -302,12 +318,29 @@
                 "Quantite": quantite
             },
             success: function(result) {
-                $('#confirmationAjoutPanier').modal('show'); 
+                $('#confirmationAjoutPanier').modal('show');
+                let $span  = $(`#Quantite${noProduit}`);
+                console.log(result);
+                let val = 0;
+                if ($span.length)
+                    val = parseInt($span.text());
+                val += parseInt(quantite);
+
+                const txt =
+                    `<span class="badge badge-primary pull-right" title="Vous avez ${val} item(s) dans votre panier">
+                    <span id="("Quantite${noProduit}>${val}</span>
+                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                </span>`;
+
+                $(`#QuantitePLACEHOLDER${noProduit}`).html(txt);
+                
             },
             error: function(req, status, err) {
-                alert("Une erreure est survenue")
+                $('#erreurAjoutPanier').modal('show');
+                console.log("erruer");
             }
         });
+        $('#ModalDescription').modal('hide')
     }
     //augmeneter la quantite
     function plusQuantite(id) {
@@ -333,4 +366,6 @@
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
+    
+    
 </script>
