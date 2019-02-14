@@ -6,14 +6,14 @@
     BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
 
     List<PPEvaluation> evaluations = (from e in ctxt.PPEvaluations
-        where e.NoProduit == Model.NoProduit
-        select e).ToList();
+                                      where e.NoProduit == Model.NoProduit
+                                      select e).ToList();
 
     int nbEtoile = 0;
     if (evaluations.Count > 0)
     {
         decimal average = evaluations.Average(e => e.Cote_);
-        nbEtoile = (int) Math.Round(average);
+        nbEtoile = (int)Math.Round(average);
     }
 
 }
@@ -33,14 +33,14 @@
             {
                 <span class="glyphicon glyphicon-star"></span>
             }
-            @for (int i = 1; i <= 5-nbEtoile; i++)
+            @for (int i = 1; i <= 5 - nbEtoile; i++)
             {
                 <span class="glyphicon glyphicon-star-empty"></span>
             }
         </span>
     </div>
     <img src="@Url.Content("/images/produits/" + Model.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="width: 100%" alt="Image">
-    <br/>
+    <br />
     <p>@Model.Description</p>
 
     <p>
@@ -63,51 +63,10 @@
 
     <p>Poids : @Model.Poids lbs</p>
     <p>Catégorie : @Model.PPCategory.Description</p>
-    <hr/>
+    <hr />
     <p>Date de création : @Model.DateCreation.Value.ToShortDateString()</p>
     <p>Statut : @strStatut</p>
 </div>
-<div class="modal-footer">
-    <button class="btn btn-link btn-lg" title="Modifier" onclick="modifierProduit(@Model.NoProduit);">
-        <span class="glyphicon glyphicon-edit"></span>
-    </button>
-    <button class="btn btn-link btn-lg" title="Supprimer" onclick="supprimerProduit(@Model.NoProduit)">
-        <span class="glyphicon glyphicon-trash"></span>
-    </button>
-</div>
-
-<div id="ratingTooltip">
-    @Html.Partial("Vendeur/_RatingTooltip",new Tuple<List<PPEvaluation>,PPProduit>(evaluations,Model))
-</div>
-<script>
-    //tooltip
-    tippy('#rating', {
-        animation: 'scale',
-        duration: [800, 500],
-        delay: [0,200],
-        arrow: true,
-        placement: "bottom",
-        content: document.getElementById("ratingTooltip"),
-        allowHTML: true,
-        interactive: true,
-        onMount: function() {
-            $('.progress .progress-bar').css("width",
-                function() {
-                    return $(this).attr("aria-valuenow") + "%";
-                }
-            );
-        },
-        onHide: function() {
-            $('.progress .progress-bar').css("width",
-                function() {
-                    return "0%";
-                }
-            );
-        },
-        size: "large",
-        theme: "google"
-    });
-</script>
 @if (Model.Disponibilité != null)
 {
     <div class="modal-footer">
@@ -119,3 +78,36 @@
         </button>
     </div>
 }
+
+<div id="ratingTooltip">
+    @Html.Partial("Vendeur/_RatingTooltip", new Tuple<List<PPEvaluation>, PPProduit>(evaluations, Model))
+</div>
+<script>
+    //tooltip
+    tippy('#rating', {
+        animation: 'scale',
+        duration: [800, 500],
+        delay: [0, 200],
+        arrow: true,
+        placement: "bottom",
+        content: document.getElementById("ratingTooltip"),
+        allowHTML: true,
+        interactive: true,
+        onMount: function () {
+            $('.progress .progress-bar').css("width",
+                function () {
+                    return $(this).attr("aria-valuenow") + "%";
+                }
+            );
+        },
+        onHide: function () {
+            $('.progress .progress-bar').css("width",
+                function () {
+                    return "0%";
+                }
+            );
+        },
+        size: "large",
+        theme: "google"
+    });
+</script>
