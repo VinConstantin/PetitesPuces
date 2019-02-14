@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IronPdf, Version=4.4.9.15720, Culture=neutral, PublicKeyToken=94e1c31412563c75, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPdf.4.4.9\lib\net40\IronPdf.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="mscorlib" />
     <Reference Include="System">
@@ -256,6 +259,7 @@
     <Compile Include="ViewModels\Vendeur\GestionCatalogueViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\CommandesViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\ModifierProduitViewModel.cs" />
+    <Compile Include="ViewModels\Vendeur\SupprimerProduitViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -434,6 +438,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="images\produits\" />
+    <Folder Include="Recus\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

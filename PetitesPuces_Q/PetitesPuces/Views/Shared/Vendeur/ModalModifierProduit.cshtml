@@ -2,7 +2,7 @@
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
+        <span aria-hidden="true">&times;</span> 
     </button>
     <h2 class="modal-title" id="exampleModalLabel" style="overflow: hidden; text-overflow: ellipsis;">
         @Model.Produit.Nom
@@ -14,14 +14,21 @@
 
         <div class="input-group" style="width:100%">
             <span class="input-group-addon" style="width:150px">Nom</span>
-            <input name="Nom" class="form-control" type="text" maxlength="50" value="@Model.Produit.Nom" />
+            <input name="Nom" class="form-control" required type="text" maxlength="50" value="@Model.Produit.Nom" />
         </div>
 
         <br />
 
         <div class="input-group" style="width:100%">
             <span class="input-group-addon" style="width:150px">Photo</span>
-            <input name="Photo" class="form-control" type="file" />
+            <input name="Photo" class="form-control" accept=".jpg,.jpeg,.png,.gif" type="file" />
+        </div>
+
+        <br />
+
+        <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:150px">Quantité</span>
+            <input name="NombreItems" min="0" class="form-control" type="number" value="@Model.Produit.NombreItems" />
         </div>
 
         <br />
@@ -40,6 +47,9 @@
         </div>
 
         <br />
+        @{
+            string strDateVente = Model.Produit.DateVente.HasValue ? Model.Produit.DateVente.Value.ToShortDateString() : "";
+        }
 
         <div class="input-group" style="width:100%; padding-bottom:3px">
             <span class="input-group-addon" style="width:150px">Prix de vente</span>
@@ -48,7 +58,7 @@
         </div>
         <div class="input-group" style="width:100%">
             <span class="input-group-addon" style="width:150px">Date de vente</span>
-            <input name="DateVente" type="date" class="form-control">
+            <input name="DateVente" type="date" class="form-control" value="@strDateVente">
         </div>
 
         <br />
@@ -74,12 +84,21 @@
                 }
             </select>
         </div>
+
+        <br />
+        @{
+            string strChecked = (bool)Model.Produit.Disponibilité ? "checked" : "";
+        }
+        <div class="input-group" style="width:100%; padding:5px">
+            <span class="input-group-addon" style="width:150px">Disponibilité</span>
+            <input name="Disponibilite" class="form-control m-0" style="width:45px; margin-right:120px" type="checkbox" @strChecked />
+        </div>
     </form>
     <hr />
     <p>Date de création : @Model.Produit.DateCreation.Value.ToShortDateString()</p>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-link btn-lg" title="Modifier" onclick="modifierProduit();">
+    <button class="btn btn-link btn-lg" type="submit" title="Modifier" onclick="confirmationModifier();">
         <span class="glyphicon glyphicon-check"></span>
     </button>
     <button class="btn btn-link btn-lg" title="Annuler" onclick="information(@Model.Produit.NoProduit)">

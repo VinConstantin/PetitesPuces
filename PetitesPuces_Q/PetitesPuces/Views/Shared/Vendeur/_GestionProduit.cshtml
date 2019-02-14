@@ -20,17 +20,32 @@
         </div>
     </p>
 
+    @{
+        string strStatut;
+        if (Model.Disponibilité == true) { strStatut = "Disponible"; }
+        else if (Model.Disponibilité == false) { strStatut = "Non disponible"; }
+        else { strStatut = "Supprimé"; }
+    }
+
+    @if (Model.Disponibilité != null)
+    {
+        <p>Quantité : @Model.NombreItems</p>
+    }
+
     <p>Poids : @Model.Poids lbs</p>
     <p>Catégorie : @Model.PPCategory.Description</p>
     <hr />
     <p>Date de création : @Model.DateCreation.Value.ToShortDateString()</p>
-    <p>Vendeur : @Model.PPVendeur.Nom</p>
+    <p>Statut : @strStatut</p>
 </div>
-<div class="modal-footer">
-    <button class="btn btn-link btn-lg" title="Modifier" onclick="modifierProduit(@Model.NoProduit);">
-        <span class="glyphicon glyphicon-edit"></span>
-    </button>
-    <button class="btn btn-link btn-lg" title="Supprimer" onclick="supprimerProduit(@Model.NoProduit)">
-        <span class="glyphicon glyphicon-trash"></span>
-    </button>
-</div>
+@if (Model.Disponibilité != null)
+{
+    <div class="modal-footer">
+        <button class="btn btn-link btn-lg" title="Modifier" onclick="modifierProduit(@Model.NoProduit);">
+            <span class="glyphicon glyphicon-edit"></span>
+        </button>
+        <button class="btn btn-link btn-lg" title="Supprimer" onclick="supprimerProduit(@Model.NoProduit)">
+            <span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </div>
+}

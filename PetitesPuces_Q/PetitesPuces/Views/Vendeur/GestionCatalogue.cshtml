@@ -102,7 +102,7 @@
             <div class="col-sm-6 text-left">
                 <div class="input-group" style="width:100%; padding:5px">
                     <span class="input-group-addon" style="width:150px">Disponibilité</span>
-                    <input name="Disponibilite" class="form-control m-0" style="width:34px; margin-right:120px" type="checkbox" checked />
+                    <input name="Disponibilite" class="form-control m-0" style="width:45px; margin-right:120px" type="checkbox" checked />
                 </div>
             </div>
         </div>
@@ -120,7 +120,7 @@
     <table class="table m-0 bg-light table-hover">
         <thead>
             <tr>
-                <th>
+                <th style="width:60px">
 
                 </th>
                 <th>
@@ -176,6 +176,7 @@
     }
     function information(NoProduit) {
         $("#ModalDescription").modal('show');
+        console.log("information");
         $.ajax({
             url: URLPATH +"/Vendeur/GestionProduit",
             type: "get",
@@ -183,11 +184,11 @@
                 "NoProduit": NoProduit
             },
             success: function (result) {
-                console.log("success")
+                console.log("success info")
                 $("#PLACEHOLDERModalDescription").html(result);
             },
             error: function (req, status, err) {
-                console.log("error")
+                console.log("error info")
                 $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
             }
         });
@@ -237,8 +238,7 @@
                 "NoProduit": NoProduit
             },
             success: function (result) {
-                console.log("success")
-                $("#PLACEHOLDERModalDescription").html(result);
+                window.location.reload();
             },
             error: function (req, status, err) {
                 console.log("error")
@@ -250,19 +250,24 @@
     function confirmationModifier() {
         var form = document.getElementById("frmModifierProduit");
         var formData = new FormData(form);
+
         $.ajax({
             url: URLPATH +"/Vendeur/ModifierProduit",
-            type: "get",
+            type: "post",
             data: formData,
+            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            processData: false,
             success: function (result) {
-                console.log("success")
-                $("#PLACEHOLDERModalDescription").html(result);
+                console.log("success");
+                information(result);
             },
             error: function (req, status, err) {
                 console.log("error")
                 $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
             }
         });
+
+        return false;
     }
 
     $(function () {

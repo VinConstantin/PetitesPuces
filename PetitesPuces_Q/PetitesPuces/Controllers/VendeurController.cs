@@ -8,6 +8,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PetitesPuces.Securite;
+using PetitesPuces.Utilities;
+
+using IronPdf;
 
 namespace PetitesPuces.Controllers
 {
@@ -65,8 +68,31 @@ namespace PetitesPuces.Controllers
 
         public ActionResult InfoCommande(int No)
         {
-            List<PPCommande> commandes = GetCommandesVendeurs(10);
+            List<PPCommande> commandes = GetCommandesVendeurs(NoVendeur);
             PPCommande model = commandes.Where(c => c.NoCommande == No).FirstOrDefault();
+
+            /**/
+            string view;
+            PartialViewResult vr = PartialView("Vendeur/_RecuCommande", model);
+
+            using (var sw = new StringWriter())
+            {
+                vr.View = ViewEngines.Engines
+                  .FindPartialView(ControllerContext, vr.ViewName).View;
+
+                var vc = new ViewContext(
+                  ControllerContext, vr.View, vr.ViewData, vr.TempData, sw);
+                vr.View.Render(vc, sw);
+
+                view = sw.GetStringBuilder().ToString();
+            }
+
+            IronPdf.HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
+            var PDF = Renderer.RenderHtmlAsPdf(view);
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + No + ".pdf";
+            PDF.TrySaveAs(path);
+            /**/
+
             return View(model);
         }
 
@@ -116,45 +142,71 @@ namespace PetitesPuces.Controllers
             return PartialView("Vendeur/ModalModifierProduit", viewModel);
         }
 
-        public ActionResult ModalSupprimerProduit(int NoProduit) //TODO
+        public ActionResult ModalSupprimerProduit(long NoProduit) //TODO
         {
-            return PartialView("Vendeur/ModalSupprimerProduit", NoProduit);
+            var produit = (from produits in context.PPProduits
+                           where produits.NoProduit == NoProduit
+                           select produits).FirstOrDefault();
+
+            string strBody = "<p>Êtes-vous sûr de vouloir supprimer ce produit?</p>";
+
+            if (produit.PPArticlesEnPaniers.Count() != 0)
+            {
+                strBody += "<p>Ce produit est présent dans un ou plusieurs paniers</p>";
+            }
+
+            if (produit.PPDetailsCommandes.Count() != 0)
+            {
+                strBody += "<p>Ce produit est présent dans des commandes donc il sera désactivé</p>";
+            }
+
+            var viewModel = new SupprimerProduitViewModel
+            {
+                NoProduit = NoProduit,
+                StrBody = StringExtension.ToHtml(strBody)
+            };
+
+            return PartialView("Vendeur/ModalSupprimerProduit", viewModel);
         }
 
-        public void ModifierProduit() //TODO
+        [HttpPost]
+        public long ModifierProduit() //TODO
         {
             NameValueCollection nvc = Request.Form;
 
+            var produit = (from produits in context.PPProduits
+                           where produits.NoProduit == long.Parse(nvc["NoProduit"])
+                           select produits).FirstOrDefault();
 
-            PPProduit produit = new PPProduit
+            produit.NoCategorie = int.Parse(nvc["NoCategorie"]);
+            produit.NombreItems = short.Parse(nvc["NombreItems"]);
+            produit.Nom = nvc["Nom"];
+            produit.PrixDemande = decimal.Parse(nvc["PrixDemande"]);
+            produit.Poids = decimal.Parse(nvc["Poids"]);
+            produit.Description = nvc["Description"];
+            produit.Disponibilité = nvc["Disponibilite"] == "on" ? true : false;
+            produit.DateMAJ = DateTime.Today;
+
+            if (decimal.TryParse(nvc["PrixVente"], out decimal prixVente) &&
+                DateTime.TryParse(nvc["DateVente"], out DateTime date))
             {
-                NoProduit = long.Parse(nvc["NoProduit"]),
-                DateCreation = DateTime.Parse(nvc["DateCreation"]),
-                NoCategorie = int.Parse(nvc["NoCategorie"]),
-                NombreItems = short.Parse(nvc["NombreItems"]),
-                Nom = nvc["Nom"],
-                PrixVente = decimal.Parse(nvc["PrixVente"]),
-                PrixDemande = decimal.Parse(nvc["PrixDemande"]),
-                Poids = decimal.Parse(nvc["Poids"]),
-                Description = nvc["Description"],
-                Disponibilité = nvc["Disponibilite"] == "on" ? true : false,
-                NoVendeur = NoVendeur,
-                DateMAJ = DateTime.Parse(nvc["DateCreation"])
-            };
-
-            DateTime date;
-            if (DateTime.TryParse(nvc["DateVente"], out date)) produit.DateVente = date;
-
-            HttpPostedFileBase hpfb = Request.Files.Get(0);
-            if (hpfb.FileName != "")
-            {
-                string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
-                string filename = produit.NoProduit.ToString() + Path.GetExtension(hpfb.FileName);
-                produit.Photo = filename;
-                hpfb.SaveAs(Path.Combine(path, filename));
+                produit.PrixVente = prixVente;
+                produit.DateVente = date;
             }
 
-            context.PPProduits.InsertOnSubmit(produit);
+            if (Request.Files.Count != 0)
+            {
+                HttpPostedFileBase hpfb = Request.Files.Get(0);
+
+                if (hpfb.FileName != "")
+                {
+                    string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
+                    string filename = produit.NoProduit.ToString() + Path.GetExtension(hpfb.FileName);
+                    produit.Photo = filename;
+                    hpfb.SaveAs(Path.Combine(path, filename));
+                }
+            }
+
             try
             {
                 context.SubmitChanges();
@@ -163,15 +215,30 @@ namespace PetitesPuces.Controllers
             {
                 Console.WriteLine(e);
             }
+            return produit.NoProduit;
         }
 
         public void SupprimerProduit(int NoProduit) //TODO
         {
-            var query = from produit in context.PPProduits
-                        where produit.NoProduit == NoProduit
-                        select produit;
+            var produit = (from produits in context.PPProduits
+                           where produits.NoProduit == NoProduit
+                           select produits).FirstOrDefault();
 
-            context.PPProduits.DeleteOnSubmit(query.FirstOrDefault());
+            produit.NombreItems = 0;
+
+            if (produit.PPArticlesEnPaniers.Count() != 0)
+            {
+                context.PPArticlesEnPaniers.DeleteAllOnSubmit(produit.PPArticlesEnPaniers);
+            }
+
+            if (produit.PPDetailsCommandes.Count() != 0)
+            {
+                produit.Disponibilité = null;
+            }
+            else
+            {
+                context.PPProduits.DeleteOnSubmit(produit);
+            }
 
             try
             {
@@ -229,7 +296,6 @@ namespace PetitesPuces.Controllers
                 NoCategorie = int.Parse(nvc["NoCategorie"]),
                 NombreItems = short.Parse(nvc["NombreItems"]),
                 Nom = nvc["Nom"],
-                PrixVente = decimal.Parse(nvc["PrixVente"]),
                 PrixDemande = decimal.Parse(nvc["PrixDemande"]),
                 Poids = decimal.Parse(nvc["Poids"]),
                 Description = nvc["Description"],
@@ -238,16 +304,24 @@ namespace PetitesPuces.Controllers
                 DateMAJ = DateTime.Parse(nvc["DateCreation"])
             };
 
-            DateTime date;
-            if (DateTime.TryParse(nvc["DateVente"], out date)) produit.DateVente = date;
-
-            HttpPostedFileBase hpfb = Request.Files.Get(0);
-            if (hpfb.FileName != "")
+            if (decimal.TryParse(nvc["PrixVente"], out decimal prixVente) &&
+                DateTime.TryParse(nvc["DateVente"], out DateTime date))
             {
-                string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
-                string filename = produit.NoProduit.ToString() + Path.GetExtension(hpfb.FileName);
-                produit.Photo = filename;
-                hpfb.SaveAs(Path.Combine(path, filename));
+                produit.PrixVente = prixVente;
+                produit.DateVente = date;
+            }
+
+            if (Request.Files.Count != 0)
+            {
+                HttpPostedFileBase hpfb = Request.Files.Get(0);
+
+                if (hpfb.FileName != "")
+                {
+                    string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
+                    string filename = produit.NoProduit.ToString() + Path.GetExtension(hpfb.FileName);
+                    produit.Photo = filename;
+                    hpfb.SaveAs(Path.Combine(path, filename));
+                }
             }
 
             context.PPProduits.InsertOnSubmit(produit);

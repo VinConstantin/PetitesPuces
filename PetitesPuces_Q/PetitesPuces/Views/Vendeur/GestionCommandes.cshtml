@@ -49,7 +49,7 @@
 <div class="well text-center col-xs-10 col-xs-offset-1">
     @if (Model.Where(x => x.Statut == 'T').Count() == 0)
     {
-        <h4 class="text-center col-xs-12">Aucune commande à traiter</h4>
+        <h5 class="text-center col-xs-12">Aucune commande à traiter</h5>
     }
     else
     {
@@ -100,7 +100,7 @@
 <div class="well text-center col-xs-10 col-xs-offset-1">
     @if (Model.Where(x => x.Statut == 'L').Count() == 0)
     {
-        <h4 class="text-center col-xs-12">Aucun historique de commandes</h4>
+        <h5 class="text-center col-xs-12">Aucun historique de commandes</h5>
     }
     else
     {
