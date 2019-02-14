@@ -31,8 +31,8 @@
         }
         else
         {
-            <div class="alert alert-warning" role="alert">
-                Vous n'avez aucun panier
+            <div class="well text-center" role="alert">
+                <h5>Vous n'avez aucun panier</h5>
             </div>
         }
         
@@ -46,8 +46,8 @@
         }
         else
         {
-            <div class="alert alert-warning" role="alert">
-                Vous n'avez aucune commande
+            <div class="well text-center" role="alert">
+                <h5><span class="glyphicon glyphicon-unchecked"></span> Vous n'avez aucune commande</h5>
             </div>
         }
     </div>
@@ -55,7 +55,7 @@
 
 <script>
     function changePanier(no) {
-        window.location.href = `@Url.Action("MonPanier", "Client")/${no}`;
+        window.location.href = `@Url.Action("MonPanier", "Client")?No=${no}`;
     }
     function afficherCommande(no) {
         window.location.href = `@Url.Action("Recu", "Client")?noCommande=${no}`;

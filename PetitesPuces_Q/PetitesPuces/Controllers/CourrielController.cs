@@ -42,8 +42,9 @@ namespace PetitesPuces.Controllers
         public ActionResult Index(string etatCourriel)
         {
             if (Request.IsAjaxRequest()) return IndexAjax(etatCourriel);
-            
-            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat)) 
+
+            EtatCourriel enumEtat;
+            if (Enum.TryParse(etatCourriel, out enumEtat)) 
             {
                 return View(enumEtat);
             }
@@ -53,7 +54,8 @@ namespace PetitesPuces.Controllers
 
         private ActionResult IndexAjax(string etatCourriel)
         {
-            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat)) 
+            EtatCourriel enumEtat;
+            if (Enum.TryParse(etatCourriel, out enumEtat)) 
             {
                 switch (enumEtat)
                 {
@@ -96,7 +98,7 @@ namespace PetitesPuces.Controllers
             {
                 var message = GetMessageById(id);
 
-                FileStream fs = new FileStream(Server.MapPath($"{ATTACHMENTS_FOLDER}/attachment-{message.NoMsg}"), FileMode.Open, FileAccess.Read);
+                FileStream fs = new FileStream(Server.MapPath(ATTACHMENTS_FOLDER+"/attachment-"+message.NoMsg), FileMode.Open, FileAccess.Read);
                 
                 return File(fs, "application/octet-stream", (string)message.FichierJoint);
             }

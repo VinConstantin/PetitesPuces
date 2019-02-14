@@ -17,6 +17,7 @@ th {
 
 .prixQuantite{
     text-align:right;
+    width: 100px;
 }
 
 td {
