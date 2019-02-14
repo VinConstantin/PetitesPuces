@@ -358,6 +358,7 @@
     <Content Include="Views\Shared\Client\Panier\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireClient.cshtml" />
+    <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireGestionnaire - BackUp.cshtml" />
     <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireGestionnaire.cshtml" />
     <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireVendeur.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_BoiteReception.cshtml" />
@@ -455,6 +456,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="images\produits\" />
     <Folder Include="Recus\" />
+    <Folder Include="Scripts\Courriel" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -206,9 +206,10 @@ namespace PetitesPuces.Controllers
             produit.Description = nvc["Description"];
             produit.Disponibilité = nvc["Disponibilite"] == "on" ? true : false;
             produit.DateMAJ = DateTime.Today;
-
-            if (decimal.TryParse(nvc["PrixVente"], out decimal prixVente) &&
-                DateTime.TryParse(nvc["DateVente"], out DateTime date))
+            decimal prixVente;
+            DateTime date;
+            if (decimal.TryParse(nvc["PrixVente"], out prixVente) &&
+                DateTime.TryParse(nvc["DateVente"], out date))
             {
                 produit.PrixVente = prixVente;
                 produit.DateVente = date;
@@ -346,9 +347,10 @@ namespace PetitesPuces.Controllers
                 NoVendeur = NoVendeur,
                 DateMAJ = DateTime.Parse(nvc["DateCreation"])
             };
-
-            if (decimal.TryParse(nvc["PrixVente"], out decimal prixVente) &&
-                DateTime.TryParse(nvc["DateVente"], out DateTime date))
+            decimal prixVente;
+            DateTime date;
+            if (decimal.TryParse(nvc["PrixVente"], out prixVente) &&
+                DateTime.TryParse(nvc["DateVente"], out date))
             {
                 produit.PrixVente = prixVente;
                 produit.DateVente = date;

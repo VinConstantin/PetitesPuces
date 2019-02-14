@@ -1,0 +1,303 @@
+@using PetitesPuces.Models
+@model PetitesPuces.ViewModels.Courriel.DestinataireViewModel
+<style>
+    .sca {
+        max-height: 50vh; height: 50vh; overflow-y: scroll;
+    }
+</style>
+<div class="modal-content">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-4">
+                <button id="btnTousVendeurs" type="button" class="btn btn-success">
+                    <span id="icoTousVendeurs" class="glyphicon glyphicon-unchecked"></span> Tous les vendeurs
+                </button>
+                <h3>Vendeurs</h3>
+                <input type="text" class="form-control" id="filterVendeur"/>
+                <div class="sca">
+                    <table id="tableVendeur" class="table table-hover">
+                        @foreach (PPVendeur vendeur in Model.Vendeurs)
+                        {
+                            <tr id="@vendeur.NoVendeur">
+                                <td>
+                                    <p>@vendeur.NomAffaires</p>
+                                </td>
+                                <td>
+                                    <a onclick="ajouterDestinataireVendeur(@vendeur.NoVendeur, `@vendeur.NomAffaires`);"><span class="glyphicon glyphicon-plus pull-right"></span></a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <button id="btnTousClients" type="button" class="btn btn-success">
+                    <span id="icoTousClients" class="glyphicon glyphicon-unchecked"></span> Tous les clients
+                </button>
+                <h3>Clients</h3>
+                <input type="text" class="form-control" id="filterClient"/>
+                <div class="sca">
+                    <table id="tableClient" class="table table-hover">
+                        @foreach (PPClient client in Model.Clients)
+                        {
+                            <tr id="@client.NoClient">
+                                <td>
+                                    <p>@client.Nom, @client.Prenom</p>
+                                </td>
+                                <td>
+                                    <a onclick="ajouterDestinataireClient(@client.NoClient, `@client.Nom, @client.Prenom`);"><span class="glyphicon glyphicon-plus pull-right"></span></a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <button id="btnTousUtillisateurs" type="button" class="btn btn-success">
+                    <span id="icoTousUtillisateurs" class="glyphicon glyphicon-unchecked"></span> Tous les utilisateurs
+                </button>
+                <h3>Destinataires</h3>
+                <input type="text" class="form-control" id="filterDestinataire"/>
+                <div style="width: 100%" class="col-lg-4">
+                    <div class="well sca">
+                        <table id="tableDestinataire" class="table table-hover">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="viderListe()" data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" onclick="ConfirmerAjout()">Ajouter</button>
+    </div>
+</div>
+<script>
+    function ConfirmerAjout() {
+        lstDestinatairesTemp.forEach(function(obj) {
+            let str = `<span style="background-color: #adadad;" class="badge badge-primary" id="Dest${obj.No}">${obj.Nom}<a onclick="retirerDestinataire(${obj.No},'${obj.Nom.replace(/'/g, "\\'")}')" class="glyphicon glyphicon-remove"></a></span>&nbsp;`;
+            $("#destinataire").append(str);
+        }); 
+        $('#modalAjoutDestinataire').modal('hide');
+        lstDestinataires = lstDestinataires.concat(lstDestinatairesTemp);
+    }
+    function viderListe() {
+        
+    }
+    function ajouterDestinataireClient(no, nom) {
+        let desinataire = { No : no, Nom : nom };
+        lstDestinatairesTemp.push(desinataire);
+        $('#'+no).remove();
+        var table = $('#tableDestinataire');
+        table.append("<tr id='"+no+"'>" +
+            "<td>" + nom + `</td><td><a onclick='retirerDestinataireClient(${no},"${nom.replace(/'/g, "\\'")}")';>` +
+            "<span style='color:red;' class='glyphicon glyphicon-minus pull-right'></span></a></td>" +
+            "</tr>");
+
+        console.log(lstDestinatairesTemp);
+    }
+    function ajouterDestinataireVendeur(no, nom) {
+        let desinataire = { No : no, Nom : nom };
+        lstDestinatairesTemp.push(desinataire);
+        $('#'+no).remove();
+        var table = $('#tableDestinataire');
+        table.append("<tr id='"+no+"'>" +
+            "<td>" + nom + `</td><td><a onclick="retirerDestinataireVendeur(${no},'${nom.replace(/'/g, "\\'")}')";>` +
+            "<span style='color:red;' class='glyphicon glyphicon-minus pull-right'></span></a></td>" +
+            "</tr>");
+        
+        console.log(lstDestinatairesTemp);
+    }
+    function retirerDestinataireClient(no, nom) {
+        let desinataire = { No : no, Nom : nom };     
+        let index = lstDestinatairesTemp.indexOf(desinataire);
+        lstDestinatairesTemp.splice(index-1, 1);
+        $('#'+no).remove();
+        var table = $('#tableClient');
+        table.append("<tr id='"+no+"'>" +
+            "<td>" + nom + `</td><td><a onclick='retirerDestinataireVendeur(${no},"${nom}")';>` +
+            "<span class='glyphicon glyphicon-plus pull-right'></span></a></td>" +
+            "</tr>");
+        
+        console.log(lstDestinatairesTemp);
+    }
+    function retirerDestinataireVendeur(no, nom) {
+        let desinataire = { No : no, Nom : nom };     
+        let index = lstDestinatairesTemp.indexOf(desinataire);
+        lstDestinatairesTemp.splice(index-1, 1);
+        $('#'+no).remove();
+        var table = $('#tableVendeur');
+        table.append("<tr id='"+no+"'>" +
+            "<td>" + nom + `</td><td><a onclick='ajouterDestinataire(${no},'${nom}')';>` +
+            "<span class='glyphicon glyphicon-plus pull-right'></span></a></td>" +
+            "</tr>");
+        
+        console.log(lstDestinatairesTemp);
+    }
+    $(document).ready(function () {
+        $("#filterClient").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tableClient tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+        $("#filterVendeur").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tableVendeur tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+        
+        $("#filterDestinataire").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tableDestinataire tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+        $("#btnTousVendeurs").click(function() {
+            if ($(this).hasClass('btn-success')) {
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousVendeurs").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $("#tableVendeur").hide();
+                
+                $('#tableDestinataire').append("<tr id='TousVendeurs'>" +
+                    "<td>" + "<span class='glyphicon glyphicon-user'></span> Tous les vendeurs" + `</td><td><a>` +
+                    "</a></td></tr>");
+                
+                $('#tableVendeur-list tr').each(function() {
+                    let desinataire = { No: no, Nom: nom };
+                    lstDestinatairesTemp.push(desinataire);
+                });
+            } else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#tableVendeur").show();
+                $("#icoTousVendeurs").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');
+                
+                $('#TousVendeurs').remove();
+            }
+        });
+        $("#btnTousClients").click(function() {
+            if ($(this).hasClass('btn-success')) {
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousClients").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $("#tableClient").hide();
+                $('#tableDestinataire tr').remove();x#
+                
+                $('#tableDestinataire').append("<tr id='TousClients'>" +
+                    "<td>" + "<span class='glyphicon glyphicon-user'></span> Tous les clients" + `</td><td><a>` +
+                    "</a></td></tr>");
+            } else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#tableClient").show();
+                $("#icoTousClients").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');
+                
+                $('#TousClients').remove();
+            }
+        });
+        $("#btnTousUtillisateurs").click(function() {
+            if ($(this).hasClass('btn-success')) {
+                if ($("#btnTousVendeurs").hasClass('btn-primary')){
+                    $("#btnTousVendeurs").click();
+                }
+                if ($("#btnTousClients").hasClass('btn-primary')){
+                    $("#btnTousClients").click();
+                }
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousUtillisateurs").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $("#tableClient").hide();
+                $("#tableVendeur").hide();
+                $('#btnTousVendeurs').attr('disabled','disabled');
+                $('#btnTousClients').attr('disabled','disabled');
+
+                $('#tableDestinataire tr').remove();
+                $('#tableDestinataire').append("<tr id='TousUtilisateurs'>" +
+                    "<td>" + "<span class='glyphicon glyphicon-user'></span> Tous les utilisateurs" + `</td><td><a>` +
+                    "</a></td></tr>");
+            } else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#tableClient").show();
+                $("#tableVendeur").show();
+                $("#icoTousUtillisateurs").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');
+                $('#btnTousVendeurs').removeAttr('disabled');
+                $('#btnTousClients').removeAttr('disabled');
+                
+                $('#TousUtilisateurs').remove();
+            }
+        });
+        $("#btnTousVendeurs").click(function() {
+            if ($(this).hasClass('btn-success')) {
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousVendeurs").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $("#tableVendeur").hide();
+                
+                $('#tableDestinataire').append("<tr id='TousVendeurs'>" +
+                    "<td>" + "<span class='glyphicon glyphicon-user'></span> Tous les vendeurs" + `</td><td><a>` +
+                    "</a></td></tr>");
+                
+                $('#tableVendeur-list tr').each(function() {
+                    let desinataire = { No: no, Nom: nom };
+                    lstDestinatairesTemp.push(desinataire);
+                });
+            } else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#tableVendeur").show();
+                $("#icoTousVendeurs").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');
+                
+                $('#TousVendeurs').remove();
+            }
+        });
+        $("#btnTousClients").click(function() {
+            if ($(this).hasClass('btn-success')) {
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousClients").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $("#tableClient").hide();
+                $('#tableDestinataire tr').remove();    
+                
+                $('#tableDestinataire').append("<tr id='TousClients'>" +
+                    "<td>" + "<span class='glyphicon glyphicon-user'></span> Tous les clients" + `</td><td><a>` +
+                    "</a></td></tr>");
+            } else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#tableClient").show();
+                $("#icoTousClients").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');
+                
+                $('#TousClients').remove();
+            }
+        });
+        $("#btnTousUtillisateurs").click(function() {
+            if ($(this).hasClass('btn-success')) {
+                if ($("#btnTousVendeurs").hasClass('btn-primary')){
+                    $("#btnTousVendeurs").click();
+                }
+                if ($("#btnTousClients").hasClass('btn-primary')){
+                    $("#btnTousClients").click();
+                }
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousUtillisateurs").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $("#tableClient").hide();
+                $("#tableVendeur").hide();
+                $('#btnTousVendeurs').attr('disabled','disabled');
+                $('#btnTousClients').attr('disabled','disabled');
+
+                $('#tableDestinataire tr').remove();
+                $('#tableDestinataire').append("<tr id='TousUtilisateurs'>" +
+                    "<td>" + "<span class='glyphicon glyphicon-user'></span> Tous les utilisateurs" + `</td><td><a>` +
+                    "</a></td></tr>");
+            } else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#tableClient").show();
+                $("#tableVendeur").show();
+                $("#icoTousUtillisateurs").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');
+                $('#btnTousVendeurs').removeAttr('disabled');
+                $('#btnTousClients').removeAttr('disabled');
+                
+                $('#TousUtilisateurs').remove();
+            }
+        });
+    });
+</script>
