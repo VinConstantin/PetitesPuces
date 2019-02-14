@@ -1,5 +1,5 @@
 @using PetitesPuces.Securite
-@model dynamic
+@model PetitesPuces.Models.PPMessage
 
 <style>
 	.btn-file {
@@ -60,7 +60,7 @@
 			</div>
 			<form id="fileForm" class="col-xs-5">
 				<div class="input-group w-100">
-					<a id="pieceJointeLink" href="#"><input id="fileUploadText" readonly class="form-control t-overflow-ellipsis"/></a>
+					<a id="pieceJointeLink" href="javascript:void(0)"><input name="fichierJoint" id="fileUploadText" readonly class="form-control t-overflow-ellipsis"/></a>
 					<span class="input-group-btn">
 						<button class="btn btn-primary btn-file">
 							<i class="glyphicon glyphicon-paperclip"></i>
@@ -93,56 +93,76 @@
 	</div>
 </div>
 <script>
-	const LIEU_BROUILLON = 4;
+	var LIEU_BROUILLON = 4;
 	/**
      *  todo : retirer des liste ne retire pas le bon item...
      */
-	var lstDestinataires = [];
-	let msgId;	
+    var lstDestinataires = [];
+    if (!msgId) {
+        var msgId;
+    }
 	
 	$('#upload').change(function() {
-		const file = $('#upload')[0].files[0].name;
+        const file = $('#upload')[0].files[0].name;
+        console.log(file);
 		$('#fileUploadText').val(file);
 		
-		fileUrl = null;
-		const formData = new FormData($('#fileForm')[0]);
-	});
-	
-	function sauvegarderBrouillon() {
-		const msg = {
-			DescMsg: $('#textarea').val(),
-			Lieu: LIEU_BROUILLON,
-			objet: $('#tbObjet').val(),
-			destinataire: lstDestinataires.map(e => e.No)
-		}
-		let method = 'POST';
-		
+        fileUrl = null;
+        setCanSend(false);
+        sauvegarderBrouillon(postAttachment);
+    });
+
+    function setCanSend(canSend) {
+       //TODO: Block sending, spinner?
+    }
+
+	function sauvegarderBrouillon(callback) {
+        const msg = {
+            DescMsg: $('#textarea').froalaEditor('html.get'),
+            Lieu: LIEU_BROUILLON,
+            objet: $('#tbObjet').val(),
+            destinataire: lstDestinataires.map(e => e.No)
+        };
+
+        let method = 'POST';
 		if (msgId) {
 			method = 'PUT';
 			msg.NoMsg = msgId;
-		}
-		
-		$.ajax({
-			url: '/Courriel/Inactivite/RendreInactif',
-			method: method,
-			data: data,
-			complete: reloadAll,
-			dataType:'json',
+        }
+
+        $.ajax({
+            url: '/Courriel/Enregistrer',
+            method: method,
+            data: JSON.stringify(msg),
+            dataType: 'json',
+            success: (data) => {
+                msgId = data.NoMsg;
+                callback();
+            },
 			contentType: 'application/json'
 		});
 	}
 		
-	function postAttachment() {
+    function postAttachment() {
+        const formData = new FormData();
+        const fileInput = $('#upload')[0];
+
+        for (let i = 0; i < fileInput.files.length; i++) {
+            const file = fileInput.files[i];
+            formData.append(file.name, file);
+        }
+
 		$.ajax({
-			url         : '/Courriel/Televerser',
+			url         : '/Courriel/Televerser/' + msgId,
 			data        : formData,
 			cache       : false,
 			contentType : false,
 			processData : false,
 			type        : 'POST',
-			success     : function(data, textStatus, jqXHR){
-				$('#pieceJointeLink').attr('href', '/Courriel/PieceJointe/' + msgId);
-			}
+            success: function (data, textStatus, jqXHR) {
+                $('#pieceJointeLink').attr('href', '/Courriel/PieceJointe/' + msgId);
+                alert('file upload done');
+            }
 		});
 	}
 	

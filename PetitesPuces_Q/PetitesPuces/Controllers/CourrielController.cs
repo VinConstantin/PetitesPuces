@@ -5,6 +5,7 @@ using System.Data.Linq;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Authentication;
 using System.Web.Mvc;
 using System.Web;
 using System.Web.Http.Results;
@@ -23,8 +24,9 @@ namespace PetitesPuces.Controllers
     {
         private readonly long noUtilisateur = SessionUtilisateur.UtilisateurCourant.No;
         private readonly BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
-        private const string ATTACHMENTS_FOLDER = "~/Attachments/";
-
+        private const int MAX_FILE_SIZE_BYTES = 50  * 1000;
+        private const string ATTACHMENTS_DIR = "/Envoyés";
+        
         [Route("Courriel")]
         public ActionResult Index()
         {
@@ -37,14 +39,26 @@ namespace PetitesPuces.Controllers
                 return View(EtatCourriel.Reception);
             }
         }
-        
+
+        [Route("Courriel/Boite/{etatCourriel}/{id}")]
+        public ActionResult Index(string etatCourriel, int id)
+        {
+            if (Request.IsAjaxRequest()) return IndexAjax(etatCourriel, id);
+
+            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat))
+            {
+                return View(enumEtat);
+            }
+
+            return HttpNotFound();
+        }
+
         [Route("Courriel/Boite/{etatCourriel}")]
         public ActionResult Index(string etatCourriel)
         {
             if (Request.IsAjaxRequest()) return IndexAjax(etatCourriel);
-
-            EtatCourriel enumEtat;
-            if (Enum.TryParse(etatCourriel, out enumEtat)) 
+            
+            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat)) 
             {
                 return View(enumEtat);
             }
@@ -52,10 +66,9 @@ namespace PetitesPuces.Controllers
             return HttpNotFound();
         }
 
-        private ActionResult IndexAjax(string etatCourriel)
+        private ActionResult IndexAjax(string etatCourriel, int? id = null)
         {
-            EtatCourriel enumEtat;
-            if (Enum.TryParse(etatCourriel, out enumEtat)) 
+            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat)) 
             {
                 switch (enumEtat)
                 {
@@ -63,7 +76,7 @@ namespace PetitesPuces.Controllers
                     case EtatCourriel.Reception: return BoiteReception();
                     case EtatCourriel.Composer : return ComposerMessage();
                     case EtatCourriel.Supprime : return ElementsSupprimes();
-                    case EtatCourriel.Brouillon: return Brouillons();
+                    case EtatCourriel.Brouillon: return Brouillons(id);
                 }
             }
             
@@ -85,64 +98,82 @@ namespace PetitesPuces.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, e.Message);
             }
-            catch (InvalidOperationException e)
+            catch (Exception e) when (e is InvalidOperationException || e is AuthenticationException)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid message ID");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "NoMsg invalide");
             }
         }
-        
-        [HttpGet]
-        public ActionResult PieceJointe(long id)
-        {
-            try
-            {
-                var message = GetMessageById(id);
 
-                FileStream fs = new FileStream(Server.MapPath(ATTACHMENTS_FOLDER+"/attachment-"+message.NoMsg), FileMode.Open, FileAccess.Read);
-                
-                return File(fs, "application/octet-stream", (string)message.FichierJoint);
-            }
-            catch (InvalidOperationException e)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid message ID");
-            }
-        }
-        
         private HttpPostedFileBase GetFileFromRequest()
         {
             if (Request.Files.Count == 0)
             {
-                throw new InvalidDataException("No file posted");
+                throw new InvalidDataException("Aucun fichier téléversé");
             }
 
             var file = Request.Files[0];
 
             if (file == null)
             {
-                throw new InvalidDataException( "No file posted");
+                throw new InvalidDataException("Aucun fichier téléversé");
+            }
+
+            if (file.ContentLength > MAX_FILE_SIZE_BYTES)
+            {
+                throw new InvalidDataException("La grandeur du fichier doit être inférieure à 8Mo");
             }
 
             return file;
         }
 
+        private void SaveAttachmentToMessage(HttpPostedFileBase file, PPMessage msg)
+        {
+            Directory.CreateDirectory(Server.MapPath(ATTACHMENTS_DIR));
+            file.SaveAs(Server.MapPath(ATTACHMENTS_DIR + "/attachment-" + msg.NoMsg));
+
+            msg.FichierJoint = file.FileName;
+
+            context.SubmitChanges();
+        }
+
+        [HttpGet]
+        public ActionResult PieceJointe(long id)
+        {
+            try
+            {
+                var message = GetMessageById(id);
+                var fileType = message.FichierJoint.ToString().Split('.').Last();
+
+                var fs = new FileStream(Server.MapPath(ATTACHMENTS_DIR + "/attachment-" + message.NoMsg), FileMode.Open,
+                    FileAccess.Read);
+                var mimeType = MimeTypeMap.GetMimeType(fileType);
+
+                return File(fs, mimeType, message.FichierJoint.ToString());
+            }
+            catch (InvalidOperationException e)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "NoMsg invalide");
+            }
+            catch (IOException e)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Fichier manquant ou suuprimé");
+            }
+        }
+
         private PPMessage GetMessageById(long id)
         {
-            return
+            var message =
                 (from msg
                     in context.PPMessages
                 where msg.NoMsg == id
                 select msg).First();
-        }
 
-        private void SaveAttachmentToMessage(HttpPostedFileBase file, PPMessage msg)
-        {
-            MemoryStream target = new MemoryStream();
-            file.InputStream.CopyTo(target);
+            if (SessionUtilisateur.UtilisateurCourant.No != message.NoExpediteur)
+            {
+                throw new AuthenticationException();
+            }
 
-            byte[] data = target.ToArray();
-            msg.FichierJoint = new Binary(data);
-
-            context.SubmitChanges();
+            return message;
         }
         
         /** PPLieu
@@ -162,15 +193,22 @@ namespace PetitesPuces.Controllers
             
             return PartialView("Courriel/Boites/_BoiteReception",messages);
         }
-        public ActionResult Brouillons()
+        public ActionResult Brouillons(int? id)
         {        
             List<PPMessage> messages = (from m in context.PPMessages
                 orderby m.dateEnvoi descending 
-                where m.PPDestinataires.Any(d=>d.NoDestinataire == noUtilisateur
-                                               && d.Lieu == 4)
+                where m.NoExpediteur == noUtilisateur
+                      && m.Lieu == 4
                 select m).ToList();
-            
-            return PartialView("Courriel/Boites/_Brouillons",messages);
+
+            if (id.HasValue)
+            {
+                return PartialView("Courriel/_ComposerMessage", messages.First());
+            }
+            else
+            {
+                return PartialView("Courriel/Boites/_Brouillons", messages);
+            }
         }
         public ActionResult ElementsEnvoyes()
         {         
@@ -424,16 +462,19 @@ namespace PetitesPuces.Controllers
                 Console.WriteLine(e);
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
-
             
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         [HttpPost]
-        [Route("Enregistrer")]
+        [Route("Courriel/Enregistrer")]
         public ActionResult CreerBrouillon(BrouillonViewModel brouillon)
         {
-            brouillon.NoMsg = (from msg in context.PPMessages select msg.NoMsg).Max() + 1;
+            var maxId = (from m in context.PPMessages
+                select m.NoMsg).ToList().DefaultIfEmpty().Max();
+
+            int noMessage = maxId + 1;
+            brouillon.NoMsg = noMessage;
             var message = EnregistrerMessage(brouillon);
 
             context.PPMessages.InsertOnSubmit(message);
@@ -443,7 +484,7 @@ namespace PetitesPuces.Controllers
         }
         
         [HttpPut]
-        [Route("Enregistrer")]
+        [Route("Courriel/Enregistrer")]
         public ActionResult EnregistrerBrouillon(BrouillonViewModel brouillon)
         {
             var ogMessage = (from msg in context.PPMessages where msg.NoMsg == brouillon.NoMsg select msg).First();
@@ -461,17 +502,19 @@ namespace PetitesPuces.Controllers
                 msg = new PPMessage();
             }
 
+            brouillon.destinataires = brouillon.destinataires ?? new List<int>();
+
+            msg.NoMsg = (int) brouillon.NoMsg.GetValueOrDefault(msg.NoMsg);
             msg.DescMsg = brouillon.DescMsg;
             msg.Lieu = brouillon.Lieu;
             msg.objet = brouillon.objet;
+            msg.dateEnvoi = DateTime.Now;
             msg.NoExpediteur = (int)SessionUtilisateur.UtilisateurCourant.No;
 
             var destinataires = msg.PPDestinataires.ToList();
             List<int> NosDestinatairesAAjouter = new List<int>(brouillon.destinataires);
-            for (int i = 0; i < destinataires.Count; i++)
+            foreach (var dest in destinataires)
             {
-                var dest = destinataires[i];
-
                 if (!brouillon.destinataires.Contains(dest.NoDestinataire))
                 {
                     msg.PPDestinataires.Remove(dest);

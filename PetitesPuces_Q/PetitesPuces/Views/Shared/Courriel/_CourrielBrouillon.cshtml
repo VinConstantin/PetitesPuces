@@ -1,37 +1,37 @@
-@using PetitesPuces.Models
-@using PetitesPuces.Securite
+ï»¿@using PetitesPuces.Models
 @using PetitesPuces.Utilities
 @model PetitesPuces.Models.PPMessage
 @*
-    Représente un élement dans les elements envoyés
+    ReprÃ©sente un Ã©lement dans les elements envoyÃ©s
 *@
 
 
 @{
     var ctxt = new BDPetitesPucesDataContext();
     var id = Model.NoExpediteur;
-                
+
     var gestionnaires = (from util
         in ctxt.PPGestionnaires
-        where util.NoGestionnaire == id
-        select util).ToList();
-                
+                         where util.NoGestionnaire == id
+                         select util).ToList();
+
     var vendeurs = (from util
         in ctxt.PPVendeurs
-        where util.NoVendeur == id
-        select util).ToList();
-                
+                    where util.NoVendeur == id
+                    select util).ToList();
+
     var clients = (from util
         in ctxt.PPClients
-        where util.NoClient == id
-        select util).ToList();
-    
+                   where util.NoClient == id
+                   select util).ToList();
+
     IUtilisateur expediteur = clients.Concat<IUtilisateur>(vendeurs).Concat<IUtilisateur>(gestionnaires).FirstOrDefault();
 }
-<a href="#" class="list-group-item" onclick="loadCourriel(@Model.NoMsg);">
+<a href="#" class="list-group-item" onclick="loadBrouillon(@Model.NoMsg); stopPropagation();">
     <div class="row">
         <div class="col-lg-4">
             <input onclick="stopPropagation();" id="@Model.NoMsg" type="checkbox">
+            <span class="text-danger" style="margin-right: 1rem;">Brouillon</span>
             @{
                 var destinataires = Model.UtilisateursDestinataire;
             }
@@ -41,7 +41,7 @@
             }
             else
             {
-                <span class="input" style="min-width: 120px; display: inline-block; text-overflow: ellipsis;">@string.Join(",",destinataires.Select(dest => dest.DisplayName))</span>
+                <span class="input" style="min-width: 120px; display: inline-block; text-overflow: ellipsis;">@string.Join(",", destinataires.Select(dest => dest.DisplayName))</span>
             }
         </div>
         <div class="col-lg-4">
@@ -62,6 +62,6 @@
                     <span class="badge">@Model.dateEnvoi.ToShortDateString()</span>
                 }
             </span>
-        </div>       
+        </div>
     </div>
 </a>

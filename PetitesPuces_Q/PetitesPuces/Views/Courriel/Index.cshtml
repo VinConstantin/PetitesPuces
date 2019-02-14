@@ -37,7 +37,7 @@
                     <i class="glyphicon glyphicon-envelope"></i> Composer
                 </li>
                 <hr/>
-                <li id="BoiteReception" data-state="Reception" class="active">
+                <li id="BoiteReception" data-state="Reception" >
                     <a href="javascript:void(0)">
                         <span class="glyphicon glyphicon-inbox"></span> Boîte de réception
                     </a>
@@ -85,24 +85,34 @@
             selected = $(this);
         }
         
-        $(this).click(function() {
-            selected.removeClass('active');
+        $(this).click(function () {
+            console.log('test');
+            if (selected) {
+                selected.removeClass('active');
+            }
             $(this).addClass('active');
             const stateName = $(this).attr('data-state');
             displayPageState(stateName);
         });
     });
     
-    function displayPageState(stateName) {
+    function displayPageState(stateName, brouillonId) {
+        console.log(stateName);
         etat = etats[stateName];
-        history.pushState(stateName, `${stateName} - Courriel - Les Petites Puces`, `/Courriel/Boite/${stateName}`);
+        let reqUrl = `/Courriel/Boite/${stateName}`;
+        if (brouillonId) {
+            reqUrl += '/' + brouillonId;
+        }
+
+        console.log(reqUrl);
+        history.pushState(stateName, `${stateName} - Courriel - Les Petites Puces`, reqUrl);
         etat.load();
     }
     
     $(document).ready(function() {
         etat.load();
         window.onpopstate = function(event) {
-            displayPageState(history.state || 'Receptiom');
+            displayPageState(history.state || 'Reception');
         }
     });
     
@@ -110,18 +120,22 @@
         event.stopPropagation();
     }
     
+    function loadBrouillon(id) {
+        $('.active').removeClass('active');
+        displayPageState("Brouillon", id);
+    }
     function loadCourriel(id) {
         $('.active').removeClass('active');
         $.ajax({
             url: URLPATH + "/Courriel/GetCourriel",
             type: "GET",
             data: {
-                NoCourriel : id
-            }, 
-            success: function(result) {
+                NoCourriel: id
+            },
+            success: function (result) {
                 $('#PLACEHOLDER').html(result);
             },
-            error: function(req, status, err) {
+            error: function (req, status, err) {
                 console.log(req, status, err);
             }
         });
@@ -129,6 +143,7 @@
     function loadBoiteReception() {
         $('.active').removeClass('active');
         $('#BoiteReception').addClass('active');
+        console.log('load boite reception');
         $.ajax({
             url: URLPATH + "/Courriel/Boite/Reception",
             type: "GET",
