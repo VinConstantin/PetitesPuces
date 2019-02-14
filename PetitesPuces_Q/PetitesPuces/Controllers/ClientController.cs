@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -725,6 +726,9 @@ namespace PetitesPuces.Controllers
                 }  
 
                 context.SubmitChanges();
+
+                genererPDF(commande);
+
                 return RedirectToAction("Recu", "Client",
                     new RouteValueDictionary(new { noCommande = commande.NoCommande}));
             }
@@ -733,6 +737,29 @@ namespace PetitesPuces.Controllers
                 Console.WriteLine(e);
                 return View("ErreurCommande",101);
             }
+        }
+
+        private void genererPDF(PPCommande commande)
+        {
+            string view;
+            PartialViewResult vr = PartialView("Vendeur/_RecuCommande", commande);
+
+            using (var sw = new StringWriter())
+            {
+                vr.View = ViewEngines.Engines
+                  .FindPartialView(ControllerContext, vr.ViewName).View;
+
+                var vc = new ViewContext(
+                  ControllerContext, vr.View, vr.ViewData, vr.TempData, sw);
+                vr.View.Render(vc, sw);
+
+                view = sw.GetStringBuilder().ToString();
+            }
+
+            IronPdf.HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
+            var PDF = Renderer.RenderHtmlAsPdf(view);
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + commande.NoCommande + ".pdf";
+            PDF.TrySaveAs(path);
         }
 
         [System.Web.Http.HttpPost]

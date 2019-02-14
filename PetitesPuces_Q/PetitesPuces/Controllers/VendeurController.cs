@@ -67,34 +67,37 @@ namespace PetitesPuces.Controllers
             return View(viewModel);
         }
 
-        public ActionResult InfoCommande(int No)
+        [Securise(RolesUtil.CLIENT, RolesUtil.VEND)]
+        public ActionResult InfoCommande(int id)
         {
-            List<PPCommande> commandes = GetCommandesVendeurs(NoVendeur);
-            PPCommande model = commandes.Where(c => c.NoCommande == No).FirstOrDefault();
+            var user = SessionUtilisateur.UtilisateurCourant;
 
-            /**/
-            string view;
-            PartialViewResult vr = PartialView("Vendeur/_RecuCommande", model);
+            var query = from commandes in context.PPCommandes
+                        where commandes.NoCommande == id
+                        select commandes;
 
-            using (var sw = new StringWriter())
+            var commande = query.FirstOrDefault();
+
+            if (user is PPVendeur)
             {
-                vr.View = ViewEngines.Engines
-                  .FindPartialView(ControllerContext, vr.ViewName).View;
-
-                var vc = new ViewContext(
-                  ControllerContext, vr.View, vr.ViewData, vr.TempData, sw);
-                vr.View.Render(vc, sw);
-
-                view = sw.GetStringBuilder().ToString();
+                PPVendeur vendeur = (PPVendeur)user;
+                if(commande.PPVendeur.NoVendeur != vendeur.NoVendeur)
+                    return new HttpStatusCodeResult(400, "Id commande invalide");
+            }
+            else if (user is PPClient)
+            {
+                PPClient client = (PPClient)user;
+                if(commande.PPClient.NoClient != client.NoClient)
+                    return new HttpStatusCodeResult(400, "Id commande invalide");
             }
 
-            IronPdf.HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
-            var PDF = Renderer.RenderHtmlAsPdf(view);
-            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + No + ".pdf";
-            PDF.TrySaveAs(path);
-            /**/
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + id + ".pdf";
 
-            return View(model);
+            if (!System.IO.File.Exists(path))
+                genererPDF(commande);
+
+            return File(path, "application/pdf");
+            
         }
 
         public ActionResult Profil()
@@ -233,6 +236,29 @@ namespace PetitesPuces.Controllers
                 Console.WriteLine(e);
             }
             return produit.NoProduit;
+        }
+
+        private void genererPDF(PPCommande commande)
+        {
+            string view;
+            PartialViewResult vr = PartialView("Vendeur/_RecuCommande", commande);
+
+            using (var sw = new StringWriter())
+            {
+                vr.View = ViewEngines.Engines
+                  .FindPartialView(ControllerContext, vr.ViewName).View;
+
+                var vc = new ViewContext(
+                  ControllerContext, vr.View, vr.ViewData, vr.TempData, sw);
+                vr.View.Render(vc, sw);
+
+                view = sw.GetStringBuilder().ToString();
+            }
+
+            IronPdf.HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
+            var PDF = Renderer.RenderHtmlAsPdf(view);
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + commande.NoCommande + ".pdf";
+            PDF.TrySaveAs(path);
         }
 
         public void SupprimerProduit(int NoProduit) //TODO

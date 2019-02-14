@@ -40,6 +40,22 @@
             }
         });
     }
+
+    function info(NoCommande) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/InfoCommande",
+            type: "get",
+            data: {
+                "id": NoCommande
+            },
+            success: function (result) {
+                window.open(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
 </script>
 
 <h2 class="text-center">@ViewBag.Title</h2>
