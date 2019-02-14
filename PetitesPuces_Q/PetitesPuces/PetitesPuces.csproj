@@ -207,6 +207,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="MimeTypes.cs" />
     <Compile Include="Models\BDPetitesPuces.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -222,6 +223,7 @@
     <Compile Include="Models\Enums\Tri.cs" />
     <Compile Include="Models\Ext\PPClient.cs" />
     <Compile Include="Models\Ext\PPGestionnaire.cs" />
+    <Compile Include="Models\Ext\PPMessage.cs" />
     <Compile Include="Models\Ext\PPVendeur.cs" />
     <Compile Include="Models\Ext\RolesUtil.cs" />
     <Compile Include="Models\IUtilisateur.cs" />
@@ -448,6 +450,7 @@
     <Content Include="Views\Shared\Vendeur\_GestionProduit.cshtml" />
     <Content Include="Views\Shared\Vendeur\ModalModifierProduit.cshtml" />
     <Content Include="Views\Shared\Vendeur\ModalSupprimerProduit.cshtml" />
+    <Content Include="Views\Shared\Courriel\_CourrielBrouillon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
