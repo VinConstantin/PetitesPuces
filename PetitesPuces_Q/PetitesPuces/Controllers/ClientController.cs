@@ -260,7 +260,15 @@ namespace PetitesPuces.Controllers
             ViewBag.NoClient = NOCLIENT;
             ViewBag.NoVendeur = No;
             List<Panier> lstPaniers = GetPaniersClient(NOCLIENT);
-            //List<Panier> lstPaniers = new List<Panier>();
+
+            try
+            {
+                ViewBag.NoVendeur = No==0?lstPaniers.FirstOrDefault().Vendeur.No : No;
+            }
+            catch (Exception e)
+            {
+                ViewBag.NoVendeur = 0;
+            }
             return View(lstPaniers);
         }
         private List<Panier> GetPaniersClient(long NoClient)
@@ -407,12 +415,14 @@ namespace PetitesPuces.Controllers
             System.Diagnostics.Debug.Write(InfoCommande.InfoPaiement);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+
         public ActionResult Livraison(int noVendeur)
         {
             Panier panier = GetPanierByVendeurClient(noVendeur);
-            
+
+            //it's bad, but it works
             if (!CheckDisponibiliteArticlesPanier(noVendeur))
-                return RedirectToRoute("MonPanier", new{No = noVendeur});
+                return Content("<script>window.location= '/Client/MonPanier?No="+noVendeur+"'</script>");
             
             return PartialView("Client/Commande/_Livraison",panier);
         }
@@ -420,8 +430,9 @@ namespace PetitesPuces.Controllers
         {
             Panier panier = GetPanierByVendeurClient(noVendeur);
             
+            //it's bad, but it works
             if (!CheckDisponibiliteArticlesPanier(noVendeur))
-                return RedirectToAction("MonPanier", new{No = noVendeur});
+                return Content("<script>window.location= '/Client/MonPanier?No="+noVendeur+"'</script>");
             
             return PartialView("Client/Commande/_Paiement",panier);
         }
@@ -433,8 +444,9 @@ namespace PetitesPuces.Controllers
                 orderby articles.DateCreation ascending
                 select articles;
             
+            //it's bad, but it works
             if (!CheckDisponibiliteArticlesPanier(noVendeur))
-                return RedirectToAction("MonPanier", new{No = noVendeur});
+                return Content("<script>window.location= '/Client/MonPanier?No="+noVendeur+"'</script>");
 
             Panier panier = new Panier
             {
