@@ -44,28 +44,10 @@
         <h2>Mes commandes</h2>
         @if (Model.Commandes.Count > 0)
         {
-            foreach (PPCommande commande in @Model.Commandes)
-            {
-                <div class="col-lg-12">
-                    <div class="well row">
-                        <div class="col-lg-3">
-                            <h3>@commande.DateCommande.ToString()</h3>
-                        </div>
-                        <div class="col-lg-3">
-                            <h3>@commande.PPVendeur.Nom</h3>
-                        </div>
-                        <div class="col-lg-3">
-                            <h3>@commande.PPDetailsCommandes.Sum(p => p.PrixVente * p.Quantité)</h3>
-                        </div>
-                        <div class="col-lg-3">
-                            <h3>
-                                @{ string statut = commande.Statut == 'L' ? "Livré" : "En traitement"; }
-                                @statut</h3>
-                        </div>
-                    </div>
-                </div>
-
-            }
+            foreach (PPCommande commande in @Model.Commandes.OrderByDescending(c=>c.DateCommande))
+             {
+                @Html.Partial("Client/_Commande",commande)    
+             }
         }
         else
         {
@@ -78,6 +60,9 @@
 
 <script>
     function changePanier(no) {
-        window.location.href = '@Url.Action("MonPanier", "Client")/' + no;
+        window.location.href = `@Url.Action("MonPanier", "Client")/${no}`;
+    }
+    function afficherCommande(no) {
+        window.location.href = `@Url.Action("Recu", "Client")?noCommande=${no}`;
     }
 </script>

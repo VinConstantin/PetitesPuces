@@ -16,13 +16,6 @@
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
-
 .d-none {
     display: none;
 }
@@ -138,4 +131,13 @@ textarea {
 
 .justify-self-end {
     justify-self: flex-end;
+}
+.hoverDiv{
+    border: 2px groove transparent;
+    border-radius: 5px
+}
+.hoverDiv:hover {
+    border: 2px groove #18bc9c;
+    border-radius: 5px;
+    cursor: pointer;
 }

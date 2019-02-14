@@ -18,9 +18,9 @@
                 <tr>
                     <td>@article.PPProduit.Nom</td>
                     <td style="text-align: right">@poidsTotal</td>   
-                    <td>@Formatter.Money(@article.PPProduit.PrixVente)</td>
+                    <td>@Formatter.PrixProduitAvecVente(@article.PPProduit)</td>
                     <td style="text-align: right">x @article.NbItems</td>
-                    <td>@Formatter.Money(@article.PPProduit.PrixVente * @article.NbItems)</td>                           
+                    <td>@Formatter.Money(@article.PPProduit.GetPrixCourant() * @article.NbItems)</td>                           
                 </tr>
             }
             <hr/>

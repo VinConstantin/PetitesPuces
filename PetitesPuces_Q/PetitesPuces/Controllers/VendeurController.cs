@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PetitesPuces.Securite;
+using PetitesPuces.ViewModels;
 
 namespace PetitesPuces.Controllers
 {
@@ -19,13 +20,11 @@ namespace PetitesPuces.Controllers
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
 
-        private long NOVENDEUR = SessionUtilisateur.UtilisateurCourant.No;
+        private int NoVendeur = Convert.ToInt32(SessionUtilisateur.UtilisateurCourant.No);
 
         // GET: Vendeur
         public ActionResult Index()
         {
-            int NoVendeur = 10;
-
             List<PPCommande> commandes = GetCommandesVendeurs(NoVendeur);
 
             commandes = commandes.Where(c => c.Statut == 'T').ToList();
@@ -41,15 +40,11 @@ namespace PetitesPuces.Controllers
 
         public ActionResult GestionCommandes()
         {
-            int NoVendeur = 10;
-
             return View(GetCommandesVendeurs(NoVendeur));
         }
 
         public ActionResult GestionPaniers()
         {
-            int NoVendeur = 10;
-
             List<Panier> paniers = GetPaniersVendeurs(NoVendeur);
 
             paniers = paniers.Where(p => DateTime.Today.AddMonths(-6) >= p.DateCreation).ToList();
@@ -59,11 +54,15 @@ namespace PetitesPuces.Controllers
 
         public ActionResult GestionCatalogue()
         {
-            int NoVendeur = 10;
+            List<PPProduit> Produits = GetProduitsVendeurs(NoVendeur);
+            long NoProduit = Produits.Count() != 0
+                ? Produits.LastOrDefault().NoProduit + 1
+                : long.Parse(NoVendeur + "00001");
 
             var viewModel = new GestionCatalogueViewModel
             {
-                Produits = GetProduitsVendeurs(NoVendeur),
+                NoProduit = NoProduit,
+                Produits = Produits,
                 Categories = GetCategories()
             };
 
@@ -81,7 +80,7 @@ namespace PetitesPuces.Controllers
         public ActionResult Profil()
         {
             var objVendeur = (from unVendeur in context.PPVendeurs
-                where unVendeur.NoVendeur == NOVENDEUR
+                where unVendeur.NoVendeur == NoVendeur
                 select unVendeur).FirstOrDefault();
 
             ModiProfilVendeur modiProfilVendeur = new ModiProfilVendeur
@@ -93,7 +92,7 @@ namespace PetitesPuces.Controllers
                 Ville = objVendeur.Ville,
                 Province = objVendeur.Province,
                 Pays = objVendeur.Pays,
-                CodePostal = objVendeur.CodePostal,
+                CodePostal = objVendeur.CodePostal.ToUpper(),
                 Tel1 = objVendeur.Tel1,
                 Tel2 = objVendeur.Tel2,
                 PoidsMaxLivraison = Convert.ToInt32(objVendeur.PoidsMaxLivraison),
@@ -111,7 +110,7 @@ namespace PetitesPuces.Controllers
                 try
                 {
                     var objVendeur = (from unVendeur in context.PPVendeurs
-                        where unVendeur.NoVendeur == NOVENDEUR
+                        where unVendeur.NoVendeur == NoVendeur
                         select unVendeur).FirstOrDefault();
 
                     if (modiProfilVendeur.NomAffaires != "") objVendeur.NomAffaires = modiProfilVendeur.NomAffaires;
@@ -144,7 +143,7 @@ namespace PetitesPuces.Controllers
 
         public ActionResult VisualiserPaniers(int NbMois)
         {
-            List<Panier> paniers = GetPaniersVendeurs(10);
+            List<Panier> paniers = GetPaniersVendeurs(NoVendeur);
             if (NbMois != 99)
             {
                 paniers = paniers.Where(p => DateTime.Today.AddMonths(-NbMois) <= p.DateCreation).ToList();
@@ -171,6 +170,86 @@ namespace PetitesPuces.Controllers
             return PartialView("Vendeur/_GestionProduit", query.FirstOrDefault());
         }
 
+        public ActionResult ModalModifierProduit(int NoProduit) //TODO
+        {
+            var query = from produit in context.PPProduits
+                where produit.NoProduit == NoProduit
+                select produit;
+            var viewModel = new ModifierProduitViewModel
+            {
+                Categories = GetCategories(),
+                Produit = query.FirstOrDefault()
+            };
+            return PartialView("Vendeur/ModalModifierProduit", viewModel);
+        }
+
+        public ActionResult ModalSupprimerProduit(int NoProduit) //TODO
+        {
+            return PartialView("Vendeur/ModalSupprimerProduit", NoProduit);
+        }
+
+        public void ModifierProduit() //TODO
+        {
+            NameValueCollection nvc = Request.Form;
+
+
+            PPProduit produit = new PPProduit
+            {
+                NoProduit = long.Parse(nvc["NoProduit"]),
+                DateCreation = DateTime.Parse(nvc["DateCreation"]),
+                NoCategorie = int.Parse(nvc["NoCategorie"]),
+                NombreItems = short.Parse(nvc["NombreItems"]),
+                Nom = nvc["Nom"],
+                PrixVente = decimal.Parse(nvc["PrixVente"]),
+                PrixDemande = decimal.Parse(nvc["PrixDemande"]),
+                Poids = decimal.Parse(nvc["Poids"]),
+                Description = nvc["Description"],
+                Disponibilité = nvc["Disponibilite"] == "on" ? true : false,
+                NoVendeur = NoVendeur,
+                DateMAJ = DateTime.Parse(nvc["DateCreation"])
+            };
+
+            DateTime date;
+            if (DateTime.TryParse(nvc["DateVente"], out date)) produit.DateVente = date;
+
+            HttpPostedFileBase hpfb = Request.Files.Get(0);
+            if (hpfb.FileName != "")
+            {
+                string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
+                string filename = produit.NoProduit.ToString() + Path.GetExtension(hpfb.FileName);
+                produit.Photo = filename;
+                hpfb.SaveAs(Path.Combine(path, filename));
+            }
+
+            context.PPProduits.InsertOnSubmit(produit);
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void SupprimerProduit(int NoProduit) //TODO
+        {
+            var query = from produit in context.PPProduits
+                where produit.NoProduit == NoProduit
+                select produit;
+
+            context.PPProduits.DeleteOnSubmit(query.FirstOrDefault());
+
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
         public void Livraison(int NoCommande)
         {
             var query = from commandes in context.PPCommandes
@@ -191,7 +270,7 @@ namespace PetitesPuces.Controllers
         public void SuppressionPanier(int NoClient)
         {
             var query = from articles in context.PPArticlesEnPaniers
-                where articles.NoVendeur == 10 && articles.NoClient == NoClient
+                where articles.NoVendeur == NoVendeur && articles.NoClient == NoClient
                 select articles;
 
             context.PPArticlesEnPaniers.DeleteAllOnSubmit(query.ToList());
@@ -222,7 +301,7 @@ namespace PetitesPuces.Controllers
                 Poids = decimal.Parse(nvc["Poids"]),
                 Description = nvc["Description"],
                 Disponibilité = nvc["Disponibilite"] == "on" ? true : false,
-                NoVendeur = 10,
+                NoVendeur = NoVendeur,
                 DateMAJ = DateTime.Parse(nvc["DateCreation"])
             };
 
@@ -263,6 +342,7 @@ namespace PetitesPuces.Controllers
         {
             var query = from produits in context.PPProduits
                 where produits.NoVendeur == NoVendeur
+                orderby produits.NoProduit ascending
                 select produits;
 
             return query.ToList();
@@ -316,9 +396,48 @@ namespace PetitesPuces.Controllers
             return reponse.Count();
         }
 
+        [HttpGet]
         public ActionResult modificationMDP()
         {
-            return View();
+            ModificationMDP modificationMdp = new ModificationMDP
+            {
+                ancienMDP = "",
+                motDePass = "",
+                confirmationMDP = ""
+            };
+            return View(modificationMdp);
+        }
+
+        [HttpPost]
+        public ActionResult modificationMDP(ModificationMDP modificationMdp)
+        {
+            var unVendeur=(from vendeur in context.PPVendeurs
+                where vendeur.NoVendeur==NoVendeur
+                      select vendeur).First();
+
+            bool motDePasseValide = modificationMdp.ancienMDP == unVendeur.MotDePasse;
+            
+            if (ModelState.IsValid)
+            {
+                if (!motDePasseValide)
+                {
+                    ModelState.AddModelError(string.Empty,"L'ancien mot de passe est invalide!");
+                    return View(modificationMdp);
+                }
+
+                unVendeur.MotDePasse = modificationMdp.motDePass;
+                try
+                {
+                    context.SubmitChanges();
+                    return RedirectToAction("Index");
+                }
+                catch(Exception e)
+                {
+                    
+                }
+            }
+
+            return View(modificationMdp);
         }
     }
 }

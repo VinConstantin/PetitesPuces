@@ -1,0 +1,70 @@
+@using PetitesPuces.Models
+@model List<PPEvaluation>
+@{  
+    double pourcentage5 = (Model.Count(e => e.Cote_ == 5) / (double)Model.Count)*100;
+    double pourcentage4 = (Model.Count(e => e.Cote_ == 4) / (double)Model.Count)*100;
+    double pourcentage3 = (Model.Count(e => e.Cote_ == 3) / (double)Model.Count)*100;
+    double pourcentage2 = (Model.Count(e => e.Cote_ == 2) / (double)Model.Count)*100;
+    double pourcentage1 = (Model.Count(e => e.Cote_ == 1) / (double)Model.Count)*100;
+    
+}
+<div class="row" style="font-size: 12px">
+    <br/>
+    <h4>@Model.Count @(Model.Count>1?" évaluations":" évaluation")</h4>
+    <!-- 5 étoiles -->
+    <div class="col-md-2 text-right">
+        <span class="glyphicon glyphicon-star"></span> 5
+    </div>
+    <div class="col-md-9">
+        <div class="progress progress-striped">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                 aria-valuemin="0" aria-valuemax="100" style="width: @pourcentage5%">@string.Format("{0:0}", pourcentage5)%
+            </div>
+        </div>
+    </div>
+    <!-- 4 étoiles -->
+    <div class="col-md-2 text-right">
+        <span class="glyphicon glyphicon-star"></span> 4
+    </div>
+    <div class="col-md-9">
+        <div class="progress">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                aria-valuemin="0" aria-valuemax="100" style="width: @pourcentage4%">@string.Format("{0:0}", pourcentage4)%
+            </div>
+        </div>
+    </div>
+    <!-- 3 étoiles -->
+    <div class="col-md-2 text-right">
+        <span class="glyphicon glyphicon-star"></span> 3
+    </div>
+    <div class="col-md-9">
+        <div class="progress">
+            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
+                aria-valuemin="0" aria-valuemax="100" style="width: @pourcentage3%">@string.Format("{0:0}", pourcentage3)%
+            </div>
+        </div>
+    </div>
+    <!-- 2 étoiles -->
+    <div class="col-md-2 text-right">
+        <span class="glyphicon glyphicon-star"></span> 2
+    </div>
+    <div class="col-md-9">
+        <div class="progress">
+            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
+                aria-valuemin="0" aria-valuemax="100" style="width: @pourcentage2%">@string.Format("{0:0}", pourcentage2)%
+            </div>
+        </div>
+    </div>
+    <!-- 1 étoiles -->
+    <div class="col-md-2 text-right">
+        <span class="glyphicon glyphicon-star"></span> 1
+    </div>
+    <div class="col-md-9">
+        <div class="progress">
+            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
+                aria-valuemin="0" aria-valuemax="100" style="width: @pourcentage1%">@string.Format("{0:0}", pourcentage1)%
+            </div>
+        </div>
+    </div>
+    <!-- end 1 -->
+</div>

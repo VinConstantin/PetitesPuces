@@ -1,6 +1,22 @@
+@using PetitesPuces.Models
 @using PetitesPuces.Utilities
 @model PetitesPuces.Models.PPProduit
 
+@{
+    BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
+
+    List<PPEvaluation> evaluations = (from e in ctxt.PPEvaluations
+        where e.NoProduit == Model.NoProduit
+        select e).ToList();
+
+    int nbEtoile = 0;
+    if (evaluations.Count > 0)
+    {
+        decimal average = evaluations.Average(e => e.Cote_);
+        nbEtoile = (int) Math.Round(average);
+    }
+
+}
 
 <div class="modal-content">
     <div class="modal-header">
@@ -11,31 +27,44 @@
         </button>
     </div>
     <div class="modal-body">
+        <div class="row" style="font-size: 32px; text-align: right; padding-right: 10px">
+            <span id="rating">
+            @for (int i = 1; i <= nbEtoile; i++)
+            {
+                <span class="glyphicon glyphicon-star"></span>
+            }
+            @for (int i = 1; i <= 5-nbEtoile; i++)
+            {
+                <span class="glyphicon glyphicon-star-empty"></span>
+            }
+            </span>
+        </div>
         <img src="@Url.Content("/images/produits/" + Model.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="width: 100%" alt="Image">
         <br/>
         <p>@Model.Description</p>
-         
-        <p><div class="h3">
-            @Formatter.PrixProduitAvecVente(Model)
-        </div></p>
-        
+
+        <p>
+            <div class="h3">
+                @Formatter.PrixProduitAvecVente(Model)
+            </div></p>
+
         <p>Poids : @Model.Poids lbs</p>
         <p>Catégorie : @Model.PPCategory.Description</p>
         <hr/>
         <p>Date de création : @Model.DateCreation.Value.ToShortDateString()</p>
-        <p>Vendeur : @Model.PPVendeur.Nom</p>
+        <p>Vendeur : @Model.PPVendeur.NomAffaires</p>
     </div>
     <div class="modal-footer">
         <span style="border-right: 1px solid #ccc;">
-            <span class="glyphicon glyphicon-minus" onclick="moinsQuantite(@Model.NoProduit)"></span>
-            <input type="text" style="width: 10%;" pattern="\d*" name="name" value="1" width="50px" id="@Model.NoProduit">
-            <span class="glyphicon glyphicon-plus" onclick="plusQuantite(@Model.NoProduit)"></span>
+            <span class="btn btn-link glyphicon glyphicon-minus" onclick="moinsQuantite(@Model.NoProduit)" title="Diminuer la quantité"></span>
+            <input disabled type="text" style="width: 10%;" pattern="\d*" name="name" value="1" width="50px" id="@Model.NoProduit">
+            <span class="btn btn-link glyphicon glyphicon-plus" onclick="plusQuantite(@Model.NoProduit)"  title="Augmenter la quantité"></span>
             
             <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());">
                 <span class="glyphicon glyphicon-shopping-cart" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());"></span>
             </button>
         </span>
-        <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Contacter @Model.PPVendeur.Nom" onclick="contacter()">
+        <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Contacter @Model.PPVendeur.NomAffaires" onclick="contacter()">
             <span class="glyphicon glyphicon-envelope"></span>
         </button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -46,4 +75,16 @@
         var url = '@Url.Action("Index", "Courriel")';
         window.location.href = url;
     }
+
+    //tooltip
+    tippy('#rating', {
+        animation: 'scale',
+        duration: [800, 500],
+        arrow: true,
+        placement:"bottom",
+        content: `@Html.Partial("Client/Catalogue/_RatingTooltip",evaluations)`,
+        allowHTML: true,
+        interactive:true,
+        size: "large",
+    });
 </script>

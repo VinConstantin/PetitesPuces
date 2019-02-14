@@ -82,8 +82,8 @@
     <div class="col-xs-10 col-xs-offset-1 col-lg-5 mr-lg-1">
         <h3 class="text-center">Total des clients</h3>
         <div class="well row text-center">
-            <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
-                <strong class="mx-1">Grand Total: </strong>
+            <div style="height: 45px" class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
+                <strong class="mx-1">Grand Total: <span id="totalClients"></span></strong>
             </div>
             <canvas id="cvTotalClients"></canvas>
         </div>
@@ -131,21 +131,37 @@
 <div class="col-xs-10 col-xs-offset-1">
     <h3 class="text-center">Nombre de connexions par client</h3>
     <div class="well row text-center">
-        <table id="nbConnexionClient" class="table w-100">
-            <tr>
-                <th>
-                    Courriel
-                </th>
-                <th>
-                    Prénom
-                </th>
-                <th>
-                    Nom
-                </th>
-                <th class="text-right">
-                    Nb. connexions
-                </th>
-            </tr>
+        <div class="form-inline">
+            <div class="input-group">
+                <input id="tbRechercheConnexionsClient" type="search" class="form-control">
+                <span class="input-group-btn">
+                    <button id="btnRechercheConnexionsClient" class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                        </span>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <table id="nbConnexionClient" class="table w-100 bg-light mt-2">
+            <thead>
+                <tr>
+                    <th>
+                        Courriel
+                    </th>
+                    <th>
+                        Prénom
+                    </th>
+                    <th>
+                        Nom
+                    </th>
+                    <th class="text-right">
+                        Nb. connexions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
         </table>
     </div>
 </div>
@@ -155,26 +171,31 @@
     <div class="well row text-center">
         <div class="d-flex justify-content-center align-items-center">
             <strong class="mx-1">Afficher les</strong>
-            <strong class="mx-1">0</strong>
+            <strong class="mx-1">1</strong>
             <input class="d-inline-block mx-1" min="1" value="15" max="30" type="range" class="form-control-range" id="formControlRange">
             <strong class="mx-1">30</strong>
             <strong class="mx-1">dernières connexions</strong>
         </div>
-        <table id="connexionsRecentes" class="table w-100">
-            <tr>
-                <th>
-                    Courriel
-                </th>
-                <th>
-                    Prénom
-                </th>
-                <th>
-                    Nom
-                </th>
-                <th class="text-right">
-                    Date
-                </th>
-            </tr>
+        <table id="connexionsRecentes" class="table w-100 bg-light mt-2">
+            <thead>
+                <tr>
+                    <th>
+                        Courriel
+                    </th>
+                    <th>
+                        Prénom
+                    </th>
+                    <th>
+                        Nom
+                    </th>
+                    <th class="text-right">
+                        Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
         </table>
     </div>
 </div>
@@ -183,27 +204,43 @@
 <div class="col-xs-10 col-xs-offset-1">
     <h3 class="text-center">Total des commandes d'un client par vendeur</h3>
     <div class="well row text-center">
-        <table id="totalCommandes" class="table w-100">
-            <tr>
-                <th>
-                    No Client
-                </th>
-                <th>
-                    Nom Client
-                </th>
-                <th>
-                    Total commande
-                </th>
-                <th>
-                    Date derniere commande
-                </th>
-                <th>
-                    No Vendeur
-                </th>
-                <th>
-                    Nom vendeur
-                </th>
-            </tr>
+        <div class="form-inline">
+            <div class="input-group">
+                <input id="tbRechercheTotCommandesClient" type="search" class="form-control">
+                <span class="input-group-btn">
+                    <button id="btnRechercheTotCommandesClient" class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                        </span>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <table id="totalCommandes" class="table w-100 bg-light mt-2">
+            <thead>
+                <tr>
+                    <th>
+                        No Client
+                    </th>
+                    <th>
+                        Nom Client
+                    </th>
+                    <th>
+                        Total commande
+                    </th>
+                    <th>
+                        Date derniere commande
+                    </th>
+                    <th>
+                        No Vendeur
+                    </th>
+                    <th>
+                        Nom vendeur
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
         </table>
     </div>
 </div>
@@ -211,33 +248,49 @@
 <div class="col-xs-10 col-xs-offset-1">
     <h3 class="text-center">Nombre de clients par vendeur</h3>
     <div class="well row text-center">
-        <table id="nbClientsVendeur" class="table w-100">
-            <tr>
-                <th>
-                    No vendeur
-                </th>
-                <th>
-                    Nom d'affaire
-                </th>
-                <th>
-                    Courriel
-                </th>
-                <th>
-                    Prénom
-                </th>
-                <th>
-                    Nom
-                </th>
-                <th>
-                    Nb. clients actifs
-                </th>
-                <th>
-                    Nb. clients potentiels
-                </th>
-                <th>
-                    Nb. visiteurs
-                </th>
-            </tr>
+        <div class="form-inline">
+            <div class="input-group">
+                <input id="tbRechercheNbClientsVendeur" type="search" class="form-control">
+                <span class="input-group-btn">
+                    <button id="btnRechercheNbClientsVendeur" class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                        </span>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <table id="nbClientsVendeur" class="table w-100 bg-light mt-2">
+            <thead>
+                <tr>
+                    <th>
+                        No vendeur
+                    </th>
+                    <th>
+                        Nom d'affaire
+                    </th>
+                    <th>
+                        Courriel
+                    </th>
+                    <th>
+                        Prénom
+                    </th>
+                    <th>
+                        Nom
+                    </th>
+                    <th>
+                        Nb. clients actifs
+                    </th>
+                    <th>
+                        Nb. clients potentiels
+                    </th>
+                    <th>
+                        Nb. visiteurs
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
         </table>
     </div>
 </div>
@@ -245,24 +298,40 @@
 <div class="col-xs-10 col-xs-offset-1">
     <h3 class="text-center">Clients et vendeurs selon ventes</h3>
     <div class="well row text-center">
-        <table id="clientsVendeursVente" class="table w-100">
-            <tr>
-                <th>
-                    Role
-                </th>
-                <th>
-                    Courriel
-                </th>
-                <th>
-                    Prénom
-                </th>
-                <th>
-                    Nom
-                </th>
-                <th class="text-right">
-                    Total ventes/Achats
-                </th>
-            </tr>
+        <div class="form-inline">
+            <div class="input-group">
+                <input id="tbRechercheVentes" type="search" class="form-control">
+                <span class="input-group-btn">
+                    <button id="btnRechercheVentes" class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                        </span>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <table id="clientsVendeursVente" class="table w-100 bg-light mt-2">
+            <thead>
+                <tr>
+                    <th>
+                        Role
+                    </th>
+                    <th>
+                        Courriel
+                    </th>
+                    <th>
+                        Prénom
+                    </th>
+                    <th>
+                        Nom
+                    </th>
+                    <th class="text-right">
+                        Total ventes/Achats
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
         </table>
     </div>
 </div>
@@ -283,6 +352,38 @@
         let totNClientsChart;
         let totNVendChart;
 
+        function setRecherche(tb, btn, table, rows, colonnes) {
+            const recherche = (targetTextBox, targetTable, rows, colonnes, blur = false) => {
+                return function () {
+                    if (blur) {
+                        $(this).blur();
+                    }
+                    
+                    const queryText = targetTextBox.val().toLowerCase();
+
+                    const tbody = targetTable.find('tbody');
+                    tbody.empty();
+                    
+                    rows.each(function() {
+                        let searchableText = '';
+                        for (let i = 0; i < colonnes.length; i++) {
+                            const col = colonnes[i];
+                            searchableText += $(this).find('td').eq(col).text().toLowerCase().trim();
+                            
+                            if (searchableText.includes(queryText)) {
+                                tbody.append($(this));
+                            }
+                        }
+                    });
+                }
+            }
+            const rechercheListener = (blur = false) => recherche(tb, table, rows, colonnes, blur);
+            
+            tb.change(rechercheListener(true));
+            tb.keyup(rechercheListener());
+            btn.click(rechercheListener());
+        }
+        
         $('[name="periodeTotalVendeur"]').change(function() {
             if (!$(this).prop('checked')) return;
             filtres.periodeTousVendeurs = $(this).val();
@@ -372,8 +473,8 @@
         }
         
         function initConnexionReport(data) {
-            const targetTable = $('#nbConnexionClient');
-            targetTable.find('.data-row').remove();
+            const targetTable = $('#nbConnexionClient').find('tbody');
+            targetTable.empty();
             
             for (let i = 0; i < data.length; i++) {
                 const elem = data[i];
@@ -386,12 +487,15 @@
 
                 targetTable.append(row);
             }
+
+            const rowsNbConnexions = targetTable.children();
+            setRecherche($('#tbRechercheConnexionsClient'), $('#btnRechercheConnexionsClient'), $('#nbConnexionClient'), rowsNbConnexions, [1,2,3]);
         }
         
         function initRecentConnexionReport(data) {
             const nbConnexions = $('#formControlRange').val();
-            const targetTable = $('#connexionsRecentes');
-            targetTable.find('.data-row').remove();
+            const targetTable = $('#connexionsRecentes').find('tbody');
+            targetTable.empty();
 
             data = data.slice(0, nbConnexions);
             
@@ -409,26 +513,29 @@
         }
         
         function initOrderTotalsReport(data) {
-            const targetTable = $('#totalCommandes');
-            targetTable.find('.data-row').remove();
-
+            const targetTable = $('#totalCommandes').find('tbody');
+            targetTable.empty();
+            
             for (let i = 0; i < data.length; i++) {
                 const elem = data[i];
                 
-                for (let noVendeur in data.TotalCommandesParVendeur) {
-                    const stats = data.TotalCommandesParVendeur[noVendeur];
+                for (let noVendeur in elem.TotalCommandesParVendeur) {
+                    const stats = elem.TotalCommandesParVendeur[noVendeur];
                     const row = $('<tr>', {class: 'data-row'});
                 
                     row.append($('<td>', {class: L_ALIGN, text: elem.NoClient}));
                     row.append($('<td>', {class: L_ALIGN, text: elem.Prenom + ' ' + elem.Nom}));
                     row.append($('<td>', {class: L_ALIGN, html: formatMoney(stats.TotalCommandes)}));
-                    row.append($('<td>', {class: R_ALIGN, text: formatDateStr(stats.DateDerniereCommande)}));
-                    row.append($('<td>', {class: R_ALIGN, text: noVendeur}));
-                    row.append($('<td>', {class: R_ALIGN, text: stats.Vendeur.NomAffaires}));
+                    row.append($('<td>', {class: L_ALIGN, text: formatDateStr(stats.DateDerniereCommande)}));
+                    row.append($('<td>', {class: L_ALIGN, text: noVendeur}));
+                    row.append($('<td>', {class: L_ALIGN, text: stats.Vendeur.NomAffaires}));
 
                     targetTable.append(row);
                 }
             }
+            
+            const rowsTotalsCommandesClients = targetTable.children();
+            setRecherche($('#tbRechercheTotCommandesClient'), $('#btnRechercheTotCommandesClient'), $('#totalCommandes'), rowsTotalsCommandesClients, [0,1,4,5]);
         }
         
         function formatMoney(amount) {
@@ -451,8 +558,8 @@
         }
         
         function initClientsReport(data) {
-            const targetTable = $('#nbClientsVendeur');
-            targetTable.find('.data-row').remove();
+            const targetTable = $('#nbClientsVendeur').find('tbody');
+            targetTable.empty();
 
             for (let i = 0; i < data.length; i++) {
                 const elem = data[i];
@@ -469,13 +576,16 @@
                     row.append($('<td>', {class: R_ALIGN, text: nbDuType}));
                 }
 
-                targetTable.append(row);
+                targetTable.append(row);                
             }
+            
+            const rowsNbClientsVendeurs = targetTable.children();
+            setRecherche($('#tbRechercheNbClientsVendeur'), $('#btnRechercheNbClientsVendeur'), $('#nbClientsVendeur'), rowsNbClientsVendeurs, [1,2,3]);
         }
         
         function initSalesReport(data) {
-            const targetTable = $('#clientsVendeursVente');
-            targetTable.find('.data-row').remove();
+            const targetTable = $('#clientsVendeursVente').find('tbody');
+            targetTable.empty();
             const tous = data.Clients.concat(data.Vendeurs);
             tous.sort((a, b) => {
                 if (a.TotalCommandes < b.TotalCommandes) {
@@ -501,6 +611,9 @@
 
                 targetTable.append(row);
             }
+
+            const rowsClientVendeurVente = targetTable.children();
+            setRecherche($('#tbRechercheVentes'), $('#btnRechercheVentes'), $('#clientsVendeursVente'), rowsClientVendeurVente, [1,2,3]);
         }
         
         function getTousVendeurs() {
@@ -607,6 +720,9 @@
                 {periode: filtres.periodeTousClients},
                 (data) => {
                     const ctx = $('#cvTotalClients')[0].getContext('2d');
+
+                    const total = data.Item1 + data.Item2 + data.Item3;
+                    $('#totalClients').text(total.toString());
                     
                     const chartConfig ={
                         type: 'doughnut',
@@ -644,7 +760,6 @@
                 (data) => {
                     [ctx, config] = creerGraphique($('#cvNouveauxClients'), [['Nb. de comptes', data]]);
                     
-                    console.log('updating nouveaux clients chart');
                     if (totNClientsChart) {
                         totNClientsChart.data.labels = config.labels;
                         totNClientsChart.data = config.data;

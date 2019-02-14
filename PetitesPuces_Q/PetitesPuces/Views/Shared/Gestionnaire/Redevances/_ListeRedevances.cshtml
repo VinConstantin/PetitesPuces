@@ -1,26 +1,30 @@
 @model List<PetitesPuces.ViewModels.Gestionnaire.Redevance>
 
-<table class="table bg-light">
-    <tr class="v-align-middle">
-        <th>
-            No du vendeur
-        </th>
-        <th>
-            Nom du vendeur
-        </th>
-        <th class="text-right">
-            Solde
-        </th>
-        <th class="text-right">
-            Part de redevances
-        </th>
-        <th></th>
-    </tr>
-    @foreach (var redevance in @Model)
-    {
-        if (redevance.Solde > 0)
+<table class="table bg-light mt-2">
+    <thead>
+        <tr class="v-align-middle">
+            <th>
+                No du vendeur
+            </th>
+            <th>
+                Nom du vendeur
+            </th>
+            <th class="text-right">
+                Solde
+            </th>
+            <th class="text-right">
+                Part de redevances
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var redevance in @Model)
         {
-            @Html.Partial("Gestionnaire/Redevances/_Redevance", redevance)
+            if (redevance.Solde > 0)
+            {
+                @Html.Partial("Gestionnaire/Redevances/_Redevance", redevance)
+            }
         }
-    }
+    </tbody>
 </table>

@@ -167,7 +167,7 @@
     function visualiser(noProduit) {
         $("#ModalDescription").modal('show');
         $.ajax({
-            url: URLPATH+"/Client/InformationProduit",
+            url: URLPATH+"/Client/InformationProduitPanier",
             type: "get",
             data: { 
                 "NoProduit": noProduit

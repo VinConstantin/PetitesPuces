@@ -12,7 +12,24 @@
 <h2 class="text-center">Demandes d'inscription en tant que vendeur</h2>
 
 <div id="demandes">
+    <div class="well col-lg-10 col-lg-offset-1 ">
+        <div class="row">
+            <div class="text-center">
+                <div class="form-inline">
+                    <div class="input-group">
+                        <input id="tbRecherche" type="search" class="form-control">
+                        <span class="input-group-btn">
+                            <button id="btnRecherche" class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                                </span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     @Html.Partial("Gestionnaire/Demandes/_ListeDemandesVendeur", @Model)
+    </div>
 </div>
 
 <div class="modal fade" id="modalDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -25,7 +42,8 @@
 
 <script>
     $(document).ready(function() {
-        registerEvents();        
+        registerEvents();
+        let demandes = $('#demandes').find('tbody').find('tr');
         
         function registerEvents() {
             $("#demandes").find('tr').each(function() {
@@ -34,6 +52,27 @@
                 $(this).find('.btn-success').click(afficherAccepterPourId(idVendeur));
                 $(this).find('.btn-info').click(afficherDetailsPourId(idVendeur));
                 $(this).find('.btn-danger').click(afficherRefuserPourId(idVendeur));
+            });
+        }
+
+        $('#tbRecherche').change(() => {
+            recherche();
+            $(this).blur();
+        });
+        $('#tbRecherche').keyup(recherche);
+        $('#btnRecherche').click(recherche);
+        
+        function recherche() {
+            const queryText = $('#tbRecherche').val();
+            
+            const tableau = $('#demandes').find('tbody');
+            tableau.empty();
+            
+            demandes.each(function() {
+                const searchableText = $(this).slice(0, 4).text();
+                if (searchableText.includes(queryText)) {
+                    tableau.append($(this));
+                }
             });
         }
         
@@ -103,6 +142,7 @@
 
             function afficherDemandes(partialView) {
                 $('#demandes').html(partialView);
+                demandes = $('#demandes').find('tbody').find('tr');
             }
         }
     });

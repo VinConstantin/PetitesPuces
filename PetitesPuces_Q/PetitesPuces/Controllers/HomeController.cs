@@ -12,6 +12,7 @@ namespace PetitesPuces.Controllers
     public class HomeController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
+        private DateTime dateCourante = DateTime.Now;
 
         public ActionResult Index()
         {
@@ -22,7 +23,6 @@ namespace PetitesPuces.Controllers
                     select p).Take(12).ToList(),
                 Vendeurs = (from v in context.PPVendeurs select v).ToList(),
                 Categories = (from c in context.PPCategories select c).ToList()
-                
             };
 
             return View(viewModel);
@@ -42,43 +42,54 @@ namespace PetitesPuces.Controllers
         {
             return View();
         }
+
         public ActionResult Deconnexion()
         {
-            HttpContext.Session["userId"] = null;           
-            
-            return RedirectToAction("Index","Home");
+            HttpContext.Session["userId"] = null;
+
+            return RedirectToAction("Index", "Home");
         }
 
 
         [HttpPost]
         public ActionResult Connexion(FormCollection formCollection)
         {
-
             var unClientExist = from unClient in context.PPClients
-                                where unClient.AdresseEmail == formCollection["adresseEmail"] &&
-                                      unClient.MotDePasse == formCollection["motDePasse"]
-                                select unClient;
+                where unClient.AdresseEmail == formCollection["adresseEmail"] &&
+                      unClient.MotDePasse == formCollection["motDePasse"]
+                select unClient;
 
             var unVendeurExist = from unVendeur in context.PPVendeurs
-                                 where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
-                                       unVendeur.MotDePasse == formCollection["motDePasse"]
-                                 select unVendeur;
+                where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
+                      unVendeur.MotDePasse == formCollection["motDePasse"]
+                select unVendeur;
 
             var unGestionnaireExist = from unGestionnaire in context.PPGestionnaires
-                                      where unGestionnaire.AdresseEmail == formCollection["AdresseEmail"]
-                                      select unGestionnaire;
+                where unGestionnaire.AdresseEmail == formCollection["AdresseEmail"]
+                select unGestionnaire;
 
 
             if (unClientExist.Count() != 0)
             {
                 System.Web.HttpContext.Current.Session["userId"] = unClientExist.First().NoClient;
+                unClientExist.First().DateDerniereConnexion = dateCourante;
+                unClientExist.First().NbConnexions++;
                 TempData["connexion"] = true;
-                return RedirectToAction("Index", "Client");
+                try
+                {
+                    context.SubmitChanges();
+                    return RedirectToAction("Index", "Client");
+                }
+                catch (Exception e)
+                {
+                }
             }
+
             else if (unVendeurExist.Count() != 0)
             {
                 System.Web.HttpContext.Current.Session["userId"] = unVendeurExist.First().NoVendeur;
                 TempData["connexion"] = true;
+
                 return RedirectToAction("Index", "Vendeur");
             }
             else if (unGestionnaireExist.Count() != 0)
@@ -92,7 +103,6 @@ namespace PetitesPuces.Controllers
                 ModelState.AddModelError("motDePasse", "Votre mot de passe ou adresse courriel est incorrect.");
             }
 
-
             return View();
         }
 
@@ -100,8 +110,6 @@ namespace PetitesPuces.Controllers
         [HttpGet]
         public ActionResult InscriptionClient()
         {
-
-
             return View();
         }
 
@@ -109,109 +117,115 @@ namespace PetitesPuces.Controllers
         [HttpPost]
         public ActionResult InscriptionClient(FormCollection formCollection)
         {
-            /*foreach (var key in formCollection.AllKeys)
-            {
-                Response.Write("key: " + key + " ");
-                Response.Write(formCollection[key]);
-                Response.Write("<br/> ");
-            }*/
-
+/*foreach (var key in formCollection.AllKeys)
+{
+    Response.Write("key: " + key + " ");
+    Response.Write(formCollection[key]);
+    Response.Write("<br/> ");
+}*/
             if (ModelState.IsValid)
             {
-
                 PPClient nouveauClient = new PPClient();
                 var noClientCourrant = from unclient in context.PPClients select unclient.NoClient;
                 int maxNo = Convert.ToInt16(noClientCourrant.Max()) + 1;
 
                 var VerificationAdresseCourriel = from unclient in context.PPClients
-                                                  where unclient.AdresseEmail == formCollection["AdresseEmail"]
-                                                  select unclient;
-
+                    where unclient.AdresseEmail == formCollection["AdresseEmail"]
+                    select unclient;
                 if (VerificationAdresseCourriel.Count() == 0)
                 {
-
-
-
                     nouveauClient.AdresseEmail = formCollection["AdresseEmail"];
 
                     nouveauClient.MotDePasse = formCollection["MotDePasse"];
                     nouveauClient.NoClient = maxNo;
-
-
-                    context.PPClients.InsertOnSubmit(nouveauClient);
-                    context.SubmitChanges();
-                    return RedirectToAction("Connexion", "Home");
+                    nouveauClient.DateCreation = dateCourante;
+                    nouveauClient.Statut = 1;
+                    try
+                    {
+                        context.PPClients.InsertOnSubmit(nouveauClient);
+                        context.SubmitChanges();
+                        return RedirectToAction("Connexion", "Home");
+                    }
+                    catch (Exception e)
+                    {
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("AdresseEmail", "Cette adresse courriel est déjà utilisée, veuillez réessayer un nouveau!");
-
+                    ModelState.AddModelError("AdresseEmail",
+                        "Cette adresse courriel est déjà utilisée, veuillez réessayer un nouveau!");
                 }
             }
 
             return View();
         }
+
         [HttpGet]
         public ActionResult InscriptionVendeur()
         {
-
+            
             return View();
         }
 
         [HttpPost]
         public ActionResult InscriptionVendeur(FormCollection formCollection)
         {
-
-            /* foreach (var key in formCollection.AllKeys)
+             foreach (var key in formCollection.AllKeys)
              {
-                 Response.Write("key: " + key + " ");
-                 Response.Write(formCollection[key]);
+                 Response.Write("key: " + key + ": ");
+                 Response.Write(formCollection[key]+",  type:/");
+                 Response.Write(formCollection[key].GetType()+"/");
                  Response.Write("<br/> ");
-             }*/
-
+             }
+             
             if (ModelState.IsValid)
             {
-
-                var noVendeurCourrant = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
-                int maxNoVendeur = Convert.ToInt16(noVendeurCourrant.Max()) + 1;
+                var tousLesVendeurs = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
+                
+                int maxNoVendeur = Convert.ToInt32(tousLesVendeurs.Max()) + 1;
+                
                 var VerificationAdresseCourriel = from unVendeur in context.PPVendeurs
-                                                  where unVendeur.AdresseEmail == formCollection["AdresseEmail"]
-                                                  select unVendeur;
-
+                    where unVendeur.AdresseEmail == formCollection["AdresseEmail"]
+                    select unVendeur;
                 PPVendeur nouveauVendeur = new PPVendeur();
-
                 if (VerificationAdresseCourriel.Count() == 0)
                 {
-
-                    DateTime today = DateTime.Today;
-                    nouveauVendeur.NomAffaires = formCollection["NomAffaires"];
-                    nouveauVendeur.Nom = formCollection["Nom"];
-                    nouveauVendeur.Prenom = formCollection["Prenom"];
-                    nouveauVendeur.Rue = formCollection["Rue"];
                     nouveauVendeur.NoVendeur = maxNoVendeur;
-                    nouveauVendeur.Ville = formCollection["Ville"];
-                    nouveauVendeur.Province = formCollection["Province"];
-                    nouveauVendeur.CodePostal = formCollection["CodePostal"];
-                    nouveauVendeur.Tel1 = formCollection["tel1"];
-                    nouveauVendeur.Tel2 = formCollection["tel2"];
+                    nouveauVendeur.NomAffaires = formCollection["Vendeur.NomAffaires"];
+                    nouveauVendeur.Nom = formCollection["Vendeur.Nom"];
+                    nouveauVendeur.Prenom = formCollection["Vendeur.Prenom"];
+                    nouveauVendeur.Rue = formCollection["Vendeur.Rue"];
+                    nouveauVendeur.Ville = formCollection["Vendeur.Ville"];
+                    nouveauVendeur.Province = formCollection["Vendeur.Province"];
+                    nouveauVendeur.CodePostal = formCollection["Vendeur.CodePostal"];
+                    nouveauVendeur.Pays = formCollection["Vendeur.Pays"];
+                    nouveauVendeur.Tel1 = formCollection["Vendeur.Tel1"];
+                    nouveauVendeur.Tel2 = formCollection["Vendeur.Tel2"];
                     nouveauVendeur.AdresseEmail = formCollection["AdresseEmail"];
-                    nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["poidsMax"]);
-                    nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["prixMinimum"]);
-                    nouveauVendeur.MotDePasse = formCollection["motDePasse"];
-                    nouveauVendeur.Taxes = formCollection["taxes"] == null ? false : true;
-                    nouveauVendeur.DateCreation = today;
-                    nouveauVendeur.Pays = formCollection["Pays"];
-
-
-                    context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
-                    context.SubmitChanges();
-                    return RedirectToAction("Connexion", "Home");
+                    nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["Vendeur.PoidsMaxLivraison"]);
+                    nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["Vendeur.LivraisonGratuite"]);
+                    nouveauVendeur.MotDePasse = formCollection["MotDePasse"];
+                    nouveauVendeur.Taxes =formCollection["Vendeur.Taxes"]=="false" ? false : true;
+                    nouveauVendeur.DateCreation = dateCourante;
+                   
+                    nouveauVendeur.Statut = 0;
+                    try
+                    {
+                        context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
+                        context.SubmitChanges();
+                       return RedirectToAction("Connexion", "Home");
+                    }
+                    catch (Exception e)
+                    {
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("AdresseEmail", "Cette adresse courriel est déjà utilisée, veuillez réessayer un nouveau!");
+                    ModelState.AddModelError("AdresseEmail",
+                        "Cette adresse courriel est déjà utilisée, veuillez réessayer un nouveau!");
                 }
             }
+
             return View();
         }
 
@@ -219,18 +233,15 @@ namespace PetitesPuces.Controllers
         {
             return View();
         }
+
         public ActionResult Catalogue()
         {
             return RedirectToAction("Catalogue", "Client");
-
-
         }
 
         public ActionResult testValidation()
-
         {
             return View();
         }
-
     }
 }

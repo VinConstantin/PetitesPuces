@@ -1,0 +1,88 @@
+﻿@model PetitesPuces.ViewModels.Vendeur.ModifierProduitViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h2 class="modal-title" id="exampleModalLabel" style="overflow: hidden; text-overflow: ellipsis;">
+        @Model.Produit.Nom
+    </h2>
+</div>
+<div class="modal-body">
+    <form id="frmModifierProduit" action="post">
+        <input name="NoProduit" type="hidden" value="@Model.Produit.NoProduit" />
+
+        <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:150px">Nom</span>
+            <input name="Nom" class="form-control" type="text" maxlength="50" value="@Model.Produit.Nom" />
+        </div>
+
+        <br />
+
+        <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:150px">Photo</span>
+            <input name="Photo" class="form-control" type="file" />
+        </div>
+
+        <br />
+
+        <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:150px">Description</span>
+            <textarea name="Description" style="height:90px" class="form-control">@Model.Produit.Description</textarea>
+        </div>
+
+        <br />
+
+        <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:150px">Prix demandé</span>
+            <input name="PrixDemande" type="number" class="form-control" step="0.01" min="0" value="@Model.Produit.PrixDemande">
+            <span class="input-group-addon">$</span>
+        </div>
+
+        <br />
+
+        <div class="input-group" style="width:100%; padding-bottom:3px">
+            <span class="input-group-addon" style="width:150px">Prix de vente</span>
+            <input name="PrixVente" type="number" class="form-control" step="0.01" min="0" value="@Model.Produit.PrixVente">
+            <span class="input-group-addon">$</span>
+        </div>
+        <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:150px">Date de vente</span>
+            <input name="DateVente" type="date" class="form-control">
+        </div>
+
+        <br />
+
+        <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:150px">Poids</span>
+            <input name="Poids" type="number" class="form-control" step="0.1" min="0" value="@Model.Produit.Poids">
+            <span class="input-group-addon">lbs</span>
+        </div>
+
+        <br />
+
+        <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:150px">Catégorie</span>
+            <select name="NoCategorie" class="form-control">
+                @foreach (var categorie in Model.Categories)
+                {
+                    if (Model.Produit.NoCategorie == categorie.NoCategorie)
+                    {
+                        <option selected value="@categorie.NoCategorie">@categorie.Description</option>
+                    }
+                    <option value="@categorie.NoCategorie">@categorie.Description</option>
+                }
+            </select>
+        </div>
+    </form>
+    <hr />
+    <p>Date de création : @Model.Produit.DateCreation.Value.ToShortDateString()</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-link btn-lg" title="Modifier" onclick="modifierProduit();">
+        <span class="glyphicon glyphicon-check"></span>
+    </button>
+    <button class="btn btn-link btn-lg" title="Annuler" onclick="information(@Model.Produit.NoProduit)">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+</div>
