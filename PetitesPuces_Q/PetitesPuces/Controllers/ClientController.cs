@@ -658,7 +658,25 @@ namespace PetitesPuces.Controllers
         {
             if (!CheckDisponibiliteArticlesPanier(InfoCommande.Vendeur.No))
                 return View("ErreurCommande", 9999);
+
+            Panier panVerif = GetPanierByVendeurClient((int) InfoCommande.Vendeur.No);
+            if(panVerif.Articles.Count != InfoCommande.Panier.Articles.Count)
+                return View("ErreurCommande", 9999);
+            foreach (PPArticlesEnPanier article in panVerif.Articles)
+            {
+                PPArticlesEnPanier artVerif = InfoCommande.Panier.Articles.First(a => a.NoProduit == article.NoProduit);
+                
+                if(artVerif == null)
+                    return View("ErreurCommande", 9999);
+                if(artVerif.NbItems != article.NbItems)
+                    return View("ErreurCommande", 9999);
+            }
             
+            {
+                if(GetPanierByVendeurClient((int) InfoCommande.Vendeur.No) == InfoCommande.Panier)
+                    return View("ErreurCommande", 9999);
+                
+            }
             if (NoAutorisation == "9999" || NoAutorisation == "1" || NoAutorisation == "2" || NoAutorisation == "3")
             {
                 int intNoAutorisation;
@@ -677,7 +695,7 @@ namespace PetitesPuces.Controllers
                 context.PPHistoriquePaiements.InsertOnSubmit(paiement);
     
                 long noDetail = GetNextNoDetailsCommande();
-                foreach (PPArticlesEnPanier article in InfoCommande.Panier.Articles)
+                foreach (PPArticlesEnPanier article in GetPanierByVendeurClient((int)InfoCommande.Panier.Vendeur.No).Articles)
                 {
                     PPArticlesEnPanier articleASupprimer =
                         (from c in context.PPArticlesEnPaniers
