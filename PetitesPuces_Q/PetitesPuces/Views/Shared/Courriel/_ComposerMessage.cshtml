@@ -99,10 +99,20 @@
 	/**
      *  todo : retirer des liste ne retire pas le bon item...
      */
-    if (!msgId) {
-        var msgId;
-    }
-	
+    var lstDestinataires = [
+        @if (Model != null)
+        {
+             foreach(var destinataire in Model.UtilisateursDestinataire)
+             {
+                 <text>
+                     {
+                         No: @destinataire.No, Nom: '@destinataire.DisplayName'
+                     },
+                 </text>
+             }
+        }
+    ];
+
 	function retirerDestinataire(id) {
 		console.log(id);
 		$('#Dest'+id).remove();
@@ -133,24 +143,31 @@
 		lstDestinataires.splice(index, 1);
 		$('#Dest'+no).remove();
 	}
-	function envoyerMessage() {
-		const strMessage = $('#textarea').froalaEditor('html.get');
-		const objet = $("#tbObjet").val();
-		const data = ({
-			NoExpediteur: @SessionUtilisateur.UtilisateurCourant.No,
-			Objet: objet,
-			Description: strMessage,
-			Destinataire: lstDestinataires
-		});
-		const url = URLPATH + "/Courriel/Envoyer";
-		console.log(url);
-		$.ajax({
+    function envoyerMessage() {
+        if (!$('#textarea').val() || $('#textarea').val().trim() == '') {
+            alert('Votre message doit avoir un corps');
+            return;
+        }
+
+        if (!$('#tbObjet').val() || $('#tbObjet').val().trim() == '') {
+            alert('Votre message doit avoir un objet');
+            return;
+        }
+
+        if (lstDestinataires.length == 0) {
+            alert('Votre message doit avoir au moins un destinataire');
+            return;
+        }
+
+        console.log(msgId);
+		const url = "/Courriel/Envoyer/" + msgId;
+
+        $.ajax({
 			url: url,
 			type: "POST",
-			data: data,
-			success: function(result) {
-				console.log(result);
-			},
+			success: function(partial) {
+                $('#PLACEHOLDER').html(partial);
+            },
 			error: function(req, status, err) {
 				console.log(req, status, err);
 			}

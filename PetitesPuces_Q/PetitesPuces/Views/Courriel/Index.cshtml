@@ -76,19 +76,6 @@
     var msgId = @(Model.Item2 != null ? Model.Item2.NoMsg.ToString() : "null");
     let etat = etats[stateName];
     let selected;
-    let lstDestinataires = [
-        @if (Model.Item2 != null)
-        {
-             foreach(var destinataire in Model.Item2.UtilisateursDestinataire)
-             {
-                 <text>
-                     {
-                         No: @destinataire.No, Nom: '@destinataire.DisplayName'
-                     },
-                 </text>
-             }
-        }
-    ];
 
     function Etat(loadFunc) {
         this.load = loadFunc;
@@ -296,9 +283,10 @@
             saveTimeoutId = window.setTimeout(sauvegarderBrouillon, timeout);
         }
     }
+
     function sauvegarderBrouillon(callback) {
         const destinataires = lstDestinataires.map(e => e.No);
-        console.log(destinataires);
+        
         const msg = {
             DescMsg: $('#textarea').froalaEditor('html.get'),
             objet: $('#tbObjet').val(),
@@ -312,8 +300,6 @@
 
         const data = JSON.stringify(msg);
         console.log((method === 'POST' ? 'Nouveau ' : 'Update ') + 'brouillon');
-        console.log(msg);
-        console.log(data);
 
         $.ajax({
             url: '/Courriel/Enregistrer',
