@@ -449,7 +449,7 @@ namespace PetitesPuces.Controllers
                 //si c'est l'expediteur, supprimer définitivement
                 if (message != null)
                 {
-                    message.Lieu = LieuxCourriel.Supprime;
+                    message.Lieu = (short?)LieuxCourriel.Supprime;
                 }
 
                 PPDestinataire destinataire = (from m in context.PPDestinataires
@@ -459,13 +459,13 @@ namespace PetitesPuces.Controllers
                 if (destinataire != null)
                 {
                     //si déja dans les elements supprimés, supprimer définitivement
-                    if (destinataire.Lieu == LieuxCourriel.Archive)
+                    if (destinataire.Lieu == (short?)LieuxCourriel.Archive)
                     {
-                        destinataire.Lieu = LieuxCourriel.Supprime;
+                        destinataire.Lieu = (short?) LieuxCourriel.Supprime;
                     }
                     else
                     {
-                        destinataire.Lieu = LieuxCourriel.Archive;
+                        destinataire.Lieu = (short?) LieuxCourriel.Archive;
                     }
 
                     //For some reason that doesn't work ... : message.Lieu = (message.Lieu == 3) ? (short)5 : (short)3;
