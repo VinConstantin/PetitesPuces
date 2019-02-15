@@ -121,7 +121,7 @@
     <div class="col-md-10">
         @if (ViewBag.NbPage > 1)
         {
-            @Html.Partial("_Pagination")
+            @Html.Partial("Client/Catalogue/_Pagination")
         }
         <div class="row">
             @if (@Model.Categorie == null)
@@ -142,7 +142,7 @@
             else
             {
                 <br/>
-                <div class="col-lg-10 col-lg-offset-1 alert alert-warning" style="text-align: center" role="alert">
+                <div class="col-lg-10 col-lg-offset-1 well" style="text-align: center" role="alert">
                     <span style="font-size: 60px" class="glyphicon glyphicon-unchecked"></span>
                     <h3>Il n'y a aucun produit à afficher</h3>
                 </div>
@@ -150,7 +150,7 @@
         </div>
         @if (ViewBag.NbPage > 1)
         {
-            @Html.Partial("_Pagination")
+            @Html.Partial("Client/Catalogue/_Pagination")
         }
     </div>
 </div>

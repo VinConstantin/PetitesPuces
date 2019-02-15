@@ -345,6 +345,7 @@
     <Content Include="Views\Shared\Client\Catalogue\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_EtoilesRating.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_ModalProduit.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_Pagination.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_Produits.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_RatingTooltip.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_VendeurCarousel.cshtml" />
@@ -397,7 +398,6 @@
     <Content Include="Views\Shared\Home\_ListeProduits.cshtml" />
     <Content Include="Views\Shared\Home\_Produits.cshtml" />
     <Content Include="Views\Shared\Home\_VendeurCarousel.cshtml" />
-    <Content Include="Views\Shared\_Pagination.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
     <Content Include="Views\Vendeur\Evaluations.cshtml" />
     <Content Include="Views\Vendeur\Index.cshtml" />
