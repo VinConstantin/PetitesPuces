@@ -40,23 +40,34 @@ namespace PetitesPuces.Controllers
         [Route("Courriel/Boite/{etatCourriel}/{id}")]
         public ActionResult Index(string etatCourriel, int id)
         {
-            try
+            if (Request.IsAjaxRequest()) return IndexAjax(etatCourriel, id);
+
+
+            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat))
             {
-                if (Request.IsAjaxRequest()) return IndexAjax(etatCourriel, id);
+                var isWrite = CheckIfWriteState(enumEtat);
 
-                var message = GetMessageById(id);
+                var message = GetMessageById(id, isWrite);
 
-                if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat))
-                {
-                    return View(Tuple.Create(enumEtat, message));
-                }
-
-                return HttpNotFound();
+                return View(Tuple.Create(enumEtat, message));
             }
-            catch (Exception e)
+
+            return HttpNotFound();
+        }
+
+        private bool CheckIfWriteState(EtatCourriel etat)
+        {
+            switch (etat)
             {
-                Console.WriteLine(e);
-                throw;
+                case EtatCourriel.Brouillon:
+                case EtatCourriel.Composer:
+                case EtatCourriel.Envoye:
+                    return true;
+                case EtatCourriel.Reception:
+                case EtatCourriel.Supprime:
+                    return false;
+                default:
+                    return true;
             }
         }
 
@@ -79,10 +90,10 @@ namespace PetitesPuces.Controllers
             {
                 switch (enumEtat)
                 {
-                    case EtatCourriel.Envoye   : return ElementsEnvoyes();
-                    case EtatCourriel.Reception: return BoiteReception();
+                    case EtatCourriel.Envoye   : return ElementsEnvoyes(id);
+                    case EtatCourriel.Reception: return BoiteReception(id);
                     case EtatCourriel.Composer : return ComposerMessage(id);
-                    case EtatCourriel.Supprime : return ElementsSupprimes();
+                    case EtatCourriel.Supprime : return ElementsSupprimes(id);
                     case EtatCourriel.Brouillon: return Brouillons();
                 }
             }
@@ -168,7 +179,7 @@ namespace PetitesPuces.Controllers
             }
         }
 
-        private PPMessage GetMessageById(long id)
+        private PPMessage GetMessageById(long id, bool write = false)
         {
             var message =
                 (from msg
@@ -176,12 +187,16 @@ namespace PetitesPuces.Controllers
                 where msg.NoMsg == id
                 select msg).First();
 
-            if (SessionUtilisateur.UtilisateurCourant.No != message.NoExpediteur)
+            var noUtil = SessionUtilisateur.NoUtilisateur;
+            if ((!write && message.PPDestinataires.Any(dest => dest.NoDestinataire == noUtil)) ||
+                noUtil == message.NoExpediteur)
             {
-                throw new AuthenticationException();
+                return message;
             }
-
-            return message;
+            else
+            {
+                throw new AuthenticationException("NoMsg invalide");
+            }
         }
         
         /** PPLieu
@@ -191,16 +206,29 @@ namespace PetitesPuces.Controllers
             4	Brouillon
             5	Supprimé définitevement
          */
-        public ActionResult BoiteReception()
-        {           
-            List<PPMessage> messages = (from m in context.PPMessages
-                orderby m.dateEnvoi descending 
-                where m.PPDestinataires.Any(d=>d.NoDestinataire == noUtilisateur
-                                               && d.Lieu == 1)             
-                select m).ToList();
-            
-            return PartialView("Courriel/Boites/_BoiteReception",messages);
+        public ActionResult BoiteReception(int? id = null)
+        {
+            if (id.HasValue)
+            {
+                return GetCourriel(id.Value);
+            }
+            else
+            {
+                return AfficherBoiteReception();
+            }
         }
+
+        private ActionResult AfficherBoiteReception()
+        {
+            List<PPMessage> messages = (from m in context.PPMessages
+                orderby m.dateEnvoi descending
+                where m.PPDestinataires.Any(d => d.NoDestinataire == noUtilisateur
+                                                 && d.Lieu == 1)
+                select m).ToList();
+
+            return PartialView("Courriel/Boites/_BoiteReception", messages);
+        }
+
         public ActionResult Brouillons()
         {        
             List<PPMessage> messages = (from m in context.PPMessages
@@ -209,44 +237,65 @@ namespace PetitesPuces.Controllers
                       && m.Lieu == 4
                 select m).ToList();
 
-
             return PartialView("Courriel/Boites/_Brouillons", messages);
         }
-        public ActionResult ElementsEnvoyes()
-        {         
-            List<PPMessage> messages = (from m in context.PPMessages
-                orderby m.dateEnvoi descending 
-                where m.NoExpediteur == noUtilisateur && m.Lieu == 2
-                select m).ToList();
-            
-            return PartialView("Courriel/Boites/_ElementsEnvoyes",messages);
-        }
-        public ActionResult ElementsSupprimes()
-        {          
-            List<PPMessage> messages = (from m in context.PPMessages
-                orderby m.dateEnvoi descending 
-                where m.PPDestinataires.Any(d=>d.NoDestinataire == noUtilisateur
-                                               && d.Lieu == 3)
-                select m).ToList();
-            
-            return PartialView("Courriel/Boites/_ElementsSupprimes",messages);
-        }
-        public ActionResult ComposerMessage(int? id = null)
-        {      
-            List<PPMessage> messages = (from m in context.PPMessages
-                where m.PPDestinataires.Any(d=>d.NoDestinataire == noUtilisateur
-                                               && d.Lieu == 1)
-                select m).ToList();
-
+        public ActionResult ElementsEnvoyes(int? id)
+        {
             if (id.HasValue)
             {
-                return PartialView("Courriel/_ComposerMessage", GetMessageById(id.Value));
+                return GetCourriel(id.Value);
+            }
+            else
+            {
+                return AfficherBoiteEnvoyes();
+            }
+        }
+
+        private ActionResult AfficherBoiteEnvoyes()
+        {
+            List<PPMessage> messages = (from m in context.PPMessages
+                orderby m.dateEnvoi descending
+                where m.NoExpediteur == noUtilisateur && m.Lieu == 2
+                select m).ToList();
+
+            return PartialView("Courriel/Boites/_ElementsEnvoyes", messages);
+        }
+
+        public ActionResult ElementsSupprimes(int? id)
+        {          
+            if (id.HasValue)
+            {
+                return GetCourriel(id.Value);
+            }
+            else
+            {
+                return AfficherBoiteSupprimes();
+            }
+        }
+
+        private ActionResult AfficherBoiteSupprimes()
+        {
+            List<PPMessage> messages = (from m in context.PPMessages
+                orderby m.dateEnvoi descending
+                where m.PPDestinataires.Any(d => d.NoDestinataire == noUtilisateur
+                                                 && d.Lieu == 3)
+                select m).ToList();
+
+            return PartialView("Courriel/Boites/_ElementsSupprimes", messages);
+        }
+
+        public ActionResult ComposerMessage(int? id = null)
+        {      
+            if (id.HasValue)
+            {
+                return PartialView("Courriel/_ComposerMessage", GetMessageById(id.Value, true));
             }
             else
             {
                 return PartialView("Courriel/_ComposerMessage");
             }
         }
+
         public ActionResult Destinataire()
         {
             DestinataireViewModel viewModel = new DestinataireViewModel
@@ -286,14 +335,13 @@ namespace PetitesPuces.Controllers
             try
             {
                 context.SubmitChanges();
+                return PartialView("Courriel/_Courriel", messages);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
-
-            return PartialView("Courriel/_Courriel", messages);
         }
         
         /// <summary>
