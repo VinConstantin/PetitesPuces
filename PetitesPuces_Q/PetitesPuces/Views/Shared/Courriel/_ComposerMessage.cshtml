@@ -33,12 +33,13 @@
 
 	<div class="well">
 		<div class="row">
-			<label class="col-xs-4">
-				Destinataires :
-				<button type="button" onclick="loadModalDestinataire();" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#modalAjoutDestinataire">
-					<span title="Ajouter des destinataires" class="glyphicon glyphicon-plus"></span>
-				</button>
-			</label>
+            <label class="col-xs-6">
+                Destinataires :
+                <button type="button" onclick="loadModalDestinataire();" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#modalAjoutDestinataire">
+                    <span title="Ajouter des destinataires" class="glyphicon glyphicon-plus"></span>
+                </button>
+            </label>
+            <span id="lastSave" class="col-xs-6 text-right"></span>
 		</div>		
 		<div class="row">
 			<div class="col-xs-12" id="destinataire">
@@ -60,7 +61,7 @@
 			<form id="fileForm" class="col-xs-5">
 				<div class="input-group w-100">
                     <a id="pieceJointeLink" href="@(Model != null ? "/Courriel/PieceJointe/" + Model.NoMsg : "javascript:void(0)")">
-                        <input name="fichierJoint" value="@(Model != null ? Model.FichierJoint.ToString() : "")" id="fileUploadText" readonly class="form-control t-overflow-ellipsis"/>
+                        <input name="fichierJoint" value="@(Model != null ? (Model.FichierJoint ?? "").ToString() : "")" id="fileUploadText" readonly class="form-control t-overflow-ellipsis"/>
                     </a>
 					<span class="input-group-btn">
 						<button class="btn btn-primary btn-file">
@@ -83,7 +84,6 @@
                 </textarea>
 			</div>
 		</div>
-
 	</div>
 </div>
 
@@ -104,70 +104,6 @@
     if (!msgId) {
         var msgId;
     }
-	
-	$('#upload').change(function() {
-        const file = $('#upload')[0].files[0].name;
-        console.log(file);
-		$('#fileUploadText').val(file);
-		
-        fileUrl = null;
-        setCanSend(false);
-        sauvegarderBrouillon(postAttachment);
-    });
-
-    function setCanSend(canSend) {
-       //TODO: Block sending, spinner?
-    }
-
-	function sauvegarderBrouillon(callback) {
-        const msg = {
-            DescMsg: $('#textarea').froalaEditor('html.get'),
-            Lieu: LIEU_BROUILLON,
-            objet: $('#tbObjet').val(),
-            destinataire: lstDestinataires.map(e => e.No)
-        };
-
-        let method = 'POST';
-		if (msgId) {
-			method = 'PUT';
-			msg.NoMsg = msgId;
-        }
-
-        $.ajax({
-            url: '/Courriel/Enregistrer',
-            method: method,
-            data: JSON.stringify(msg),
-            dataType: 'json',
-            success: (data) => {
-                msgId = data.NoMsg;
-                callback();
-            },
-			contentType: 'application/json'
-		});
-	}
-		
-    function postAttachment() {
-        const formData = new FormData();
-        const fileInput = $('#upload')[0];
-
-        for (let i = 0; i < fileInput.files.length; i++) {
-            const file = fileInput.files[i];
-            formData.append(file.name, file);
-        }
-
-		$.ajax({
-			url         : '/Courriel/Televerser/' + msgId,
-			data        : formData,
-			cache       : false,
-			contentType : false,
-			processData : false,
-			type        : 'POST',
-            success: function (data, textStatus, jqXHR) {
-                $('#pieceJointeLink').attr('href', '/Courriel/PieceJointe/' + msgId);
-                alert('file upload done');
-            }
-		});
-	}
 	
 	function retirerDestinataire(no, nom) {
 		console.log(no);

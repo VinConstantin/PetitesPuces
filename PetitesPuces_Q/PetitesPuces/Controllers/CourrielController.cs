@@ -40,16 +40,24 @@ namespace PetitesPuces.Controllers
         [Route("Courriel/Boite/{etatCourriel}/{id}")]
         public ActionResult Index(string etatCourriel, int id)
         {
-            if (Request.IsAjaxRequest()) return IndexAjax(etatCourriel, id);
-
-            var message = GetMessageById(id);
-
-            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat))
+            try
             {
-                return View(Tuple.Create(enumEtat, message));
-            }
+                if (Request.IsAjaxRequest()) return IndexAjax(etatCourriel, id);
 
-            return HttpNotFound();
+                var message = GetMessageById(id);
+
+                if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat))
+                {
+                    return View(Tuple.Create(enumEtat, message));
+                }
+
+                return HttpNotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         [Route("Courriel/Boite/{etatCourriel}")]
@@ -119,7 +127,8 @@ namespace PetitesPuces.Controllers
 
             if (file.ContentLength > MAX_FILE_SIZE_BYTES)
             {
-                throw new InvalidDataException("La grandeur du fichier doit être inférieure 50Mo");
+                double maxMB = MAX_FILE_SIZE_BYTES / 1000.0;
+                throw new InvalidDataException("La grandeur du fichier doit être inférieure " + maxMB + "Mo");
             }
 
             return file;

@@ -72,15 +72,15 @@
         Envoye: new Etat(loadElementsEnvoyes),
         Supprime: new Etat(loadElementSupprimes)
     });
-    const stateName = (history.state || 'Reception').toString();
-    const modelId = @(Model.Item2 != null ? Model.Item2.NoMsg.ToString() : "null");
+    const stateName = '@Model.Item1';
+    var msgId = @(Model.Item2 != null ? Model.Item2.NoMsg.ToString() : "null");
     let etat = etats[stateName];
     let selected;
 
     function Etat(loadFunc) {
         this.load = loadFunc;
     }
-    
+
     $('[data-state]').each(function() {
         if ($(this).hasClass('active')) {
             selected = $(this);
@@ -92,11 +92,6 @@
             }
             $(this).addClass('active');
             const stateName = $(this).attr('data-state');
-
-            if (modelId) {
-                displayPageState(stateName, modelId);
-                modelId = null;
-            }
 
             displayPageState(stateName);
         });
@@ -114,7 +109,7 @@
     }
     
     $(document).ready(function() {
-        etat.load();
+        displayPageState(stateName, msgId);
         window.onpopstate = function(event) {
             displayPageState(history.state || 'Reception');
         }
@@ -213,6 +208,9 @@
             }
         });
     }
+    
+    let saveTimeoutId;
+    let lastSave;
     function loadComposerMessage() {
         $('.active').removeClass('active');
         const state = history.state;
@@ -220,16 +218,106 @@
         $.ajax({
             url: URLPATH + "/Courriel/Boite/Composer" + addon,
             type: "GET",
-            data: {
-                
-            }, 
+            data: {}, 
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
+                registerAutoSaveEvents();
             },
             error: function(req, status, err) {
                 console.log(req, status, err);
             }
         });
+    }
+    function registerAutoSaveEvents() {
+        $('#textarea').on('froalaEditor.keyup',handleSave);
+        $('#tbObjet').keyup(handleSave);
+
+        $('#textarea').on('froalaEditor.blur',sauvegarderBrouillon);
+        $('#tbObjet').change(sauvegarderBrouillon);
+        $('#upload').change(attachmentChanged);
+    }
+    
+    function attachmentChanged() {
+        const file = $('#upload')[0].files[0].name;
+		
+        setCanSend(false);
+        sauvegarderBrouillon(postAttachment);
+    }
+    function postAttachment() {
+        const formData = new FormData();
+        const fileInput = $('#upload')[0];
+
+        for (let i = 0; i < fileInput.files.length; i++) {
+            const file = fileInput.files[i];
+            formData.append(file.name, file);
+        }
+
+        $.ajax({
+            url: '/Courriel/Televerser/' + msgId,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            complete: function() {
+                setCanSend(true);
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#pieceJointeLink').attr('href', '/Courriel/PieceJointe/' + msgId);
+                $('#fileUploadText').val(file);
+            },
+            error: function (xhr, ajaxOptions, errMsg) {
+                alert('Erreur en téléversant le fichier: ' + errMsg);
+            },
+        });
+    }
+    function handleSave() {
+        const timeout = 2000;
+        if (!saveTimeoutId) {
+            saveTimeoutId = window.setTimeout(sauvegarderBrouillon, timeout);
+        }
+    }
+    function sauvegarderBrouillon(callback) {
+        const msg = {
+            DescMsg: $('#textarea').froalaEditor('html.get'),
+            Lieu: LIEU_BROUILLON,
+            objet: $('#tbObjet').val(),
+            destinataire: lstDestinataires.map(e => e.No)
+        };
+
+        let method = 'POST';
+        if (msgId) {
+            method = 'PUT';
+            msg.NoMsg = msgId;
+        }
+
+        console.log((method === 'POST' ? 'Nouveau ' : 'Update ') + 'brouillon');
+
+        $.ajax({
+            url: '/Courriel/Enregistrer',
+            method: method,
+            data: JSON.stringify(msg),
+            dataType: 'json',
+            success: (data) => {
+                msgId = data.NoMsg;
+
+                if (callback && callback instanceof Function) {
+                    callback();
+                }
+
+                if (saveTimeoutId) {
+                    window.clearTimeout(saveTimeoutId);
+                    saveTimeoutId = null;
+                }
+
+                lastSave = new Date();
+                $('#lastSave').html('<i class="glyphicon glyphicon-floppy-disk"></i> ' + lastSave.toLocaleTimeString());
+            },
+            contentType: 'application/json'
+        });
+    }
+    function setCanSend(canSend) {
+        //TODO: Block sending, spinner?
     }
 </script>
 <style>

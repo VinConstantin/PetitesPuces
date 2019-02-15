@@ -2,31 +2,9 @@
 @using PetitesPuces.Utilities
 @model PetitesPuces.Models.PPMessage
 @*
-    Représente un élement dans les elements envoyés
+    Représente un brouillon de courriel
 *@
 
-
-@{
-    var ctxt = new BDPetitesPucesDataContext();
-    var id = Model.NoExpediteur;
-
-    var gestionnaires = (from util
-        in ctxt.PPGestionnaires
-                         where util.NoGestionnaire == id
-                         select util).ToList();
-
-    var vendeurs = (from util
-        in ctxt.PPVendeurs
-                    where util.NoVendeur == id
-                    select util).ToList();
-
-    var clients = (from util
-        in ctxt.PPClients
-                   where util.NoClient == id
-                   select util).ToList();
-
-    IUtilisateur expediteur = clients.Concat<IUtilisateur>(vendeurs).Concat<IUtilisateur>(gestionnaires).FirstOrDefault();
-}
 <a href="javascript:void(0)" class="list-group-item" onclick="loadBrouillon(@Model.NoMsg); stopPropagation();">
     <div class="row">
         <div class="col-lg-4">
