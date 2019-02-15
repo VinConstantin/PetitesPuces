@@ -314,8 +314,8 @@
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
     <Content Include="Scripts\constant.js" />
+    <Content Include="Scripts\Courriel\CourrielLib.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
-    <Content Include="Scripts\Gestionnaire\Statistiques.js" />
     <Content Include="Scripts\Home\Inscription.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionClient.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionVendeur.js" />
@@ -453,12 +453,12 @@
     <Content Include="Views\Shared\Vendeur\ModalModifierProduit.cshtml" />
     <Content Include="Views\Shared\Vendeur\ModalSupprimerProduit.cshtml" />
     <Content Include="Views\Shared\Courriel\_CourrielBrouillon.cshtml" />
+    <Content Include="Views\Shared\Courriel\_MessageEnvoye.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="images\produits\" />
     <Folder Include="Recus\" />
-    <Folder Include="Scripts\Courriel" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
