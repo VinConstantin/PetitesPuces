@@ -166,12 +166,16 @@
 		});
 	}
 	
-	function retirerDestinataire(no, nom) {
-		console.log(no);
-		const desinataire = { No : no, Nom : nom };     
-		const index = lstDestinataires.indexOf(desinataire);
-		lstDestinataires.splice(index, 1);
-		$('#Dest'+no).remove();
+	function retirerDestinataire(id) {
+		console.log(id);
+		$('#Dest'+id).remove();
+		
+		lstDestinataires.forEach(function(temp) {
+			if (temp.No ===id) {
+				let index = lstDestinataires.indexOf(temp);
+				lstDestinataires.splice(index, 1);
+			}
+		});
 	}
 	function envoyerMessage() {
 		const strMessage = $('#textarea').froalaEditor('html.get');
