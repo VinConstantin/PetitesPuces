@@ -438,19 +438,30 @@ namespace PetitesPuces.Controllers
         {
             foreach (int no in NoCourriel)
             {
-                PPDestinataire message = (from m in context.PPDestinataires
-                    where m.NoMsg == no && m.NoDestinataire == noUtilisateur
+                PPMessage message = (from m in context.PPMessages
+                    where m.NoMsg == no && m.NoExpediteur == noUtilisateur
                     select m).FirstOrDefault();
+
+                //si c'est l'expediteur, supprimer définitivement
                 if (message != null)
                 {
+                    message.Lieu = 5;
+                }
+
+                PPDestinataire destinataire = (from m in context.PPDestinataires
+                    where m.NoMsg == no && m.NoDestinataire == noUtilisateur
+                    select m).FirstOrDefault();
+                
+                if (destinataire != null)
+                {
                     //si déja dans les elements supprimés, supprimer définitivement
-                    if (message.Lieu == 3)
+                    if (destinataire.Lieu == 3)
                     {
-                        message.Lieu = 5;
+                        destinataire.Lieu = 5;
                     }
                     else
                     {
-                        message.Lieu = 3;
+                        destinataire.Lieu = 3;
                     }
                     //For some reason that doesn't work ... : message.Lieu = (message.Lieu == 3) ? (short)5 : (short)3;
                 }
