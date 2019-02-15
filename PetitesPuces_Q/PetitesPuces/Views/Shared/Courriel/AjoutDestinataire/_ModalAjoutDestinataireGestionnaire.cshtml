@@ -9,7 +9,7 @@
 <div class="modal-content">
     <div class="modal-body">
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-md-4">
                 <button id="btnTousVendeurs" type="button" class="btn btn-success">
                     <span id="icoTousVendeurs" class="glyphicon glyphicon-unchecked"></span> Tous les vendeurs
                 </button>
@@ -22,7 +22,7 @@
                     </table>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-md-4">
                 <button id="btnTousClients" type="button" class="btn btn-success">
                     <span id="icoTousClients" class="glyphicon glyphicon-unchecked"></span> Tous les clients
                 </button>
@@ -35,9 +35,9 @@
                     </table>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-md-4">
                 <button id="btnTousUtillisateurs" type="button" class="btn btn-success">
-                    <span id="icoTousUtillisateurs" class="glyphicon glyphicon-unchecked"></span> Tous les utilisateurs
+                    <span id="icoTousUtillisateurs" class="glyphicon glyphicon-unchecked"></span> Tout le monde
                 </button>
                 <h3>Destinataires</h3>
                 <input type="text" class="form-control" id="filterDestinataire"/>
@@ -54,18 +54,47 @@
         
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="viderListe()" data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
         <button type="button" class="btn btn-primary" onclick="ConfirmerAjout()">Ajouter</button>
     </div>
 </div>
 <script>
     function ConfirmerAjout() {
-        lstDestinatairesTemp.forEach(function(obj) {
-            let str = `<span style="background-color: #adadad;" class="badge badge-primary" id="Dest${obj.No}">${obj.Nom}<a onclick="retirerDestinataire(${obj.No},'${obj.Nom.replace(/'/g, "\\'")}')" class="glyphicon glyphicon-remove"></a></span>&nbsp;`;
-            $("#destinataire").append(str);
-        }); 
         $('#modalAjoutDestinataire').modal('hide');
-        lstDestinataires = lstDestinataires.concat(lstDestinatairesTemp);
+        lstDestinatairesTemp.forEach(function(temp) {
+            let blnEstPresent = false;
+            lstDestinataires.forEach(function(current) {
+                if (temp.No == current.No) 
+                    blnEstPresent = true;
+            });
+            if (!blnEstPresent){
+                if (temp.No == -1) {
+                    lstDestinataires.length = 0;
+                }
+                else if (temp.No == -2) {
+                    let i = lstDestinataires.length
+                    while (i--) {
+                        let temp = lstDestinataires[i];                      
+                        if (temp.No >= 10000) {
+                            let index = lstDestinataires.indexOf(temp);
+                            lstDestinataires.splice(index, 1);
+                        } 
+                    }
+                }
+                else if (temp.No == -3) {
+                    let i = lstDestinataires.length
+                    while (i--) {
+                        let temp = lstDestinataires[i];                      
+                        if (temp.No < 10000) {
+                            let index = lstDestinataires.indexOf(temp);
+                            lstDestinataires.splice(index, 1);
+                        } 
+                    }
+                }
+                lstDestinataires.push(temp);              
+            }
+        });
+        afficherDestinataire();
     }  
     $(document).ready(function () {
         lstClients = [];
@@ -84,6 +113,141 @@
                 lstVendeurs.push({ No : @vendeur.No, Nom : '@vendeur.DisplayName' });
             </text>
         }
+        //tous les vendeurs
+        $("#btnTousVendeurs").click(function() {
+            //Ajouter
+            if ($(this).hasClass('btn-success')) {
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousVendeurs").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $("#tableVendeur").hide();
+                
+                let i = lstDestinatairesTemp.length
+                while (i--) {
+                    let temp = lstDestinatairesTemp[i];
+                    if (temp.No < 10000 && temp.No > 0) {
+                        let index = lstDestinatairesTemp.indexOf(temp);
+                        lstDestinatairesTemp.splice(index, 1);
+                        lstVendeurs.push(temp);
+                    }
+                }
+                
+                let user = {No:-3, Nom:'<span class="fas fa-user-friends"></span> Tout les vendeurs'}
+                lstDestinatairesTemp.push(user);
+                afficherAllListes();
+            } 
+            //retirer
+            else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#icoTousVendeurs").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');                
+                $("#tableVendeur").show();
+
+                let user;
+                lstDestinatairesTemp.forEach(function(temp,i) {
+                    if (temp.No === -3) {
+                        user = temp;
+                        return;
+                    }
+                });
+                let index = lstDestinatairesTemp.indexOf(user);
+                lstDestinatairesTemp.splice(index, 1);    
+                afficherAllListes();
+            }
+        });
+        //tous les clients
+        $("#btnTousClients").click(function() {
+            //Ajouter
+            if ($(this).hasClass('btn-success')) {
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousClients").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $("#tableClient").hide();
+                           
+                let i = lstDestinatairesTemp.length
+                while (i--) {
+                    let temp = lstDestinatairesTemp[i];
+                    if (temp.No >=10000) {
+                        let index = lstDestinatairesTemp.indexOf(temp);
+                        lstDestinatairesTemp.splice(index, 1);
+                        lstClients.push(temp);
+                    }
+                }
+                
+                let user;
+                user = {No:-2, Nom:'<span class="fas fa-user-friends"></span> Tous les clients'}
+                lstDestinatairesTemp.push(user);
+            } 
+            //retirer
+            else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#icoTousClients").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');                
+                $("#tableClient").show();
+
+                let user;
+                lstDestinatairesTemp.forEach(function(temp) {
+                    if (temp.No === -2) {
+                        user = temp;
+                        return;
+                    }
+                });
+                let index = lstDestinatairesTemp.indexOf(user);
+                lstDestinatairesTemp.splice(index, 1);      
+            }
+            afficherAllListes();
+        });
+        //tous les users
+        $("#btnTousUtillisateurs").click(function() {
+            //Ajouter
+            if ($(this).hasClass('btn-success')) {
+                if ($("#btnTousVendeurs").hasClass('btn-primary')){
+                    $("#btnTousVendeurs").click();
+                }
+                if ($("#btnTousClients").hasClass('btn-primary')){
+                    $("#btnTousClients").click();
+                }
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousUtillisateurs").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $('#btnTousVendeurs').attr('disabled','disabled');
+                $('#btnTousClients').attr('disabled','disabled');
+
+                $("#tableClient").hide();
+                $("#tableVendeur").hide();
+                
+                let i = lstDestinatairesTemp.length
+                while (i--) {
+                    let temp = lstDestinatairesTemp[i];
+                    let index = lstDestinatairesTemp.indexOf(temp);
+                    lstDestinatairesTemp.splice(index, 1);
+                    if (temp.No < 10000) {
+                        lstVendeurs.push(temp);
+                    } else {
+                        lstClients.push(temp);
+                    }
+                }
+                
+                let user = {No:-1, Nom:'<span class="fas fa-user-friends"></span> Tout le monde'}
+                lstDestinatairesTemp.push(user);
+            } 
+            //retirer
+            else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#icoTousUtillisateurs").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');
+                $('#btnTousVendeurs').removeAttr('disabled');
+                $('#btnTousClients').removeAttr('disabled');
+                
+                $("#tableClient").show();
+                $("#tableVendeur").show();
+
+                let user;
+                lstDestinatairesTemp.forEach(function(temp) {
+                    if (temp.No === -1) {
+                        user = temp;
+                        return;
+                    }
+                });
+                let index = lstDestinatairesTemp.indexOf(user);
+                lstDestinatairesTemp.splice(index, 1);      
+            }
+            afficherAllListes();
+        });
         afficherAllListes();
     });
 
@@ -94,6 +258,7 @@
             lstClients.forEach(function(temp) {
                 if (temp.No.toString().trim() === id.trim()) {
                     user = temp;
+                    return;
                 }
             });
             let index = lstClients.indexOf(user);
@@ -107,6 +272,7 @@
             lstVendeurs.forEach(function(temp) {
                 if (temp.No.toString().trim() === id.trim()) {
                     user = temp;
+                    return;
                 }
             });
             let index = lstVendeurs.indexOf(user);
@@ -120,6 +286,7 @@
             lstDestinatairesTemp.forEach(function(temp) {
                 if (temp.No.toString().trim() === id.trim()) {
                     user = temp;
+                    return;
                 }
             });
             let index = lstDestinatairesTemp.indexOf(user);
@@ -130,92 +297,7 @@
             else
                 lstVendeurs.push(user);
             afficherAllListes();
-        });
-        $("#btnTousVendeurs").click(function() {
-            if ($(this).hasClass('btn-success')) {
-                $(this).removeClass('btn-success').addClass('btn-primary');
-                $("#icoTousVendeurs").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
-                $("#tableVendeur").hide();
-                
-                $('#tableDestinataire').append("<tr id='TousVendeurs'>" +
-                    "<td>" + "<span class='glyphicon glyphicon-user'></span> Tous les vendeurs" + `</td><td><a>` +
-                    "</a></td></tr>");
-                
-                $('#tableVendeur-list tr').each(function() {
-                    let desinataire = { No: no, Nom: nom };
-                    lstDestinatairesTemp.push(desinataire);
-                });
-            } else {
-                $(this).removeClass('btn-primary').addClass('btn-success');
-                $("#tableVendeur").show();
-                $("#icoTousVendeurs").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');
-                
-                $('#TousVendeurs').remove();
-            }
-        });
-        $("#btnTousClients").click(function() {
-            if ($(this).hasClass('btn-success')) {
-                $(this).removeClass('btn-success').addClass('btn-primary');
-                $("#icoTousClients").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
-                $("#tableClient").hide();
-                
-                $('#tableDestinataire').append("<tr id='TousClients'>" +
-                    "<td>" + "<span class='glyphicon glyphicon-user'></span> Tous les clients" + `</td><td><a>` +
-                    "</a></td></tr>");
-            } else {
-                $(this).removeClass('btn-primary').addClass('btn-success');
-                $("#tableClient").show();
-                $("#icoTousClients").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');
-                
-                $('#TousClients').remove();
-            }
-        });
-        $("#btnTousUtillisateurs").click(function() {
-            if ($(this).hasClass('btn-success')) {
-                if ($("#btnTousVendeurs").hasClass('btn-primary')){
-                    $("#btnTousVendeurs").click();
-                }
-                if ($("#btnTousClients").hasClass('btn-primary')){
-                    $("#btnTousClients").click();
-                }
-                $(this).removeClass('btn-success').addClass('btn-primary');
-                $("#icoTousUtillisateurs").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
-                $("#tableClient").hide();
-                $("#tableVendeur").hide();
-                $('#btnTousVendeurs').attr('disabled','disabled');
-                $('#btnTousClients').attr('disabled','disabled');
-
-                lstClients.forEach(function(user) {
-                    lstDestinatairesTemp.push(user);
-                    let index = lstClients.indexOf(user);
-                    lstClients.splice(index, 1);                    
-                });
-                lstVendeurs.forEach(function(user) {
-                    lstDestinatairesTemp.push(user);
-                    let index = lstVendeurs.indexOf(user);
-                    lstVendeurs.splice(index, 1);                    
-                });
-
-            } else {
-                $(this).removeClass('btn-primary').addClass('btn-success');
-                $("#tableClient").show();
-                $("#tableVendeur").show();
-                $("#icoTousUtillisateurs").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');
-                $('#btnTousVendeurs').removeAttr('disabled');
-                $('#btnTousClients').removeAttr('disabled');
-                
-                lstDestinatairesTemp.forEach(function(user) {                   
-                    if (user.No >= 10000)
-                        lstClients.push(user);
-                    else
-                        lstVendeurs.push(user);
-                    
-                    let index = lstDestinatairesTemp.indexOf(user);
-                    lstDestinatairesTemp.splice(index, 1);
-                });        
-            }
-            afficherAllListes();
-        });
+        });       
     }
 
     function afficherAllListes() {
@@ -227,7 +309,7 @@
 
     function afficherListeCLient() {
         $('#tableClient tr').remove();
-        window.lstClients.forEach(function(client) {
+        lstClients.forEach(function(client) {
             const table = $('#tableClient');
             table.append(`<tr id='${client.No}'>` +
                 `<td>${client.Nom}</td><td><a>` +
@@ -238,7 +320,7 @@
 
     function afficherListeVendeur() {
         $('#tableVendeur tr').remove();
-        window.lstVendeurs.forEach(function(vendeur) {
+        lstVendeurs.forEach(function(vendeur) {
             const table = $('#tableVendeur');
             table.append(`<tr id='${vendeur.No}'>` +
                 `<td>${vendeur.Nom}</td><td><a>` +
@@ -249,13 +331,49 @@
 
     function afficherListeDestinataire() {
         $('#tableDestinataire tr').remove();
-        window.lstDestinatairesTemp.forEach(function(user) {
-            const table = $('#tableDestinataire');
-            table.append(`<tr id='${user.No}'>` +
-                `<td>${user.Nom}</td><td><a>` +
-                `<span id='${user.No
-                }' style='color:red;' class='glyphicon glyphicon-minus pull-right destinataire'></span></a></td>` +
-                `</tr>`);
-        });
+        const table = $('#tableDestinataire');  
+        if(lstDestinatairesTemp.length>0)
+        {
+            lstDestinatairesTemp.forEach(function(user) {         
+                const removeBtn = user.No > 0 ? `<span id='${user.No}' style='color:red;' class='glyphicon glyphicon-minus pull-right destinataire'></span>` : "";
+            
+                table.append(`<tr id='${user.No}'>` +
+                    `<td>${user.Nom}</td><td><a>` +
+                    `${removeBtn}</a></td>` +
+                    `</tr>`);
+            });
+        }
+        else {
+            table.append(`<tr><td><div class="alert alert-warning">Aucun destinataire de selectionné</div></td></tr>`);
+        }
     }
+</script>
+
+<script>
+    //les filtres pour les tables
+    $(document).ready(function() {
+        $("#filterClient").on("keyup",
+            function() {
+                var value = $(this).val().toLowerCase();
+                $("#tableClient tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+        $("#filterVendeur").on("keyup",
+            function() {
+                var value = $(this).val().toLowerCase();
+                $("#tableVendeur tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+        $("#filterDestinataire").on("keyup",
+            function() {
+                var value = $(this).val().toLowerCase();
+                $("#tableDestinataire tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+    });
 </script>
