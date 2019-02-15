@@ -225,6 +225,21 @@
             data: {},
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
+                if ($('#fileUploadText').val().trim() != '') {
+                    $('#deleteAttachment').removeClass('d-none');
+                }
+                $('#deleteAttachment').click(function() {
+                    console.log('deleting');
+                    $.ajax({
+                        method: 'DELETE',
+                        url: '/Courriel/PieceJointe/' + msgId,
+                        success: function() {
+                            sauvegarderBrouillon();
+                            $('#fileUploadText').val('');
+                            $('#deleteAttachment').addClass('d-none');
+                        }
+                    });
+                });
                 registerAutoSaveEvents();
             },
             error: function(req, status, err) {
@@ -271,6 +286,7 @@
                 $('#pieceJointeLink').attr('href', '/Courriel/PieceJointe/' + msgId);
                 const file = $('#upload')[0].files[0].name;
                 $('#fileUploadText').val(file);
+                $('#deleteAttachment').removeClass('d-none');
             },
             error: function (xhr, ajaxOptions, errMsg) {
                 alert('Erreur en téléversant le fichier: ' + errMsg);

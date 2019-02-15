@@ -63,12 +63,15 @@
                     <a id="pieceJointeLink" href="@(Model != null ? "/Courriel/PieceJointe/" + Model.NoMsg : "javascript:void(0)")">
                         <input name="fichierJoint" value="@(Model != null ? (Model.FichierJoint ?? "").ToString() : "")" id="fileUploadText" readonly class="form-control t-overflow-ellipsis"/>
                     </a>
-					<span class="input-group-btn">
-						<button class="btn btn-primary btn-file">
-							<i class="glyphicon glyphicon-paperclip"></i>
-							<input id="upload" value="" type="file"/>
-						</button>
-					</span>
+                    <span class="input-group-btn">
+                        <button id="deleteAttachment" type="button" class="d-none btn btn-danger">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </button>
+                        <button class="btn btn-primary btn-file" type="button">
+                            <i class="glyphicon glyphicon-paperclip"></i>
+                            <input id="upload" value="" type="file"/>
+                        </button>
+                    </span>
 				</div>
 			</form>
 		</div>
@@ -159,20 +162,20 @@
             return;
         }
 
-        console.log(msgId);
-		const url = "/Courriel/Envoyer/" + msgId;
+        sauvegarderBrouillon(function() {
+            const url = "/Courriel/Envoyer/" + msgId;
 
-        $.ajax({
-			url: url,
-			type: "POST",
-			success: function(partial) {
-                $('#PLACEHOLDER').html(partial);
-            },
-			error: function(req, status, err) {
-				console.log(req, status, err);
-			}
-		});
-		
+            $.ajax({
+                url: url,
+                type: "POST",
+                success: function(partial) {
+                    $('#PLACEHOLDER').html(partial);
+                },
+                error: function(req, status, err) {
+                    console.log(req, status, err);
+                }
+            });
+        });
 	}
 	function loadModalDestinataire() {
 		$.ajax({

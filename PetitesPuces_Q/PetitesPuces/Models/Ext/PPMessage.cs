@@ -12,6 +12,14 @@ namespace PetitesPuces.Models
         private List<IUtilisateur> _utilisateursDestinataire;
         private BDPetitesPucesDataContext ctxt;
 
+        public string FormattedDestinataires
+        {
+            get
+            {
+                return string.Join("; ",UtilisateursDestinataire.Select(u => u.DisplayName));
+            }
+        }
+
         public List<IUtilisateur> UtilisateursDestinataire
         {
             get

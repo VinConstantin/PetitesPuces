@@ -148,11 +148,16 @@ namespace PetitesPuces.Controllers
         private void SaveAttachmentToMessage(HttpPostedFileBase file, PPMessage msg)
         {
             Directory.CreateDirectory(Server.MapPath(ATTACHMENTS_DIR));
-            file.SaveAs(Server.MapPath(ATTACHMENTS_DIR + "/attachment-" + msg.NoMsg));
+            file.SaveAs(GetAttachmentPathForMessage(msg));
 
             msg.FichierJoint = file.FileName;
 
             context.SubmitChanges();
+        }
+
+        private string GetAttachmentPathForMessage(PPMessage message)
+        {
+            return Server.MapPath(ATTACHMENTS_DIR + "/attachment-" + message.NoMsg);
         }
 
         [HttpGet]
@@ -177,6 +182,33 @@ namespace PetitesPuces.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Fichier manquant ou suuprimé");
             }
+        }
+
+        [HttpDelete]
+        [Route("Courriel/PieceJointe/{id}")]
+        public ActionResult PieceJointeSupprimer(long id)
+        {
+            try
+            {
+                var message = GetMessageById(id, true);
+
+                DeleteAttachmentOfMessage(message);
+
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+        }
+
+        private void DeleteAttachmentOfMessage(PPMessage message)
+        {
+            var physicalPath = GetAttachmentPathForMessage(message);
+            var fileInf = new FileInfo(physicalPath);
+
+            if (!fileInf.Exists) throw new IOException("Aucune piece jointe pour ce message");
+            fileInf.Delete();
         }
 
         private PPMessage GetMessageById(long id, bool write = false)
