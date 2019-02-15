@@ -25,7 +25,9 @@ namespace PetitesPuces.Models
 
                 foreach (var dest in PPDestinataires)
                 {
-                    _utilisateursDestinataire.Add(GetAllUsersWithId(dest.NoMsg).First());
+                    var usersWithId = GetAllUsersWithId(dest.NoDestinataire);
+
+                    _utilisateursDestinataire.Add(usersWithId.First());
                 }
 
                 return _utilisateursDestinataire;

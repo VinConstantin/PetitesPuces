@@ -559,7 +559,7 @@ namespace PetitesPuces.Controllers
                 msg = new PPMessage();
             }
 
-            brouillon.destinataires = brouillon.destinataires ?? new List<int>();
+            brouillon.destinataires = brouillon.destinataires ?? new List<int?>();
 
             msg.NoMsg = (int) brouillon.NoMsg.GetValueOrDefault(msg.NoMsg);
             msg.DescMsg = brouillon.DescMsg;
@@ -569,12 +569,13 @@ namespace PetitesPuces.Controllers
             msg.NoExpediteur = (int)SessionUtilisateur.UtilisateurCourant.No;
 
             var destinataires = msg.PPDestinataires.ToList();
-            List<int> NosDestinatairesAAjouter = new List<int>(brouillon.destinataires);
+            var NosDestinatairesAAjouter = new List<int?>(brouillon.destinataires);
+            var NosDestinatairesADelete = new List<int>();
             foreach (var dest in destinataires)
             {
                 if (!brouillon.destinataires.Contains(dest.NoDestinataire))
                 {
-                    msg.PPDestinataires.Remove(dest);
+                    NosDestinatairesADelete.Add(dest.NoDestinataire);
                 }
                 else
                 {
@@ -582,13 +583,19 @@ namespace PetitesPuces.Controllers
                 }
             }
 
-            foreach (var NoDest in NosDestinatairesAAjouter)
+            var destinatairesADelete = (from dest in context.PPDestinataires
+                where NosDestinatairesADelete.Contains(dest.NoDestinataire)
+                select dest);
+            context.PPDestinataires.DeleteAllOnSubmit(destinatairesADelete);
+
+            foreach (var noDest in NosDestinatairesAAjouter)
             {
+                if (!noDest.HasValue) continue;
                 context.PPDestinataires.InsertOnSubmit(
                     new PPDestinataire
                     {
                         NoMsg = msg.NoMsg,
-                        NoDestinataire = NoDest
+                        NoDestinataire = noDest.Value
                     }
                 );
             }

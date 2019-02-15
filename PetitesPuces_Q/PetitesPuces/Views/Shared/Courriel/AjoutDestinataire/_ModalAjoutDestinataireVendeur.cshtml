@@ -71,7 +71,6 @@
     $(document).ready(function () {
         lstClients = [];
         lstGestionnaires = [];
-        lstDestinatairesTemp = [];
 
         @foreach (var client in Model.Clients.Where(c=>c.PPCommandes.Any(com=>com.NoVendeur==SessionUtilisateur.UtilisateurCourant.No)))
         {

@@ -72,10 +72,23 @@
         Envoye: new Etat(loadElementsEnvoyes),
         Supprime: new Etat(loadElementSupprimes)
     });
-    const stateName = '@Model.Item1';
+    let stateName = '@Model.Item1';
     var msgId = @(Model.Item2 != null ? Model.Item2.NoMsg.ToString() : "null");
     let etat = etats[stateName];
     let selected;
+    let lstDestinataires = [
+        @if (Model != null)
+        {
+             foreach(var destinataire in Model.Item2.UtilisateursDestinataire)
+             {
+                 <text>
+                     {
+                         No: @destinataire.No, Nom: '@destinataire.DisplayName'
+                     },
+                 </text>
+             }
+        }
+    ];
 
     function Etat(loadFunc) {
         this.load = loadFunc;
@@ -85,18 +98,18 @@
         if ($(this).hasClass('active')) {
             selected = $(this);
         }
-        
+
         $(this).click(function () {
             if (selected) {
                 selected.removeClass('active');
             }
             $(this).addClass('active');
-            const stateName = $(this).attr('data-state');
+            stateName = $(this).attr('data-state');
 
             displayPageState(stateName);
         });
     });
-    
+
     function displayPageState(stateName, noMsgALoad) {
         etat = etats[stateName];
         let reqUrl = `/Courriel/Boite/${stateName}`;
@@ -107,36 +120,42 @@
         history.pushState({ state: stateName, id: noMsgALoad}, `${stateName} - Courriel - Les Petites Puces`, reqUrl);
         etat.load();
     }
-    
+
     $(document).ready(function() {
         displayPageState(stateName, msgId);
         window.onpopstate = function(event) {
             displayPageState(history.state || 'Reception');
         }
     });
-    
+
     function stopPropagation() {
         event.stopPropagation();
     }
-    
+
     function loadBrouillon(id) {
         $('.active').removeClass('active');
         displayPageState("Composer", id);
     }
+
     function loadCourriel(id) {
         $('.active').removeClass('active');
         displayPageState(stateName, id);
     }
+
     function loadBoiteReception() {
         $('.active').removeClass('active');
         $('#BoiteReception').addClass('active');
-        console.log('load boite reception');
+        const hState = history.state;
+        let addon = '';
+        if (hState.id) {
+            addon = '/' + hState.id;
+        }
         $.ajax({
-            url: URLPATH + "/Courriel/Boite/Reception",
+            url: URLPATH + "/Courriel/Boite/Reception" + addon,
             type: "GET",
             data: {
-                
-            }, 
+
+            },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
             },
@@ -152,8 +171,8 @@
             url: URLPATH + "/Courriel/Boite/Brouillon",
             type: "GET",
             data: {
-                
-            }, 
+
+            },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
             },
@@ -165,12 +184,17 @@
     function loadElementsEnvoyes() {
         $('.active').removeClass('active');
         $('#ElementsEnvoyes').addClass('active');
+        const hState = history.state;
+        let addon = '';
+        if (hState.id) {
+            addon = '/' + hState.id;
+        }
         $.ajax({
-            url: URLPATH + "/Courriel/Boite/Envoye",
+            url: URLPATH + "/Courriel/Boite/Envoye" + addon,
             type: "GET",
             data: {
-                
-            }, 
+
+            },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
             },
@@ -182,12 +206,17 @@
     function loadElementSupprimes() {
         $('.active').removeClass('active');
         $('#ElementSupprimes').addClass('active');
+        const hState = history.state;
+        let addon = '';
+        if (hState.id) {
+            addon = '/' + hState.id;
+        }
         $.ajax({
-            url: URLPATH + "/Courriel/Boite/Supprime",
+            url: URLPATH + "/Courriel/Boite/Supprime" + addon,
             type: "GET",
             data: {
-                
-            }, 
+
+            },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
             },
@@ -196,7 +225,7 @@
             }
         });
     }
-    
+
     let saveTimeoutId;
     let lastSave;
     function loadComposerMessage() {
@@ -206,7 +235,7 @@
         $.ajax({
             url: URLPATH + "/Courriel/Boite/Composer" + addon,
             type: "GET",
-            data: {}, 
+            data: {},
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
                 registerAutoSaveEvents();
@@ -217,16 +246,18 @@
         });
     }
     function registerAutoSaveEvents() {
-        $('#textarea').on('froalaEditor.keyup',handleSave);
-        $('#tbObjet').keyup(handleSave);
+        $('#textarea').on('froalaEditor.contentChanged',handleChange);
+        $('#tbObjet').keyup(handleChange);
 
         $('#textarea').on('froalaEditor.blur',sauvegarderBrouillon);
+        $('#destinataire').change(sauvegarderBrouillon);
         $('#tbObjet').change(sauvegarderBrouillon);
+
         $('#upload').change(attachmentChanged);
     }
-    
+
     function attachmentChanged() {
-		
+
         setCanSend(false);
         sauvegarderBrouillon(postAttachment);
     }
@@ -259,33 +290,37 @@
             },
         });
     }
-    function handleSave() {
+    function handleChange() {
         const timeout = 2000;
         if (!saveTimeoutId) {
             saveTimeoutId = window.setTimeout(sauvegarderBrouillon, timeout);
         }
     }
     function sauvegarderBrouillon(callback) {
+        const destinataires = lstDestinataires.map(e => e.No);
+        console.log(destinataires);
         const msg = {
             DescMsg: $('#textarea').froalaEditor('html.get'),
-            Lieu: LIEU_BROUILLON,
             objet: $('#tbObjet').val(),
-            destinataire: lstDestinataires.map(e => e.No)
+            destinataires: destinataires,
         };
-
         let method = 'POST';
         if (msgId) {
             method = 'PUT';
             msg.NoMsg = msgId;
         }
 
+        const data = JSON.stringify(msg);
         console.log((method === 'POST' ? 'Nouveau ' : 'Update ') + 'brouillon');
+        console.log(msg);
+        console.log(data);
 
         $.ajax({
             url: '/Courriel/Enregistrer',
             method: method,
-            data: JSON.stringify(msg),
+            data: data,
             dataType: 'json',
+            processData: false,
             success: (data) => {
                 msgId = data.NoMsg;
 

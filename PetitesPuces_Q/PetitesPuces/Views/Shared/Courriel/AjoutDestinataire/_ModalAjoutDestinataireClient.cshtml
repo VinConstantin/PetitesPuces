@@ -68,10 +68,10 @@
         });
         afficherDestinataire();
     }  
+
     $(document).ready(function () {
         lstVendeurs = [];
         lstGestionnaires = [];
-        lstDestinatairesTemp = [];
 
         @foreach (var vendeur in Model.Vendeurs)
         {
@@ -80,6 +80,15 @@
             </text>
         }
         lstGestionnaires.push({ No: 100, Nom: 'Gestionnaire' });
+
+        //for (let i = 0; i < lstVendeurs.length; ++i) {
+
+        //    if (lstDestinataires.find(e => e.No == lstVendeurs[])) {
+        //        lstVendeurs.splice(i, 1);
+        //        --i;
+        //    }
+        //}
+
         //tous les vendeurs
         $("#btnTousVendeurs").click(function() {
             //Ajouter

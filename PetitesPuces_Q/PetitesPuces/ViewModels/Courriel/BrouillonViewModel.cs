@@ -6,8 +6,8 @@ namespace PetitesPuces.ViewModels.Courriel
     {
         public long? NoMsg { get; set; }
         public string DescMsg { get; set; }
-        public short? Lieu { get; set; }
+        public short? Lieu { get; set; } = 4;
         public string objet { get; set; }
-        public List<int> destinataires { get; set; }
+        public List<int?> destinataires { get; set; }
     }
 }

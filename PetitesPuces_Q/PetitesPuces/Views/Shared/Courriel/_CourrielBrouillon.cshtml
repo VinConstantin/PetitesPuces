@@ -19,11 +19,11 @@
             }
             else
             {
-                <span class="input" style="min-width: 120px; display: inline-block; text-overflow: ellipsis;">@string.Join(",", destinataires.Select(dest => dest.DisplayName))</span>
+                <span class="input" style="min-width: 120px; display: inline-block; text-overflow: ellipsis;">@string.Join("; ", destinataires.Select(dest => dest.DisplayName))</span>
             }
         </div>
         <div class="col-lg-4">
-            <span class="">@Model.objet</span>
+            <span class="">@(!string.IsNullOrWhiteSpace(Model.objet) ? Model.objet : "Aucun objet")</span>
         </div>
         <div class="col-lg-4">
             <span class="pull-right">

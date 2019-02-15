@@ -45,7 +45,7 @@
             }
         </div>
         <div class="col-lg-4">
-            <span class="">@Model.objet</span>
+            <span class="">@(!string.IsNullOrWhiteSpace(Model.objet) ? Model.objet : "Aucun objet")</span>
         </div>
         <div class="col-lg-4">
             <span class="pull-right">
