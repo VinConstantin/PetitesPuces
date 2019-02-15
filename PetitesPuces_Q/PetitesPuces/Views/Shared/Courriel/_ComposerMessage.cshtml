@@ -144,6 +144,21 @@
 		$('#Dest'+no).remove();
 	}
     function envoyerMessage() {
+        if (!$('#textarea').val() || $('#textarea').val().trim() == '') {
+            alert('Votre message doit avoir un corps');
+            return;
+        }
+
+        if (!$('#tbObjet').val() || $('#tbObjet').val().trim() == '') {
+            alert('Votre message doit avoir un objet');
+            return;
+        }
+
+        if (lstDestinataires.length == 0) {
+            alert('Votre message doit avoir au moins un destinataire');
+            return;
+        }
+
         console.log(msgId);
 		const url = "/Courriel/Envoyer/" + msgId;
 
