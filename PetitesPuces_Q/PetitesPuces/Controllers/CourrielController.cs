@@ -602,6 +602,13 @@ namespace PetitesPuces.Controllers
 
             return msg;
         }
+
+        [HttpPost]
+        public ActionResult EnregistrerTransfer(int noCourriel, List<int> destinataires)
+        {
+         
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
     }
     
     public enum EtatCourriel
