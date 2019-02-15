@@ -5,7 +5,7 @@
     Représente un brouillon de courriel
 *@
 
-<a href="javascript:void(0)" class="list-group-item" onclick="loadBrouillon(@Model.NoMsg); stopPropagation();">
+<a href="javascript:void(0)" class="list-group-item" onclick="loadBrouillon(@Model.NoMsg); stopPropagation();" expediteur="@Model.Expediteur.DisplayName" objet="@Model.objet" date="@Model.dateEnvoi">
     <div class="row">
         <div class="col-lg-4">
             <input onclick="stopPropagation();" id="@Model.NoMsg" type="checkbox">

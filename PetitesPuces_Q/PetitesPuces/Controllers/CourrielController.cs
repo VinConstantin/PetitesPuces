@@ -255,7 +255,7 @@ namespace PetitesPuces.Controllers
             List<PPMessage> messages = (from m in context.PPMessages
                 orderby m.dateEnvoi descending
                 where m.PPDestinataires.Any(d => d.NoDestinataire == noUtilisateur
-                                                 && d.Lieu == 1)
+                                                 && d.Lieu == (short?) LieuxCourriel.Reception)
                 select m).ToList();
 
             return PartialView("Courriel/Boites/_BoiteReception", messages);
@@ -266,7 +266,7 @@ namespace PetitesPuces.Controllers
             List<PPMessage> messages = (from m in context.PPMessages
                 orderby m.dateEnvoi descending
                 where m.NoExpediteur == noUtilisateur
-                      && m.Lieu == 4
+                      && m.Lieu == (short?) LieuxCourriel.Brouillon
                 select m).ToList();
 
             return PartialView("Courriel/Boites/_Brouillons", messages);
@@ -288,7 +288,7 @@ namespace PetitesPuces.Controllers
         {
             List<PPMessage> messages = (from m in context.PPMessages
                 orderby m.dateEnvoi descending
-                where m.NoExpediteur == noUtilisateur && m.Lieu == 2
+                where m.NoExpediteur == noUtilisateur && m.Lieu == (short?) LieuxCourriel.Envoye
                 select m).ToList();
 
             return PartialView("Courriel/Boites/_ElementsEnvoyes", messages);
@@ -311,7 +311,7 @@ namespace PetitesPuces.Controllers
             List<PPMessage> messages = (from m in context.PPMessages
                 orderby m.dateEnvoi descending
                 where m.PPDestinataires.Any(d => d.NoDestinataire == noUtilisateur
-                                                 && d.Lieu == 3)
+                                                 && d.Lieu == (short?) LieuxCourriel.Archive)
                 select m).ToList();
 
             return PartialView("Courriel/Boites/_ElementsSupprimes", messages);
@@ -363,7 +363,7 @@ namespace PetitesPuces.Controllers
             PPDestinataire message = (from m in context.PPDestinataires
                 where m.NoMsg == NoCourriel && m.NoDestinataire == noUtilisateur
                 select m).FirstOrDefault();
-            if (message != null) message.EtatLu = 1;
+            if (message != null) message.EtatLu = (short?) EtatLu.Lu;
 
             try
             {
@@ -419,7 +419,7 @@ namespace PetitesPuces.Controllers
                 PPDestinataire message = (from m in context.PPDestinataires
                     where m.NoMsg == no && m.NoDestinataire == noUtilisateur
                     select m).FirstOrDefault();
-                if (message != null) message.EtatLu = 0;
+                if (message != null) message.EtatLu = (short?) EtatLu.NonLu;
             }
 
             try
@@ -448,7 +448,7 @@ namespace PetitesPuces.Controllers
                 PPDestinataire message = (from m in context.PPDestinataires
                     where m.NoMsg == no && m.NoDestinataire == noUtilisateur
                     select m).FirstOrDefault();
-                if (message != null) message.Lieu = 1;
+                if (message != null) message.Lieu = (short?) LieuxCourriel.Reception;
             }
 
             try
@@ -499,8 +499,6 @@ namespace PetitesPuces.Controllers
                     {
                         destinataire.Lieu = (short?) LieuxCourriel.Archive;
                     }
-
-                    //For some reason that doesn't work ... : message.Lieu = (message.Lieu == 3) ? (short)5 : (short)3;
                 }
             }
 
@@ -516,7 +514,6 @@ namespace PetitesPuces.Controllers
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Envoyer(int id)
@@ -637,7 +634,7 @@ namespace PetitesPuces.Controllers
         }
 
         [HttpPost]
-        public ActionResult EnregistrerTransfer(int noCourriel, List<int> destinataires)
+        public ActionResult EnregistrerTransfer(int noCourriel)
         {
             PPMessage ogMessage = GetMessageById(noCourriel);
 
@@ -664,16 +661,6 @@ namespace PetitesPuces.Controllers
                 NoExpediteur = (int) SessionUtilisateur.UtilisateurCourant.No
             };
             context.PPMessages.InsertOnSubmit(brouillon);
-            foreach (var noDest in destinataires)
-            {
-                context.PPDestinataires.InsertOnSubmit(
-                    new PPDestinataire
-                    {
-                        NoMsg = noMessage,
-                        NoDestinataire = noDest
-                    }
-                );
-            }
 
             try
             {

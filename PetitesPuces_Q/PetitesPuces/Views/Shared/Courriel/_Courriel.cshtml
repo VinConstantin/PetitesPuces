@@ -28,7 +28,7 @@
         <div class="btn-group">
             <button type="button" onclick="retour();" class="btn btn-info"><span class="glyphicon glyphicon-menu-left"></span> Retour</button>
             <button type="button" onclick="repondre(@Model.NoMsg);" class="btn btn-info"><span class="glyphicon glyphicon-share-alt"></span> Répondre</button>
-            <button type="button" onclick="loadModalDestinataire();" class="btn btn-info"><span class="glyphicon glyphicon-transfer"></span> Transférer</button>
+            <button type="button" onclick="transferer(@Model.NoMsg);" class="btn btn-info"><span class="glyphicon glyphicon-transfer"></span> Transférer</button>
             <button type="button" onclick="supprimerCourriel(@Model.NoMsg);" class="btn btn-info"><span class="glyphicon glyphicon glyphicon-trash"></span> Supprimer</button>
             <button type="button" onclick="marquerNonLu(@Model.NoMsg);" class="btn btn-info"><span class="fas fa-envelope"></span> Marquer comme non-lu</button>
         </div>
@@ -38,6 +38,15 @@
         <h5 style="width: 100%"><span>Envoyé à : @Model.FormattedDestinataires</span><a href="@(@Model.FichierJoint == null ? "/Courriel/PieceJointe/" + @Model.NoMsg : "javascript:void(0)")" class="pull-right">@(@Model.FichierJoint + " <i class=\"glyphicon glyphicon-paperclip\"></i>" ?? "")</a></h5>
         <div class="well">
             @Model.DescMsg.ToHtml()
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAjoutDestinataire" tabindex="-1" role="dialog" aria-labelledby="modalAjoutDestinataire" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div id="ModalDestinatairePLACEHOLDER">
+
         </div>
     </div>
 </div>
@@ -68,8 +77,6 @@
         saveBrouillonReponse(No,redirectComposer);
     }
     function saveBrouillonReponse(No,callback) {
-        const destinataires = lstDestinataires.map(e => e.No);
-        console.log(destinataires)
         $.ajax({
             url: URLPATH + '/Courriel/EnregistrerReponse',
             type: 'POST',
@@ -85,18 +92,15 @@
         });
     }
     //Transferer   
-    function afficherDestinataire() {
-        saveBrouillonTransfer(redirectComposer);
+    function transferer(No) {
+        saveBrouillonTransfer(No,redirectComposer);
     }
-    function saveBrouillonTransfer(callback) {
-        const destinataires = lstDestinataires.map(e => e.No);
-        console.log(destinataires)
+    function saveBrouillonTransfer(No,callback) {
         $.ajax({
             url: URLPATH + '/Courriel/EnregistrerTransfer',
             type: 'POST',
             data: {
-                noCourriel : @Model.NoMsg,
-                destinataires :destinataires
+                noCourriel : No
             },
             success: (data) => {
                 callback(data);
@@ -106,25 +110,6 @@
             }
         });
     }
-    function loadModalDestinataire() {
-        $("#modalAjoutDestinataire").modal();
-        $.ajax({
-            url: URLPATH + "/Courriel/Destinataire",
-            type: "GET",
-            data: {
-                
-            }, 
-            success: function(result) {
-                /** @@type{Object<>[]} */
-                lstDestinatairesTemp = [];
-                $('#ModalDestinatairePLACEHOLDER').html(result);
-            },
-            error: function(req, status, err) {
-                console.log(req, status, err);
-            }
-        });
-    }
-    
     function retour() {
         loadBoiteReception();
     }
