@@ -28,7 +28,7 @@
     
     IUtilisateur expediteur = clients.Concat<IUtilisateur>(vendeurs).Concat<IUtilisateur>(gestionnaires).FirstOrDefault();
 }
-<a href="#" class="list-group-item" onclick="loadCourriel(@Model.NoMsg);">
+<a href="javascript:void(0)" class="list-group-item" onclick="loadCourriel(@Model.NoMsg);">
     <div class="row">
         <div class="col-lg-4">
             <input onclick="stopPropagation();" id="@Model.NoMsg" type="checkbox">

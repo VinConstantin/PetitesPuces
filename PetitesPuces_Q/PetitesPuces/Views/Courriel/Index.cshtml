@@ -33,7 +33,7 @@
     <div class="row">
         <div class="col-sm-4 col-md-3">
             <ul class="nav nav-pills nav-stacked nav-tabs">
-                <li id="Composer" data-state="Composer" href="#" title="Composer un nouveau message" class="btn btn-danger text-left">
+                <li id="Composer" data-state="Composer" href="javascript:void(0)" title="Composer un nouveau message" class="btn btn-danger text-left">
                     <i class="glyphicon glyphicon-envelope"></i> Composer
                 </li>
                 <hr/>
@@ -97,14 +97,14 @@
         });
     });
     
-    function displayPageState(stateName, brouillonId) {
+    function displayPageState(stateName, noMsgALoad) {
         etat = etats[stateName];
         let reqUrl = `/Courriel/Boite/${stateName}`;
-        if (brouillonId) {
-            reqUrl += '/' + brouillonId;
+        if (noMsgALoad) {
+            reqUrl += '/' + noMsgALoad;
         }
 
-        history.pushState({ state: stateName, id: brouillonId}, `${stateName} - Courriel - Les Petites Puces`, reqUrl);
+        history.pushState({ state: stateName, id: noMsgALoad}, `${stateName} - Courriel - Les Petites Puces`, reqUrl);
         etat.load();
     }
     
@@ -125,19 +125,7 @@
     }
     function loadCourriel(id) {
         $('.active').removeClass('active');
-        $.ajax({
-            url: URLPATH + "/Courriel/GetCourriel",
-            type: "GET",
-            data: {
-                NoCourriel: id
-            },
-            success: function (result) {
-                $('#PLACEHOLDER').html(result);
-            },
-            error: function (req, status, err) {
-                console.log(req, status, err);
-            }
-        });
+        displayPageState(stateName, id);
     }
     function loadBoiteReception() {
         $('.active').removeClass('active');
@@ -238,7 +226,6 @@
     }
     
     function attachmentChanged() {
-        const file = $('#upload')[0].files[0].name;
 		
         setCanSend(false);
         sauvegarderBrouillon(postAttachment);
@@ -264,6 +251,7 @@
             },
             success: function (data, textStatus, jqXHR) {
                 $('#pieceJointeLink').attr('href', '/Courriel/PieceJointe/' + msgId);
+                const file = $('#upload')[0].files[0].name;
                 $('#fileUploadText').val(file);
             },
             error: function (xhr, ajaxOptions, errMsg) {
