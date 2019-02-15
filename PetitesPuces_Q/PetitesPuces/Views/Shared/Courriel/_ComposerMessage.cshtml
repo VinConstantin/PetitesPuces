@@ -180,6 +180,15 @@
 			}
 		});
 	}
+	function afficherDestinataire() {
+		$('#destinataire span').remove();
+		lstDestinataires.forEach(function(temp) {
+			let str = `<span style="background-color: #adadad;" class="badge badge-primary" id="Dest${temp.No}">
+                            ${temp.Nom}<a onclick="retirerDestinataire(${temp.No});" style="color:red;" class="glyphicon glyphicon-remove">
+                         </a></span>&nbsp;`;
+			$("#destinataire").append(str);
+		});
+	}
 	function envoyerMessage() {
 		const strMessage = $('#textarea').froalaEditor('html.get');
 		const objet = $("#tbObjet").val();

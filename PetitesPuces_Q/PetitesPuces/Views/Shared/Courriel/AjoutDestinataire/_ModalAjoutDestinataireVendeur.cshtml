@@ -52,14 +52,21 @@
 </div>
 <script>
     function ConfirmerAjout() {
-        lstDestinatairesTemp.forEach(function(obj) {
-            let str = `<span style="background-color: #adadad;" class="badge badge-primary" id="Dest${obj.No}">
-                            ${obj.Nom}<a onclick="retirerDestinataire(${obj.No});" style="color:red;" class="glyphicon glyphicon-remove">
-                         </a></span>&nbsp;`;
-            $("#destinataire").append(str);
-        }); 
         $('#modalAjoutDestinataire').modal('hide');
-        lstDestinataires = lstDestinataires.concat(lstDestinatairesTemp);
+        lstDestinatairesTemp.forEach(function(temp) {
+            let blnEstPresent = false;
+            lstDestinataires.forEach(function(current) {
+                if (temp.No == current.No) 
+                    blnEstPresent = true;
+            });
+            if (!blnEstPresent){
+                if (temp.No == -1) {
+                    lstDestinataires.length = 0;
+                }
+                lstDestinataires.push(temp);              
+            }
+        });
+        afficherDestinataire();
     }  
     $(document).ready(function () {
         lstClients = [];
