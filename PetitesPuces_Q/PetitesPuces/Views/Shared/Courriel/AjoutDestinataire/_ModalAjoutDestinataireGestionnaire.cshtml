@@ -97,14 +97,14 @@
                 let i = lstDestinatairesTemp.length
                 while (i--) {
                     let temp = lstDestinatairesTemp[i];
-                    if (temp.No < 10000) {
+                    if (temp.No < 10000 && temp.No > 0) {
                         let index = lstDestinatairesTemp.indexOf(temp);
                         lstDestinatairesTemp.splice(index, 1);
                         lstVendeurs.push(temp);
                     }
                 }
                 
-                let user = {No:-3, Nom:'<span class="fas fa-user-friends"></span> Tout le monde'}
+                let user = {No:-3, Nom:'<span class="fas fa-user-friends"></span> Tout les vendeurs'}
                 lstDestinatairesTemp.push(user);
                 afficherAllListes();
             } 
@@ -196,7 +196,7 @@
                     }
                 }
                 
-                let user = {No:-1, Nom:'<span class="fas fa-user-friends"></span> Tous les utilisateurs'}
+                let user = {No:-1, Nom:'<span class="fas fa-user-friends"></span> Tout le monde'}
                 lstDestinatairesTemp.push(user);
             } 
             //retirer
