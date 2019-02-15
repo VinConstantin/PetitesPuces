@@ -1,5 +1,5 @@
 @using PetitesPuces.Controllers
-@model EtatCourriel
+@model Tuple<EtatCourriel, PetitesPuces.Models.PPMessage>
 @{
    ViewBag.Title = "Courriel";
 }
@@ -73,6 +73,7 @@
         Supprime: new Etat(loadElementSupprimes)
     });
     const stateName = (history.state || 'Reception').toString();
+    const modelId = @(Model.Item2 != null ? Model.Item2.NoMsg.ToString() : "null");
     let etat = etats[stateName];
     let selected;
 
@@ -86,26 +87,29 @@
         }
         
         $(this).click(function () {
-            console.log('test');
             if (selected) {
                 selected.removeClass('active');
             }
             $(this).addClass('active');
             const stateName = $(this).attr('data-state');
+
+            if (modelId) {
+                displayPageState(stateName, modelId);
+                modelId = null;
+            }
+
             displayPageState(stateName);
         });
     });
     
     function displayPageState(stateName, brouillonId) {
-        console.log(stateName);
         etat = etats[stateName];
         let reqUrl = `/Courriel/Boite/${stateName}`;
         if (brouillonId) {
             reqUrl += '/' + brouillonId;
         }
 
-        console.log(reqUrl);
-        history.pushState(stateName, `${stateName} - Courriel - Les Petites Puces`, reqUrl);
+        history.pushState({ state: stateName, id: brouillonId}, `${stateName} - Courriel - Les Petites Puces`, reqUrl);
         etat.load();
     }
     
@@ -122,7 +126,7 @@
     
     function loadBrouillon(id) {
         $('.active').removeClass('active');
-        displayPageState("Brouillon", id);
+        displayPageState("Composer", id);
     }
     function loadCourriel(id) {
         $('.active').removeClass('active');
@@ -211,8 +215,10 @@
     }
     function loadComposerMessage() {
         $('.active').removeClass('active');
+        const state = history.state;
+        const addon = state.id ? '/' + state.id : '';
         $.ajax({
-            url: URLPATH + "/Courriel/Boite/Composer",
+            url: URLPATH + "/Courriel/Boite/Composer" + addon,
             type: "GET",
             data: {
                 
