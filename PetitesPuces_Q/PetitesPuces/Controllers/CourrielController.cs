@@ -14,16 +14,16 @@ using PetitesPuces.ViewModels.Courriel;
 
 namespace PetitesPuces.Controllers
 {
-    #if !DEBUG
+#if !DEBUG
         [Securise]
-    #endif
+#endif
     public class CourrielController : Controller
     {
         private readonly long noUtilisateur = SessionUtilisateur.UtilisateurCourant.No;
         private readonly BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
-        private const int MAX_FILE_SIZE_BYTES = 50  * 1000;
+        private const int MAX_FILE_SIZE_BYTES = 50 * 1000;
         private const string ATTACHMENTS_DIR = "/Envoyés";
-        
+
         [Route("Courriel")]
         public ActionResult Index()
         {
@@ -75,29 +75,29 @@ namespace PetitesPuces.Controllers
         public ActionResult Index(string etatCourriel)
         {
             if (Request.IsAjaxRequest()) return IndexAjax(etatCourriel);
-            
-            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat)) 
+
+            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat))
             {
                 return View(Tuple.Create<EtatCourriel, PPMessage>(enumEtat, null));
             }
-            
+
             return HttpNotFound();
         }
 
         private ActionResult IndexAjax(string etatCourriel, int? id = null)
         {
-            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat)) 
+            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat))
             {
                 switch (enumEtat)
                 {
-                    case EtatCourriel.Envoye   : return ElementsEnvoyes(id);
+                    case EtatCourriel.Envoye: return ElementsEnvoyes(id);
                     case EtatCourriel.Reception: return BoiteReception(id);
-                    case EtatCourriel.Composer : return ComposerMessage(id);
-                    case EtatCourriel.Supprime : return ElementsSupprimes(id);
+                    case EtatCourriel.Composer: return ComposerMessage(id);
+                    case EtatCourriel.Supprime: return ElementsSupprimes(id);
                     case EtatCourriel.Brouillon: return Brouillons();
                 }
             }
-            
+
             return HttpNotFound();
         }
 
@@ -183,9 +183,9 @@ namespace PetitesPuces.Controllers
         {
             var message =
                 (from msg
-                    in context.PPMessages
-                where msg.NoMsg == id
-                select msg).First();
+                        in context.PPMessages
+                    where msg.NoMsg == id
+                    select msg).First();
 
             var noUtil = SessionUtilisateur.NoUtilisateur;
             if ((!write && message.PPDestinataires.Any(dest => dest.NoDestinataire == noUtil)) ||
@@ -198,7 +198,7 @@ namespace PetitesPuces.Controllers
                 throw new AuthenticationException("NoMsg invalide");
             }
         }
-        
+
         /** PPLieu
             1	Boîte de réception
             2	Boîte envoyé
@@ -230,15 +230,16 @@ namespace PetitesPuces.Controllers
         }
 
         public ActionResult Brouillons()
-        {        
+        {
             List<PPMessage> messages = (from m in context.PPMessages
-                orderby m.dateEnvoi descending 
+                orderby m.dateEnvoi descending
                 where m.NoExpediteur == noUtilisateur
                       && m.Lieu == 4
                 select m).ToList();
 
             return PartialView("Courriel/Boites/_Brouillons", messages);
         }
+
         public ActionResult ElementsEnvoyes(int? id)
         {
             if (id.HasValue)
@@ -262,7 +263,7 @@ namespace PetitesPuces.Controllers
         }
 
         public ActionResult ElementsSupprimes(int? id)
-        {          
+        {
             if (id.HasValue)
             {
                 return GetCourriel(id.Value);
@@ -285,7 +286,7 @@ namespace PetitesPuces.Controllers
         }
 
         public ActionResult ComposerMessage(int? id = null)
-        {      
+        {
             if (id.HasValue)
             {
                 return PartialView("Courriel/_ComposerMessage", GetMessageById(id.Value, true));
@@ -306,16 +307,16 @@ namespace PetitesPuces.Controllers
             switch (SessionUtilisateur.UtilisateurCourant.Role)
             {
                 case RolesUtil.CLIENT:
-                    return PartialView("Courriel/AjoutDestinataire/_ModalAjoutDestinataireClient",viewModel);
+                    return PartialView("Courriel/AjoutDestinataire/_ModalAjoutDestinataireClient", viewModel);
                 case RolesUtil.VEND:
-                    return PartialView("Courriel/AjoutDestinataire/_ModalAjoutDestinataireVendeur",viewModel);
+                    return PartialView("Courriel/AjoutDestinataire/_ModalAjoutDestinataireVendeur", viewModel);
                 case RolesUtil.ADMIN:
-                    return PartialView("Courriel/AjoutDestinataire/_ModalAjoutDestinataireGestionnaire",viewModel);
+                    return PartialView("Courriel/AjoutDestinataire/_ModalAjoutDestinataireGestionnaire", viewModel);
                 default:
                     return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Role introuvable");
             }
         }
-        
+
         /// <summary>
         /// Permet d'aller checker un courriel en particulier
         /// </summary>
@@ -326,12 +327,12 @@ namespace PetitesPuces.Controllers
             PPMessage messages = (from m in context.PPMessages
                 where m.NoMsg == NoCourriel
                 select m).FirstOrDefault();
-            
+
             PPDestinataire message = (from m in context.PPDestinataires
                 where m.NoMsg == NoCourriel && m.NoDestinataire == noUtilisateur
                 select m).FirstOrDefault();
             if (message != null) message.EtatLu = 1;
-            
+
             try
             {
                 context.SubmitChanges();
@@ -343,7 +344,7 @@ namespace PetitesPuces.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
-        
+
         /// <summary>
         /// Marque les courriels lu
         /// </summary>
@@ -357,8 +358,9 @@ namespace PetitesPuces.Controllers
                 PPDestinataire message = (from m in context.PPDestinataires
                     where m.NoMsg == no && m.NoDestinataire == noUtilisateur
                     select m).FirstOrDefault();
-                if (message != null) message.EtatLu = (short)EtatLu.Lu;
+                if (message != null) message.EtatLu = (short) EtatLu.Lu;
             }
+
             try
             {
                 context.SubmitChanges();
@@ -368,10 +370,10 @@ namespace PetitesPuces.Controllers
                 Console.WriteLine(e);
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
-            
+
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-        
+
         /// <summary>
         /// Marque les courriels non-lu
         /// </summary>
@@ -387,6 +389,7 @@ namespace PetitesPuces.Controllers
                     select m).FirstOrDefault();
                 if (message != null) message.EtatLu = 0;
             }
+
             try
             {
                 context.SubmitChanges();
@@ -396,10 +399,10 @@ namespace PetitesPuces.Controllers
                 Console.WriteLine(e);
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
-            
+
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-        
+
         /// <summary>
         /// deplace les couriels des elements suprimés à la boite de reception
         /// </summary>
@@ -415,6 +418,7 @@ namespace PetitesPuces.Controllers
                     select m).FirstOrDefault();
                 if (message != null) message.Lieu = 1;
             }
+
             try
             {
                 context.SubmitChanges();
@@ -424,10 +428,10 @@ namespace PetitesPuces.Controllers
                 Console.WriteLine(e);
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
-            
+
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-        
+
         /// <summary>
         /// deplace les couriels vers les elements supprimes ou si déja supprimé, supprime definitivemenet
         /// </summary>
@@ -443,17 +447,19 @@ namespace PetitesPuces.Controllers
                     select m).FirstOrDefault();
                 if (message != null)
                 {
-                    if (message.Lieu == (short)LieuxCourriel.Archive)
+                    if (message.Lieu == (short) LieuxCourriel.Archive)
                     {
-                        message.Lieu = (short)LieuxCourriel.Supprime;
+                        message.Lieu = (short) LieuxCourriel.Supprime;
                     }
                     else
                     {
-                        message.Lieu = (short)LieuxCourriel.Archive;
+                        message.Lieu = (short) LieuxCourriel.Archive;
                     }
+
                     //For some reason that doesn't work ... : message.Lieu = (message.Lieu == 3) ? (short)5 : (short)3;
                 }
             }
+
             try
             {
                 context.SubmitChanges();
@@ -463,31 +469,32 @@ namespace PetitesPuces.Controllers
                 Console.WriteLine(e);
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
-            
+
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-        
+
         [HttpPost]
-        [ValidateInput(false)] 
+        [ValidateInput(false)]
         public ActionResult Envoyer(int id)
         {
             var msg = GetMessageById(id, true);
 
             if (!msg.PPDestinataires.Any())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Un message ne peux pas être envoyé sans destinataires");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
+                    "Un message ne peux pas être envoyé sans destinataires");
             }
-            else if (msg.PPLieu != null && msg.PPLieu.NoLieu != (short)LieuxCourriel.Brouillon)
+            else if (msg.PPLieu != null && msg.PPLieu.NoLieu != (short) LieuxCourriel.Brouillon)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Ce message semble déjà avoir été envoyé");
             }
 
-            msg.PPLieu = (from l in context.PPLieus where l.NoLieu == (short)LieuxCourriel.Envoye select l).First();
+            msg.PPLieu = (from l in context.PPLieus where l.NoLieu == (short) LieuxCourriel.Envoye select l).First();
 
             foreach (var dest in msg.PPDestinataires)
             {
                 dest.EtatLu = (short) EtatLu.NonLu;
-                dest.Lieu = (short)LieuxCourriel.Reception;
+                dest.Lieu = (short) LieuxCourriel.Reception;
             }
 
             try
@@ -519,7 +526,7 @@ namespace PetitesPuces.Controllers
 
             return Json(brouillon);
         }
-        
+
         [HttpPut]
         [Route("Courriel/Enregistrer")]
         public ActionResult EnregistrerBrouillon(BrouillonViewModel brouillon)
@@ -546,7 +553,7 @@ namespace PetitesPuces.Controllers
             msg.Lieu = brouillon.Lieu;
             msg.objet = brouillon.objet;
             msg.dateEnvoi = DateTime.Now;
-            msg.NoExpediteur = (int)SessionUtilisateur.UtilisateurCourant.No;
+            msg.NoExpediteur = (int) SessionUtilisateur.UtilisateurCourant.No;
 
             var destinataires = msg.PPDestinataires.ToList();
             var NosDestinatairesAAjouter = new List<int?>(brouillon.destinataires);
@@ -589,19 +596,19 @@ namespace PetitesPuces.Controllers
         public ActionResult EnregistrerTransfer(int noCourriel, List<int> destinataires)
         {
             PPMessage ogMessage = GetMessageById(noCourriel);
-            
+
             var maxId = (from m in context.PPMessages
                 select m.NoMsg).ToList().DefaultIfEmpty().Max();
             int noMessage = maxId + 1;
             var obj = "tr: " + ogMessage.objet;
             var enteteTransfert = "<br/><hr/>" +
                                   "<p>---------- message transféré ---------</p>" +
-                                  "<p>De : "+ogMessage.Expediteur.DisplayName+"</p>"+
-                                  "<p>Date : "+ogMessage.dateEnvoi.Value.ToLongDateString()+"</p>" +
-                                  "<p>Objet : "+ogMessage.objet+"</p>" +
+                                  "<p>De : " + ogMessage.Expediteur.DisplayName + "</p>" +
+                                  "<p>Date : " + ogMessage.dateEnvoi.Value.ToLongDateString() + "</p>" +
+                                  "<p>Objet : " + ogMessage.objet + "</p>" +
                                   "<br/>";
             var description = enteteTransfert + ogMessage.DescMsg;
-            
+
             PPMessage brouillon = new PPMessage
             {
                 objet = obj,
@@ -610,7 +617,7 @@ namespace PetitesPuces.Controllers
                 Lieu = 4,
                 NoMsg = noMessage,
                 FichierJoint = ogMessage.FichierJoint,
-                NoExpediteur = (int)SessionUtilisateur.UtilisateurCourant.No                          
+                NoExpediteur = (int) SessionUtilisateur.UtilisateurCourant.No
             };
             context.PPMessages.InsertOnSubmit(brouillon);
             foreach (var noDest in destinataires)
@@ -623,6 +630,7 @@ namespace PetitesPuces.Controllers
                     }
                 );
             }
+
             try
             {
                 context.SubmitChanges();
@@ -635,23 +643,24 @@ namespace PetitesPuces.Controllers
 
             return Content(noMessage.ToString());
         }
+
         [HttpPost]
         public ActionResult EnregistrerReponse(int noCourriel)
         {
             PPMessage ogMessage = GetMessageById(noCourriel);
-            
+
             var maxId = (from m in context.PPMessages
                 select m.NoMsg).ToList().DefaultIfEmpty().Max();
             int noMessage = maxId + 1;
             var obj = "re: " + ogMessage.objet;
             var enteteReponse = "<br/><hr/>" +
-                                  "<p>---------- message repondu ---------</p>" +
-                                  "<p>De : "+ogMessage.Expediteur.DisplayName+"</p>"+
-                                  "<p>Date : "+ogMessage.dateEnvoi.Value.ToLongDateString()+"</p>" +
-                                  "<p>Objet : "+ogMessage.objet+"</p>" +
-                                  "<br/>";
+                                "<p>---------- message repondu ---------</p>" +
+                                "<p>De : " + ogMessage.Expediteur.DisplayName + "</p>" +
+                                "<p>Date : " + ogMessage.dateEnvoi.Value.ToLongDateString() + "</p>" +
+                                "<p>Objet : " + ogMessage.objet + "</p>" +
+                                "<br/>";
             var description = enteteReponse + ogMessage.DescMsg;
-            
+
             PPMessage brouillon = new PPMessage
             {
                 objet = obj,
@@ -660,14 +669,14 @@ namespace PetitesPuces.Controllers
                 Lieu = 4,
                 NoMsg = noMessage,
                 FichierJoint = ogMessage.FichierJoint,
-                NoExpediteur = (int)SessionUtilisateur.UtilisateurCourant.No                          
+                NoExpediteur = (int) SessionUtilisateur.UtilisateurCourant.No
             };
             context.PPMessages.InsertOnSubmit(brouillon);
             context.PPDestinataires.InsertOnSubmit(
                 new PPDestinataire
                 {
                     NoMsg = noMessage,
-                    NoDestinataire = (int)ogMessage.NoExpediteur
+                    NoDestinataire = (int) ogMessage.NoExpediteur
                 }
             );
             try
@@ -682,9 +691,6 @@ namespace PetitesPuces.Controllers
 
             return Content(noMessage.ToString());
         }
-    }
-
-    
     }
 
     public enum EtatLu : short
