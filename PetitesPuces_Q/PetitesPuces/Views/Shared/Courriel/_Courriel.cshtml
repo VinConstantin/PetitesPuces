@@ -23,20 +23,35 @@
     
     IUtilisateur expediteur = clients.Concat<IUtilisateur>(vendeurs).Concat<IUtilisateur>(gestionnaires).FirstOrDefault();  
 }
+<div class="panel panel-default">
+<div class="panel-body">
+    <div class="btn-group">
+        <button type="button" onclick="retour();" class="btn btn-info" ><span class="glyphicon glyphicon-menu-left"></span> Retour</button>
+        <button type="button" onclick="repondre(@Model.NoMsg);" class="btn btn-info" ><span class="glyphicon glyphicon-share-alt"></span> Répondre</button>
+        <button type="button" onclick="loadModalDestinataire();" class="btn btn-info" ><span class="glyphicon glyphicon-transfer"></span> Transférer</button>
+        <button type="button" onclick="supprimerCourriel(@Model.NoMsg);" class="btn btn-info" ><span class="glyphicon glyphicon glyphicon-trash"></span> Supprimer</button>
+        <button type="button" onclick="marquerNonLu(@Model.NoMsg);" class="btn btn-info" ><span class="fas fa-envelope"></span> Marquer comme non-lu</button>
+    </div>
+    <h2 id="objet">@Model.objet</h2>
+    <hr/>
+    <h5 style="width: 100%"><span>Envoyé par : @expediteur.DisplayName</span><span class="pull-right">@Model.dateEnvoi</span></h5>
+    <div class="well">
+        @Model.DescMsg.ToHtml()
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalAjoutDestinataire" tabindex="-1" role="dialog" aria-labelledby="modalAjoutDestinataire" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div id="ModalDestinatairePLACEHOLDER">
 
-<div class="btn-group">
-    <button type="button" onclick="retour();" class="btn btn-info" ><span class="glyphicon glyphicon-menu-left"></span> Retour</button>
-    <button type="button" onclick="repondre(@Model.NoMsg);" class="btn btn-info" ><span class="glyphicon glyphicon-share-alt"></span> Répondre</button>
-    <button type="button" onclick="supprimerCourriel(@Model.NoMsg);" class="btn btn-info" ><span class="glyphicon glyphicon glyphicon-trash"></span> Supprimer</button>
-    <button type="button" onclick="marquerNonLu(@Model.NoMsg);" class="btn btn-info" ><span class="fas fa-envelope"></span> Marquer comme non-lu</button>
+            </div>
+        </div>
+    </div>
 </div>
-<h2>@Model.objet</h2>
-<hr/>
-<h5 style="width: 100%"><span>Envoyé par : @expediteur.DisplayName</span><span class="pull-right">@Model.dateEnvoi</span></h5>
-<div class="well">
-    @Model.DescMsg.ToHtml()
 </div>
+
 <script>
+    var LIEU_BROUILLON = 4;
+    
     function supprimerCourriel(id) {
         $.ajax({
             url: URLPATH + "/Courriel/Supprimer",
@@ -52,9 +67,71 @@
             }
         });
     }
-    function repondre() {
-        
+    function redirectComposer(NoMessage) {
+        loadBrouillon(NoMessage);
     }
+    //Repondre
+    function repondre(No) {
+        saveBrouillonReponse(No,redirectComposer);
+    }
+    function saveBrouillonReponse(No,callback) {
+        const destinataires = lstDestinataires.map(e => e.No);
+        console.log(destinataires)
+        $.ajax({
+            url: URLPATH + '/Courriel/EnregistrerReponse',
+            type: 'POST',
+            data: {
+                noCourriel : No
+            },
+            success: (data) => {
+                callback(data);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+    }
+    //Transferer   
+    function afficherDestinataire() {
+        saveBrouillonTransfer(redirectComposer);
+    }
+    function saveBrouillonTransfer(callback) {
+        const destinataires = lstDestinataires.map(e => e.No);
+        console.log(destinataires)
+        $.ajax({
+            url: URLPATH + '/Courriel/EnregistrerTransfer',
+            type: 'POST',
+            data: {
+                noCourriel : @Model.NoMsg,
+                destinataires :destinataires
+            },
+            success: (data) => {
+                callback(data);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+    }
+    function loadModalDestinataire() {
+        $("#modalAjoutDestinataire").modal();
+        $.ajax({
+            url: URLPATH + "/Courriel/Destinataire",
+            type: "GET",
+            data: {
+                
+            }, 
+            success: function(result) {
+                /** @@type{Object<>[]} */
+                lstDestinatairesTemp = [];
+                $('#ModalDestinatairePLACEHOLDER').html(result);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+    }
+    
     function retour() {
         loadBoiteReception();
     }
@@ -67,4 +144,6 @@
             }
         });
     }
+    //transferer
+
 </script>

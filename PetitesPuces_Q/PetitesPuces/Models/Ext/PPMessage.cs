@@ -38,6 +38,18 @@ namespace PetitesPuces.Models
             }
         }
 
+        public IUtilisateur Expediteur
+        {
+            get
+            {
+                if (ctxt == null)
+                {
+                    ctxt = new BDPetitesPucesDataContext();
+                }
+                
+                return GetAllUsersWithId((int)NoExpediteur).FirstOrDefault();
+            }
+        }
         private List<IUtilisateur> GetAllUsersWithId(int id)
         {
             if (id == (int)CasSpeciauxDestinataire.Tous)

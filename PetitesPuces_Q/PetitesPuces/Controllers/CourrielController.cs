@@ -575,13 +575,116 @@ namespace PetitesPuces.Controllers
                     new PPDestinataire
                     {
                         NoMsg = msg.NoMsg,
-                        NoDestinataire = noDest.Value
+                        NoDestinataire = noDest.Value,
+                        EtatLu = 0,
+                        Lieu = 1
                     }
                 );
             }
 
             return msg;
         }
+
+        [HttpPost]
+        public ActionResult EnregistrerTransfer(int noCourriel, List<int> destinataires)
+        {
+            PPMessage ogMessage = GetMessageById(noCourriel);
+            
+            var maxId = (from m in context.PPMessages
+                select m.NoMsg).ToList().DefaultIfEmpty().Max();
+            int noMessage = maxId + 1;
+            var obj = "tr: " + ogMessage.objet;
+            var enteteTransfert = "<br/><hr/>" +
+                                  "<p>---------- message transféré ---------</p>" +
+                                  "<p>De : "+ogMessage.Expediteur.DisplayName+"</p>"+
+                                  "<p>Date : "+ogMessage.dateEnvoi.Value.ToLongDateString()+"</p>" +
+                                  "<p>Objet : "+ogMessage.objet+"</p>" +
+                                  "<br/>";
+            var description = enteteTransfert + ogMessage.DescMsg;
+            
+            PPMessage brouillon = new PPMessage
+            {
+                objet = obj,
+                DescMsg = description,
+                dateEnvoi = DateTime.Now,
+                Lieu = 4,
+                NoMsg = noMessage,
+                FichierJoint = ogMessage.FichierJoint,
+                NoExpediteur = (int)SessionUtilisateur.UtilisateurCourant.No                          
+            };
+            context.PPMessages.InsertOnSubmit(brouillon);
+            foreach (var noDest in destinataires)
+            {
+                context.PPDestinataires.InsertOnSubmit(
+                    new PPDestinataire
+                    {
+                        NoMsg = noMessage,
+                        NoDestinataire = noDest
+                    }
+                );
+            }
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+
+            return Content(noMessage.ToString());
+        }
+        [HttpPost]
+        public ActionResult EnregistrerReponse(int noCourriel)
+        {
+            PPMessage ogMessage = GetMessageById(noCourriel);
+            
+            var maxId = (from m in context.PPMessages
+                select m.NoMsg).ToList().DefaultIfEmpty().Max();
+            int noMessage = maxId + 1;
+            var obj = "re: " + ogMessage.objet;
+            var enteteReponse = "<br/><hr/>" +
+                                  "<p>---------- message repondu ---------</p>" +
+                                  "<p>De : "+ogMessage.Expediteur.DisplayName+"</p>"+
+                                  "<p>Date : "+ogMessage.dateEnvoi.Value.ToLongDateString()+"</p>" +
+                                  "<p>Objet : "+ogMessage.objet+"</p>" +
+                                  "<br/>";
+            var description = enteteReponse + ogMessage.DescMsg;
+            
+            PPMessage brouillon = new PPMessage
+            {
+                objet = obj,
+                DescMsg = description,
+                dateEnvoi = DateTime.Now,
+                Lieu = 4,
+                NoMsg = noMessage,
+                FichierJoint = ogMessage.FichierJoint,
+                NoExpediteur = (int)SessionUtilisateur.UtilisateurCourant.No                          
+            };
+            context.PPMessages.InsertOnSubmit(brouillon);
+            context.PPDestinataires.InsertOnSubmit(
+                new PPDestinataire
+                {
+                    NoMsg = noMessage,
+                    NoDestinataire = (int)ogMessage.NoExpediteur
+                }
+            );
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+
+            return Content(noMessage.ToString());
+        }
+    }
+
+    
     }
 
     public enum EtatLu : short
