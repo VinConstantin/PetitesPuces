@@ -28,7 +28,7 @@
     <div class="btn-group">
         <button type="button" onclick="retour();" class="btn btn-info" ><span class="glyphicon glyphicon-menu-left"></span> Retour</button>
         <button type="button" onclick="repondre(@Model.NoMsg);" class="btn btn-info" ><span class="glyphicon glyphicon-share-alt"></span> Répondre</button>
-        <button type="button" onclick="loadModalDestinataire(@Model.NoMsg);" class="btn btn-info" ><span class="glyphicon glyphicon-transfer"></span> Transférer</button>
+        <button type="button" onclick="loadModalDestinataire();" class="btn btn-info" ><span class="glyphicon glyphicon-transfer"></span> Transférer</button>
         <button type="button" onclick="supprimerCourriel(@Model.NoMsg);" class="btn btn-info" ><span class="glyphicon glyphicon glyphicon-trash"></span> Supprimer</button>
         <button type="button" onclick="marquerNonLu(@Model.NoMsg);" class="btn btn-info" ><span class="fas fa-envelope"></span> Marquer comme non-lu</button>
     </div>
@@ -51,7 +51,6 @@
 
 <script>
     var LIEU_BROUILLON = 4;
-    var lstDestinataires = [];
     
     function supprimerCourriel(id) {
         $.ajax({
@@ -69,26 +68,45 @@
         });
     }
     function redirectComposer(NoMessage) {
-        console.log("redirect " + NoMessage);
+        loadBrouillon(NoMessage);
     }
     //Repondre
-    function repondre() {
-        
+    function repondre(No) {
+        saveBrouillonReponse(No,redirectComposer);
+    }
+    function saveBrouillonReponse(No,callback) {
+        const destinataires = lstDestinataires.map(e => e.No);
+        console.log(destinataires)
+        $.ajax({
+            url: URLPATH + '/Courriel/EnregistrerReponse',
+            type: 'POST',
+            data: {
+                noCourriel : No
+            },
+            success: (data) => {
+                callback(data);
+            },
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
     }
     //Transferer   
     function afficherDestinataire() {
         saveBrouillonTransfer(redirectComposer);
     }
     function saveBrouillonTransfer(callback) {
+        const destinataires = lstDestinataires.map(e => e.No);
+        console.log(destinataires)
         $.ajax({
-            url: '/Courriel/EnregistrerTransfer',
+            url: URLPATH + '/Courriel/EnregistrerTransfer',
             type: 'POST',
             data: {
                 noCourriel : @Model.NoMsg,
-                destinataires :lstDestinataires.map(e => e.No)
+                destinataires :destinataires
             },
             success: (data) => {
-                callback(data.NoMsg);
+                callback(data);
             },
             error: function(req, status, err) {
                 console.log(req, status, err);

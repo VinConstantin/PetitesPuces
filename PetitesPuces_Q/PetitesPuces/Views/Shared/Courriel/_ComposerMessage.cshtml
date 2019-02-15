@@ -96,76 +96,12 @@
 	</div>
 </div>
 <script>
-	var LIEU_BROUILLON = 4;
-
-    var lstDestinataires = [];
+	/**
+     *  todo : retirer des liste ne retire pas le bon item...
+     */
     if (!msgId) {
         var msgId;
     }
-	
-	$('#upload').change(function() {
-        const file = $('#upload')[0].files[0].name;
-        console.log(file);
-		$('#fileUploadText').val(file);
-		
-        fileUrl = null;
-        setCanSend(false);
-        sauvegarderBrouillon(postAttachment);
-    });
-
-    function setCanSend(canSend) {
-       //TODO: Block sending, spinner?
-    }
-
-	function sauvegarderBrouillon(callback) {
-        const msg = {
-            DescMsg: $('#textarea').froalaEditor('html.get'),
-            Lieu: LIEU_BROUILLON,
-            objet: $('#tbObjet').val(),
-            destinataire: lstDestinataires.map(e => e.No)
-        };
-
-        let method = 'POST';
-		if (msgId) {
-			method = 'PUT';
-			msg.NoMsg = msgId;
-        }
-
-        $.ajax({
-            url: '/Courriel/Enregistrer',
-            method: method,
-            data: JSON.stringify(msg),
-            dataType: 'json',
-            success: (data) => {
-                msgId = data.NoMsg;
-                callback();
-            },
-			contentType: 'application/json'
-		});
-	}
-		
-    function postAttachment() {
-        const formData = new FormData();
-        const fileInput = $('#upload')[0];
-
-        for (let i = 0; i < fileInput.files.length; i++) {
-            const file = fileInput.files[i];
-            formData.append(file.name, file);
-        }
-
-		$.ajax({
-			url         : '/Courriel/Televerser/' + msgId,
-			data        : formData,
-			cache       : false,
-			contentType : false,
-			processData : false,
-			type        : 'POST',
-            success: function (data, textStatus, jqXHR) {
-                $('#pieceJointeLink').attr('href', '/Courriel/PieceJointe/' + msgId);
-                alert('file upload done');
-            }
-		});
-	}
 	
 	function retirerDestinataire(id) {
 		console.log(id);
@@ -178,15 +114,25 @@
 			}
 		});
 	}
-	function afficherDestinataire() {
+	function afficherDestinataire(save = true) {
 		$('#destinataire span').remove();
 		lstDestinataires.forEach(function(temp) {
 			let str = `<span style="background-color: #adadad;" class="badge badge-primary" id="Dest${temp.No}">
                             ${temp.Nom}<a onclick="retirerDestinataire(${temp.No});" style="color:red;" class="glyphicon glyphicon-remove">
                          </a></span>&nbsp;`;
 			$("#destinataire").append(str);
-		});
-
+        });
+        if (save) {
+            $('#destinataire').trigger('change');
+        }
+    }
+	function retirerDestinataire(no, nom) {
+		console.log(no);
+		const desinataire = { No : no, Nom : nom };     
+		const index = lstDestinataires.indexOf(desinataire);
+		lstDestinataires.splice(index, 1);
+		$('#Dest'+no).remove();
+	}
 	function envoyerMessage() {
 		const strMessage = $('#textarea').froalaEditor('html.get');
 		const objet = $("#tbObjet").val();
@@ -220,9 +166,9 @@
 			}, 
 			success: function(result) {
 				/** @@type{Object<>[]} */
-				lstDestinatairesTemp = [];
-				$('#ModalDestinatairePLACEHOLDER').html(result);
-			},
+				lstDestinatairesTemp = lstDestinataires.slice();
+                $('#ModalDestinatairePLACEHOLDER').html(result);
+            },
 			error: function(req, status, err) {
 				console.log(req, status, err);
 			}
@@ -233,7 +179,7 @@
 <script>
 	$(function() {
 		/** @@type{Object<>[]} */
-		lstDestinataires = [];
+        afficherDestinataire(false);
 		lstClients = [];
 		lstVendeurs = [];
 		$('textarea').froalaEditor({
@@ -252,4 +198,3 @@
 		});
 	});
 </script>
-	
