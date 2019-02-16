@@ -224,6 +224,7 @@
     <Compile Include="Models\Ext\PPClient.cs" />
     <Compile Include="Models\Ext\PPGestionnaire.cs" />
     <Compile Include="Models\Ext\PPMessage.cs" />
+    <Compile Include="Models\Ext\PPProduit.cs" />
     <Compile Include="Models\Ext\PPVendeur.cs" />
     <Compile Include="Models\Ext\RolesUtil.cs" />
     <Compile Include="Models\IUtilisateur.cs" />
