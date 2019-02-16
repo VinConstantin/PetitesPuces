@@ -37,12 +37,6 @@ namespace PetitesPuces.Controllers
             return View("Home/_ListeProduits", produits);
         }
 
-        [HttpGet]
-        public ActionResult Connexion()
-        {
-            return View();
-        }
-
         public ActionResult Deconnexion()
         {
             HttpContext.Session["userId"] = null;
@@ -50,6 +44,20 @@ namespace PetitesPuces.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public ActionResult Connexion(string Status = "")
+        {
+            if (Request.Cookies["courriel"] != null && Request.Cookies["mdp"] != null)
+            {
+                ViewBag.courriel = Request.Cookies["courriel"].Value;
+                ViewBag.mdp = Request.Cookies["mdp"].Value;
+                ViewBag.souvenirCheck = "checked";
+            }
+            else ViewBag.souvenirCheck = "";
+          
+            ViewBag.Status = Status;
+            return View();
+        }
 
         [HttpPost]
         public ActionResult Connexion(FormCollection formCollection)
@@ -68,35 +76,52 @@ namespace PetitesPuces.Controllers
                 where unGestionnaire.AdresseEmail == formCollection["AdresseEmail"]
                 select unGestionnaire;
 
-
-            if (unClientExist.Count() != 0)
+            if (unClientExist.Count() != 0 || unVendeurExist.Count() != 0 || unGestionnaireExist.Count() != 0 )
             {
-                System.Web.HttpContext.Current.Session["userId"] = unClientExist.First().NoClient;
-                unClientExist.First().DateDerniereConnexion = dateCourante;
-                unClientExist.First().NbConnexions++;
-                TempData["connexion"] = true;
-                try
+                if (formCollection["remember"] == "on")
                 {
-                    context.SubmitChanges();
-                    return RedirectToAction("Index", "Client");
+                   
+                    Response.Cookies["courriel"].Value = formCollection["adresseEmail"];
+                    Response.Cookies["mdp"].Value = formCollection["motDePasse"];
+                    Response.Cookies["courriel"].Expires = DateTime.Now.AddYears(1);
+                    Response.Cookies["mdp"].Expires = DateTime.Now.AddYears(1);
                 }
-                catch (Exception e)
+                else
                 {
+                   
+                    Response.Cookies["courriel"].Expires = DateTime.Now.AddYears(-1);
+                    Response.Cookies["mdp"].Expires = DateTime.Now.AddYears(-1);
                 }
-            }
 
-            else if (unVendeurExist.Count() != 0)
-            {
-                System.Web.HttpContext.Current.Session["userId"] = unVendeurExist.First().NoVendeur;
-                TempData["connexion"] = true;
+                if (unClientExist.Count() != 0)
+                {
+                    System.Web.HttpContext.Current.Session["userId"] = unClientExist.First().NoClient;
+                    unClientExist.First().DateDerniereConnexion = dateCourante;
+                    unClientExist.First().NbConnexions++;
+                    TempData["connexion"] = true;
+                    try
+                    {
+                        context.SubmitChanges();
+                        return RedirectToAction("Index", "Client");
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                }
 
-                return RedirectToAction("Index", "Vendeur");
-            }
-            else if (unGestionnaireExist.Count() != 0)
-            {
-                System.Web.HttpContext.Current.Session["userId"] = unGestionnaireExist.First().NoGestionnaire;
-                TempData["connexion"] = true;
-                return RedirectToAction("Index", "Gestionnaire");
+                else if (unVendeurExist.Count() != 0)
+                {
+                    System.Web.HttpContext.Current.Session["userId"] = unVendeurExist.First().NoVendeur;
+                    TempData["connexion"] = true;
+
+                    return RedirectToAction("Index", "Vendeur");
+                }
+                else if (unGestionnaireExist.Count() != 0)
+                {
+                    System.Web.HttpContext.Current.Session["userId"] = unGestionnaireExist.First().NoGestionnaire;
+                    TempData["connexion"] = true;
+                    return RedirectToAction("Index", "Gestionnaire");
+                }
             }
             else
             {
@@ -144,7 +169,7 @@ namespace PetitesPuces.Controllers
                     {
                         context.PPClients.InsertOnSubmit(nouveauClient);
                         context.SubmitChanges();
-                        return RedirectToAction("Connexion", "Home");
+                        return RedirectToAction("Connexion", "Home", new {Status = "InscriptionReussi"});
                     }
                     catch (Exception e)
                     {
@@ -163,27 +188,26 @@ namespace PetitesPuces.Controllers
         [HttpGet]
         public ActionResult InscriptionVendeur()
         {
-            
             return View();
         }
 
         [HttpPost]
         public ActionResult InscriptionVendeur(FormCollection formCollection)
         {
-             foreach (var key in formCollection.AllKeys)
-             {
-                 Response.Write("key: " + key + ": ");
-                 Response.Write(formCollection[key]+",  type:/");
-                 Response.Write(formCollection[key].GetType()+"/");
-                 Response.Write("<br/> ");
-             }
-             
+            foreach (var key in formCollection.AllKeys)
+            {
+                Response.Write("key: " + key + ": ");
+                Response.Write(formCollection[key] + ",  type:/");
+                Response.Write(formCollection[key].GetType() + "/");
+                Response.Write("<br/> ");
+            }
+
             if (ModelState.IsValid)
             {
                 var tousLesVendeurs = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
-                
+
                 int maxNoVendeur = Convert.ToInt32(tousLesVendeurs.Max()) + 1;
-                
+
                 var VerificationAdresseCourriel = from unVendeur in context.PPVendeurs
                     where unVendeur.AdresseEmail == formCollection["AdresseEmail"]
                     select unVendeur;
@@ -205,15 +229,15 @@ namespace PetitesPuces.Controllers
                     nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["Vendeur.PoidsMaxLivraison"]);
                     nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["Vendeur.LivraisonGratuite"]);
                     nouveauVendeur.MotDePasse = formCollection["MotDePasse"];
-                    nouveauVendeur.Taxes =formCollection["Vendeur.Taxes"]=="false" ? false : true;
+                    nouveauVendeur.Taxes = formCollection["Taxes"] == "on" ? true : false;
                     nouveauVendeur.DateCreation = dateCourante;
-                   
+
                     nouveauVendeur.Statut = 0;
                     try
                     {
                         context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
                         context.SubmitChanges();
-                       return RedirectToAction("Connexion", "Home");
+                        return RedirectToAction("Connexion", "Home", new {Status = "InscriptionReussi"});
                     }
                     catch (Exception e)
                     {

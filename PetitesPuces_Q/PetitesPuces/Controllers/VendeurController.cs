@@ -24,8 +24,9 @@ namespace PetitesPuces.Controllers
         private int NoVendeur = Convert.ToInt32(SessionUtilisateur.UtilisateurCourant.No);
 
         // GET: Vendeur
-        public ActionResult Index()
+        public ActionResult Index(string status="")
         {
+            ViewBag.status = status;
             List<PPCommande> commandes = GetCommandesVendeurs(NoVendeur);
 
             commandes = commandes.Where(c => c.Statut == 'T').ToList();
@@ -108,31 +109,32 @@ namespace PetitesPuces.Controllers
         {
             if (ModelState.IsValid)
             {
+                var objVendeur = (from unVendeur in context.PPVendeurs
+                    where unVendeur.NoVendeur == NoVendeur
+                    select unVendeur).FirstOrDefault();
+
+                if (modiProfilVendeur.NomAffaires != "") objVendeur.NomAffaires = modiProfilVendeur.NomAffaires;
+                if (modiProfilVendeur.Nom != "") objVendeur.Nom = modiProfilVendeur.Nom;
+                if (modiProfilVendeur.Prenom != "") objVendeur.Prenom = modiProfilVendeur.Prenom;
+                if (modiProfilVendeur.Rue != "") objVendeur.Rue = modiProfilVendeur.Rue;
+                if (modiProfilVendeur.Ville != "") objVendeur.Ville = modiProfilVendeur.Ville;
+                if (modiProfilVendeur.Province != "") objVendeur.Province = modiProfilVendeur.Province;
+                if (modiProfilVendeur.Pays != "") objVendeur.Pays = modiProfilVendeur.Pays;
+                if (modiProfilVendeur.CodePostal != "") objVendeur.CodePostal = modiProfilVendeur.CodePostal;
+                if (modiProfilVendeur.Tel1 != "") objVendeur.Tel1 = modiProfilVendeur.Tel1;
+                if (modiProfilVendeur.Tel2 != "") objVendeur.Tel2 = modiProfilVendeur.Tel2;
+                if (modiProfilVendeur.PoidsMaxLivraison != null)
+                    objVendeur.PoidsMaxLivraison = modiProfilVendeur.PoidsMaxLivraison;
+                if (modiProfilVendeur.LivraisonGratuite != null)
+                    objVendeur.LivraisonGratuite = modiProfilVendeur.LivraisonGratuite;
+                if (modiProfilVendeur.Taxes != null) objVendeur.Taxes = modiProfilVendeur.Taxes;
+
+
                 try
                 {
-                    var objVendeur = (from unVendeur in context.PPVendeurs
-                        where unVendeur.NoVendeur == NoVendeur
-                        select unVendeur).FirstOrDefault();
-
-                    if (modiProfilVendeur.NomAffaires != "") objVendeur.NomAffaires = modiProfilVendeur.NomAffaires;
-                    if (modiProfilVendeur.Nom != "") objVendeur.Nom = modiProfilVendeur.Nom;
-                    if (modiProfilVendeur.Prenom != "") objVendeur.Prenom = modiProfilVendeur.Prenom;
-                    if (modiProfilVendeur.Rue != "") objVendeur.Rue = modiProfilVendeur.Rue;
-                    if (modiProfilVendeur.Ville != "") objVendeur.Ville = modiProfilVendeur.Ville;
-                    if (modiProfilVendeur.Province != "") objVendeur.Province = modiProfilVendeur.Province;
-                    if (modiProfilVendeur.Pays != "") objVendeur.Pays = modiProfilVendeur.Pays;
-                    if (modiProfilVendeur.CodePostal != "") objVendeur.CodePostal = modiProfilVendeur.CodePostal;
-                    if (modiProfilVendeur.Tel1 != "") objVendeur.Tel1 = modiProfilVendeur.Tel1;
-                    if (modiProfilVendeur.Tel2 != "") objVendeur.Tel2 = modiProfilVendeur.Tel2;
-                    if (modiProfilVendeur.PoidsMaxLivraison != null)
-                        objVendeur.PoidsMaxLivraison = modiProfilVendeur.PoidsMaxLivraison;
-                    if (modiProfilVendeur.LivraisonGratuite != null)
-                        objVendeur.LivraisonGratuite = modiProfilVendeur.LivraisonGratuite;
-                    if (modiProfilVendeur.Taxes != null) objVendeur.Taxes = modiProfilVendeur.Taxes;
-
                     context.SubmitChanges();
-                    ViewBag.SuccessMessage = "Modification réussite!";
-                    return RedirectToAction("Index");
+                   
+                    return RedirectToAction("Index",new{status="ModificationReussite"});
                 }
                 catch (Exception e)
                 {
@@ -198,11 +200,11 @@ namespace PetitesPuces.Controllers
             PPProduit produit = (from p in context.PPProduits
                 where p.NoProduit == NoProduit
                 select p).FirstOrDefault();
-            
-            if(produit==null)
+
+            if (produit == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            
-            return View(new Tuple<List<PPEvaluation>,PPProduit>(evaluations,produit));
+
+            return View(new Tuple<List<PPEvaluation>, PPProduit>(evaluations, produit));
         }
 
         public void ModifierProduit() //TODO
@@ -428,17 +430,17 @@ namespace PetitesPuces.Controllers
         [HttpPost]
         public ActionResult modificationMDP(ModificationMDP modificationMdp)
         {
-            var unVendeur=(from vendeur in context.PPVendeurs
-                where vendeur.NoVendeur==NoVendeur
-                      select vendeur).First();
+            var unVendeur = (from vendeur in context.PPVendeurs
+                where vendeur.NoVendeur == NoVendeur
+                select vendeur).First();
 
             bool motDePasseValide = modificationMdp.ancienMDP == unVendeur.MotDePasse;
-            
+
             if (ModelState.IsValid)
             {
                 if (!motDePasseValide)
                 {
-                    ModelState.AddModelError(string.Empty,"L'ancien mot de passe est invalide!");
+                    ModelState.AddModelError(string.Empty, "L'ancien mot de passe est invalide!");
                     return View(modificationMdp);
                 }
 
@@ -446,11 +448,10 @@ namespace PetitesPuces.Controllers
                 try
                 {
                     context.SubmitChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index",new{status="ModificationReussite"});
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    
                 }
             }
 

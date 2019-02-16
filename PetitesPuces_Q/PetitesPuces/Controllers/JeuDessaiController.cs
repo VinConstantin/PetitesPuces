@@ -561,8 +561,8 @@ namespace PetitesPuces.Controllers
             }
             context.SubmitChanges();
 
-            return Content(test);
-        }
+            return View();
+        } 
 
 
     }

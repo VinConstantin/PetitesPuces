@@ -48,6 +48,12 @@
         <h4>Nombre de visiteurs: @Model.NbVisites</h4>
     </div>
 </div>
+@if (ViewBag.Status == "ModificationReussite")
+{
+    <div class="alert alert-info text-center" role="alert" style="margin: 20px;">
+        Modification profil réussite!
+    </div>
+}
 @if (!string.IsNullOrWhiteSpace(ViewBag.SuccessMessage)) {
 
     <p class="pagination pagination-lg label label-info">@ViewBag.SuccessMessage</p>
@@ -59,7 +65,7 @@
     @if (Model.Commandes.Count == 0)
     {
         <h4 class="text-center col-xs-12">Aucune commande à traiter</h4>
-    }
+    }    
     else
     {
         <table class="table m-0 bg-light">
