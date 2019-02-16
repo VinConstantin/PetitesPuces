@@ -129,7 +129,10 @@
             <div class="h3">
                 @Formatter.PrixProduitAvecVente(Model)
             </div></p>
-
+        @if (@Model.DateVente >= DateTime.Now)
+        {
+                    <p>En vente jusqu'au : @Model.DateVente.Value.ToLongDateString()</p>
+        }
         <p>Poids : @Model.Poids lbs</p>
         <p>Catégorie : @Model.PPCategory.Description</p>
         <hr/>

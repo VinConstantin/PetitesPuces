@@ -20,6 +20,16 @@ namespace PetitesPuces.Models
             get { return Articles.Any(a => a.PPProduit.DateVente >= DateTime.Now); }
         }
 
+        public DateTime DateRabais
+        {
+            get
+            {
+                if (!Articles.Any())
+                    throw new ArgumentException();
+                return Articles.Where(a => a.PPProduit.EstEnRabais).Min(a => a.PPProduit.DateVente).Value;
+            }
+        }
+
         public bool DepassePoidsMaximum
         {
             get { return GetPoidsTotal() > Vendeur.PoidsMaxLivraison; }

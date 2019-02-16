@@ -13,5 +13,6 @@ namespace PetitesPuces.Utilities
         {
             return (decimal)((produit.DateVente >= DateTime.Now) ? produit.PrixVente : produit.PrixDemande);
         }
+        
     }
 }

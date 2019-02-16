@@ -22,6 +22,7 @@
      * @param {Function} callback
      */
     function enregistrerMessage(message, callback = null) {
+        const method = 'POST';
         const data = JSON.stringify(message);
         console.log((method === 'POST' ? 'Nouveau ' : 'Update ') + 'brouillon');
 
@@ -45,7 +46,7 @@
     function redirigerVersMessage(courriel, callback = null) {
         enregistrerMessage(courriel, function (data) {
             const noMsg = data.NoMsg;
-            const url = "/Courriel/Boite/ComposerMessage" + noMsg;
+            const url = "/Courriel/Boite/Composer/" + noMsg;
 
             window.location.href = url;
         });
