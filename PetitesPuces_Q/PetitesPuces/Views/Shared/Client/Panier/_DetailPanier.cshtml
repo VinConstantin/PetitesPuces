@@ -1,3 +1,4 @@
+@using PetitesPuces.Controllers
 @using PetitesPuces.Models
 @using PetitesPuces.Utilities
 @model PetitesPuces.Models.Panier
@@ -5,25 +6,39 @@
 @{
     ViewBag.SousTotal = @Model.Articles.Sum(a => a.PPProduit.PrixVente * a.NbItems);
     ViewBag.FraisLivraison = (decimal)23.00;
+
+    bool estValide = ((ClientController)ViewContext.Controller).CheckDisponibiliteArticlesPanier(Model.Vendeur.No);
 }
 
 
 <div class="row">
     <div class="col-md-8" style="height: 70vh; overflow-y: auto;">
-        @if (Model.DepassePoidsMaximum)
+        @if (!estValide)
         {
-            <div class="row">
-                <div class="alert alert-warning" role="alert">
-                    Votre panier dépasse le poids maximal défini par le vendeur (@Formatter.Poids(Model.Vendeur.PoidsMaxLivraison))
+            if (Model.DepassePoidsMaximum)
+            {
+                <div class="row">
+                    <div class="alert alert-warning" role="alert">
+                        Votre panier dépasse le poids maximal défini par le vendeur (@Formatter.Poids(Model.Vendeur.PoidsMaxLivraison))
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="alert alert-warning" role="alert">
+                        Un ou plusieurs articles de votre panier n'ont pas assez de stock
+                    </div>
+                </div>
+            }
         }
+
 
         <table class="table table-hover">
             <tbody>
             @foreach (PPArticlesEnPanier article in @Model.Articles)
             {
-                @Html.Partial("Client/_ProduitsPanier", article)
+                @Html.Partial("Client/Panier/_ProduitsPanier", article)
             }
             </tbody>
         </table>
@@ -61,15 +76,15 @@
                         </div>
                     }
                 </div>
-                @if (Model.DepassePoidsMaximum)
+                @if (estValide)
                 {
-                    <button title="Poids maximal dépassé" disabled type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationCommande">
+                    <button title="Poids maximal dépassé" type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationCommande">
                         Passer la commande
                     </button>
                 }
                 else
                 {
-                    <button title="Passer le panier en commande" type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationCommande">
+                    <button id="btnError" disabled type="button" class="btn btn-primary">
                         Passer la commande
                     </button>
                 }
@@ -141,5 +156,17 @@
     window.addEventListener("load",function(){
         $('#Panier'+@Model.Vendeur.NoVendeur).first().addClass("Current");
     },false);
+    //tooltip
     
+    tippy('#btnError',{
+        animation: 'scale',
+        duration: [800, 500],
+        delay: [0,200],
+        content:"<h5><spoan class='glyphicon glyphicon-alert'></span> Veuillez vérifier tous les articles de votre panier</h5>",
+        size: "large",
+        theme: "google",
+        placement: "bottom",
+        arrow: true,
+        allowHTML: true,
+    });
 </script>

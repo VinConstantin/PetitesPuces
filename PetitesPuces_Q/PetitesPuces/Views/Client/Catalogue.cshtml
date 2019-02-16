@@ -24,14 +24,14 @@
                         <div class="">
                             <p style="line-height: 2.0;">Tous les vendeurs</p>
                             <hr/>
-                            <p>@Model.Categories.Sum(c=>c.PPProduits.Count) items </p>
+                            <p>@Model.Categories.Sum(c=>c.PPProduits.Count(p => p.Disponibilité==true)) items </p>
                         </div>
                     </div>
                 </div>
 
                 @foreach (PPVendeur vendeur in @Model.Vendeurs)
                 {
-                    @Html.Partial("Client/_VendeurCarousel", vendeur)
+                    @Html.Partial("Client/Catalogue/_VendeurCarousel", vendeur)
                 }
 
             </div>
@@ -41,7 +41,7 @@
     </div>
     
     <div id="partialListeProduits">
-        @Html.Partial("Client/_Catalogue", @Model)
+        @Html.Partial("Client/Catalogue/_Catalogue", @Model)
     </div>
 </div>
 

@@ -42,14 +42,29 @@
             </div>
             
         </div>
-        <div class="panel-footer">
-            
-            <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit)">
-                <span class="glyphicon glyphicon-shopping-cart"></span>
-            </button>
-            <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Visualiser le produit" onclick="visualiser(@Model.NoProduit)">
-                <span class="glyphicon glyphicon-info-sign"></span>
-            </button>
+        <div class="panel-footer" style="padding: 0";>
+            <div class="row">
+                <div class=" col-md-8">
+                    @if (Model.NombreItems > 0)
+                    {
+                        <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit)">
+                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                        </button>
+                        
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning" style="height: 55px;margin: 5px;text-overflow: ellipsis;overflow: hidden;" role="alert">
+                            <span class="glyphicon glyphicon-alert"></span> Rupture de stock
+                        </div>
+                    }
+                </div>
+                <div class=" col-md-2">
+                    <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Visualiser le produit" onclick="visualiser(@Model.NoProduit)">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

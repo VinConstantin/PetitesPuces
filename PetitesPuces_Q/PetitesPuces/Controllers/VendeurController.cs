@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PetitesPuces.Securite;
@@ -186,6 +187,22 @@ namespace PetitesPuces.Controllers
         public ActionResult ModalSupprimerProduit(int NoProduit) //TODO
         {
             return PartialView("Vendeur/ModalSupprimerProduit", NoProduit);
+        }
+
+        public ActionResult Evaluations(int NoProduit)
+        {
+            List<PPEvaluation> evaluations = (from e in context.PPEvaluations
+                where e.NoProduit == NoProduit && e.PPProduit.NoVendeur == NoVendeur
+                select e).ToList();
+
+            PPProduit produit = (from p in context.PPProduits
+                where p.NoProduit == NoProduit
+                select p).FirstOrDefault();
+            
+            if(produit==null)
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            
+            return View(new Tuple<List<PPEvaluation>,PPProduit>(evaluations,produit));
         }
 
         public void ModifierProduit() //TODO
