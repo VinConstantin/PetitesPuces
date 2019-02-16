@@ -161,6 +161,7 @@ namespace PetitesPuces.Controllers
         }
 
         [HttpGet]
+        [Route("Courriel/PieceJointe/{id}")]
         public ActionResult PieceJointe(long id)
         {
             try

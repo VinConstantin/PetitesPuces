@@ -35,7 +35,7 @@
         <h2 id="objet">@Model.objet</h2>
         <hr />
         <h5 style="width: 100%"><span>Envoyé par : @expediteur.DisplayName</span><span class="pull-right">@Model.dateEnvoi</span></h5>
-        <h5 style="width: 100%"><span>Envoyé à : @Model.FormattedDestinataires</span><a href="@(@Model.FichierJoint == null ? "/Courriel/PieceJointe/" + @Model.NoMsg : "javascript:void(0)")" class="pull-right">@(@Model.FichierJoint + " <i class=\"glyphicon glyphicon-paperclip\"></i>" ?? "")</a></h5>
+        <h5 style="width: 100%"><span>Envoyé à : @Model.FormattedDestinataires</span><a href="@(@Model.FichierJoint != null ? "/Courriel/PieceJointe/" + @Model.NoMsg : "javascript:void(0)")" class="pull-right">@(((Model.FichierJoint ?? "") + " <i class=\"glyphicon glyphicon-paperclip\"></i>" ).ToHtml())</a></h5>
         <div class="well">
             @Model.DescMsg.ToHtml()
         </div>
