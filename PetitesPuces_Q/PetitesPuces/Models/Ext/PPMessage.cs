@@ -16,6 +16,8 @@ namespace PetitesPuces.Models
         {
             get
             {
+                if(UtilisateursDestinataire.Count<1)
+                    return "Aucun destinataire";
                 return string.Join("; ",UtilisateursDestinataire.Select(u => u.DisplayName));
             }
         }
@@ -39,7 +41,7 @@ namespace PetitesPuces.Models
 
                     if (dest.NoDestinataire == 0) continue;
 
-                    _utilisateursDestinataire.Add(usersWithId.First());
+                    _utilisateursDestinataire.AddRange(usersWithId);
                 }
 
                 return _utilisateursDestinataire;
