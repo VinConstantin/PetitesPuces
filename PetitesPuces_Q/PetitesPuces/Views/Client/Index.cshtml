@@ -12,7 +12,19 @@
 <br/>
 <br/>
 <div class="container">
+    @if (!string.IsNullOrWhiteSpace(ViewBag.SuccessMessage)) {
+
+        <p class="pagination pagination-lg label label-info">@ViewBag.SuccessMessage</p>
+
+    }
+   
     @Html.Partial("_CarouselPublicitaire")
+    @if (ViewBag.Status == "ModificationReussite")
+    {
+        <div class="alert alert-info text-center" role="alert" style="margin: 20px;">
+            Modification profil réussite!
+        </div>
+    }
     <div class="row">
         <h2>Mes paniers</h2>
         @if (Model.Paniers.Count > 0)
@@ -35,7 +47,7 @@
                 <h5>Vous n'avez aucun panier</h5>
             </div>
         }
-        
+
         <h2>Mes commandes</h2>
         @if (Model.Commandes.Count > 0)
         {

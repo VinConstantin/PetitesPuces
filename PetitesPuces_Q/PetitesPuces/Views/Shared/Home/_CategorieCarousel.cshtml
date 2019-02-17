@@ -1,16 +1,23 @@
 ﻿@using System.Drawing
 @using PetitesPuces.Models
 @model PetitesPuces.Models.PPCategory
-@{
-    //pour random une couleur
-    var rand = new Random();
-    Color col = Color.FromArgb(1, @Model.NoCategorie*2, rand.Next(256), rand.Next(256));
-    string rgba= String.Format("rgba({0},{1},{2},{3})", col.R, col.G, col.B, col.A);
-}
+
 <div class="item" style="text-overflow: ellipsis;" id="@("Cat" + @Model.NoCategorie)">
-    <div class="pad15" style="max-height: 20vh; min-height: 20vh; background-color: #2c3e50; color: white;">
+    <div class="pad15" style="max-height: 150px; min-height: 150px; background-color: #2c3e50; color: white;">
         <p><span class="lead">@Model.Description</span> <sup>(@Model.PPProduits.Count)</sup></p>
-        <hr/>
-        <p class="cut-text">@Model.Details</p>
+        
     </div>
 </div>
+<script>
+    //tooltip
+    tippy('#@("Cat"+@Model.NoCategorie)',{
+        duration: [800, 500],
+        delay: [0,200],
+        content:"<p style='max-width:170px'>@Model.Details</p>",
+        size: "large",
+        theme: "google",
+        placement: "bottom",
+        arrow: true,
+        allowHTML: true,
+    });
+</script>

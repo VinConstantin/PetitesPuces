@@ -32,17 +32,7 @@
     <div class="row">
         <div class="col-lg-4">
             <input onclick="stopPropagation();" id="@Model.NoMsg" type="checkbox">
-            @{
-                var destinataires = Model.UtilisateursDestinataire;
-            }
-            @if (destinataires.Count == 0)
-            {
-                <span class="input" style="min-width: 120px; display: inline-block; text-overflow: ellipsis;">Aucun destinataire</span>
-            }
-            else
-            {
-                <span class="input" style="min-width: 120px; display: inline-block; text-overflow: ellipsis;">@string.Join(",",destinataires.Select(dest => dest.DisplayName))</span>
-            }
+            <span class="input" style="min-width: 120px; display: inline-block; text-overflow: ellipsis;">@Model.FormattedDestinataires</span>
         </div>
         <div class="col-lg-4">
             <span class="">@(!string.IsNullOrWhiteSpace(Model.objet) ? Model.objet : "Aucun objet")</span>

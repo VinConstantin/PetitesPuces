@@ -6,8 +6,8 @@
     ViewBag.Title = "Commander";
     decimal SousTotal = Model.getPrixTotal();
     decimal FraisLivraison = (decimal)InfoCommande.PrixLivraison;
-    decimal TPS = (SousTotal + FraisLivraison) * (decimal) 0.05;
-    decimal TVQ = (SousTotal + FraisLivraison) * (decimal) 0.09975;
+    decimal TPS = Model.GetTPS(FraisLivraison);
+    decimal TVQ = Model.GetTVQ(FraisLivraison);
 
     decimal PrixTotal = SousTotal + FraisLivraison + TPS + TVQ;
     string dateExpiration = InfoCommande.InfoPaiement.DateExpirationCarteCredit.Substring(0,2)+"-20"+InfoCommande.InfoPaiement.DateExpirationCarteCredit.Tail(2);
