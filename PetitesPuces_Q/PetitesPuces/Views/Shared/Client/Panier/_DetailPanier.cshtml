@@ -183,7 +183,7 @@
         const objet = "Information sur mon panier";
         const DescMsg = "J'ai une petite question sur mon panier";
         const destinataire = [no];
-        const message = Courriel.Message(objet,DescMsg,destinataire)
+        const message = Courriel.Message(objet, DescMsg, destinataire);
         Courriel.enregistrerMessage(message,redirigerModuleCourriel);
     }
     function redirigerModuleCourriel(msg) {
