@@ -46,6 +46,25 @@ namespace PetitesPuces.Controllers
             return View(viewModel);
         }
 
+        private void CreateVisiteVendeur(int noVendeur)
+        {
+            context.PPVendeursClients.InsertOnSubmit(
+                new PPVendeursClient
+                {
+                    NoClient = NOCLIENT,
+                    NoVendeur = noVendeur,
+                    DateVisite = DateTime.Now
+                });
+
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         private CatalogueViewModel GetCatalogueViewModel(ref IEnumerable<PPProduit> listeProduits,
             string Vendeur, string Categorie, string Page, string Size,
             string Filtre, Tri tri)
@@ -88,6 +107,7 @@ namespace PetitesPuces.Controllers
                     where unVendeur.NoVendeur == NoVendeur
                     select unVendeur);
                 vendeur = requete.FirstOrDefault();
+                CreateVisiteVendeur((int) vendeur.NoVendeur);
                 //creer la liste de produits
                 listeProduits = vendeur.PPProduits.Where(p => p.Disponibilité == true)
                     .Where(p => (categorie == null || p.PPCategory == categorie) && p.Disponibilité == true);

@@ -20,6 +20,7 @@ namespace PetitesPuces.Controllers
             {
                 Produits = (from p in context.PPProduits
                     orderby p.DateCreation
+                    where p.Disponibilité == true
                     select p).Take(12).ToList(),
                 Vendeurs = (from v in context.PPVendeurs select v).ToList(),
                 Categories = (from c in context.PPCategories select c).ToList()
