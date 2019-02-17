@@ -70,8 +70,9 @@
             </div>
         </form>
     </div>
-    <div class="col-md-3" id="RECAPITULATIF">
-        @Html.Partial("Client/Commande/_RecapitulatifCommande",Model)
+    <div class="col-md-3">
+        <span id="RECAPITULATIF">@Html.Partial("Client/Commande/_RecapitulatifCommande",Model)</span>
+        @Html.Partial("Client/InformationVendeur",Model)
     </div>
 </div>
 

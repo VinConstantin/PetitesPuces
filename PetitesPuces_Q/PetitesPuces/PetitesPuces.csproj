@@ -360,6 +360,7 @@
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_ProduitsInformation.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_RecapitulatifCommande.cshtml" />
+    <Content Include="Views\Shared\Client\InformationVendeur.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_DetailPanier.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_ProduitsPanier.cshtml" />
