@@ -602,6 +602,13 @@ namespace PetitesPuces.Controllers
             var NosDestinatairesADelete = new List<int>();
             foreach (var dest in destinataires)
             {
+                if (dest.NoDestinataire < 0 && dest.NoDestinataire > -4)
+                {
+                    context.PPDestinataires.DeleteAllOnSubmit(msg.PPDestinataires);
+                    msg.PPDestinataires.AddRange(ConvToDestinataire(CasSpeciaux(dest.NoDestinataire), msg));
+                    return msg;
+                }
+
                 if (!brouillon.destinataires.Contains(dest.NoDestinataire))
                 {
                     NosDestinatairesADelete.Add(dest.NoDestinataire);
@@ -619,6 +626,13 @@ namespace PetitesPuces.Controllers
 
             foreach (var noDest in NosDestinatairesAAjouter)
             {
+                if (noDest < 0 && noDest > -4)
+                {
+                    context.PPDestinataires.DeleteAllOnSubmit(msg.PPDestinataires);
+                    msg.PPDestinataires.AddRange(ConvToDestinataire(CasSpeciaux((int)noDest), msg));
+                    return msg;
+                }
+
                 if (!noDest.HasValue) continue;
                 context.PPDestinataires.InsertOnSubmit(
                     new PPDestinataire
@@ -632,6 +646,64 @@ namespace PetitesPuces.Controllers
             }
 
             return msg;
+        }
+
+        private List<PPDestinataire> ConvToDestinataire(List<IUtilisateur> utils, PPMessage message)
+        {
+            return utils.Select(u => new PPDestinataire
+            {
+                EtatLu = (short) EtatLu.NonLu, Lieu = (short) LieuxCourriel.Reception, NoDestinataire = (int)u.No
+            }).ToList();
+        }
+
+
+        private List<IUtilisateur> CasSpeciaux(long id)
+        {
+            if (id == (int)CasSpeciauxDestinataire.Tous)
+            {
+                switch (SessionUtilisateur.UtilisateurCourant.Role)
+                {
+                    case RolesUtil.ADMIN:
+                        return context.PPClients.ToList().Concat<IUtilisateur>(context.PPVendeurs.ToList()).ToList().Concat(context.PPGestionnaires.Where(g => g.NoGestionnaire != SessionUtilisateur.NoUtilisateur).ToList()).ToList();
+                    case RolesUtil.VEND:
+                        return context.PPClients.Where(c => c.PPCommandes.Any(comm => comm.NoVendeur == SessionUtilisateur.NoUtilisateur)).ToList().Concat<IUtilisateur>(context.PPGestionnaires.ToList()).ToList();
+                    case RolesUtil.CLIENT:
+                        return context.PPVendeurs.ToList().Concat<IUtilisateur>(context.PPGestionnaires.ToList()).ToList();
+                }
+            }
+            else if (id == (int)CasSpeciauxDestinataire.TousClients)
+            {
+                switch (SessionUtilisateur.UtilisateurCourant.Role)
+                {
+                    case RolesUtil.ADMIN:
+                        return context.PPClients.Cast<IUtilisateur>().ToList();
+                    case RolesUtil.VEND:
+                        return context.PPClients.Where(c => c.PPCommandes.Any(comm => comm.NoVendeur == SessionUtilisateur.NoUtilisateur)).Cast<IUtilisateur>().ToList();
+                    default:
+                        throw new AuthenticationException("Un client ne peux pas envoyer un message à tous les clients");
+                }
+            }
+            else if (id == (int)CasSpeciauxDestinataire.TousVendeurs)
+            {
+                switch (SessionUtilisateur.UtilisateurCourant.Role)
+                {
+                    case RolesUtil.ADMIN:
+                        return context.PPClients.Cast<IUtilisateur>().ToList();
+                    case RolesUtil.CLIENT:
+                        return context.PPVendeurs.Cast<IUtilisateur>().ToList();
+                    default:
+                        throw new AuthenticationException("Un vendeur ne peux pas envoyer un message à tous les vendeurs");
+                }
+            }
+
+            throw new Exception();
+        }
+
+        private enum CasSpeciauxDestinataire
+        {
+            Tous = -1,
+            TousVendeurs = -2,
+            TousClients = -3,
         }
 
         [HttpPost]

@@ -244,6 +244,7 @@
     <Compile Include="ViewModels\Client\AccueilViewModel.cs" />
     <Compile Include="ViewModels\Client\CatalogueViewModel.cs" />
     <Compile Include="ViewModels\Client\LivraisonViewModel.cs" />
+    <Compile Include="ViewModels\Client\ModiProfilClient.cs" />
     <Compile Include="ViewModels\Courriel\DestinataireViewModel.cs" />
     <Compile Include="ViewModels\Courriel\BrouillonViewModel.cs" />
     <Compile Include="ViewModels\Gestionnaire\DemandesVendeursViewModel.cs" />
@@ -262,13 +263,15 @@
     <Compile Include="ViewModels\Gestionnaire\StatsVendeurClient.cs" />
     <Compile Include="ViewModels\Gestionnaire\StatsViewModel.cs" />
     <Compile Include="ViewModels\Home\AccueilHomeViewModel.cs" />
-    <Compile Include="ViewModels\InscriptionClient.cs" />
-    <Compile Include="ViewModels\InscriptionVendeur.cs" />
+    <Compile Include="ViewModels\InscriptionEtModification\InscriptionClient.cs" />
+    <Compile Include="ViewModels\InscriptionEtModification\InscriptionVendeur.cs" />
+    <Compile Include="ViewModels\InscriptionEtModification\ModificationMDP.cs" />
     <Compile Include="ViewModels\Vendeur\AccueilVendeurViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\GestionCatalogueViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\CommandesViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\ModifierProduitViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\SupprimerProduitViewModel.cs" />
+    <Compile Include="ViewModels\Vendeur\ModiProfilVendeur.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -402,6 +405,7 @@
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
     <Content Include="Views\Vendeur\Evaluations.cshtml" />
     <Content Include="Views\Vendeur\Index.cshtml" />
+    <Content Include="Views\Vendeur\modificationMDP.cshtml" />
     <Content Include="Views\Vendeur\Profil.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
