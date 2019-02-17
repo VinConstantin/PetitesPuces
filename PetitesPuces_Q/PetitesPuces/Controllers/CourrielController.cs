@@ -638,9 +638,7 @@ namespace PetitesPuces.Controllers
                     new PPDestinataire
                     {
                         NoMsg = msg.NoMsg,
-                        NoDestinataire = noDest.Value,
-                        EtatLu = 0,
-                        Lieu = 1
+                        NoDestinataire = noDest.Value
                     }
                 );
             }

@@ -2,9 +2,9 @@
 @using PetitesPuces.Utilities
 @model PetitesPuces.Models.Panier
 @{
-    decimal poidsTotal = (decimal) Model.Articles.Sum(a => a.NbItems * a.PPProduit.Poids);
+    decimal poidsTotal = Model.GetPoidsTotal();
     double poidsTotalDouble = (double) poidsTotal;
-    decimal prixTotal = (decimal) Model.Articles.Sum(a => a.PPProduit.PrixVente * a.NbItems);
+    decimal prixTotal = Model.getPrixTotal();
     double prixTotalDouble = (double) prixTotal;
     decimal fraisLivraison = 0;
 }

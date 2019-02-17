@@ -13,6 +13,7 @@ using PetitesPuces.Utilities;
 
 using IronPdf;
 using System.Net;
+using PetitesPuces.ViewModels;
 
 namespace PetitesPuces.Controllers
 {
