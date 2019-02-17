@@ -1,0 +1,8 @@
+﻿@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPMessage
+
+@{
+    Model.DescMsg = Model.DescMsg.Replace("\n", "<br/>").ToHtml().ToHtmlString();
+}
+
+@Html.Partial("Courriel/_Courriel", @Model)

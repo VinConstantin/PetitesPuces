@@ -31,6 +31,7 @@
             method: method,
             data: data,
             dataType: 'json',
+            contentType:'applicaiton/json',
             processData: false,
             success: (data) => {
                 if (callback) callback(data);

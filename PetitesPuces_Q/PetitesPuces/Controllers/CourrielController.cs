@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -378,6 +379,55 @@ namespace PetitesPuces.Controllers
             }
         }
 
+
+        [HttpPost]
+        public ActionResult ApercuCourriel(BrouillonViewModel brouillon)
+        {
+            brouillon.NoMsg = -1;
+            PPMessage message = EnregistrerMessage(brouillon);
+
+            try
+            {
+                PPVendeur vendeur =
+                    (from v in context.PPVendeurs
+                        where v.NoVendeur == brouillon.destinataires.FirstOrDefault()
+                        select v).FirstOrDefault();
+                if (vendeur != null)
+                {
+                    message.DescMsg = message.DescMsg.Replace("X%", (vendeur.Pourcentage * 100).ToString() + "%");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            
+
+            RejectAllChanges(); //Au cas ou
+
+            return View(message);
+        }
+
+        private void RejectAllChanges()
+        {
+            var changeset = context.GetChangeSet();
+
+            context.Refresh(RefreshMode.OverwriteCurrentValues, changeset.Deletes);
+            context.Refresh(RefreshMode.OverwriteCurrentValues, changeset.Updates);
+
+            //Undo Inserts
+            foreach (object objToInsert in changeset.Inserts)
+            {
+                context.GetTable(objToInsert.GetType()).DeleteOnSubmit(objToInsert);
+            }
+
+            //Undo deletes
+            foreach (object objToDelete in changeset.Deletes)
+            {
+                context.GetTable(objToDelete.GetType()).InsertOnSubmit(objToDelete);
+            }
+        }
+
         /// <summary>
         /// Marque les courriels lu
         /// </summary>
@@ -624,9 +674,10 @@ namespace PetitesPuces.Controllers
                 select dest);
             context.PPDestinataires.DeleteAllOnSubmit(destinatairesADelete);
 
+            List<PPDestinataire> destinatairesObj = new List<PPDestinataire>(NosDestinatairesAAjouter.Count);
             foreach (var noDest in NosDestinatairesAAjouter)
             {
-                if (noDest < 0 && noDest > -4)
+                if (noDest < 0)
                 {
                     context.PPDestinataires.DeleteAllOnSubmit(msg.PPDestinataires);
                     msg.PPDestinataires.AddRange(ConvToDestinataire(CasSpeciaux((int)noDest), msg));
@@ -634,16 +685,19 @@ namespace PetitesPuces.Controllers
                 }
 
                 if (!noDest.HasValue) continue;
-                context.PPDestinataires.InsertOnSubmit(
-                    new PPDestinataire
-                    {
-                        NoMsg = msg.NoMsg,
-                        NoDestinataire = noDest.Value,
-                        EtatLu = 0,
-                        Lieu = 1
-                    }
-                );
+
+                var objDest = new PPDestinataire
+                {
+                    NoMsg = msg.NoMsg,
+                    NoDestinataire = noDest.Value,
+                    EtatLu = 0,
+                    Lieu = 1
+                };
+                destinatairesObj.Add(objDest);
             }
+
+            msg.PPDestinataires.AddRange(destinatairesObj);
+            context.PPDestinataires.InsertAllOnSubmit(destinatairesObj);
 
             return msg;
         }
@@ -655,7 +709,6 @@ namespace PetitesPuces.Controllers
                 EtatLu = (short) EtatLu.NonLu, Lieu = (short) LieuxCourriel.Reception, NoDestinataire = (int)u.No
             }).ToList();
         }
-
 
         private List<IUtilisateur> CasSpeciaux(long id)
         {

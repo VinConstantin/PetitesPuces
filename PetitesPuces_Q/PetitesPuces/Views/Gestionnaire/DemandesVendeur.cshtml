@@ -9,6 +9,10 @@
     <link rel="stylesheet" type="text/css" href="~/Content/Gestionnaire/DemandesVendeur.css" />
 }
 
+@section scripts {
+    <script type="text/javascript" src="@Url.Content("/Scripts/Courriel/CourrielLib.js")"></script>
+}
+
 <h2 class="text-center">Demandes d'inscription en tant que vendeur</h2>
 
 <div id="demandes">
@@ -28,10 +32,12 @@
                 </div>
             </div>
         </div>
-    @Html.Partial("Gestionnaire/Demandes/_ListeDemandesVendeur", @Model)
+        <div id="lstDemandes">
+            @Html.Partial("Gestionnaire/Demandes/_ListeDemandesVendeur", @Model)
+        </div>
     </div>
 </div>
-
+<button id="wack" class="d-none"></button>
 <div class="modal fade" id="modalDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div id="contenuDetails" class="modal-content">
@@ -44,7 +50,16 @@
     $(document).ready(function() {
         registerEvents();
         let demandes = $('#demandes').find('tbody').find('tr');
-        
+        let idDemande;
+        let tabPartial;
+
+        $('#wack').click(function openTab() {
+            const w = window.open('about:blank');
+            w.document.open();
+            w.document.write(tabPartial);
+            w.document.close();
+        });
+
         function registerEvents() {
             $("#demandes").find('tr').each(function() {
                 const idVendeur = $(this).children().eq(0).text();
@@ -79,18 +94,20 @@
         function remplirModal(partialView) {
             $('#contenuDetails').html(partialView);
             $('#modalDetails').modal('show');
+            start();
         }
 
         function afficherDetailsPourId(noVendeur) {
-            return function() {
+            return function () {
+                idDemande = noVendeur;
                 const actionUrl = `/Gestionnaire/GererDemande/Details/${noVendeur}`;
 
                 $.ajax(actionUrl,
-                {
-                    method: "GET",
-                    success: gererDetails,
-                    error: genererErreur
-                });
+                    {
+                        method: "GET",
+                        success: gererDetails,
+                        error: genererErreur
+                    });
             }            
         }
 
@@ -107,13 +124,15 @@
         }
 
         function afficherAccepterPourId(id) {
-            return function() {
+            return function () {
+                idDemande = id;
                 $.get(`/Gestionnaire/GererDemande/Accepter/${id}`, null, remplirModal);
             };
         }
 
         function afficherRefuserPourId(id) {
             return function() {
+                idDemande = id;
                 $.get(`/Gestionnaire/GererDemande/Refuser/${id}`, null, remplirModal);
             };
         }
@@ -128,21 +147,49 @@
                 const reponseDemande = {
                     Accepte: accepter,
                     Message: message,
-                    Redevances: redevances,
+                    Redevances: redevances / 100,
                 };
 
-                $.post(`/Gestionnaire/GererDemande/${idDemande}`, JSON.stringify(reponseDemande), actualiserDemandes);
+                $.ajax({
+                    url: `/Gestionnaire/GererDemande/${idDemande}`,
+                    method: 'POST',
+                    data: JSON.stringify(reponseDemande),
+                    dataType: 'json',
+                    contentType:'application/json',
+                    processData: false,
+                    complete: (jqxhr) => actualiserDemandes(accepter, jqxhr),
+                });
 
-                $('#modalDetails').modal('show');
+                $('#modalDetails').modal('hide');
             }
 
-            function actualiserDemandes() {
+            function actualiserDemandes(accepter, jqxhr) {
+                const destinataire = idDemande;
+                const objet = accepter ? 'Votre demande a été acceptée!' : 'Votre demande a été refusée';
+                let corps = $('#tbMsg').val().trim();
+                corps = (!corps) ? (accepter ? $('#accepterDefault').val() : $('#refuserDefault').val()) : corps;
+                const courriel = new Courriel.Message(objet, corps, [destinataire]);
                 $.get(`/Gestionnaire/DemandesVendeur`, null, afficherDemandes);
+                //if (jqxhr.status === 200) { 
+                    $.ajax({
+                        url: `/Courriel/ApercuCourriel`,
+                        method: 'POST',
+                        data: JSON.stringify(courriel),
+                        dataType: 'json',
+                        contentType:'application/json',
+                        processData: false,
+                        complete: function (partial) {
+                            tabPartial = partial.responseText;
+                            $('#wack').trigger('click');
+                        },
+                    });
+                //}
             }
 
             function afficherDemandes(partialView) {
-                $('#demandes').html(partialView);
-                demandes = $('#demandes').find('tbody').find('tr');
+                $('#lstDemandes').html(partialView);
+                demandes = $('#lstDemandes').find('tbody').find('tr');
+                registerEvents();
             }
         }
     });
