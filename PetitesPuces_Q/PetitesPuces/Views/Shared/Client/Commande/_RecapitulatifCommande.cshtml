@@ -6,8 +6,9 @@
     ViewBag.Title = "Commander";
     decimal SousTotal = Model.getPrixTotal();
     decimal FraisLivraison = InfoCommande.PrixLivraison??0;
-    decimal TPS = (SousTotal + FraisLivraison) * (decimal) 0.05;
-    decimal TVQ = (SousTotal + FraisLivraison) * (decimal) 0.09975;
+
+    decimal TPS = Model.GetTPS(FraisLivraison);
+    decimal TVQ = Model.GetTVQ(FraisLivraison);
 
     decimal PrixTotal = SousTotal + FraisLivraison + TPS + TVQ;
 }
@@ -31,12 +32,16 @@
             <p class="row">
                 <div class="col-xs-6">Sous total:</div>
                 <div class="col-xs-6"> @Formatter.Money(SousTotal+FraisLivraison)</div></p>
+            @if (Model.Vendeur.Province == "QC")
+            {               
+                <p class="row">
+                    <div class="col-xs-6">tvq :</div>
+                    <div class="col-xs-6"> @Formatter.Money(TVQ)</div></p>
+            }
+
             <p class="row">
                 <div class="col-xs-6">TPS :</div>
                 <div class="col-xs-6"> @Formatter.Money(TPS)</div></p>
-            <p class="row">
-                <div class="col-xs-6">tvq :</div>
-                <div class="col-xs-6"> @Formatter.Money(TVQ)</div></p>
 
             <div class="row">
                 <br/><hr/>

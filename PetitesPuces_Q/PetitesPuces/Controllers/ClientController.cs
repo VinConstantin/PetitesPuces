@@ -674,8 +674,8 @@ namespace PetitesPuces.Controllers
                 CoutLivraison = InfoCommande.PrixLivraison,
                 TypeLivraison = (short) InfoCommande.CodeLivraison,
                 MontantTotAvantTaxes = InfoCommande.Panier.getPrixTotal() + InfoCommande.PrixLivraison,
-                TPS = (decimal) ((double) (InfoCommande.Panier.getPrixTotal() + InfoCommande.PrixLivraison) * 0.05),
-                TVQ = (decimal) ((double) (InfoCommande.Panier.getPrixTotal() + InfoCommande.PrixLivraison) * 0.0975),
+                TPS = InfoCommande.Panier.GetTPS((decimal) InfoCommande.PrixLivraison),
+                TVQ = InfoCommande.Panier.GetTVQ((decimal) InfoCommande.PrixLivraison),
                 PoidsTotal = InfoCommande.Panier.GetPoidsTotal(),
                 Statut = 'T',
                 NoAutorisation = NoAutorisation
