@@ -689,9 +689,7 @@ namespace PetitesPuces.Controllers
                 var objDest = new PPDestinataire
                 {
                     NoMsg = msg.NoMsg,
-                    NoDestinataire = noDest.Value,
-                    EtatLu = 0,
-                    Lieu = 1
+                    NoDestinataire = noDest.Value
                 };
                 destinatairesObj.Add(objDest);
             }
