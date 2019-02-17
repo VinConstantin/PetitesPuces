@@ -33,14 +33,14 @@
 
     var style = destinataire.EtatLu == 0?"nonLu": "";
 }
-<a href="#" class="list-group-item @style" onclick="loadCourriel(@Model.NoMsg);" expediteur="@expediteur.DisplayName" objet="@Model.objet" date="@Model.dateEnvoi">
+<a href="javascript:void(0)" class="list-group-item @style" onclick="loadCourriel(@Model.NoMsg);" expediteur="@expediteur.DisplayName" objet="@Model.objet" date="@Model.dateEnvoi">
     <div class="row">
         <div class="col-lg-4">
             <input onclick="stopPropagation();" id="@Model.NoMsg" type="checkbox">
             <span class="input" style="min-width: 120px; display: inline-block;">@expediteur.DisplayName</span>
         </div>
         <div class="col-lg-4">
-            <span class="">@Model.objet</span>
+            <span class="">@(!string.IsNullOrWhiteSpace(Model.objet) ? Model.objet : "Aucun objet")</span>
         </div>
         <div class="col-lg-4">
             <span class="pull-right">

@@ -1,0 +1,244 @@
+@using System.ServiceModel
+@using PetitesPuces.Models
+@using PetitesPuces.Securite
+@model PetitesPuces.ViewModels.Courriel.DestinataireViewModel
+<style>
+    .sca {
+        max-height: 50vh; height: 50vh; overflow-y: scroll;
+    }
+</style>
+<div class="modal-content">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <button id="btnTous" type="button" class="btn btn-success">
+                    <span id="icoTous" class="glyphicon glyphicon-unchecked"></span> Tout le monde
+                </button>
+                <h3>Mes Clients</h3>
+                <input type="text" class="form-control" id="filterClient"/>
+                <div class="sca" style="max-height: 38vh;">
+                    <table id="tableClients" class="table table-hover">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <h3>Gestionnaire</h3>
+                <table id="tableGestionnaire" class="table table-hover">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-success" style="visibility: hidden">
+                    <span class="glyphicon glyphicon-unchecked"></span>
+                </button>
+                <h3>Destinataires</h3>
+                <input type="text" class="form-control" id="filterDestinataire"/>
+                <div style="width: 100%" class="col-lg-4">
+                    <div class="well sca">
+                        <table id="tableDestinataire" class="table table-hover">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" onclick="ConfirmerAjout()">Ajouter</button>
+    </div>
+</div>
+<script>
+    function ConfirmerAjout() {
+        $('#modalAjoutDestinataire').modal('hide');
+        lstDestinatairesTemp.forEach(function(temp) {
+            let blnEstPresent = false;
+            lstDestinataires.forEach(function(current) {
+                if (temp.No == current.No) 
+                    blnEstPresent = true;
+            });
+            if (!blnEstPresent){
+                if (temp.No == -1) {
+                    lstDestinataires.length = 0;
+                }
+                lstDestinataires.push(temp);              
+            }
+        });
+        afficherDestinataire();
+    }  
+    $(document).ready(function () {
+        lstClients = [];
+        lstGestionnaires = [];
+        lstDestinatairesTemp = [];
+
+        @foreach (var client in Model.Clients.Where(c=>c.PPCommandes.Any(com=>com.NoVendeur==SessionUtilisateur.UtilisateurCourant.No)))
+        {
+            <text>
+                lstClients.push({ No : @client.No, Nom : '@client.DisplayName' });
+            </text>
+        }
+        lstGestionnaires.push({ No: 101, Nom: 'Gestionnaire' });
+        //tous les client
+        $("#btnTous").click(function() {
+            //Ajouter
+            if ($(this).hasClass('btn-success')) {
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTouss").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $("#tableClients").hide();
+                $("#tableGestionnaire").hide();
+                
+
+                let i = lstDestinatairesTemp.length
+                while (i--) {
+                    let temp = lstDestinatairesTemp[i];
+                    if (temp.No.toString().trim() === '100')
+                        lstGestionnaires.push(temp);
+                    else
+                        lstClients.push(temp);
+                    let index = lstDestinatairesTemp.indexOf(temp);
+                    lstDestinatairesTemp.splice(index, 1);
+                }
+                let user = {No:-1, Nom:'<span class="fas fa-user-friends"></span> Tout le monde'}
+                lstDestinatairesTemp.push(user);
+                afficherAllListes();
+            } 
+            //retirer
+            else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#icoTous").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');                
+                $("#tableClients").show();
+                $("#tableGestionnaire").show();
+
+                let user;
+                lstDestinatairesTemp.forEach(function(temp) {
+                    if (temp.No === -1) {
+                        user = temp;
+                        return;
+                    }
+                });
+                let index = lstDestinatairesTemp.indexOf(user);
+                lstDestinatairesTemp.splice(index, 1);    
+                afficherAllListes();
+            }
+        });
+        afficherAllListes();
+    });
+
+    function bindOnclick() {
+        $('a .client').click(function() {
+            let id = ($(this).attr('id'));
+            let user;
+            lstClients.forEach(function(temp) {
+                if (temp.No.toString().trim() === id.trim()) {
+                    user = temp;
+                    return;
+                }
+            });
+            let index = lstClients.indexOf(user);
+            lstClients.splice(index, 1);
+            lstDestinatairesTemp.push(user);
+            afficherAllListes();
+        });
+        $('a .gestionnaire').click(function() {
+            let id = ($(this).attr('id'));
+            let user;
+            lstGestionnaires.forEach(function(temp) {
+                if (temp.No.toString().trim() === id.trim()) {
+                    user = temp;
+                    return;
+                }
+            });
+            let index = lstGestionnaires.indexOf(user);
+            lstGestionnaires.splice(index, 1);
+            lstDestinatairesTemp.push(user);
+            afficherAllListes();
+        });
+        $('a .destinataire').click(function() {
+            let id = ($(this).attr('id'));
+            let user;
+            lstDestinatairesTemp.forEach(function(temp) {
+                if (temp.No.toString().trim() === id.trim()) {
+                    user = temp;
+                    return;
+                }
+            });
+            let index = lstDestinatairesTemp.indexOf(user);
+            lstDestinatairesTemp.splice(index, 1);          
+            
+            if (id === '100')
+                lstGestionnaires.push(user);
+            else
+                lstClients.push(user);
+            afficherAllListes();
+        });       
+    }
+
+    function afficherAllListes() {
+        afficherListeClient();
+        afficherListeGestionnaire();
+        afficherListeDestinataire();
+        bindOnclick();
+    }
+
+    function afficherListeClient() {
+        $('#tableClients tr').remove();
+        lstClients.forEach(function(client) {
+            const table = $('#tableClients');
+            table.append(`<tr id='${client.No}'>` +
+                `<td>${client.Nom}</td><td><a>` +
+                `<span id='${client.No}' class='glyphicon glyphicon-plus pull-right client'></span></a></td>` +
+                `</tr>`);
+        });
+    }
+    function afficherListeGestionnaire() {
+        $('#tableGestionnaire tr').remove();
+        lstGestionnaires.forEach(function(gest) {
+            const table = $('#tableGestionnaire');
+            table.append(`<tr id='${gest.No}'>` +
+                `<td>${gest.Nom}</td><td><a>` +
+                `<span id='${gest.No}' class='glyphicon glyphicon-plus pull-right gestionnaire'></span></a></td>` +
+                `</tr>`);
+        });
+    }
+    function afficherListeDestinataire() {
+        $('#tableDestinataire tr').remove();
+        const table = $('#tableDestinataire');  
+        if(lstDestinatairesTemp.length>0)
+        {
+            lstDestinatairesTemp.forEach(function(user) {         
+                const removeBtn = user.No > 0 ? `<span id='${user.No}' style='color:red;' class='glyphicon glyphicon-minus pull-right destinataire'></span>` : "";
+            
+                table.append(`<tr id='${user.No}'>` +
+                    `<td>${user.Nom}</td><td><a>` +
+                    `${removeBtn}</a></td>` +
+                    `</tr>`);
+            });
+        }
+        else {
+            table.append(`<tr><td><div class="alert alert-warning">Aucun destinataire de selectionné</div></td></tr>`);
+        }
+    }
+</script>
+
+<script>
+    //les filtres pour les tables
+    $(document).ready(function() {
+        $("#filterClient").on("keyup",
+            function() {
+                var value = $(this).val().toLowerCase();
+                $("#tableClients tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+        $("#filterDestinataire").on("keyup",
+            function() {
+                var value = $(this).val().toLowerCase();
+                $("#tableDestinataire tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+    });
+</script>

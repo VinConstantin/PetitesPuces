@@ -1,0 +1,44 @@
+@model dynamic
+@{
+    int PAGERSIZE = 8;
+}
+<div class="text-center">
+    <ul class="pagination">
+        <li class="page-item"><a onclick="previousPage()" class="page-link">&laquo</a></li>
+        @if (ViewBag.NbPage <= PAGERSIZE)
+        {
+            for (int i = 1; i <= ViewBag.NbPage; i++)
+             {
+                 string cssClass = i.Equals(ViewBag.NoPage) ? "page-item active" : "page-item";
+                 <li class="@cssClass"><a id="@i" class="page-link" onclick="changePage(this)">@i</a></li>
+             }
+        }
+        else
+        {
+            if (ViewBag.NoPage-(PAGERSIZE/2) > 1)
+            {
+                <li class="page-item"><a id="1" class="page-link" onclick="changePage(this)">1</a></li>
+                <li class="page-item disabled"><a class="page-link">...</a></li>
+            }
+            for (int i = @ViewBag.NoPage-PAGERSIZE/2; i < @ViewBag.NoPage; i++)
+            {
+                if (i > 0)
+                {
+                    string cssClass = i.Equals(ViewBag.NoPage) ? "page-item active" : "page-item";
+                    <li class="@cssClass"><a id="@i" class="page-link" onclick="changePage(this)">@i</a></li>
+                }
+            }
+            for (int i = @ViewBag.NoPage; i <= ViewBag.NoPage +PAGERSIZE/2 && i <= ViewBag.NbPage; i++)
+            {
+                string cssClass = i.Equals(ViewBag.NoPage) ? "page-item active" : "page-item";
+                <li class="@cssClass"><a id="@i" class="page-link" onclick="changePage(this)">@i</a></li>
+            }
+            if (ViewBag.NoPage+(PAGERSIZE/2) < @ViewBag.NbPage)
+            {
+                <li class="page-item disabled"><a class="page-link">...</a></li>
+                <li class="page-item"><a id="@ViewBag.NbPage" class="page-link" onclick="changePage(this)">@ViewBag.NbPage</a></li>
+            }
+        }
+        <li class="page-item"><a onclick="nextPage()" class="page-link">&raquo</a></li>
+    </ul>
+</div>

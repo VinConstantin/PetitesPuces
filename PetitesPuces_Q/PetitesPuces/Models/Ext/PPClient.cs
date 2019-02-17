@@ -21,7 +21,12 @@ namespace PetitesPuces.Models
 
         public string DisplayName
         {
-            get { return Nom + ", " + Prenom; }
+            get { 
+                if(string.IsNullOrEmpty(Nom))
+                {
+                    return AdresseEmail.Split('@')[0];
+                } return Nom + ", " + Prenom; 
+            }
         }
 
         public DateTime DateDerniereActivite

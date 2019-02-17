@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -271,7 +272,15 @@ namespace PetitesPuces.Controllers
             ViewBag.NoClient = NOCLIENT;
             ViewBag.NoVendeur = No;
             List<Panier> lstPaniers = GetPaniersClient(NOCLIENT);
-            //List<Panier> lstPaniers = new List<Panier>();
+
+            try
+            {
+                ViewBag.NoVendeur = No==0?lstPaniers.FirstOrDefault().Vendeur.No : No;
+            }
+            catch (Exception e)
+            {
+                ViewBag.NoVendeur = 0;
+            }
             return View(lstPaniers);
         }
 
@@ -431,20 +440,22 @@ namespace PetitesPuces.Controllers
         {
             Panier panier = GetPanierByVendeurClient(noVendeur);
 
+            //it's bad, but it works
             if (!CheckDisponibiliteArticlesPanier(noVendeur))
-                return RedirectToRoute("MonPanier", new {No = noVendeur});
-
-            return PartialView("Client/Commande/_Livraison", panier);
+                return Content("<script>window.location= '/Client/MonPanier?No="+noVendeur+"'</script>");
+            
+            return PartialView("Client/Commande/_Livraison",panier);
         }
 
         public ActionResult Paiement(int noVendeur)
         {
             Panier panier = GetPanierByVendeurClient(noVendeur);
-
+            
+            //it's bad, but it works
             if (!CheckDisponibiliteArticlesPanier(noVendeur))
-                return RedirectToAction("MonPanier", new {No = noVendeur});
-
-            return PartialView("Client/Commande/_Paiement", panier);
+                return Content("<script>window.location= '/Client/MonPanier?No="+noVendeur+"'</script>");
+            
+            return PartialView("Client/Commande/_Paiement",panier);
         }
 
         public ActionResult Confirmation(int noVendeur)
@@ -454,9 +465,10 @@ namespace PetitesPuces.Controllers
                       && articles.NoVendeur == noVendeur
                 orderby articles.DateCreation ascending
                 select articles;
-
+            
+            //it's bad, but it works
             if (!CheckDisponibiliteArticlesPanier(noVendeur))
-                return RedirectToAction("MonPanier", new {No = noVendeur});
+                return Content("<script>window.location= '/Client/MonPanier?No="+noVendeur+"'</script>");
 
             Panier panier = new Panier
             {
@@ -676,6 +688,24 @@ namespace PetitesPuces.Controllers
             if (!CheckDisponibiliteArticlesPanier(InfoCommande.Vendeur.No))
                 return View("ErreurCommande", 9999);
 
+            Panier panVerif = GetPanierByVendeurClient((int) InfoCommande.Vendeur.No);
+            if(panVerif.Articles.Count != InfoCommande.Panier.Articles.Count)
+                return View("ErreurCommande", 9999);
+            foreach (PPArticlesEnPanier article in panVerif.Articles)
+            {
+                PPArticlesEnPanier artVerif = InfoCommande.Panier.Articles.First(a => a.NoProduit == article.NoProduit);
+                
+                if(artVerif == null)
+                    return View("ErreurCommande", 9999);
+                if(artVerif.NbItems != article.NbItems)
+                    return View("ErreurCommande", 9999);
+            }
+            
+            {
+                if(GetPanierByVendeurClient((int) InfoCommande.Vendeur.No) == InfoCommande.Panier)
+                    return View("ErreurCommande", 9999);
+                
+            }
             if (NoAutorisation == "9999" || NoAutorisation == "1" || NoAutorisation == "2" || NoAutorisation == "3")
             {
                 int intNoAutorisation;
@@ -694,7 +724,7 @@ namespace PetitesPuces.Controllers
                 context.PPHistoriquePaiements.InsertOnSubmit(paiement);
 
                 long noDetail = GetNextNoDetailsCommande();
-                foreach (PPArticlesEnPanier article in InfoCommande.Panier.Articles)
+                foreach (PPArticlesEnPanier article in GetPanierByVendeurClient((int)InfoCommande.Panier.Vendeur.No).Articles)
                 {
                     PPArticlesEnPanier articleASupprimer =
                         (from c in context.PPArticlesEnPaniers
@@ -724,6 +754,9 @@ namespace PetitesPuces.Controllers
                 }
 
                 context.SubmitChanges();
+
+                genererPDF(commande);
+
                 return RedirectToAction("Recu", "Client",
                     new RouteValueDictionary(new {noCommande = commande.NoCommande}));
             }
@@ -732,6 +765,29 @@ namespace PetitesPuces.Controllers
                 Console.WriteLine(e);
                 return View("ErreurCommande", 101);
             }
+        }
+
+        private void genererPDF(PPCommande commande)
+        {
+            string view;
+            PartialViewResult vr = PartialView("Vendeur/_RecuCommande", commande);
+
+            using (var sw = new StringWriter())
+            {
+                vr.View = ViewEngines.Engines
+                  .FindPartialView(ControllerContext, vr.ViewName).View;
+
+                var vc = new ViewContext(
+                  ControllerContext, vr.View, vr.ViewData, vr.TempData, sw);
+                vr.View.Render(vc, sw);
+
+                view = sw.GetStringBuilder().ToString();
+            }
+
+            IronPdf.HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
+            var PDF = Renderer.RenderHtmlAsPdf(view);
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + commande.NoCommande + ".pdf";
+            PDF.TrySaveAs(path);
         }
 
         [System.Web.Http.HttpPost]

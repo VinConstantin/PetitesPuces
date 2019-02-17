@@ -258,6 +258,10 @@ namespace PetitesPuces.Controllers
             return View();
         }
 
+        public ActionResult modiOubliMDP()
+        {
+            return View();
+        }
         public ActionResult Catalogue()
         {
             return RedirectToAction("Catalogue", "Client");

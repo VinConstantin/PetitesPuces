@@ -1,8 +1,12 @@
 @using PetitesPuces.Models
 @model List<PetitesPuces.Models.PPMessage>
+
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="tab-content">
+            <div class="btn-group">
+                <button type="button" onclick="supprimer();" class="btn btn-info" ><span class="glyphicon glyphicon glyphicon-trash"></span> Supprimer</button>
+            </div>
             @Html.Partial("Courriel/_headerBoite", "Brouillon")
             <div class="tab-pane fade in active" id="home">
                 <div class="list-group">
@@ -10,7 +14,7 @@
                     {
                         foreach (PPMessage message in Model)
                         {
-                            @Html.Partial("Courriel/_CourrielInbox", message)
+                            @Html.Partial("Courriel/_CourrielBrouillon", message)
                         }
                     }
                     else
@@ -22,3 +26,41 @@
         </div>
     </div>
 </div>
+
+
+<script>   
+    function supprimer() {
+        let lstIdsChecked = getCheckedInput();
+        $.ajax({
+            url: URLPATH + "/Courriel/Supprimer",
+            type: "DELETE",
+            data: {
+                NoCourriel : lstIdsChecked
+            }, 
+            success: function(result) {
+                loadBrouillons();
+            },
+            error: function(req, status, err) {
+                loadBrouillons();
+            }
+        });
+        uncheckAllInput();
+    }
+
+    function  getCheckedInput() {
+        let lstIdsChecked = new Array();
+        $("input:checkbox:not(#checkAll)").each(function() {
+            const $this = $(this);
+            if ($this.is(":checked")) {
+                lstIdsChecked.push($this.attr("id"));
+            }
+        });
+        return lstIdsChecked;
+    }
+    function uncheckAllInput() {
+        $("input:checkbox").prop('checked', false);
+    }
+    $("#checkAll").change(function () {
+        $("input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+</script>

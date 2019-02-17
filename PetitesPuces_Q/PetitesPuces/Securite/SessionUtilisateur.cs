@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
 using PetitesPuces.Models;
 
 namespace PetitesPuces.Securite
@@ -9,6 +10,11 @@ namespace PetitesPuces.Securite
     public static class SessionUtilisateur
     {
         private static readonly BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
+
+        public static long? NoUtilisateur
+        {
+            get { return (long?) HttpContext.Current.Session["userId"]; }
+        }
 
         public static IUtilisateur UtilisateurCourant
         {

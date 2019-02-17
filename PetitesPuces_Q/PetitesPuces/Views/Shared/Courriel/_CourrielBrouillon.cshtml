@@ -1,0 +1,35 @@
+﻿@using PetitesPuces.Models
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPMessage
+@*
+    Représente un brouillon de courriel
+*@
+
+<a href="javascript:void(0)" class="list-group-item" onclick="loadBrouillon(@Model.NoMsg); stopPropagation();" expediteur="@Model.Expediteur.DisplayName" objet="@Model.objet" date="@Model.dateEnvoi">
+    <div class="row">
+        <div class="col-lg-4">
+            <input onclick="stopPropagation();" id="@Model.NoMsg" type="checkbox">
+            <span class="text-danger" style="margin-right: 1rem;">Brouillon</span>
+            <span class="input" style="min-width: 120px; display: inline-block; text-overflow: ellipsis;">@Model.FormattedDestinataires</span>
+        </div>
+        <div class="col-lg-4">
+            <span class="">@(!string.IsNullOrWhiteSpace(Model.objet) ? Model.objet : "Aucun objet")</span>
+        </div>
+        <div class="col-lg-4">
+            <span class="pull-right">
+                @if (Model.FichierJoint != null)
+                {
+                    <span class="glyphicon glyphicon-paperclip"></span>
+                }
+                @if (@Model.dateEnvoi.Value.Date == DateTime.Today) //si la meme journee, afficher l'heure, sinon la date
+                {
+                    <span class="badge">@Model.dateEnvoi.ToShortTimeString()</span>
+                }
+                else
+                {
+                    <span class="badge">@Model.dateEnvoi.ToShortDateString()</span>
+                }
+            </span>
+        </div>
+    </div>
+</a>

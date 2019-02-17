@@ -29,7 +29,7 @@
                     </div>
                 </div>
 
-                @foreach (PPVendeur vendeur in @Model.Vendeurs)
+                @foreach (PPVendeur vendeur in @Model.Vendeurs.Where(v=>v.Statut==1))
                 {
                     @Html.Partial("Client/Catalogue/_VendeurCarousel", vendeur)
                 }

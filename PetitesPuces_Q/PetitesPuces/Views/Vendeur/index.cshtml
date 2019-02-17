@@ -64,8 +64,8 @@
 <div class="well text-center col-xs-10 col-xs-offset-1">
     @if (Model.Commandes.Count == 0)
     {
-        <h4 class="text-center col-xs-12">Aucune commande à traiter</h4>
-    }    
+        <h5 class="text-center col-xs-12">Aucune commande à traiter</h5>
+    }
     else
     {
         <table class="table m-0 bg-light">
@@ -116,30 +116,37 @@
 <h3 class="text-center col-xs-12">Paniers</h3>
 
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    <table class="table m-0 bg-light">
-        <tr>
-            <th class="rowHead">
-                Nom du client
-            </th>
-            <th>
-                Date de création
-            </th>
-            <th>
-                Nb d'items
-            </th>
-            <th>
-                Total
-            </th>
-        </tr>
-    </table>
-    <div class="tableau">
-        <table class="table text-right m-0 bg-light">
-            @foreach (var panier in Model.Paniers)
-            {
-                @Html.Partial("Vendeur/_Panier", panier)
-            }
+    @if (Model.Commandes.Count == 0)
+    {
+        <h5 class="text-center col-xs-12">Aucun panier de client</h5>
+    }
+    else
+    {
+        <table class="table m-0 bg-light">
+            <tr>
+                <th class="rowHead">
+                    Nom du client
+                </th>
+                <th>
+                    Date de création
+                </th>
+                <th>
+                    Nb d'items
+                </th>
+                <th>
+                    Total
+                </th>
+            </tr>
         </table>
-    </div>
+        <div class="tableau">
+            <table class="table text-right m-0 bg-light">
+                @foreach (var panier in Model.Paniers)
+                {
+                    @Html.Partial("Vendeur/_Panier", panier)
+                }
+            </table>
+        </div>
+    }
     <div class="text-left mt-2">
         <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("GestionPaniers", "Vendeur" )'">Gérer les paniers</button>
     </div>

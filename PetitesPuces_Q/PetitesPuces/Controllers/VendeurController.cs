@@ -6,11 +6,13 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PetitesPuces.Securite;
-using PetitesPuces.ViewModels;
+using PetitesPuces.Utilities;
+
+using IronPdf;
+using System.Net;
 
 namespace PetitesPuces.Controllers
 {
@@ -71,11 +73,37 @@ namespace PetitesPuces.Controllers
             return View(viewModel);
         }
 
-        public ActionResult InfoCommande(int No)
+        [Securise(RolesUtil.CLIENT, RolesUtil.VEND)]
+        public ActionResult InfoCommande(int id)
         {
-            List<PPCommande> commandes = GetCommandesVendeurs(10);
-            PPCommande model = commandes.Where(c => c.NoCommande == No).FirstOrDefault();
-            return View(model);
+            var user = SessionUtilisateur.UtilisateurCourant;
+
+            var query = from commandes in context.PPCommandes
+                        where commandes.NoCommande == id
+                        select commandes;
+
+            var commande = query.FirstOrDefault();
+
+            if (user is PPVendeur)
+            {
+                PPVendeur vendeur = (PPVendeur)user;
+                if(commande.PPVendeur.NoVendeur != vendeur.NoVendeur)
+                    return new HttpStatusCodeResult(400, "Id commande invalide");
+            }
+            else if (user is PPClient)
+            {
+                PPClient client = (PPClient)user;
+                if(commande.PPClient.NoClient != client.NoClient)
+                    return new HttpStatusCodeResult(400, "Id commande invalide");
+            }
+
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + id + ".pdf";
+
+            if (!System.IO.File.Exists(path))
+                genererPDF(commande);
+
+            return File(path, "application/pdf");
+            
         }
 
         [HttpGet]
@@ -186,20 +214,42 @@ namespace PetitesPuces.Controllers
             return PartialView("Vendeur/ModalModifierProduit", viewModel);
         }
 
-        public ActionResult ModalSupprimerProduit(int NoProduit) //TODO
+        public ActionResult ModalSupprimerProduit(long NoProduit) //TODO
         {
-            return PartialView("Vendeur/ModalSupprimerProduit", NoProduit);
+            var produit = (from produits in context.PPProduits
+                           where produits.NoProduit == NoProduit
+                           select produits).FirstOrDefault();
+
+            string strBody = "<p>Êtes-vous sûr de vouloir supprimer ce produit?</p>";
+
+            if (produit.PPArticlesEnPaniers.Count() != 0)
+            {
+                strBody += "<p>Ce produit est présent dans un ou plusieurs paniers</p>";
+            }
+
+            if (produit.PPDetailsCommandes.Count() != 0)
+            {
+                strBody += "<p>Ce produit est présent dans des commandes donc il sera désactivé</p>";
+            }
+
+            var viewModel = new SupprimerProduitViewModel
+            {
+                NoProduit = NoProduit,
+                StrBody = StringExtension.ToHtml(strBody)
+            };
+
+            return PartialView("Vendeur/ModalSupprimerProduit", viewModel);
         }
 
         public ActionResult Evaluations(int NoProduit)
         {
             List<PPEvaluation> evaluations = (from e in context.PPEvaluations
-                where e.NoProduit == NoProduit && e.PPProduit.NoVendeur == NoVendeur
-                select e).ToList();
+                                              where e.NoProduit == NoProduit && e.PPProduit.NoVendeur == NoVendeur
+                                              select e).ToList();
 
             PPProduit produit = (from p in context.PPProduits
-                where p.NoProduit == NoProduit
-                select p).FirstOrDefault();
+                                 where p.NoProduit == NoProduit
+                                 select p).FirstOrDefault();
 
             if (produit == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -207,40 +257,45 @@ namespace PetitesPuces.Controllers
             return View(new Tuple<List<PPEvaluation>, PPProduit>(evaluations, produit));
         }
 
-        public void ModifierProduit() //TODO
+        [HttpPost]
+        public long ModifierProduit() //TODO
         {
             NameValueCollection nvc = Request.Form;
 
+            var produit = (from produits in context.PPProduits
+                           where produits.NoProduit == long.Parse(nvc["NoProduit"])
+                           select produits).FirstOrDefault();
 
-            PPProduit produit = new PPProduit
-            {
-                NoProduit = long.Parse(nvc["NoProduit"]),
-                DateCreation = DateTime.Parse(nvc["DateCreation"]),
-                NoCategorie = int.Parse(nvc["NoCategorie"]),
-                NombreItems = short.Parse(nvc["NombreItems"]),
-                Nom = nvc["Nom"],
-                PrixVente = decimal.Parse(nvc["PrixVente"]),
-                PrixDemande = decimal.Parse(nvc["PrixDemande"]),
-                Poids = decimal.Parse(nvc["Poids"]),
-                Description = nvc["Description"],
-                Disponibilité = nvc["Disponibilite"] == "on" ? true : false,
-                NoVendeur = NoVendeur,
-                DateMAJ = DateTime.Parse(nvc["DateCreation"])
-            };
-
+            produit.NoCategorie = int.Parse(nvc["NoCategorie"]);
+            produit.NombreItems = short.Parse(nvc["NombreItems"]);
+            produit.Nom = nvc["Nom"];
+            produit.PrixDemande = decimal.Parse(nvc["PrixDemande"]);
+            produit.Poids = decimal.Parse(nvc["Poids"]);
+            produit.Description = nvc["Description"];
+            produit.Disponibilité = nvc["Disponibilite"] == "on" ? true : false;
+            produit.DateMAJ = DateTime.Today;
+            decimal prixVente;
             DateTime date;
-            if (DateTime.TryParse(nvc["DateVente"], out date)) produit.DateVente = date;
-
-            HttpPostedFileBase hpfb = Request.Files.Get(0);
-            if (hpfb.FileName != "")
+            if (decimal.TryParse(nvc["PrixVente"], out prixVente) &&
+                DateTime.TryParse(nvc["DateVente"], out date))
             {
-                string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
-                string filename = produit.NoProduit.ToString() + Path.GetExtension(hpfb.FileName);
-                produit.Photo = filename;
-                hpfb.SaveAs(Path.Combine(path, filename));
+                produit.PrixVente = prixVente;
+                produit.DateVente = date;
             }
 
-            context.PPProduits.InsertOnSubmit(produit);
+            if (Request.Files.Count != 0)
+            {
+                HttpPostedFileBase hpfb = Request.Files.Get(0);
+
+                if (hpfb.FileName != "")
+                {
+                    string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
+                    string filename = produit.NoProduit.ToString() + Path.GetExtension(hpfb.FileName);
+                    produit.Photo = filename;
+                    hpfb.SaveAs(Path.Combine(path, filename));
+                }
+            }
+
             try
             {
                 context.SubmitChanges();
@@ -249,15 +304,53 @@ namespace PetitesPuces.Controllers
             {
                 Console.WriteLine(e);
             }
+            return produit.NoProduit;
+        }
+
+        private void genererPDF(PPCommande commande)
+        {
+            string view;
+            PartialViewResult vr = PartialView("Vendeur/_RecuCommande", commande);
+
+            using (var sw = new StringWriter())
+            {
+                vr.View = ViewEngines.Engines
+                  .FindPartialView(ControllerContext, vr.ViewName).View;
+
+                var vc = new ViewContext(
+                  ControllerContext, vr.View, vr.ViewData, vr.TempData, sw);
+                vr.View.Render(vc, sw);
+
+                view = sw.GetStringBuilder().ToString();
+            }
+
+            IronPdf.HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
+            var PDF = Renderer.RenderHtmlAsPdf(view);
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + commande.NoCommande + ".pdf";
+            PDF.TrySaveAs(path);
         }
 
         public void SupprimerProduit(int NoProduit) //TODO
         {
-            var query = from produit in context.PPProduits
-                where produit.NoProduit == NoProduit
-                select produit;
+            var produit = (from produits in context.PPProduits
+                           where produits.NoProduit == NoProduit
+                           select produits).FirstOrDefault();
 
-            context.PPProduits.DeleteOnSubmit(query.FirstOrDefault());
+            produit.NombreItems = 0;
+
+            if (produit.PPArticlesEnPaniers.Count() != 0)
+            {
+                context.PPArticlesEnPaniers.DeleteAllOnSubmit(produit.PPArticlesEnPaniers);
+            }
+
+            if (produit.PPDetailsCommandes.Count() != 0)
+            {
+                produit.Disponibilité = null;
+            }
+            else
+            {
+                context.PPProduits.DeleteOnSubmit(produit);
+            }
 
             try
             {
@@ -315,7 +408,6 @@ namespace PetitesPuces.Controllers
                 NoCategorie = int.Parse(nvc["NoCategorie"]),
                 NombreItems = short.Parse(nvc["NombreItems"]),
                 Nom = nvc["Nom"],
-                PrixVente = decimal.Parse(nvc["PrixVente"]),
                 PrixDemande = decimal.Parse(nvc["PrixDemande"]),
                 Poids = decimal.Parse(nvc["Poids"]),
                 Description = nvc["Description"],
@@ -323,17 +415,26 @@ namespace PetitesPuces.Controllers
                 NoVendeur = NoVendeur,
                 DateMAJ = DateTime.Parse(nvc["DateCreation"])
             };
-
+            decimal prixVente;
             DateTime date;
-            if (DateTime.TryParse(nvc["DateVente"], out date)) produit.DateVente = date;
-
-            HttpPostedFileBase hpfb = Request.Files.Get(0);
-            if (hpfb.FileName != "")
+            if (decimal.TryParse(nvc["PrixVente"], out prixVente) &&
+                DateTime.TryParse(nvc["DateVente"], out date))
             {
-                string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
-                string filename = produit.NoProduit.ToString() + Path.GetExtension(hpfb.FileName);
-                produit.Photo = filename;
-                hpfb.SaveAs(Path.Combine(path, filename));
+                produit.PrixVente = prixVente;
+                produit.DateVente = date;
+            }
+
+            if (Request.Files.Count != 0)
+            {
+                HttpPostedFileBase hpfb = Request.Files.Get(0);
+
+                if (hpfb.FileName != "")
+                {
+                    string path = AppDomain.CurrentDomain.BaseDirectory + "/images/produits/";
+                    string filename = produit.NoProduit.ToString() + Path.GetExtension(hpfb.FileName);
+                    produit.Photo = filename;
+                    hpfb.SaveAs(Path.Combine(path, filename));
+                }
             }
 
             context.PPProduits.InsertOnSubmit(produit);

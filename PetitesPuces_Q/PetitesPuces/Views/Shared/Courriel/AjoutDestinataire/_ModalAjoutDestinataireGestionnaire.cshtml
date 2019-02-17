@@ -1,0 +1,379 @@
+@using System.ServiceModel
+@using PetitesPuces.Models
+@model PetitesPuces.ViewModels.Courriel.DestinataireViewModel
+<style>
+    .sca {
+        max-height: 50vh; height: 50vh; overflow-y: scroll;
+    }
+</style>
+<div class="modal-content">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-4">
+                <button id="btnTousVendeurs" type="button" class="btn btn-success">
+                    <span id="icoTousVendeurs" class="glyphicon glyphicon-unchecked"></span> Tous les vendeurs
+                </button>
+                <h3>Vendeurs</h3>
+                <input type="text" class="form-control" id="filterVendeur"/>
+                <div class="sca">
+                    <table id="tableVendeur" class="table table-hover">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button id="btnTousClients" type="button" class="btn btn-success">
+                    <span id="icoTousClients" class="glyphicon glyphicon-unchecked"></span> Tous les clients
+                </button>
+                <h3>Clients</h3>
+                <input type="text" class="form-control" id="filterClient"/>
+                <div class="sca">
+                    <table id="tableClient" class="table table-hover">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button id="btnTousUtillisateurs" type="button" class="btn btn-success">
+                    <span id="icoTousUtillisateurs" class="glyphicon glyphicon-unchecked"></span> Tout le monde
+                </button>
+                <h3>Destinataires</h3>
+                <input type="text" class="form-control" id="filterDestinataire"/>
+                <div style="width: 100%" class="col-lg-4">
+                    <div class="well sca">
+                        <table id="tableDestinataire" class="table table-hover">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" onclick="ConfirmerAjout()">Ajouter</button>
+    </div>
+</div>
+<script>
+    function ConfirmerAjout() {
+        $('#modalAjoutDestinataire').modal('hide');
+        lstDestinatairesTemp.forEach(function(temp) {
+            let blnEstPresent = false;
+            lstDestinataires.forEach(function(current) {
+                if (temp.No == current.No) 
+                    blnEstPresent = true;
+            });
+            if (!blnEstPresent){
+                if (temp.No == -1) {
+                    lstDestinataires.length = 0;
+                }
+                else if (temp.No == -2) {
+                    let i = lstDestinataires.length
+                    while (i--) {
+                        let temp = lstDestinataires[i];                      
+                        if (temp.No >= 10000) {
+                            let index = lstDestinataires.indexOf(temp);
+                            lstDestinataires.splice(index, 1);
+                        } 
+                    }
+                }
+                else if (temp.No == -3) {
+                    let i = lstDestinataires.length
+                    while (i--) {
+                        let temp = lstDestinataires[i];                      
+                        if (temp.No < 10000) {
+                            let index = lstDestinataires.indexOf(temp);
+                            lstDestinataires.splice(index, 1);
+                        } 
+                    }
+                }
+                lstDestinataires.push(temp);              
+            }
+        });
+        afficherDestinataire();
+    }  
+    $(document).ready(function () {
+        lstClients = [];
+        lstVendeurs = [];
+        lstDestinatairesTemp = [];
+
+        @foreach (var client in Model.Clients)
+        {
+            <text>
+                lstClients.push({ No : @client.No, Nom : '@client.DisplayName' });
+            </text>
+        }
+        @foreach (var vendeur in Model.Vendeurs)
+        {
+            <text>
+                lstVendeurs.push({ No : @vendeur.No, Nom : '@vendeur.DisplayName' });
+            </text>
+        }
+        //tous les vendeurs
+        $("#btnTousVendeurs").click(function() {
+            //Ajouter
+            if ($(this).hasClass('btn-success')) {
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousVendeurs").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $("#tableVendeur").hide();
+                
+                let i = lstDestinatairesTemp.length
+                while (i--) {
+                    let temp = lstDestinatairesTemp[i];
+                    if (temp.No < 10000 && temp.No > 0) {
+                        let index = lstDestinatairesTemp.indexOf(temp);
+                        lstDestinatairesTemp.splice(index, 1);
+                        lstVendeurs.push(temp);
+                    }
+                }
+                
+                let user = {No:-3, Nom:'<span class="fas fa-user-friends"></span> Tout les vendeurs'}
+                lstDestinatairesTemp.push(user);
+                afficherAllListes();
+            } 
+            //retirer
+            else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#icoTousVendeurs").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');                
+                $("#tableVendeur").show();
+
+                let user;
+                lstDestinatairesTemp.forEach(function(temp,i) {
+                    if (temp.No === -3) {
+                        user = temp;
+                        return;
+                    }
+                });
+                let index = lstDestinatairesTemp.indexOf(user);
+                lstDestinatairesTemp.splice(index, 1);    
+                afficherAllListes();
+            }
+        });
+        //tous les clients
+        $("#btnTousClients").click(function() {
+            //Ajouter
+            if ($(this).hasClass('btn-success')) {
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousClients").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $("#tableClient").hide();
+                           
+                let i = lstDestinatairesTemp.length
+                while (i--) {
+                    let temp = lstDestinatairesTemp[i];
+                    if (temp.No >=10000) {
+                        let index = lstDestinatairesTemp.indexOf(temp);
+                        lstDestinatairesTemp.splice(index, 1);
+                        lstClients.push(temp);
+                    }
+                }
+                
+                let user;
+                user = {No:-2, Nom:'<span class="fas fa-user-friends"></span> Tous les clients'}
+                lstDestinatairesTemp.push(user);
+            } 
+            //retirer
+            else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#icoTousClients").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');                
+                $("#tableClient").show();
+
+                let user;
+                lstDestinatairesTemp.forEach(function(temp) {
+                    if (temp.No === -2) {
+                        user = temp;
+                        return;
+                    }
+                });
+                let index = lstDestinatairesTemp.indexOf(user);
+                lstDestinatairesTemp.splice(index, 1);      
+            }
+            afficherAllListes();
+        });
+        //tous les users
+        $("#btnTousUtillisateurs").click(function() {
+            //Ajouter
+            if ($(this).hasClass('btn-success')) {
+                if ($("#btnTousVendeurs").hasClass('btn-primary')){
+                    $("#btnTousVendeurs").click();
+                }
+                if ($("#btnTousClients").hasClass('btn-primary')){
+                    $("#btnTousClients").click();
+                }
+                $(this).removeClass('btn-success').addClass('btn-primary');
+                $("#icoTousUtillisateurs").removeClass('glyphicon glyphicon-unchecked').addClass('glyphicon glyphicon-check');
+                $('#btnTousVendeurs').attr('disabled','disabled');
+                $('#btnTousClients').attr('disabled','disabled');
+
+                $("#tableClient").hide();
+                $("#tableVendeur").hide();
+                
+                let i = lstDestinatairesTemp.length
+                while (i--) {
+                    let temp = lstDestinatairesTemp[i];
+                    let index = lstDestinatairesTemp.indexOf(temp);
+                    lstDestinatairesTemp.splice(index, 1);
+                    if (temp.No < 10000) {
+                        lstVendeurs.push(temp);
+                    } else {
+                        lstClients.push(temp);
+                    }
+                }
+                
+                let user = {No:-1, Nom:'<span class="fas fa-user-friends"></span> Tout le monde'}
+                lstDestinatairesTemp.push(user);
+            } 
+            //retirer
+            else {
+                $(this).removeClass('btn-primary').addClass('btn-success');
+                $("#icoTousUtillisateurs").removeClass('glyphicon glyphicon-check').addClass('glyphicon glyphicon-unchecked');
+                $('#btnTousVendeurs').removeAttr('disabled');
+                $('#btnTousClients').removeAttr('disabled');
+                
+                $("#tableClient").show();
+                $("#tableVendeur").show();
+
+                let user;
+                lstDestinatairesTemp.forEach(function(temp) {
+                    if (temp.No === -1) {
+                        user = temp;
+                        return;
+                    }
+                });
+                let index = lstDestinatairesTemp.indexOf(user);
+                lstDestinatairesTemp.splice(index, 1);      
+            }
+            afficherAllListes();
+        });
+        afficherAllListes();
+    });
+
+    function bindOnclick() {
+        $('a .client').click(function() {
+            let id = ($(this).attr('id'));
+            let user;
+            lstClients.forEach(function(temp) {
+                if (temp.No.toString().trim() === id.trim()) {
+                    user = temp;
+                    return;
+                }
+            });
+            let index = lstClients.indexOf(user);
+            lstClients.splice(index, 1);
+            lstDestinatairesTemp.push(user);
+            afficherAllListes();
+        });
+        $('a .vendeur').click(function() {
+            let id = ($(this).attr('id'));
+            let user;
+            lstVendeurs.forEach(function(temp) {
+                if (temp.No.toString().trim() === id.trim()) {
+                    user = temp;
+                    return;
+                }
+            });
+            let index = lstVendeurs.indexOf(user);
+            lstVendeurs.splice(index, 1);
+            lstDestinatairesTemp.push(user);
+            afficherAllListes();
+        });
+        $('a .destinataire').click(function() {
+            let id = ($(this).attr('id'));
+            let user;
+            lstDestinatairesTemp.forEach(function(temp) {
+                if (temp.No.toString().trim() === id.trim()) {
+                    user = temp;
+                    return;
+                }
+            });
+            let index = lstDestinatairesTemp.indexOf(user);
+            lstDestinatairesTemp.splice(index, 1);
+
+            if (id >= 10000)
+                lstClients.push(user);
+            else
+                lstVendeurs.push(user);
+            afficherAllListes();
+        });       
+    }
+
+    function afficherAllListes() {
+        afficherListeCLient();
+        afficherListeVendeur();
+        afficherListeDestinataire();
+        bindOnclick();
+    }
+
+    function afficherListeCLient() {
+        $('#tableClient tr').remove();
+        lstClients.forEach(function(client) {
+            const table = $('#tableClient');
+            table.append(`<tr id='${client.No}'>` +
+                `<td>${client.Nom}</td><td><a>` +
+                `<span id='${client.No}' class='glyphicon glyphicon-plus pull-right client'></span></a></td>` +
+                `</tr>`);
+        });
+    }
+
+    function afficherListeVendeur() {
+        $('#tableVendeur tr').remove();
+        lstVendeurs.forEach(function(vendeur) {
+            const table = $('#tableVendeur');
+            table.append(`<tr id='${vendeur.No}'>` +
+                `<td>${vendeur.Nom}</td><td><a>` +
+                `<span id='${vendeur.No}' class='glyphicon glyphicon-plus pull-right vendeur'></span></a></td>` +
+                `</tr>`);
+        });
+    }
+
+    function afficherListeDestinataire() {
+        $('#tableDestinataire tr').remove();
+        const table = $('#tableDestinataire');  
+        if(lstDestinatairesTemp.length>0)
+        {
+            lstDestinatairesTemp.forEach(function(user) {         
+                const removeBtn = user.No > 0 ? `<span id='${user.No}' style='color:red;' class='glyphicon glyphicon-minus pull-right destinataire'></span>` : "";
+            
+                table.append(`<tr id='${user.No}'>` +
+                    `<td>${user.Nom}</td><td><a>` +
+                    `${removeBtn}</a></td>` +
+                    `</tr>`);
+            });
+        }
+        else {
+            table.append(`<tr><td><div class="alert alert-warning">Aucun destinataire de selectionné</div></td></tr>`);
+        }
+    }
+</script>
+
+<script>
+    //les filtres pour les tables
+    $(document).ready(function() {
+        $("#filterClient").on("keyup",
+            function() {
+                var value = $(this).val().toLowerCase();
+                $("#tableClient tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+        $("#filterVendeur").on("keyup",
+            function() {
+                var value = $(this).val().toLowerCase();
+                $("#tableVendeur tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+        $("#filterDestinataire").on("keyup",
+            function() {
+                var value = $(this).val().toLowerCase();
+                $("#tableDestinataire tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+    });
+</script>

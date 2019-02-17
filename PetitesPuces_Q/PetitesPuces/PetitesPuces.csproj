@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IronPdf, Version=4.4.9.15720, Culture=neutral, PublicKeyToken=94e1c31412563c75, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPdf.4.4.9\lib\net40\IronPdf.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="mscorlib" />
     <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -204,6 +207,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="MimeTypes.cs" />
     <Compile Include="Models\BDPetitesPuces.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -219,6 +223,8 @@
     <Compile Include="Models\Enums\Tri.cs" />
     <Compile Include="Models\Ext\PPClient.cs" />
     <Compile Include="Models\Ext\PPGestionnaire.cs" />
+    <Compile Include="Models\Ext\PPMessage.cs" />
+    <Compile Include="Models\Ext\PPProduit.cs" />
     <Compile Include="Models\Ext\PPVendeur.cs" />
     <Compile Include="Models\Ext\RolesUtil.cs" />
     <Compile Include="Models\IUtilisateur.cs" />
@@ -264,6 +270,7 @@
     <Compile Include="ViewModels\Vendeur\GestionCatalogueViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\CommandesViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\ModifierProduitViewModel.cs" />
+    <Compile Include="ViewModels\Vendeur\SupprimerProduitViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\ModiProfilVendeur.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -311,8 +318,8 @@
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Client\Commande.js" />
     <Content Include="Scripts\constant.js" />
+    <Content Include="Scripts\Courriel\CourrielLib.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
-    <Content Include="Scripts\Gestionnaire\Statistiques.js" />
     <Content Include="Scripts\Home\Inscription.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionClient.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionVendeur.js" />
@@ -342,6 +349,7 @@
     <Content Include="Views\Shared\Client\Catalogue\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_EtoilesRating.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_ModalProduit.cshtml" />
+    <Content Include="Views\Shared\Client\Catalogue\_Pagination.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_Produits.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_RatingTooltip.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_VendeurCarousel.cshtml" />
@@ -356,6 +364,9 @@
     <Content Include="Views\Shared\Client\Panier\_ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_ProduitsPanier.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
+    <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireClient.cshtml" />
+    <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireGestionnaire.cshtml" />
+    <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireVendeur.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_BoiteReception.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_Brouillons.cshtml" />
     <Content Include="Views\Shared\Courriel\Boites\_ElementsEnvoyes.cshtml" />
@@ -366,7 +377,6 @@
     <Content Include="Views\Shared\Courriel\_CourrielInbox.cshtml" />
     <Content Include="Views\Shared\Courriel\_CourrielInboxEnvoye.cshtml" />
     <Content Include="Views\Shared\Courriel\_headerBoite.cshtml" />
-    <Content Include="Views\Shared\Courriel\_ModalAjoutDestinataire.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DemandeVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_DetailsVendeur.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Demandes\_GestionDemande.cshtml" />
@@ -392,7 +402,6 @@
     <Content Include="Views\Shared\Home\_ListeProduits.cshtml" />
     <Content Include="Views\Shared\Home\_Produits.cshtml" />
     <Content Include="Views\Shared\Home\_VendeurCarousel.cshtml" />
-    <Content Include="Views\Shared\_Pagination.cshtml" />
     <Content Include="Views\Shared\_PaniersCarousel.cshtml" />
     <Content Include="Views\Vendeur\Evaluations.cshtml" />
     <Content Include="Views\Vendeur\Index.cshtml" />
@@ -448,10 +457,13 @@
     <Content Include="Views\Shared\Vendeur\_GestionProduit.cshtml" />
     <Content Include="Views\Shared\Vendeur\ModalModifierProduit.cshtml" />
     <Content Include="Views\Shared\Vendeur\ModalSupprimerProduit.cshtml" />
+    <Content Include="Views\Shared\Courriel\_CourrielBrouillon.cshtml" />
+    <Content Include="Views\Shared\Courriel\_MessageEnvoye.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="images\produits\" />
+    <Folder Include="Recus\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
