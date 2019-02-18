@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rows>
+  <row>
+    <NoTVQ>1</NoTVQ>
+    <DateEffectiveTVQ>01-01-2005</DateEffectiveTVQ>
+    <TauxTVQ>7.500</TauxTVQ>
+  </row>
+  <row>
+    <NoTVQ>2</NoTVQ>
+    <DateEffectiveTVQ>01-01-2011</DateEffectiveTVQ>
+    <TauxTVQ>8.500</TauxTVQ>
+  </row>
+  <row>
+    <NoTVQ>3</NoTVQ>
+    <DateEffectiveTVQ>01-01-2012</DateEffectiveTVQ>
+    <TauxTVQ>9.500</TauxTVQ>
+  </row>
+  <row>
+    <NoTVQ>4</NoTVQ>
+    <DateEffectiveTVQ>01-01-2013</DateEffectiveTVQ>
+    <TauxTVQ>9.975</TauxTVQ>
+  </row>
+</rows>

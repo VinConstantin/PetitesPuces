@@ -1,5 +1,4 @@
-﻿
-using PetitesPuces.Models;
+﻿using PetitesPuces.Models;
 using PetitesPuces.ViewModels.Vendeur;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,7 @@ using PetitesPuces.ViewModels;
 namespace PetitesPuces.Controllers
 {
 #if !DEBUG
-        [Securise(RolesUtil.VEND)]
+    [Securise(RolesUtil.VEND)]
 #endif
     public class VendeurController : Controller
     {
@@ -83,39 +82,6 @@ namespace PetitesPuces.Controllers
             return PartialView("Vendeur/ModalInfoClient", client.FirstOrDefault());
         }
 
-        [Securise(RolesUtil.CLIENT, RolesUtil.VEND)]
-        public ActionResult InfoCommande(int id)
-        {
-            var user = SessionUtilisateur.UtilisateurCourant;
-
-            var query = from commandes in context.PPCommandes
-                        where commandes.NoCommande == id
-                        select commandes;
-
-            var commande = query.FirstOrDefault();
-
-            if (user is PPVendeur)
-            {
-                PPVendeur vendeur = (PPVendeur)user;
-                if(commande.PPVendeur.NoVendeur != vendeur.NoVendeur)
-                    return new HttpStatusCodeResult(400, "Id commande invalide");
-            }
-            else if (user is PPClient)
-            {
-                PPClient client = (PPClient)user;
-                if(commande.PPClient.NoClient != client.NoClient)
-                    return new HttpStatusCodeResult(400, "Id commande invalide");
-            }
-
-            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + id + ".pdf";
-
-            if (!System.IO.File.Exists(path))
-                genererPDF(commande);
-
-            return File(path, "application/pdf");
-            
-        }
-
         public ActionResult InfoPanier(int id)
         {
             List<Panier> paniers = GetPaniersVendeurs(NoVendeur);
@@ -127,6 +93,7 @@ namespace PetitesPuces.Controllers
         [HttpGet]
         public ActionResult Profil()
         {
+            
             var objVendeur = (from unVendeur in context.PPVendeurs
                 where unVendeur.NoVendeur == NoVendeur
                 select unVendeur).FirstOrDefault();
@@ -145,14 +112,22 @@ namespace PetitesPuces.Controllers
                 Tel2 = objVendeur.Tel2,
                 PoidsMaxLivraison = Convert.ToInt32(objVendeur.PoidsMaxLivraison),
                 LivraisonGratuite = Convert.ToInt32(objVendeur.LivraisonGratuite),
+                configuration = objVendeur.Configuration,
                 Taxes = Convert.ToBoolean(objVendeur.Taxes)
             };
             return View(modiProfilVendeur);
         }
 
         [HttpPost]
-        public ActionResult Profil(ModiProfilVendeur modiProfilVendeur)
+        public ActionResult Profil(ModiProfilVendeur modiProfilVendeur,FormCollection formCollection)
         {
+            foreach (var key in formCollection.AllKeys)
+            {
+                Response.Write("key: " + key + ": ");
+                Response.Write(formCollection[key] + ",  type:/");
+                Response.Write(formCollection[key].GetType() + "/");
+                Response.Write("<br/> ");
+            }
             if (ModelState.IsValid)
             {
                 var objVendeur = (from unVendeur in context.PPVendeurs
@@ -174,7 +149,9 @@ namespace PetitesPuces.Controllers
                 if (modiProfilVendeur.LivraisonGratuite != null)
                     objVendeur.LivraisonGratuite = modiProfilVendeur.LivraisonGratuite;
                 if (modiProfilVendeur.Taxes != null) objVendeur.Taxes = modiProfilVendeur.Taxes;
-
+             
+                objVendeur.Configuration = "color:"+formCollection["couleurText"] + ";" + "background-color:"+formCollection["backgroundcolor"] +
+                                               ";" +"font-family:"+ formCollection["fontText"]+";";
 
                 try
                 {
@@ -323,29 +300,6 @@ namespace PetitesPuces.Controllers
                 Console.WriteLine(e);
             }
             return produit.NoProduit;
-        }
-
-        private void genererPDF(PPCommande commande)
-        {
-            string view;
-            PartialViewResult vr = PartialView("Vendeur/_RecuCommande", commande);
-
-            using (var sw = new StringWriter())
-            {
-                vr.View = ViewEngines.Engines
-                  .FindPartialView(ControllerContext, vr.ViewName).View;
-
-                var vc = new ViewContext(
-                  ControllerContext, vr.View, vr.ViewData, vr.TempData, sw);
-                vr.View.Render(vc, sw);
-
-                view = sw.GetStringBuilder().ToString();
-            }
-
-            IronPdf.HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
-            var PDF = Renderer.RenderHtmlAsPdf(view);
-            string path = Server.MapPath("/Recus/" + commande.NoCommande + ".pdf");
-            PDF.TrySaveAs(path);
         }
 
         public void SupprimerProduit(int NoProduit) //TODO

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rows>
+  <row>
+    <NoLieu>1</NoLieu>
+    <Description>Boite de réception</Description>
+  </row>
+  <row>
+    <NoLieu>2</NoLieu>
+    <Description>Boite envoyé</Description>
+  </row>
+  <row>
+    <NoLieu>3</NoLieu>
+    <Description>Boite supprimé</Description>
+  </row>
+  <row>
+    <NoLieu>4</NoLieu>
+    <Description>Brouillon</Description>
+  </row>
+  <row>
+    <NoLieu>5</NoLieu>
+    <Description>Supprimé définitivement</Description>
+  </row>
+</rows>

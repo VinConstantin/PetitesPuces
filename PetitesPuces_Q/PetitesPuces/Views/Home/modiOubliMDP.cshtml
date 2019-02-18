@@ -1,6 +1,6 @@
-﻿@model PetitesPuces.ViewModels.ModificationMDP
+﻿@model PetitesPuces.ViewModels.OubliMotDePasse
 @{
-    ViewBag.Title = "Modification MDP";
+    ViewBag.Title = "Changer mot de passe";
 }
 <div class="jumbotron">
     <div class="container">
@@ -25,22 +25,16 @@
                                 <span class="input-group-addon">
                                     <i class="glyphicon glyphicon-edit color-blue"></i>
                                 </span>
-                                <div class="text-left col">
-                                    @Html.LabelFor(model => model.ancienMDP, htmlAttributes: new {@class = ""})
-                                    @Html.EditorFor(model => model.ancienMDP, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Ancien mot de passe"}})
-
-                                </div>
+                               
                                 <div class=" text-left col">
                                     @Html.LabelFor(model => model.motDePass, htmlAttributes: new {@class = ""})
                                     @Html.EditorFor(model => model.motDePass, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Nouveau mot de passe"}})
-
                                 </div>
                                 <div class="text-left col">
 
 
                                     @Html.LabelFor(model => model.confirmationMDP, htmlAttributes: new {@class = ""})
                                     @Html.EditorFor(model => model.confirmationMDP, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer le mot de passe"}})
-
                                 </div>
                             </div>
                         </div>
@@ -48,7 +42,7 @@
                             <input class="btn btn-lg btn-primary btn-block center-block" value="Modifier" type="submit">
                         </div>
                     </fieldset>
-                    @Html.ActionLink("Retour","Index","client",new {@class="btn btn-sm btn-danger center-block"})
+                    @Html.ActionLink("Retourner à la page d'accueil", "Index", "client", new {@class = "btn btn-sm btn-danger center-block"})
                 </form>
 
             </div>

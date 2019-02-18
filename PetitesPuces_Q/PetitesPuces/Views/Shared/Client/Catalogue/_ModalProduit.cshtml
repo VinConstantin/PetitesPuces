@@ -52,7 +52,7 @@
         @if (requeteCommande.Any())
         {
             <div id="commentaire" class="panel-collapse collapse">
-                <div class="well">
+                <div class="well" id="EnvModifEvaluation">
                     @if (monEvaluation != null)
                     {
                         <div class="">
@@ -203,6 +203,41 @@
                 $("#EtoileRating").html(result);
                 $("#successEvaluation").show();
                 $("#errorEvaluation").hide();
+
+                let str = `<div class="">
+                            <h4>Modifier une évaluation</h4>
+                        </div>
+                        <div class="">
+                            <span style="font-size: 25px; color: #18bc9c" onmouseout="onOutsideEtoile()">`
+                
+                
+                for (var i = 1; i <= $(`#nbEtoiles`).val(); i++)
+                {
+                    str+=`<span id="Etoile${i}" data-no-etoile="${i}" class="glyphicon glyphicon-star" onclick="selectNbEtoiles(this);" onmouseover="onHoverEtoile(this);"></span>`
+                }
+                for (var i = ($(`#nbEtoiles`).val().Cote_ + 1); i <= 5; i++)
+                {
+                    str+=`<span id="Etoile${i}" data-no-etoile="${i}" class="glyphicon glyphicon-star-empty" onclick="selectNbEtoiles(this);" onmouseover="onHoverEtoile(this);"></span>`
+                }
+                str+=`</span>
+                            <input type="hidden" id="nbEtoiles" value="1"/>
+                            <textarea id="commentaire" class="form-control" style="resize: none;">${$('textarea#commentaire').val()}</textarea>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button type="button" onclick="modifierEvaluation();" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Modifier </button>
+                            </div>
+                            <div class="col-md-5">
+                                <div id="successEvaluation" class="alert alert-success" role="alert" hidden>
+                                    Évaluation modifiée
+                                </div>
+                                <div id="errorEvaluation" class="alert alert-warning" role="alert" hidden>
+                                    Erreure
+                                </div>
+                            </div>
+                        </div>`;
+                $("#EnvModifEvaluation").html(str);
             },
             error: function (req, status, err) {
                 $("#errorEvaluation").show();

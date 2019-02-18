@@ -8,18 +8,20 @@
 
 
 @section styles {
-    <link rel="stylesheet" type="text/css" href="@Url.Content("/Content/Connexion/Index.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/Content/Connexion/Index.css")"/>
 }
 
 @section scripts {
     <script type="text/javascript" src="@Url.Content("/Scripts/InscriptionEtConnexion/InscriptionClient.js")"></script>
 
 }
+
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 @using (Html.BeginForm())
 {
+    
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
@@ -28,7 +30,7 @@
                         <div class="row">
                             <div class="col-xs-6">
 
-                                @Html.ActionLink("Se connecter", "Connexion", new { id = "login-form-link", @class = "active" })
+                                @Html.ActionLink("Se connecter", "Connexion", new {id = "login-form-link", @class = "active"})
 
                             </div>
                             <div class="col-xs-6">
@@ -42,65 +44,75 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
+                               
+                                @if (!string.IsNullOrWhiteSpace(ViewBag.nouveauUtilisateur))
+                                {
+                                    <div class="alert alert-info text-center" role="alert" style="margin: 20px;">
+                                        @ViewBag.nouveauUtilisateur
+                                    </div>
+                                  
 
+                                }
 
                                 <form id="register-form" method="post" role="form" class="text-left">
                                     <h3 class=" text-center">S'inscrire en tant que client</h3>
-                                    <br />
+                                    <br/>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new { @class = "text-right w-100 " })
+                                            @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new {@class = "text-right w-100 "})
 
                                         </div>
                                         <div class="form-group col-md-8">
-                                            @Html.EditorFor(model => model.AdresseEmail, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Adresse courriel" } })
-                                            @Html.ValidationMessageFor(model => model.AdresseEmail, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.AdresseEmail, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Adresse courriel"}})
+                                            @Html.ValidationMessageFor(model => model.AdresseEmail, "", new {@class = "text-danger"})
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md-4">
-                                            @Html.LabelFor(model => model.ConfirmationCourriel, new { @class = "text-right w-100" })
+                                            @Html.LabelFor(model => model.ConfirmationCourriel, new {@class = "text-right w-100"})
 
                                         </div>
                                         <div class="form-group col-md-8">
-                                            @Html.EditorFor(model => model.ConfirmationCourriel, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Confirmer votre adresse courriel" } })
-                                            @Html.ValidationMessageFor(model => model.ConfirmationCourriel, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.ConfirmationCourriel, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer votre adresse courriel"}})
+                                            @Html.ValidationMessageFor(model => model.ConfirmationCourriel, "", new {@class = "text-danger"})
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md-4">
-                                            @Html.LabelFor(model => model.MotDePasse, htmlAttributes: new { @class = "text-right w-100" })
-                                        </div><div class="form-group col-md-8">
-                                            @Html.EditorFor(model => model.MotDePasse, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Mot de passe" } })
-                                            @Html.ValidationMessageFor(model => model.MotDePasse, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.MotDePasse, htmlAttributes: new {@class = "text-right w-100"})
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            @Html.EditorFor(model => model.MotDePasse, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Mot de passe"}})
+                                            @Html.ValidationMessageFor(model => model.MotDePasse, "", new {@class = "text-danger"})
                                         </div>
                                     </div>
 
 
                                     <div class="row">
                                         <div class="col-md-4">
-                                            @Html.LabelFor(model => model.ConfirmationMDP, htmlAttributes: new { @class = "text-right w-100" })
+                                            @Html.LabelFor(model => model.ConfirmationMDP, htmlAttributes: new {@class = "text-right w-100"})
 
-                                        </div><div class="form-group col-md-8">
-                                            @Html.EditorFor(model => model.ConfirmationMDP, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Confirmer votre mot de passe" } })
-                                            @Html.ValidationMessageFor(model => model.ConfirmationMDP, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            @Html.EditorFor(model => model.ConfirmationMDP, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer votre mot de passe"}})
+                                            @Html.ValidationMessageFor(model => model.ConfirmationMDP, "", new {@class = "text-danger"})
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-6 col-sm-offset-3">
-                                                <br />
+                                                <br/>
                                                 <input type="submit" name="register-submit" id="register-submit" tabindex="5" class="btn btn-lg btn-primary btn-block" value="S'inscrire maintenant">
                                             </div>
                                             <div class="col-sm-6 col-sm-offset-3">
-                                                <br />
+                                                <br/>
                                                 @Html.ActionLink("S'inscrire en tant que vendeur", "InscriptionVendeur")
                                             </div>
                                             <div class="col-sm-6 col-sm-offset-3">
-                                                <br />
+                                                <br/>
                                                 @Html.ActionLink("Retourner au menu", "Index")
                                             </div>
                                         </div>

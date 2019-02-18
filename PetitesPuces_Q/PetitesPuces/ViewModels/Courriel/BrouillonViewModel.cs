@@ -7,7 +7,14 @@ namespace PetitesPuces.ViewModels.Courriel
     {
         public long? NoMsg { get; set; }
         public string DescMsg { get; set; }
-        public short? Lieu { get; set; } = (short)LieuxCourriel.Brouillon;
+
+        public short? Lieu
+        {
+            get { return lieu; }
+            set { lieu = value; }
+        }
+
+        private short? lieu = (short)LieuxCourriel.Brouillon;
         public string objet { get; set; }
         public List<int?> destinataires { get; set; }
     }
