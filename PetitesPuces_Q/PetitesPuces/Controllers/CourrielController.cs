@@ -43,8 +43,8 @@ namespace PetitesPuces.Controllers
         {
             if (Request.IsAjaxRequest()) return IndexAjax(etatCourriel, id);
 
-
-            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat))
+            EtatCourriel enumEtat;
+            if (Enum.TryParse(etatCourriel, out enumEtat))
             {
                 var isWrite = CheckIfWriteState(enumEtat);
 
@@ -77,7 +77,8 @@ namespace PetitesPuces.Controllers
         {
             if (Request.IsAjaxRequest()) return IndexAjax(etatCourriel);
 
-            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat))
+            EtatCourriel enumEtat;
+            if (Enum.TryParse(etatCourriel, out enumEtat))
             {
                 return View(Tuple.Create<EtatCourriel, PPMessage>(enumEtat, null));
             }
@@ -87,7 +88,8 @@ namespace PetitesPuces.Controllers
 
         private ActionResult IndexAjax(string etatCourriel, int? id = null)
         {
-            if (Enum.TryParse(etatCourriel, out EtatCourriel enumEtat))
+            EtatCourriel enumEtat;
+            if (Enum.TryParse(etatCourriel, out enumEtat))
             {
                 switch (enumEtat)
                 {
@@ -117,7 +119,7 @@ namespace PetitesPuces.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, e.Message);
             }
-            catch (Exception e) when (e is InvalidOperationException || e is AuthenticationException)
+            catch (Exception e)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "NoMsg invalide");
             }
