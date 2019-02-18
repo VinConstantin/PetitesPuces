@@ -1,5 +1,4 @@
-﻿
-using PetitesPuces.Models;
+﻿using PetitesPuces.Models;
 using PetitesPuces.ViewModels.Vendeur;
 using System;
 using System.Collections.Generic;
@@ -11,11 +10,9 @@ using System.Web.Mvc;
 using PetitesPuces.Securite;
 using PetitesPuces.Utilities;
 
-using ExpertPdf.HtmlToPdf;
 using IronPdf;
 using System.Net;
 using PetitesPuces.ViewModels;
-using System.Drawing.Printing;
 
 namespace PetitesPuces.Controllers
 {
@@ -112,10 +109,9 @@ namespace PetitesPuces.Controllers
             string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + id + ".pdf";
 
             if (!System.IO.File.Exists(path))
-                genererPDF(commande);
+                RedirectToAction("GenererPDF", "Home");
 
             return File(path, "application/pdf");
-            
         }
 
         public ActionResult InfoPanier(int id)
@@ -325,57 +321,6 @@ namespace PetitesPuces.Controllers
                 Console.WriteLine(e);
             }
             return produit.NoProduit;
-        }
-
-        private void genererPDF(PPCommande commande)
-        {
-            string view;
-            PartialViewResult vr = PartialView("Vendeur/_RecuCommande", commande);
-
-            using (var sw = new StringWriter())
-            {
-                vr.View = ViewEngines.Engines
-                  .FindPartialView(ControllerContext, vr.ViewName).View;
-
-                var vc = new ViewContext(
-                  ControllerContext, vr.View, vr.ViewData, vr.TempData, sw);
-                vr.View.Render(vc, sw);
-
-                view = sw.GetStringBuilder().ToString();
-            }
-
-            string path = Server.MapPath("/Recus/" + commande.NoCommande + ".pdf");
-            if (!Directory.Exists(Server.MapPath("/Recus/")))
-            {
-                Directory.CreateDirectory(Server.MapPath("/Recus"));
-            }
-
-            // initialize PrintDocument object
-            PrintDocument doc = new PrintDocument()
-            {
-                PrinterSettings = new PrinterSettings()
-                {
-                    // set the printer to 'Microsoft Print to PDF'
-                    PrinterName = "Microsoft Print to PDF",
-                    
-                    
-
-                    // tell the object this document will print to file
-                    PrintToFile = true,
-
-                    // set the filename to whatever you like (full path)
-                    PrintFileName = path,
-                }
-            };
-
-            doc.Print();
-
-            PdfConverter pdf = new PdfConverter();
-            pdf.SavePdfFromHtmlStringToFile(view, path);
-
-            /*HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
-            var PDF = Renderer.RenderHtmlAsPdf(view);
-            PDF.TrySaveAs(path);*/
         }
 
         public void SupprimerProduit(int NoProduit) //TODO

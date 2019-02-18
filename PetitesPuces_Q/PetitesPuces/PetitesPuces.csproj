@@ -474,6 +474,7 @@
     <Content Include="Views\Shared\Courriel\_CourrielBrouillon.cshtml" />
     <Content Include="Views\Shared\Courriel\_MessageEnvoye.cshtml" />
     <Content Include="Views\Courriel\ApercuCourriel.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_RecuImpression.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
