@@ -359,6 +359,7 @@ namespace PetitesPuces.Controllers
                 if (reponse.Accepte)
                 {
                     vendeurAAccepter.Statut = (int) StatutCompte.ACTIF;
+                    vendeurAAccepter.Pourcentage = reponse.Redevances;
                 }
                 else
                 {

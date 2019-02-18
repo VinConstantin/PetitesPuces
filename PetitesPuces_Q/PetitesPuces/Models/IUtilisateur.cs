@@ -13,7 +13,7 @@ namespace PetitesPuces.Models
         string Role { get; }
 
         [Required(ErrorMessage = "Veuillez rentrer votre adresse courriel!")]
-        [DisplayName ("Votre adresse courriel")]
+        [DisplayName ("Adresse courriel")]
         string AdresseEmail { get; }
 
         string Nom { get; }

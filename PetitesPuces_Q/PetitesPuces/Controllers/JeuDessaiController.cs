@@ -373,6 +373,7 @@ namespace PetitesPuces.Controllers
                 objProduit.Nom = type.Nom;
                 objProduit.Description = type.Description;
                 objProduit.Photo = type.Photo;
+                objProduit.Disponibilité = type.Disponibilite != "1" ? false : true;
                 objProduit.PrixDemande = Convert.ToDecimal(type.PrixDemande);
                 objProduit.NombreItems = Convert.ToInt16(type.NombreItems);
                 if (type.DateVente != "") objProduit.DateVente = Convert.ToDateTime(type.DateVente);
@@ -560,8 +561,8 @@ namespace PetitesPuces.Controllers
             }
             context.SubmitChanges();
 
-            return Content(test);
-        }
+            return View();
+        } 
 
 
     }

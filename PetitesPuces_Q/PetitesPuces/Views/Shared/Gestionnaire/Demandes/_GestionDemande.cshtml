@@ -2,7 +2,6 @@
 @using PetitesPuces.Controllers
 @using PetitesPuces.Models
 @model Tuple<int, PetitesPuces.Controllers.GestionnaireController.TypesModal>
-
 @{
     const string DEFAUT_DETAILS = "Si vous ne modifiez rien, un message par défaut sera envoyé selon votre décision";
     const string DEFAULT_ACCEPT = "Bonjour,\n" +
@@ -14,14 +13,13 @@
                                   "Merci d'avoir choisi \"Les Petites Puces\"";
     const string DEFAULT_REFUSER = "Bonjour,\n" +
                                    "\n" +
-                                   "Il me fait plaisir de vous annoncer que votre demande de compte vendeur a été acceptée!\n" +
-                                   "\n" +
-                                   "Vous pourrez dorénavant vendre vos produit sur notre avec un taux de redevances de X%.\n" +
+                                   "Je regrette de vous informer que votre demande a été refusée.\n" +
                                    "\n" +
                                    "Merci d'avoir choisi \"Les Petites Puces\"";
-    
+
     string MSG_DEFAUT = "";
-    switch (@Model.Item2){
+    switch (@Model.Item2)
+    {
         case GestionnaireController.TypesModal.DETAILS:
             MSG_DEFAUT = DEFAUT_DETAILS;
             break;
@@ -31,8 +29,10 @@
         case GestionnaireController.TypesModal.REFUSER:
             MSG_DEFAUT = DEFAULT_REFUSER;
             break;
-   }
+    }
 }
+<input id="accepterDefault" type="hidden" value="@DEFAULT_ACCEPT" />
+<input id="refuserDefault" type="hidden" value="@DEFAULT_REFUSER" />
 <div class="modal-header">
     @{
         var ctx = new BDPetitesPucesDataContext();
@@ -44,8 +44,8 @@
 <div class="modal-body">
     @if (@Model.Item2 == GestionnaireController.TypesModal.DETAILS)
     {
-        @Html.Partial("Gestionnaire/Demandes/_DetailsVendeur", vendeur )
-        <hr/>
+        @Html.Partial("Gestionnaire/Demandes/_DetailsVendeur", vendeur)
+        <hr />
     }
     @if (@Model.Item2 != GestionnaireController.TypesModal.REFUSER)
     {
@@ -53,22 +53,22 @@
             <div class="form-inline">
                 <label for="tbPctRedevances">Redevances: </label>
                 <div class="input-group">
-                    <input required class="form-control" type="number" min="0" value="5" max="100" name="redevances" id="tbPctRedevances"/>
+                    <input required class="form-control" type="number" min="0" value="5" max="100" name="redevances" id="tbPctRedevances" />
                     <span class="input-group-addon">%</span>
                 </div>
             </div>
         </div>
-        <hr/>
+        <hr />
     }
     <div class="row text-center">
         <label for="tbMsg">Inscrire un message à envoyer au vendeur</label>
         @if (Model.Item2 == GestionnaireController.TypesModal.DETAILS)
         {
-            <textarea id="tbMsg" class="center-block text-left w-100" placeholder="@MSG_DEFAUT" rows="10" cols="90" class="form-inline text-center"></textarea>
+            <textarea id="tbMsg" class="center-block text-left w-100" placeholder="@MSG_DEFAUT" rows="10" cols="90"></textarea>
         }
         else
         {
-            <textarea id="tbMsg" class="center-block text-left w-100" rows="10" cols="90" class="form-inline text-center">@MSG_DEFAUT</textarea>
+            <textarea id="tbMsg" class="center-block text-left w-100" rows="10" cols="90">@MSG_DEFAUT</textarea>
         }
     </div>
 </div>
@@ -81,14 +81,14 @@
                     Confirmer l'ajout
                 </button>
             }
-        
+
             @if (Model.Item2 == GestionnaireController.TypesModal.REFUSER)
             {
                 <button id="btnRefuserDemande" class="ml-1 btn btn-danger">
                     Confirmer le refus
                 </button>
             }
-            
+
             @if (Model.Item2 == GestionnaireController.TypesModal.DETAILS)
             {
                 <button id="btnAccepterDemande" class="btn btn-success mr-1">
@@ -97,7 +97,7 @@
                 <button id="btnRefuserDemande" class="ml-1 btn btn-danger">
                     <i class="glyphicon glyphicon-remove"></i>
                 </button>
-            }      
+            }
         </div>
     </div>
 </div>

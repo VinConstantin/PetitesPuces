@@ -129,7 +129,10 @@
             <div class="h3">
                 @Formatter.PrixProduitAvecVente(Model)
             </div></p>
-
+        @if (@Model.DateVente >= DateTime.Now)
+        {
+                    <p>En vente jusqu'au : @Model.DateVente.Value.ToLongDateString()</p>
+        }
         <p>Poids : @Model.Poids lbs</p>
         <p>Catégorie : @Model.PPCategory.Description</p>
         <hr/>
@@ -160,7 +163,7 @@
                 }
             </div>
             <div class="col-md-4">
-                <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Contacter @Model.PPVendeur.NomAffaires" onclick="contacter()">
+                <button class="btn btn-link btn-lg" data-toggle="modal" data-target="#ModalDescription" title="Contacter @Model.PPVendeur.NomAffaires" onclick="contacter(@Model.PPVendeur.No)">
                     <span class="glyphicon glyphicon-envelope"></span>
                 </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -172,9 +175,20 @@
 
 
 <script>
-    function contacter() {
-        var url = '@Url.Action("Index", "Courriel")';
-        window.location.href = url;
+    function contacter(no) {
+        const Objet = "Information sur un produit";
+        const DescMsg = "J'ai une petite question sur votre produit '@Model.Nom'";
+        const destinataire = [no];
+        
+        const message = {
+            'DescMsg':DescMsg,
+            'objet':Objet,
+            'destinataires':destinataire
+        }
+        Courriel.enregistrerMessage(message,redirigerModuleCourriel);
+    }
+    function redirigerModuleCourriel(msg) {
+        Courriel.redirigerVersMessage(msg);
     }
     function envoyerEvaluation() {
         $.ajax({

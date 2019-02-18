@@ -39,23 +39,31 @@
                     <div class="panel-body">
                         <div class="row">
                             <form id="login-form" method="post" role="form" style="display: block;">
+                          
+                                @if (ViewBag.Status == "InscriptionReussi")
+                                {
+                                    <div class="alert alert-info text-center" role="alert" style="margin: 20px;">
+                                        Inscription réussite!
+                                    </div>
+                                }
 
                                 <h1 class=" text-center">Connexion</h1>
                                 <br />
                                 <div class="form-row">
+                                
                                     <div class="form-group col-md-6 col-lg-offset-3">
 
-                                        @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new { @class = "" })
-                                        @Html.EditorFor(model => model.AdresseEmail, new { id = "adresseEmail", @name = "adresseEmail", htmlAttributes = new { @PlaceHolder = "Adresse courriel", @class = " center-block form-control" } })
+                                       @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new { @class = "" })
+                                        @Html.EditorFor(model => model.AdresseEmail, new { id = "adresseEmail", @name = "adresseEmail", htmlAttributes = new { @PlaceHolder = "Entrez votre adresse courriel", @class = " center-block form-control", Value = ViewBag.courriel } })
+                                      
                                         @Html.ValidationMessageFor(model => model.AdresseEmail, "", new { @class = "text-danger center-block" })
-
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6 col-lg-offset-3">
 
                                         @Html.LabelFor(model => model.MotDePasse, htmlAttributes: new { @class = "" })
-                                        @Html.PasswordFor(model => model.MotDePasse, new { id = "motDePasse", @name = "motDePasse", @PlaceHolder = "Mot de passe", @class = "form-control center-block" })
+                                        @Html.PasswordFor(model => model.MotDePasse, new { id = "motDePasse", @name = "motDePasse", @PlaceHolder = "Entrez votre mot de passe", @class = "form-control center-block" , Value = ViewBag.mdp})
                                         @Html.ValidationMessageFor(model => model.MotDePasse, "", new { @class = "text-danger" })
 
                                     </div>
@@ -63,8 +71,9 @@
 
                                 <div class="form-row">
                                     <div class="form-group col-md-6 col-lg-offset-3">
-                                        <input type="checkbox" tabindex="3" class="text-center" name="remember" id="remember">
-                                        <label for="remember"> Se souvenir de moi</label>
+                                    
+                                        <input type="checkbox" tabindex="3" class="text-center" name="remember" id="remember" @ViewBag.souvenirCheck>
+                                        <label for="remember">&nbsp;Se souvenir de moi?</label>
                                     </div></div>
                                 <div class="form-group">
                                     <div class="row">

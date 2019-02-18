@@ -709,3 +709,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+#Attachments
+./PetitesPuces_Q/PetitesPuces/Envoyés/*

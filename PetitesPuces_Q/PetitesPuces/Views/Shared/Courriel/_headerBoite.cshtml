@@ -1,5 +1,9 @@
 @model string
 
+@{
+    var titrePersonne = (Model == "Brouillon" || Model == "Éléments envoyés" ? "Destinataire" : "Expéditeur");
+}
+
 <div class=" row">
     <div class="col-lg-5">
         <h2>&nbsp;&nbsp;<input type="checkbox" id="checkAll"/> @Model</h2>
@@ -16,9 +20,9 @@
                     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-sort"></span> Trier 
                         <span class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        <li><a href="#" onclick="sortItemsDate();">Date</a></li>
-                        <li><a href="#" onclick="sortItemsObjet();">Objet</a></li>
-                        <li><a href="#" onclick="sortItemsExpediteur();">Expéditeur</a></li>
+                        <li><a href="javascript:void(0)" onclick="sortItemsDate();">Date</a></li>
+                        <li><a href="javascript:void(0)" onclick="sortItemsObjet();">Objet</a></li>
+                        <li><a href="javascript:void(0)" onclick="sortItemsExpediteur();">@titrePersonne</a></li>
                     </ul>
                 </div>
             </div>

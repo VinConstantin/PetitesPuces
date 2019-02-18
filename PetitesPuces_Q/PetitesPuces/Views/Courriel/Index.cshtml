@@ -1,5 +1,5 @@
 @using PetitesPuces.Controllers
-@model EtatCourriel
+@model Tuple<EtatCourriel, PetitesPuces.Models.PPMessage>
 @{
    ViewBag.Title = "Courriel";
 }
@@ -22,22 +22,17 @@
 }
 
 <div class="container">
-    <div class="row">
-        <div class="col-sm-9 col-md-10">
-            <button type="button" class="btn btn-default pull-right" data-toggle="tooltip" title="Refresh">
-                &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;&nbsp;
-            </button>
-        </div>
-    </div>
+    
+    <br/>
     <br/>
     <div class="row">
         <div class="col-sm-4 col-md-3">
             <ul class="nav nav-pills nav-stacked nav-tabs">
-                <li id="Composer" data-state="Composer" href="#" title="Composer un nouveau message" class="btn btn-danger text-left">
+                <li id="Composer" data-state="Composer" href="javascript:void(0)" title="Composer un nouveau message" class="btn btn-danger text-left">
                     <i class="glyphicon glyphicon-envelope"></i> Composer
                 </li>
                 <hr/>
-                <li id="BoiteReception" data-state="Reception" class="active">
+                <li id="BoiteReception" data-state="Reception" >
                     <a href="javascript:void(0)">
                         <span class="glyphicon glyphicon-inbox"></span> Boîte de réception
                     </a>
@@ -72,69 +67,79 @@
         Envoye: new Etat(loadElementsEnvoyes),
         Supprime: new Etat(loadElementSupprimes)
     });
-    const stateName = (history.state || 'Reception').toString();
+    let stateName = '@Model.Item1';
+    var msgId = @(Model.Item2 != null ? Model.Item2.NoMsg.ToString() : "null");
     let etat = etats[stateName];
     let selected;
 
     function Etat(loadFunc) {
         this.load = loadFunc;
     }
-    
+
     $('[data-state]').each(function() {
         if ($(this).hasClass('active')) {
             selected = $(this);
         }
-        
-        $(this).click(function() {
-            selected.removeClass('active');
+
+        $(this).click(function () {
+            if (selected) {
+                selected.removeClass('active');
+            }
             $(this).addClass('active');
-            const stateName = $(this).attr('data-state');
+            stateName = $(this).attr('data-state');
+
+            msgId = null;
+
             displayPageState(stateName);
         });
     });
-    
-    function displayPageState(stateName) {
+
+    function displayPageState(stateName, noMsgALoad) {
         etat = etats[stateName];
-        history.pushState(stateName, `${stateName} - Courriel - Les Petites Puces`, `/Courriel/Boite/${stateName}`);
+        let reqUrl = `/Courriel/Boite/${stateName}`;
+        if (noMsgALoad) {
+            reqUrl += '/' + noMsgALoad;
+        }
+
+        history.pushState({ state: stateName, id: noMsgALoad}, `${stateName} - Courriel - Les Petites Puces`, reqUrl);
         etat.load();
     }
-    
+
     $(document).ready(function() {
-        etat.load();
+        displayPageState(stateName, msgId);
         window.onpopstate = function(event) {
-            displayPageState(history.state || 'Receptiom');
+            displayPageState(history.state || 'Reception');
         }
     });
-    
+
     function stopPropagation() {
         event.stopPropagation();
     }
-    
+
+    function loadBrouillon(id) {
+        $('.active').removeClass('active');
+        displayPageState("Composer", id);
+    }
+
     function loadCourriel(id) {
         $('.active').removeClass('active');
-        $.ajax({
-            url: URLPATH + "/Courriel/GetCourriel",
-            type: "GET",
-            data: {
-                NoCourriel : id
-            }, 
-            success: function(result) {
-                $('#PLACEHOLDER').html(result);
-            },
-            error: function(req, status, err) {
-                console.log(req, status, err);
-            }
-        });
+        displayPageState(stateName, id);
     }
+
     function loadBoiteReception() {
         $('.active').removeClass('active');
         $('#BoiteReception').addClass('active');
+        const hState = history.state;
+        let addon = '';
+        if (hState.id) {
+            addon = '/' + hState.id;
+        }
         $.ajax({
-            url: URLPATH + "/Courriel/Boite/Reception",
+            url: URLPATH + "/Courriel/Boite/Reception" + addon,
             type: "GET",
             data: {
-                
-            }, 
+
+            },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
             },
@@ -150,8 +155,8 @@
             url: URLPATH + "/Courriel/Boite/Brouillon",
             type: "GET",
             data: {
-                
-            }, 
+
+            },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
             },
@@ -163,12 +168,17 @@
     function loadElementsEnvoyes() {
         $('.active').removeClass('active');
         $('#ElementsEnvoyes').addClass('active');
+        const hState = history.state;
+        let addon = '';
+        if (hState.id) {
+            addon = '/' + hState.id;
+        }
         $.ajax({
-            url: URLPATH + "/Courriel/Boite/Envoye",
+            url: URLPATH + "/Courriel/Boite/Envoye" + addon,
             type: "GET",
             data: {
-                
-            }, 
+
+            },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
             },
@@ -180,12 +190,17 @@
     function loadElementSupprimes() {
         $('.active').removeClass('active');
         $('#ElementSupprimes').addClass('active');
+        const hState = history.state;
+        let addon = '';
+        if (hState.id) {
+            addon = '/' + hState.id;
+        }
         $.ajax({
-            url: URLPATH + "/Courriel/Boite/Supprime",
+            url: URLPATH + "/Courriel/Boite/Supprime" + addon,
             type: "GET",
             data: {
-                
-            }, 
+
+            },
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
             },
@@ -194,21 +209,137 @@
             }
         });
     }
+
+    let saveTimeoutId;
+    let lastSave;
     function loadComposerMessage() {
         $('.active').removeClass('active');
+        const state = history.state;
+        const addon = state.id ? '/' + state.id : '';
         $.ajax({
-            url: URLPATH + "/Courriel/Boite/Composer",
+            url: URLPATH + "/Courriel/Boite/Composer" + addon,
             type: "GET",
-            data: {
-                
-            }, 
+            data: {},
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
+                if ($('#fileUploadText').val().trim() != '') {
+                    $('#deleteAttachment').removeClass('d-none');
+                }
+                $('#deleteAttachment').click(function() {
+                    console.log('deleting');
+                    $.ajax({
+                        method: 'DELETE',
+                        url: '/Courriel/PieceJointe/' + msgId,
+                        success: function() {
+                            sauvegarderBrouillon();
+                            $('#fileUploadText').val('');
+                            $('#deleteAttachment').addClass('d-none');
+                        }
+                    });
+                });
+                registerAutoSaveEvents();
             },
             error: function(req, status, err) {
                 console.log(req, status, err);
             }
         });
+    }
+    function registerAutoSaveEvents() {
+        $('#textarea').on('froalaEditor.contentChanged',handleChange);
+        $('#tbObjet').keyup(handleChange);
+
+        $('#textarea').on('froalaEditor.blur',sauvegarderBrouillon);
+        $('#destinataire').change(sauvegarderBrouillon);
+        $('#tbObjet').change(sauvegarderBrouillon);
+
+        $('#upload').change(attachmentChanged);
+    }
+
+    function attachmentChanged() {
+
+        setCanSend(false);
+        sauvegarderBrouillon(postAttachment);
+    }
+    function postAttachment() {
+        const formData = new FormData();
+        const fileInput = $('#upload')[0];
+
+        for (let i = 0; i < fileInput.files.length; i++) {
+            const file = fileInput.files[i];
+            formData.append(file.name, file);
+        }
+
+        $.ajax({
+            url: '/Courriel/Televerser/' + msgId,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            complete: function() {
+                setCanSend(true);
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#pieceJointeLink').attr('href', '/Courriel/PieceJointe/' + msgId);
+                const file = $('#upload')[0].files[0].name;
+                $('#fileUploadText').val(file);
+                $('#deleteAttachment').removeClass('d-none');
+            },
+            error: function (xhr, ajaxOptions, errMsg) {
+                alert('Erreur en téléversant le fichier: ' + errMsg);
+            },
+        });
+    }
+    function handleChange() {
+        const timeout = 2000;
+        if (!saveTimeoutId) {
+            saveTimeoutId = window.setTimeout(sauvegarderBrouillon, timeout);
+        }
+    }
+
+    function sauvegarderBrouillon(callback) {
+        const destinataires = lstDestinataires.map(e => e.No);
+        
+        const msg = {
+            DescMsg: $('#textarea').froalaEditor('html.get'),
+            objet: $('#tbObjet').val(),
+            destinataires: destinataires,
+        };
+        let method = 'POST';
+        if (msgId) {
+            method = 'PUT';
+            msg.NoMsg = msgId;
+        }
+
+        const data = JSON.stringify(msg);
+        console.log((method === 'POST' ? 'Nouveau ' : 'Update ') + 'brouillon');
+
+        $.ajax({
+            url: '/Courriel/Enregistrer',
+            method: method,
+            data: data,
+            dataType: 'json',
+            processData: false,
+            success: (data) => {
+                msgId = data.NoMsg;
+
+                if (callback && callback instanceof Function) {
+                    callback();
+                }
+
+                if (saveTimeoutId) {
+                    window.clearTimeout(saveTimeoutId);
+                    saveTimeoutId = null;
+                }
+
+                lastSave = new Date();
+                $('#lastSave').html('<i class="glyphicon glyphicon-floppy-disk"></i> ' + lastSave.toLocaleTimeString());
+            },
+            contentType: 'application/json'
+        });
+    }
+    function setCanSend(canSend) {
+        //TODO: Block sending, spinner?
     }
 </script>
 <style>

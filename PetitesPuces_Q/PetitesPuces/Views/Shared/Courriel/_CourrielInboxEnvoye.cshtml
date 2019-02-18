@@ -28,14 +28,14 @@
     
     IUtilisateur expediteur = clients.Concat<IUtilisateur>(vendeurs).Concat<IUtilisateur>(gestionnaires).FirstOrDefault();
 }
-<a href="#" class="list-group-item" onclick="loadCourriel(@Model.NoMsg);">
+<a href="javascript:void(0)" class="list-group-item" onclick="loadCourriel(@Model.NoMsg);">
     <div class="row">
         <div class="col-lg-4">
             <input onclick="stopPropagation();" id="@Model.NoMsg" type="checkbox">
-            <span class="input" style="min-width: 120px; display: inline-block;">@expediteur.DisplayName</span>
+            <span class="input" style="min-width: 120px; display: inline-block; text-overflow: ellipsis;">@Model.FormattedDestinataires</span>
         </div>
         <div class="col-lg-4">
-            <span class="">@Model.objet</span>
+            <span class="">@(!string.IsNullOrWhiteSpace(Model.objet) ? Model.objet : "Aucun objet")</span>
         </div>
         <div class="col-lg-4">
             <span class="pull-right">

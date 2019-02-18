@@ -45,7 +45,7 @@
     </div>
     
     <div class="col-md-4">
-        <button type="button" data-toggle="modal" data-target="#modalConfirmationSupprimer" class="btn btn-danger">Supprimer ce panier</button>
+        <button type="button" data-toggle="modal" data-target="#modalConfirmationSupprimer" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Supprimer ce panier</button>
         <br/>
         <br/>
         <div class="panel panel-primary">
@@ -71,7 +71,15 @@
                     {
                         <div class="row" style="padding-right: 5px; padding-left: 5px">
                             <div class="alert alert-info" role="alert">
-                                Vous sauvez @Formatter.Money(Model.GetPrixSauveRabais(),false)
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <span style="font-size: 30px" class="glyphicon glyphicon-info-sign text-center"></span>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <p>Vous épargner @Formatter.Money(Model.GetPrixSauveRabais(), false)</p>
+                                        <small style="color: white">Si vous acheter avant le @Model.DateRabais.ToShortDateString()</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     }
@@ -79,32 +87,18 @@
                 @if (estValide)
                 {
                     <button title="Poids maximal dépassé" type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationCommande">
-                        Passer la commande
+                        <span class="glyphicon glyphicon-send"></span> Passer la commande
                     </button>
                 }
                 else
                 {
                     <button id="btnError" disabled type="button" class="btn btn-primary">
-                        Passer la commande
+                        <span class="glyphicon glyphicon-send"></span> Passer la commande
                     </button>
                 }
             </div>
         </div>
-        <div class="panel panel-success">
-            <div class="panel-heading">Informations sur le vendeur: </div>
-            <div class="panel-body">
-                <div class="h4">
-                    <p><strong>@Model.Vendeur.NomAffaires</strong></p>
-                    <p>Membre depuis le @Model.Vendeur.DateCreation.Value.ToLongDateString()</p>
-
-                    <hr/>
-                    Prix minimal pour une livraison gratuite 
-                    @Formatter.Money(Model.Vendeur.LivraisonGratuite,true)
-                    <br/>
-                    <p>Nombres de ventes : @Model.Vendeur.PPCommandes.Count</p>
-                </div>
-            </div>
-        </div>
+        @Html.Partial("Client/InformationVendeur",Model)
     </div>
 </div>
 
@@ -169,4 +163,20 @@
         arrow: true,
         allowHTML: true,
     });
+
+    function contacter(no) {
+        const Objet = "Information sur mon panier";
+        const DescMsg = "J'ai une petite question sur mon panier";
+        const destinataire = [no];
+        
+        const message = {
+            'DescMsg':DescMsg,
+            'objet':Objet,
+            'destinataires':destinataire
+        }
+        Courriel.enregistrerMessage(message,redirigerModuleCourriel);
+    }
+    function redirigerModuleCourriel(msg) {
+        Courriel.redirigerVersMessage(msg);
+    }
 </script>

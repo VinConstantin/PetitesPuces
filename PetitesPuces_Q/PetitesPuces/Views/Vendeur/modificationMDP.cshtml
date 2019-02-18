@@ -1,0 +1,57 @@
+﻿@model PetitesPuces.ViewModels.ModificationMDP
+@{
+    ViewBag.Title = "Modification MDP";
+}
+<div class="jumbotron">
+    <div class="container">
+        <h1>Modification du mot de passe</h1>
+        <sm>Le nouveau MDP ne doit pas être identique qu'avant</sm>
+    </div>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new {@class = "text-danger"})
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4  text-center well">
+                <form class="form">
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-edit color-blue"></i>
+                                </span>
+                                <div class="text-left col">
+                                    @Html.LabelFor(model => model.ancienMDP, htmlAttributes: new {@class = ""})
+                                    @Html.EditorFor(model => model.ancienMDP, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Ancien mot de passe"}})
+
+                                </div>
+                                <div class=" text-left col">
+                                    @Html.LabelFor(model => model.motDePass, htmlAttributes: new {@class = ""})
+                                    @Html.EditorFor(model => model.motDePass, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Nouveau mot de passe"}})
+
+                                </div>
+                                <div class="text-left col">
+
+
+                                    @Html.LabelFor(model => model.confirmationMDP, htmlAttributes: new {@class = ""})
+                                    @Html.EditorFor(model => model.confirmationMDP, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer le mot de passe"}})
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input class="btn btn-lg btn-primary btn-block center-block" value="Modifier" type="submit">
+                        </div>
+                    </fieldset>
+                    @Html.ActionLink("Retour","Index","vendeur",new {@class="btn btn-sm btn-danger center-block"})
+                </form>
+
+            </div>
+        </div>
+    </div>
+}
