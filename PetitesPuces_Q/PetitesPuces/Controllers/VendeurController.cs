@@ -12,6 +12,7 @@ using PetitesPuces.Securite;
 using PetitesPuces.Utilities;
 
 using IronPdf;
+using ExpertPdf;
 using System.Net;
 using PetitesPuces.ViewModels;
 
@@ -342,9 +343,13 @@ namespace PetitesPuces.Controllers
                 view = sw.GetStringBuilder().ToString();
             }
 
-            IronPdf.HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
-            var PDF = Renderer.RenderHtmlAsPdf(view);
             string path = Server.MapPath("/Recus/" + commande.NoCommande + ".pdf");
+            if (!Directory.Exists(Server.MapPath("/Recus/")))
+            {
+                Directory.CreateDirectory(Server.MapPath("/Recus"));
+            }
+            HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
+            var PDF = Renderer.RenderHtmlAsPdf(view);
             PDF.TrySaveAs(path);
         }
 
