@@ -9,6 +9,7 @@ using PetitesPuces.ViewModels;
 using PetitesPuces.ViewModels.Home;
 using System.IO;
 using IronPdf;
+using PetitesPuces.Securite;
 
 namespace PetitesPuces.Controllers
 {
@@ -367,21 +368,6 @@ namespace PetitesPuces.Controllers
         public ActionResult testValidation()
         {
             return View();
-        }
-
-        private async void GenererPDF(PPCommande commande)
-        {
-            string view = PartialView("Vendeur/_RecuImpression", commande).RenderToString();
-
-            string path = Server.MapPath("/Recus/" + commande.NoCommande + ".pdf");
-            if (!Directory.Exists(Server.MapPath("/Recus/")))
-            {
-                Directory.CreateDirectory(Server.MapPath("/Recus"));
-            }
-
-            HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
-            var PDF = Renderer.RenderHtmlAsPdf(view);
-            PDF.TrySaveAs(path);
         }
     }
 }

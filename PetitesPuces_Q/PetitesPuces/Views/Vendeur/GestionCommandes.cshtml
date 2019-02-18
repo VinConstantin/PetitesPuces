@@ -41,22 +41,6 @@
         });
     }
 
-    function info(NoCommande) {
-        $.ajax({
-            url: URLPATH +"/Vendeur/InfoCommande",
-            type: "get",
-            data: {
-                "id": NoCommande
-            },
-            success: function (result) {
-                window.open(result);
-            },
-            error: function (req, status, err) {
-                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
-            }
-        });
-    }
-
     function infoClient(NoClient) {
         $.ajax({
             url: URLPATH +"/Vendeur/InfoClient",

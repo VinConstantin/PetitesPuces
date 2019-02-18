@@ -10,28 +10,33 @@
         </div>
         <div class="col-lg-3">
             <div class="btn-group">
-                <a type="button" onclick="imprimer();" class="btn btn-link btn-lg"><span class="glyphicon glyphicon-print"></span></a>
-                <a type="button" onclick="save();" class="btn btn-link btn-lg"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                <a id="btnPrint" type="button" onclick="window.open('@Url.Action("InfoCommande", "PDF", new { id = Model.NoCommande })')" hidden class="btn btn-link btn-lg"><span class="glyphicon glyphicon-file"></span></a>
             </div>
         </div>
     </div>
-    <br/>
-    @Html.Partial("Vendeur/_RecuCommande",Model)
+    <br />
+    @Html.Partial("Vendeur/_RecuCommande", Model)
 </div>
 
-<script>
-    function imprimer() {
-        window.print();
-    }
-    var doc = new jsPDF();
-    function save() {
 
-        doc.fromHTML($('#receipt').html(), 15, 15, {
-            'width': 170,
-            'elementHandlers': specialElementHandlers
+<script>
+    $(function () {
+        $.ajax({
+            url: URLPATH +"/PDF/GenererPDF",
+            type: "get",
+            data: {
+                "id" : @Model.NoCommande
+            },
+            success: function (result) {
+                console.log(result);
+                $("#btnPrint").show();
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html(" @Html.Partial("_ErrorAlert")");
+            }
         });
-        doc.save('commande.pdf');
-    }
+    });
+
     var specialElementHandlers = {
         '#receipt': function (element, renderer) {
             return true;
