@@ -1,10 +1,12 @@
 ﻿@using PetitesPuces.Securite;
 @model PetitesPuces.Models.PPClient
 
+<script src="~/Scripts/Courriel/CourrielLib.js" type="text/javascript"></script>
 <script>
+
     function contacter(noUtilisateur) {
-        const Objet = "Information sur un produit";
-        const DescMsg = "J'ai une petite question sur votre produit '@Model.Nom'";
+        const Objet = "";
+        const DescMsg = "Salut @Model.Prenom,";
         const destinataire = [noUtilisateur];
         
         const message = {
@@ -46,7 +48,7 @@
     <p>Dernière connexion : @Model.DateDerniereConnexion.Value.ToShortDateString()</p>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-link btn-lg" onclick="">
+    <button class="btn btn-link btn-lg" onclick="contacter(@Model.NoClient)">
         <span class="glyphicon glyphicon-envelope"></span>
     </button>
 </div>

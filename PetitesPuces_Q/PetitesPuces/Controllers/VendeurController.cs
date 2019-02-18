@@ -12,14 +12,13 @@ using PetitesPuces.Securite;
 using PetitesPuces.Utilities;
 
 using IronPdf;
-using ExpertPdf;
 using System.Net;
 using PetitesPuces.ViewModels;
 
 namespace PetitesPuces.Controllers
 {
 #if !DEBUG
-        [Securise(RolesUtil.VEND)]
+    [Securise(RolesUtil.VEND)]
 #endif
     public class VendeurController : Controller
     {
@@ -348,6 +347,7 @@ namespace PetitesPuces.Controllers
             {
                 Directory.CreateDirectory(Server.MapPath("/Recus"));
             }
+
             HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
             var PDF = Renderer.RenderHtmlAsPdf(view);
             PDF.TrySaveAs(path);

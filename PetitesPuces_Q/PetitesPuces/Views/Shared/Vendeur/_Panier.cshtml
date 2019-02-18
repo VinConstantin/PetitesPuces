@@ -1,9 +1,9 @@
 ﻿@using PetitesPuces.Utilities
 @model PetitesPuces.Models.Panier
 
-<tr onclick="infoPanier(@Model.Client.NoClient)" class="v-align-middle" style="height: 51px">
+<tr onclick="infoPanier(@Model.Client.NoClient)" class="v-align-middle text-left" style="height: 51px">
     <th class="rowHead"><a onclick="infoClient(@Model.Client.NoClient)" class="alert-link">@Model.Client.DisplayName</a></th>
     <td>@Model.DateCreation.ToShortDateString()</td>
-    <td>@Model.GetNbItems()</td>
-    <td>@Formatter.Money(Model.getPrixTotal())</td>
+    <td class="prixQuantite">@Model.GetNbItems()</td>
+    <td class="prixQuantite">@Formatter.Money(Model.getPrixTotal())</td>
 </tr>
