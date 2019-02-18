@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Http.Controllers;
 using System.Web.Routing;
+using PetitesPuces.Models;
 
 namespace PetitesPuces.Securite
 {
@@ -14,7 +15,7 @@ namespace PetitesPuces.Securite
 
         public Securise()
         {
-            this.rolesAutorises = new string[] {"client", "vendeur", "admin"};
+            this.rolesAutorises = new string[] {RolesUtil.CLIENT, RolesUtil.ADMIN, RolesUtil.VEND};
         }
 
         public Securise(params string[] rolesAutorises)
