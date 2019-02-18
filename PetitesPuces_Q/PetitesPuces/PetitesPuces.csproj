@@ -207,6 +207,7 @@
     <Compile Include="Controllers\GestionnaireController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JeuDessaiController.cs" />
+    <Compile Include="Controllers\PDFController.cs" />
     <Compile Include="Controllers\VendeurController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -480,6 +481,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="images\produits\" />
     <Folder Include="Recus\" />
+    <Folder Include="Views\PDF\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
