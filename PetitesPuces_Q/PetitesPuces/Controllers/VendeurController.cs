@@ -344,7 +344,7 @@ namespace PetitesPuces.Controllers
 
             IronPdf.HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
             var PDF = Renderer.RenderHtmlAsPdf(view);
-            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + commande.NoCommande + ".pdf";
+            string path = Server.MapPath("/Recus/" + commande.NoCommande + ".pdf");
             PDF.TrySaveAs(path);
         }
 
