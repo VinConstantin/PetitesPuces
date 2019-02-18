@@ -40,6 +40,41 @@
             }
         });
     }
+
+    function infoClient(NoClient) {
+        event.stopPropagation();
+        $("#confirmationLivraison").modal('show');
+        $.ajax({
+            url: URLPATH +"/Vendeur/InfoClient",
+            type: "get",
+            data: {
+                "id": NoClient
+            },
+            success: function (result) {
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+
+    function infoPanier(NoClient) {
+        $("#confirmationLivraison").modal('show');
+        $.ajax({
+            url: URLPATH +"/Vendeur/InfoPanier",
+            type: "get",
+            data: {
+                "id": NoClient
+            },
+            success: function (result) {
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
 </script>
 
 <div class="jumbotron jumbotron-fluid">
@@ -106,7 +141,7 @@
 <h3 class="text-center col-xs-12">Paniers</h3>
 
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    @if (Model.Commandes.Count == 0)
+    @if (Model.Paniers.Count == 0)
     {
         <h5 class="text-center col-xs-12">Aucun panier de client</h5>
     }

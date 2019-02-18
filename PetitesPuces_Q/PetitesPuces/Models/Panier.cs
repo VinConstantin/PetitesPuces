@@ -25,6 +25,11 @@ namespace PetitesPuces.Models
             get { return GetPoidsTotal() > Vendeur.PoidsMaxLivraison; }
         }
 
+        public bool EstAncien
+        {
+            get { return DateTime.Today.AddMonths(-6) > DateCreation; }
+        }
+
         public decimal getPrixTotal()
         {
             return (decimal) Articles.Sum(a => (a.NbItems * a.PPProduit.GetPrixCourant()));

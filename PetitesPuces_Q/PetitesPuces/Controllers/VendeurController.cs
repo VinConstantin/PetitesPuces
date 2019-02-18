@@ -67,6 +67,15 @@ namespace PetitesPuces.Controllers
             return View(viewModel);
         }
 
+        public ActionResult InfoClient(int id)
+        {
+            var client = from clients in context.PPClients
+                         where clients.NoClient == id
+                         select clients;
+
+            return PartialView("Vendeur/ModalInfoClient", client.FirstOrDefault());
+        }
+
         [Securise(RolesUtil.CLIENT, RolesUtil.VEND)]
         public ActionResult InfoCommande(int id)
         {
@@ -98,6 +107,14 @@ namespace PetitesPuces.Controllers
 
             return File(path, "application/pdf");
             
+        }
+
+        public ActionResult InfoPanier(int id)
+        {
+            List<Panier> paniers = GetPaniersVendeurs(NoVendeur);
+            Panier panier = paniers.Single(p => p.Client.NoClient == id);
+
+            return PartialView("Vendeur/ModalInfoPanier", panier);
         }
 
         public ActionResult Profil()

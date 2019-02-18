@@ -1,18 +1,18 @@
 ﻿@using PetitesPuces.Securite
 <!--
-.____                   __________        __  .__  __                  
-|    |    ____   ______ \______   \ _____/  |_|__|/  |_  ____   ______ 
-|    |  _/ __ \ /  ___/  |     ___// __ \   __\  \   __\/ __ \ /  ___/ 
-|    |__\  ___/ \___ \   |    |   \  ___/|  | |  ||  | \  ___/ \___ \  
-|_______ \___ / ____ /   |____|    \___  |__| |__||__|  \___   ____ / 
-        
+.____                   __________        __  .__  __
+|    |    ____   ______ \______   \ _____/  |_|__|/  |_  ____   ______
+|    |  _/ __ \ /  ___/  |     ___// __ \   __\  \   __\/ __ \ /  ___/
+|    |__\  ___/ \___ \   |    |   \  ___/|  | |  ||  | \  ___/ \___ \
+|_______ \___ / ____ /   |____|    \___  |__| |__||__|  \___   ____ /
 
-__________                            
+
+__________
 \______   \__ __   ____  ____   ______
 |     ___/  |  \_/ ___\/ __ \ /  ___/
-|    |   |  |  /\  \__\  ___/ \___ \ 
+|    |   |  |  /\  \__\  ___/ \___ \
 |____|   |____/  \___ / ___  /____ /
-          
+
 -->
 <!DOCTYPE html>
 <html>
@@ -24,17 +24,41 @@ __________
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", false)
-    
+
     <script type="text/javascript" src="@Url.Content("/Scripts/constant.js")"></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-    
+
     <!-- Tippy.js (js tooltip library) -->
     <script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/tippy.js@4/themes/google.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@4/themes/google.css" />
     <script src="https://unpkg.com/tippy.js@4"></script>
+
+    @{
+        if (SessionUtilisateur.UtilisateurCourant != null)
+        {
+            <script>
+                $(document).ready(function () {
+                    $.ajax({
+                        url: URLPATH +"/Courriel/getNombreCourriels",
+                        type: "get",
+                        data: {
+                            "id": @SessionUtilisateur.UtilisateurCourant.No,
+                        },
+                        success: function (result) {
+                            $("#NbCourriels").html(result);
+                        },
+                        error: function (req, status, err) {
+                            console.log(status + " - " + err);
+                        }
+                    });
+                })
+            </script>
+        }
+    }
 </head>
+
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -54,13 +78,19 @@ __________
                     @if (SessionUtilisateur.UtilisateurCourant != null)
                     {
                         <li>@Html.ActionLink("Bienvenue, " + SessionUtilisateur.UtilisateurCourant.Prenom + "!", "Profil", "Client")</li>
-                        <li><a href="@Url.Action( "Deconnexion", "Home")"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
+                        <li>
+                            <a href="@Url.Action("Index", "Courriel")">
+                                <span style="vertical-align:middle" class="glyphicon glyphicon-envelope"></span>
+                                <span id="NbCourriels" class="badge badge-notify"></span>
+                            </a>
+                        </li>
+                        <li><a href="@Url.Action("Deconnexion", "Home")"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
                     }
                     else
                     {
                         <li><a href="@Url.Action( "Connexion", "Home")"><span class="glyphicon glyphicon-log-in"></span> Connexion</a></li>
                     }
-                    
+
                 </ul>
             </div>
 
@@ -70,8 +100,8 @@ __________
         @RenderBody()
     </div>
     <hr />
-<footer class="container">
-    <p>&copy @DateTime.Now.Year - Les petites puces</p>
-</footer>
+    <footer class="container">
+        <p>&copy @DateTime.Now.Year - Les petites puces</p>
+    </footer>
 </body>
 </html>

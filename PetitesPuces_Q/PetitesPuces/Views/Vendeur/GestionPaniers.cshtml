@@ -8,60 +8,6 @@
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Vendeur/Index.css")" />
 }
 
-<script>
-    function visualiser(NbMois) {
-        $.ajax({
-            url: URLPATH +"/Vendeur/VisualiserPaniers",
-            type: "get",
-            data: {
-                "NbMois": NbMois
-            },
-            success: function (result) {
-                console.log("success")
-                $("#PLACEHOLDERPaniersMois").html(result);
-            },
-            error: function (req, status, err) {
-                console.log("error")
-                $("#PLACEHOLDERPaniersMois").html("@Html.Partial("_ErrorAlert")");
-            }
-        });
-    }
-    function confirmer(NoClient) {
-        $.ajax({
-            url: URLPATH +"/Vendeur/ConfirmationPanier",
-            type: "get",
-            data: {
-                "NoClient": NoClient
-            },
-            success: function (result) {
-                console.log("success")
-                $("#PLACEHOLDERModalDescription").html(result);
-            },
-            error: function (req, status, err) {
-                console.log("error")
-                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
-            }
-        });
-    }
-    function supprimer(NoClient) {
-        $.ajax({
-            url: URLPATH +"/Vendeur/SuppressionPanier",
-            type: "get",
-            data: {
-                "NoClient": NoClient
-            },
-            success: function (result) {
-                console.log("success")
-                window.location.reload();
-            },
-            error: function (req, status, err) {
-                console.log("error")
-                $("#PLACEHOLDERPaniersMois").html("@Html.Partial("_ErrorAlert")");
-            }
-        });
-    }
-</script>
-
 <h2 class="text-center">@ViewBag.Title</h2>
 
 <h3 class="col-xs-12 text-center">Tous les paniers</h3>
@@ -132,7 +78,96 @@
 <div class="modal fade" id="confirmationPanier" tabindex="-1" role="dialog" aria-labelledby="confirmationPanier" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div id="PLACEHOLDERModalDescription" class="modal-content">
-
+            
         </div>
     </div>
 </div>
+
+<script>
+    function visualiser(NbMois) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/VisualiserPaniers",
+            type: "get",
+            data: {
+                "NbMois": NbMois
+            },
+            success: function (result) {
+                console.log("success")
+                $("#PLACEHOLDERPaniersMois").html(result);
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERPaniersMois").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+    function confirmer(NoClient) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/ConfirmationPanier",
+            type: "get",
+            data: {
+                "NoClient": NoClient
+            },
+            success: function (result) {
+                console.log("success")
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+    function supprimer(NoClient) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/SuppressionPanier",
+            type: "get",
+            data: {
+                "NoClient": NoClient
+            },
+            success: function (result) {
+                console.log("success")
+                window.location.reload();
+            },
+            error: function (req, status, err) {
+                console.log("error")
+                $("#PLACEHOLDERPaniersMois").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+
+    function infoClient(NoClient) {
+        event.stopPropagation();
+        $("#confirmationPanier").modal('show');
+        $.ajax({
+            url: URLPATH +"/Vendeur/InfoClient",
+            type: "get",
+            data: {
+                "id": NoClient
+            },
+            success: function (result) {
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+
+    function infoPanier(NoClient) {
+        $("#confirmationPanier").modal('show');
+        $.ajax({
+            url: URLPATH +"/Vendeur/InfoPanier",
+            type: "get",
+            data: {
+                "id": NoClient
+            },
+            success: function (result) {
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
+</script>

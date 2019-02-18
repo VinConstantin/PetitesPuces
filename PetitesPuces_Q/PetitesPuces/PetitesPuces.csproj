@@ -448,6 +448,9 @@
     <Content Include="Views\Shared\Vendeur\_GestionProduit.cshtml" />
     <Content Include="Views\Shared\Vendeur\ModalModifierProduit.cshtml" />
     <Content Include="Views\Shared\Vendeur\ModalSupprimerProduit.cshtml" />
+    <Content Include="Views\Shared\Vendeur\ModalInfoClient.cshtml" />
+    <Content Include="Views\Shared\Vendeur\ModalInfoPanier.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_ProduitPanier.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
