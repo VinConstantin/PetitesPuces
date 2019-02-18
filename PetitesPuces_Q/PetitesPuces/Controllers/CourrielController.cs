@@ -846,6 +846,14 @@ namespace PetitesPuces.Controllers
 
             return Content(noMessage.ToString());
         }
+
+        public int getNombreCourriels(int id)
+        {
+            int NbMessagesNonLus = (from d in context.PPDestinataires
+                                    where d.NoDestinataire == id && d.EtatLu == 0
+                                    select d).Count();
+            return NbMessagesNonLus;
+        }
     }
 
     public enum EtatLu : short
