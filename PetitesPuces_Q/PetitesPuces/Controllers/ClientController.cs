@@ -972,7 +972,37 @@ namespace PetitesPuces.Controllers
 
             return View();
         }
+        public ActionResult PdfCommande(int id)
+        {
+            var user = SessionUtilisateur.UtilisateurCourant;
 
+            var query = from commandes in context.PPCommandes
+                where commandes.NoCommande == id
+                select commandes;
+
+            var commande = query.FirstOrDefault();
+
+            if (user is PPVendeur)
+            {
+                PPVendeur vendeur = (PPVendeur)user;
+                if(commande.PPVendeur.NoVendeur != vendeur.NoVendeur)
+                    return new HttpStatusCodeResult(400, "Id commande invalide");
+            }
+            else if (user is PPClient)
+            {
+                PPClient client = (PPClient)user;
+                if(commande.PPClient.NoClient != client.NoClient)
+                    return new HttpStatusCodeResult(400, "Id commande invalide");
+            }
+
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + id + ".pdf";
+
+            if (!System.IO.File.Exists(path))
+                genererPDF(commande);
+
+            return File(path, "application/pdf");
+            
+        }
         [System.Web.Mvc.HttpGet]
         public ActionResult modificationMDP()
         {
