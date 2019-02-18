@@ -13,7 +13,6 @@ namespace PetitesPuces.Controllers
     public class HomeController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
-        private DateTime dateCourante = DateTime.Now;
         public static string courrielOublieMDP;
         
         public ActionResult Index()
@@ -97,7 +96,7 @@ namespace PetitesPuces.Controllers
                 if (unClientExist.Count() != 0)
                 {
                     System.Web.HttpContext.Current.Session["userId"] = unClientExist.First().NoClient;
-                    unClientExist.First().DateDerniereConnexion = dateCourante;
+                    unClientExist.First().DateDerniereConnexion = DateTime.Now;
                     unClientExist.First().NbConnexions++;
                     TempData["connexion"] = true;
                     try
@@ -165,7 +164,7 @@ namespace PetitesPuces.Controllers
 
                     nouveauClient.MotDePasse = formCollection["MotDePasse"];
                     nouveauClient.NoClient = maxNo;
-                    nouveauClient.DateCreation = dateCourante;
+                    nouveauClient.DateCreation = DateTime.Now;
                     nouveauClient.Statut = 1;
                     try
                     {
@@ -236,7 +235,7 @@ namespace PetitesPuces.Controllers
                     nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["Vendeur.LivraisonGratuite"]);
                     nouveauVendeur.MotDePasse = formCollection["MotDePasse"];
                     nouveauVendeur.Taxes = formCollection["Taxes"] == "on" ? true : false;
-                    nouveauVendeur.DateCreation = dateCourante;
+                    nouveauVendeur.DateCreation = DateTime.Now;
 
                     nouveauVendeur.Statut = 0;
                     try
