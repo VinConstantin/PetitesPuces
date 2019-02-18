@@ -69,7 +69,6 @@
                                     <span id="@("Etoile" + i)" data-no-etoile="@i" class="glyphicon glyphicon-star-empty" onclick="selectNbEtoiles(this);" onmouseover="onHoverEtoile(this);"></span>
                                 }
                             </span>
-                            <input type="hidden" id="nbEtoiles" value="1"/>
                             <textarea id="commentaire" class="form-control" style="resize: none;">@monEvaluation.Commentaire_</textarea>
                         </div>
                         <br/>
@@ -99,7 +98,7 @@
                                     <span id="@("Etoile" + i)" data-no-etoile="@i" class="glyphicon glyphicon-star-empty" onclick="selectNbEtoiles(this);" onmouseover="onHoverEtoile(this);"></span>
                                 }
                             </span>
-                            <input type="hidden" id="nbEtoiles"/>
+                            
                             <textarea id="commentaire" class="form-control" style="resize: none;"></textarea>
                         </div>
                         <br/>
@@ -119,8 +118,10 @@
                     }
     
                 </div>
+
             </div>
         }    
+        <input type="hidden" id="nbEtoiles"/>
         <img src="@Url.Content("/images/produits/" + Model.Photo)" onerror="this.src = 'https://placehold.it/150x80?text=IMAGE';" class="img-responsive" style="width: 100%" alt="Image">
         <br/>
         <p>@Model.Description</p>
@@ -204,23 +205,24 @@
                 $("#successEvaluation").show();
                 $("#errorEvaluation").hide();
 
+                const nbEtoiles = $(`#nbEtoiles`).val();
+                console.log(nbEtoiles);
                 let str = `<div class="">
                             <h4>Modifier une évaluation</h4>
                         </div>
                         <div class="">
                             <span style="font-size: 25px; color: #18bc9c" onmouseout="onOutsideEtoile()">`
-                
-                
-                for (var i = 1; i <= $(`#nbEtoiles`).val(); i++)
+
+                var i = 1;
+                for (i = 1; i <= nbEtoiles; i++)
                 {
                     str+=`<span id="Etoile${i}" data-no-etoile="${i}" class="glyphicon glyphicon-star" onclick="selectNbEtoiles(this);" onmouseover="onHoverEtoile(this);"></span>`
                 }
-                for (var i = ($(`#nbEtoiles`).val().Cote_ + 1); i <= 5; i++)
+                for (i; i <= 5; i++)
                 {
                     str+=`<span id="Etoile${i}" data-no-etoile="${i}" class="glyphicon glyphicon-star-empty" onclick="selectNbEtoiles(this);" onmouseover="onHoverEtoile(this);"></span>`
                 }
                 str+=`</span>
-                            <input type="hidden" id="nbEtoiles" value="1"/>
                             <textarea id="commentaire" class="form-control" style="resize: none;">${$('textarea#commentaire').val()}</textarea>
                         </div>
                         <br/>
@@ -229,6 +231,9 @@
                                 <button type="button" onclick="modifierEvaluation();" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Modifier </button>
                             </div>
                             <div class="col-md-5">
+                                <div id="successEvaluationEnvoye" class="alert alert-success" role="alert">
+                                    Évaluation envoyé
+                                </div>
                                 <div id="successEvaluation" class="alert alert-success" role="alert" hidden>
                                     Évaluation modifiée
                                 </div>
@@ -257,11 +262,13 @@
             success: function (result) {
                 $("#EtoileRating").html(result);
                 $("#successEvaluation").show();
-                $("#errorEvaluation").hide();
+                $("#errorEvaluation").hide();             
+                $("#successEvaluationEnvoye").hide();
             },
             error: function (req, status, err) {
                 $("#errorEvaluation").show();
                 $("#successEvaluation").hide();
+                $("#successEvaluationEnvoye").hide();
             }
         });
     }
