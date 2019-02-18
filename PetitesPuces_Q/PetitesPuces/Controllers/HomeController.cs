@@ -7,13 +7,14 @@ using System.Web;
 using PetitesPuces.Models;
 using PetitesPuces.ViewModels;
 using PetitesPuces.ViewModels.Home;
+using System.IO;
+using IronPdf;
 
 namespace PetitesPuces.Controllers
 {
     public class HomeController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
-        private DateTime dateCourante = DateTime.Now;
         public static string courrielOublieMDP;
         
         public ActionResult Index()
@@ -97,7 +98,7 @@ namespace PetitesPuces.Controllers
                 if (unClientExist.Count() != 0)
                 {
                     System.Web.HttpContext.Current.Session["userId"] = unClientExist.First().NoClient;
-                    unClientExist.First().DateDerniereConnexion = dateCourante;
+                    unClientExist.First().DateDerniereConnexion = DateTime.Now;
                     unClientExist.First().NbConnexions++;
                     TempData["connexion"] = true;
                     try
@@ -165,7 +166,7 @@ namespace PetitesPuces.Controllers
 
                     nouveauClient.MotDePasse = formCollection["MotDePasse"];
                     nouveauClient.NoClient = maxNo;
-                    nouveauClient.DateCreation = dateCourante;
+                    nouveauClient.DateCreation = DateTime.Now;
                     nouveauClient.Statut = 1;
                     try
                     {
@@ -236,7 +237,7 @@ namespace PetitesPuces.Controllers
                     nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["Vendeur.LivraisonGratuite"]);
                     nouveauVendeur.MotDePasse = formCollection["MotDePasse"];
                     nouveauVendeur.Taxes = formCollection["Taxes"] == "on" ? true : false;
-                    nouveauVendeur.DateCreation = dateCourante;
+                    nouveauVendeur.DateCreation = DateTime.Now;
 
                     nouveauVendeur.Statut = 0;
                     try
@@ -366,6 +367,21 @@ namespace PetitesPuces.Controllers
         public ActionResult testValidation()
         {
             return View();
+        }
+
+        private async void GenererPDF(PPCommande commande)
+        {
+            string view = PartialView("Vendeur/_RecuImpression", commande).RenderToString();
+
+            string path = Server.MapPath("/Recus/" + commande.NoCommande + ".pdf");
+            if (!Directory.Exists(Server.MapPath("/Recus/")))
+            {
+                Directory.CreateDirectory(Server.MapPath("/Recus"));
+            }
+
+            HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
+            var PDF = Renderer.RenderHtmlAsPdf(view);
+            PDF.TrySaveAs(path);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using PetitesPuces.Models;
+﻿using PetitesPuces.Models;
 using PetitesPuces.ViewModels.Vendeur;
 using System;
 using System.Collections.Generic;
@@ -12,14 +11,13 @@ using PetitesPuces.Securite;
 using PetitesPuces.Utilities;
 
 using IronPdf;
-using ExpertPdf;
 using System.Net;
 using PetitesPuces.ViewModels;
 
 namespace PetitesPuces.Controllers
 {
 #if !DEBUG
-        [Securise(RolesUtil.VEND)]
+    [Securise(RolesUtil.VEND)]
 #endif
     public class VendeurController : Controller
     {
@@ -111,10 +109,9 @@ namespace PetitesPuces.Controllers
             string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + id + ".pdf";
 
             if (!System.IO.File.Exists(path))
-                genererPDF(commande);
+                RedirectToAction("GenererPDF", "Home");
 
             return File(path, "application/pdf");
-            
         }
 
         public ActionResult InfoPanier(int id)
@@ -335,33 +332,6 @@ namespace PetitesPuces.Controllers
                 Console.WriteLine(e);
             }
             return produit.NoProduit;
-        }
-
-        private void genererPDF(PPCommande commande)
-        {
-            string view;
-            PartialViewResult vr = PartialView("Vendeur/_RecuCommande", commande);
-
-            using (var sw = new StringWriter())
-            {
-                vr.View = ViewEngines.Engines
-                  .FindPartialView(ControllerContext, vr.ViewName).View;
-
-                var vc = new ViewContext(
-                  ControllerContext, vr.View, vr.ViewData, vr.TempData, sw);
-                vr.View.Render(vc, sw);
-
-                view = sw.GetStringBuilder().ToString();
-            }
-
-            string path = Server.MapPath("/Recus/" + commande.NoCommande + ".pdf");
-            if (!Directory.Exists(Server.MapPath("/Recus/")))
-            {
-                Directory.CreateDirectory(Server.MapPath("/Recus"));
-            }
-            HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
-            var PDF = Renderer.RenderHtmlAsPdf(view);
-            PDF.TrySaveAs(path);
         }
 
         public void SupprimerProduit(int NoProduit) //TODO

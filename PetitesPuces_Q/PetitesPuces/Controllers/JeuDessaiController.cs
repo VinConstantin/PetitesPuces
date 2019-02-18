@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
@@ -16,6 +17,7 @@ namespace PetitesPuces.Controllers
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
 
+        private CultureInfo culture = new CultureInfo("en-US");
         // GET: JeuDessai
       
         public ActionResult Index()
@@ -180,9 +182,11 @@ namespace PetitesPuces.Controllers
             {
                 typesPoid = new PPTypesPoid();
 
+                
+                
                 typesPoid.CodePoids = Convert.ToInt16(type.CodePoids);
-                typesPoid.PoidsMin = Convert.ToDecimal(type.PoidsMin);
-                typesPoid.PoidsMax = Convert.ToDecimal(type.PoidsMax);
+                typesPoid.PoidsMin = Convert.ToDecimal(type.PoidsMin, culture);
+                typesPoid.PoidsMax = Convert.ToDecimal(type.PoidsMax, culture);
 
                 context.PPTypesPoids.InsertOnSubmit(typesPoid);
             }
@@ -229,7 +233,7 @@ namespace PetitesPuces.Controllers
 
                 podLivraison.CodeLivraison = Convert.ToInt16(type.CodeLivraison);
                 podLivraison.CodePoids = Convert.ToInt16(type.CodePoids);
-                podLivraison.Tarif = Convert.ToDecimal(type.Tarif);
+                podLivraison.Tarif = Convert.ToDecimal(type.Tarif,culture);
                 test += "Code livraison du poids livraison" + type.CodeLivraison;
 
                 context.PPPoidsLivraisons.InsertOnSubmit(podLivraison);
@@ -396,9 +400,9 @@ namespace PetitesPuces.Controllers
                 objVendeur.AdresseEmail = unVendeur.AdresseEmail;
                 objVendeur.MotDePasse = unVendeur.MotDePasse;
                 objVendeur.PoidsMaxLivraison = Convert.ToInt32(unVendeur.PoidsMaxLivraison);
-                objVendeur.LivraisonGratuite = Convert.ToDecimal(unVendeur.LivraisonGraduite);
+                objVendeur.LivraisonGratuite = Convert.ToDecimal(unVendeur.LivraisonGraduite,culture);
                 objVendeur.Taxes = unVendeur.Taxes == "1" ? true : false;
-                objVendeur.Pourcentage = Convert.ToDecimal(unVendeur.Pourcentage);
+                objVendeur.Pourcentage = Convert.ToDecimal(unVendeur.Pourcentage,culture);
                 if (unVendeur.DateCreation != "") objVendeur.DateCreation = Convert.ToDateTime(unVendeur.DateCreation);
                 if (unVendeur.DateMAJ != "") objVendeur.DateMAJ = Convert.ToDateTime(unVendeur.DateMAJ);
                 objVendeur.Configuration = unVendeur.Configuration;
@@ -453,7 +457,7 @@ namespace PetitesPuces.Controllers
 
                 objTaxeFederale.NoTPS = Convert.ToByte(taxe.NoTPS);
                 objTaxeFederale.DateEffectiveTPS = Convert.ToDateTime(taxe.DateEffectiveTPS);
-                objTaxeFederale.TauxTPS = Convert.ToDecimal(taxe.TauxTPS);
+                objTaxeFederale.TauxTPS = Convert.ToDecimal(taxe.TauxTPS,culture);
 
                 context.PPTaxeFederales.InsertOnSubmit(objTaxeFederale);
             }
@@ -478,7 +482,7 @@ namespace PetitesPuces.Controllers
 
                 objTaxeProvinciale.NoTVQ = Convert.ToByte(taxe.NoTVQ);
                 objTaxeProvinciale.DateEffectiveTVQ = Convert.ToDateTime(taxe.DateEffectiveTVQ);
-                objTaxeProvinciale.TauxTVQ = Convert.ToDecimal(taxe.TauxTVQ);
+                objTaxeProvinciale.TauxTVQ = Convert.ToDecimal(taxe.TauxTVQ,culture);
 
                 context.PPTaxeProvinciales.InsertOnSubmit(objTaxeProvinciale);
             }
@@ -519,11 +523,11 @@ namespace PetitesPuces.Controllers
                 objProduit.Description = type.Description;
                 objProduit.Photo = type.Photo;
                 objProduit.Disponibilité = type.Disponibilite != "1" ? false : true;
-                objProduit.PrixDemande = Convert.ToDecimal(type.PrixDemande);
+                objProduit.PrixDemande = Convert.ToDecimal(type.PrixDemande,culture);
                 objProduit.NombreItems = Convert.ToInt16(type.NombreItems);
-                if (type.DateVente != "") objProduit.DateVente = Convert.ToDateTime(type.DateVente);
-                if (type.PrixVente != "") objProduit.PrixVente = Convert.ToDecimal(type.PrixVente);
-                objProduit.Poids = Convert.ToDecimal(type.Poids);
+                if (type.DateVente != "") objProduit.DateVente = Convert.ToDateTime(type.DateVente,culture);
+                if (type.PrixVente != "") objProduit.PrixVente = Convert.ToDecimal(type.PrixVente,culture);
+                objProduit.Poids = Convert.ToDecimal(type.Poids,culture);
                 objProduit.DateCreation = Convert.ToDateTime(type.DateCreation);
                 if (type.DateMAJ != "") objProduit.DateMAJ = Convert.ToDateTime(type.DateMAJ);
 
@@ -592,12 +596,12 @@ namespace PetitesPuces.Controllers
                 objcommande.NoClient = Convert.ToInt64(type.NoClient);
                 objcommande.NoVendeur = Convert.ToInt64(type.NoVendeur);
                 objcommande.DateCommande = Convert.ToDateTime(type.DateCommande);
-                if (type.CoutLivraison != "") objcommande.CoutLivraison = Convert.ToDecimal(type.CoutLivraison);
+                if (type.CoutLivraison != "") objcommande.CoutLivraison = Convert.ToDecimal(type.CoutLivraison,culture);
                 objcommande.TypeLivraison = Convert.ToInt16(type.TypeLivraison);
-                objcommande.MontantTotAvantTaxes = Convert.ToDecimal(type.MontantTotAvantTaxes);
-                if (type.TPS != "") objcommande.TPS = Convert.ToDecimal(type.TPS);
-                if (type.TVQ != "") objcommande.TVQ = Convert.ToDecimal(type.TVQ);
-                objcommande.PoidsTotal = Convert.ToDecimal(type.PoidsTotal);
+                objcommande.MontantTotAvantTaxes = Convert.ToDecimal(type.MontantTotAvantTaxes,culture);
+                if (type.TPS != "") objcommande.TPS = Convert.ToDecimal(type.TPS,culture);
+                if (type.TVQ != "") objcommande.TVQ = Convert.ToDecimal(type.TVQ,culture);
+                objcommande.PoidsTotal = Convert.ToDecimal(type.PoidsTotal,culture);
                 objcommande.Statut = Convert.ToChar(type.Statut);
                 objcommande.NoAutorisation = type.NoAutorisation;
 
@@ -628,7 +632,7 @@ namespace PetitesPuces.Controllers
                 objDetailsCommande.NoDetailCommandes = Convert.ToInt64(type.NoDetailCommandes);
                 objDetailsCommande.NoCommande = Convert.ToInt64(type.NoCommande);
                 objDetailsCommande.NoProduit = Convert.ToInt64(type.NoProduit);
-                objDetailsCommande.PrixVente = Convert.ToDecimal(type.PrixVente);
+                objDetailsCommande.PrixVente = Convert.ToDecimal(type.PrixVente,culture);
                 objDetailsCommande.Quantité = Convert.ToInt16(type.Quantité);
 
                 context.PPDetailsCommandes.InsertOnSubmit(objDetailsCommande);
@@ -664,20 +668,20 @@ namespace PetitesPuces.Controllers
 
                 objHistoriquePaiement.NoHistorique = Convert.ToInt32(unHistorique.NoHistorique);
                 objHistoriquePaiement.MontantVenteAvantLivraison =
-                    Convert.ToDecimal(unHistorique.MontantVenteAvantLivraison);
+                    Convert.ToDecimal(unHistorique.MontantVenteAvantLivraison,culture);
                 objHistoriquePaiement.NoVendeur = Convert.ToInt64(unHistorique.NoVendeur);
                 objHistoriquePaiement.NoClient = Convert.ToInt64(unHistorique.NoClient);
                 objHistoriquePaiement.NoCommande = Convert.ToInt64(unHistorique.NoCommande);
                 objHistoriquePaiement.DateVente = Convert.ToDateTime(unHistorique.DateVente);
                 objHistoriquePaiement.NoAutorisation = unHistorique.NoAutoristion;
-                objHistoriquePaiement.FraisLesi = Convert.ToDecimal(unHistorique.FraisLesi);
-                objHistoriquePaiement.Redevance = Convert.ToDecimal(unHistorique.Redevance);
+                objHistoriquePaiement.FraisLesi = Convert.ToDecimal(unHistorique.FraisLesi,culture);
+                objHistoriquePaiement.Redevance = Convert.ToDecimal(unHistorique.Redevance,culture);
                 if (unHistorique.FraisLivraison != "")
-                    objHistoriquePaiement.FraisLivraison = Convert.ToDecimal(unHistorique.FraisLivraison);
+                    objHistoriquePaiement.FraisLivraison = Convert.ToDecimal(unHistorique.FraisLivraison,culture);
                 if (unHistorique.FraisTPS != "")
-                    objHistoriquePaiement.FraisTPS = Convert.ToDecimal(unHistorique.FraisTPS);
+                    objHistoriquePaiement.FraisTPS = Convert.ToDecimal(unHistorique.FraisTPS,culture);
                 if (unHistorique.FraisTVQ != "")
-                    objHistoriquePaiement.FraisTVQ = Convert.ToDecimal(unHistorique.FraisTVQ);
+                    objHistoriquePaiement.FraisTVQ = Convert.ToDecimal(unHistorique.FraisTVQ,culture);
 
 
                 context.PPHistoriquePaiements.InsertOnSubmit(objHistoriquePaiement);
