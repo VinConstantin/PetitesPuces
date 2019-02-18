@@ -46,6 +46,12 @@
                                         Inscription réussite!
                                     </div>
                                 }
+                                @if (ViewBag.Status == "EnregistrementReussi")
+                                {
+                                    <div class="alert alert-info text-center" role="alert" style="margin: 20px;">
+                                       Enregistrement réussi!
+                                    </div>
+                                }
 
                                 <h1 class=" text-center">Connexion</h1>
                                 <br />

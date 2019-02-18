@@ -1,6 +1,24 @@
 ﻿@using PetitesPuces.Securite;
 @model PetitesPuces.Models.PPClient
 
+<script>
+    function contacter(noUtilisateur) {
+        const Objet = "Information sur un produit";
+        const DescMsg = "J'ai une petite question sur votre produit '@Model.Nom'";
+        const destinataire = [noUtilisateur];
+        
+        const message = {
+            'DescMsg':DescMsg,
+            'objet':Objet,
+            'destinataires':destinataire
+        }
+        Courriel.enregistrerMessage(message,redirigerModuleCourriel);
+    }
+    function redirigerModuleCourriel(msg) {
+        Courriel.redirigerVersMessage(msg);
+    }
+</script>
+
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>

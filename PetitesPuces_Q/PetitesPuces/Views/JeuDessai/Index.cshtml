@@ -1,18 +1,31 @@
 ﻿
 @{
-    Layout = null;
+    ViewBag.Title = "  JEU D'ESSAI";
 }
 
 <!DOCTYPE html>
+@using (Html.BeginForm())
+{
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width"/>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>c'est jeu d'essai</title>
-</head>
-<body>
-<div class=" jumbotron">
-    Hi
-</div>
-</body>
-</html>
+    </head>
+    <body>
+    <div class=" jumbotron">
+        <h1> JEU D'ESSAI</h1>
+    </div>
+    @Html.ActionLink("Afficher le nombre d'enregistrement","Index","JeuDessai",new {@class = "btn  btn-primary btn-block center-block"})
+    
+    
+   
+    @Html.ActionLink("Supprimer les données","effacerBaseDonnee","JeuDessai",new {@class = "btn  btn-danger btn-block center-block"})
+    
+    @Html.ActionLink("Remplir la base de donnée","ajouterLesDonnees","JeuDessai",new {@class = "btn  btn-info btn-block center-block"})
+  
+    <label id="enregistrementBaseDonnee_Afficher" class="text text-success text-uppercase">  
+        @Html.Raw( ViewBag.lsMessageAfficher)
+    </label>
+    </body>
+    </html>
+}

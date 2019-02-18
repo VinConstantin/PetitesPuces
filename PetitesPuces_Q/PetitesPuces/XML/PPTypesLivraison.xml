@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rows>
+  <row>
+    <CodeLivraison>1</CodeLivraison>
+    <Description>Poste régulière</Description>
+  </row>
+  <row>
+    <CodeLivraison>2</CodeLivraison>
+    <Description>Poste prioritaire</Description>
+  </row>
+  <row>
+    <CodeLivraison>3</CodeLivraison>
+    <Description>Transport privé</Description>
+  </row>
+</rows>

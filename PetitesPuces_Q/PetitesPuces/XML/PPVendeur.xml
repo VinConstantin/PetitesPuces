@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rows>
+ <row>
+   <NoVendeur>11</NoVendeur>
+   <NomAffaires>La Mine d'or</NomAffaires>
+   <Nom>Hammond</Nom>
+   <Prenom>Bernice</Prenom>
+   <Rue>15 St-Charles</Rue>
+   <Ville>Montreal</Ville>
+   <Province>QC</Province>
+   <CodePostal>H0P 1K0</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>450-123-4567</Tel1>
+   <Tel2></Tel2>
+   <AdresseEmail>Vendeur11@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>110</PoidsMaxLivraison>
+   <LivraisonGraduite>300</LivraisonGraduite>
+   <Taxes>1</Taxes>
+   <Pourcentage>0.15</Pourcentage>
+   <Configuration></Configuration>
+   <DateCreation>2017-01-20</DateCreation>
+   <DateMAJ>2017-11-26</DateMAJ>
+   <Statut>1</Statut>
+ </row>
+ <row>
+   <NoVendeur>12</NoVendeur>
+   <NomAffaires>Alexia</NomAffaires>
+   <Nom>Watson</Nom>
+   <Prenom>Austin</Prenom>
+   <Rue>20 St-Jean</Rue>
+   <Ville>Brossard</Ville>
+   <Province>QC</Province>
+   <CodePostal>J0H 2P1</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>514-765-9876</Tel1>
+   <Tel2>514-876-8765</Tel2>
+   <AdresseEmail>Vendeur12@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>150</PoidsMaxLivraison>
+   <LivraisonGraduite>35</LivraisonGraduite>
+   <Taxes>0</Taxes>
+   <Pourcentage>0.05</Pourcentage>
+   <Configuration></Configuration>
+   <DateCreation>2017-04-25</DateCreation>
+   <DateMAJ>2017-08-07</DateMAJ>
+   <Statut>1</Statut>
+ </row>
+ <row>
+   <NoVendeur>13</NoVendeur>
+   <NomAffaires>Amizona</NomAffaires>
+   <Nom>Sanders</Nom>
+   <Prenom>Delia</Prenom>
+   <Rue>43 Des Sources</Rue>
+   <Ville>Vaudreuil</Ville>
+   <Province>QC</Province>
+   <CodePostal>H6Y 3L9</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>514-765-9876</Tel1>
+   <Tel2></Tel2>
+   <AdresseEmail>Vendeur13@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>110</PoidsMaxLivraison>
+   <LivraisonGraduite>400</LivraisonGraduite>
+   <Taxes>1</Taxes>
+   <Pourcentage>0.20</Pourcentage>
+   <Configuration></Configuration>
+   <DateCreation>2017-03-13</DateCreation>
+   <DateMAJ>2017-09-18</DateMAJ>
+   <Statut>0</Statut>
+ </row>
+ <row>
+   <NoVendeur>14</NoVendeur>
+   <NomAffaires>AliBaBa</NomAffaires>
+   <Nom>Gibson</Nom>
+   <Prenom>Man</Prenom>
+   <Rue>2321 Queen St W</Rue>
+   <Ville>Toronto</Ville>
+   <Province>ON</Province>
+   <CodePostal>M5V 1Z4</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>416-205-9836</Tel1>
+   <Tel2>416-205-9236</Tel2>
+   <AdresseEmail>Vendeur14@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>120</PoidsMaxLivraison>
+   <LivraisonGraduite>75</LivraisonGraduite>
+   <Taxes>0</Taxes>
+   <Pourcentage>0.25</Pourcentage>
+   <Configuration></Configuration>
+   <DateCreation>2017-04-12</DateCreation>
+   <DateMAJ>2017-08-23</DateMAJ>
+   <Statut>1</Statut>
+ </row>
+ <row>
+   <NoVendeur>15</NoVendeur>
+   <NomAffaires>Meta Pro Baby</NomAffaires>
+   <Nom>Simon</Nom>
+   <Prenom>Lambda</Prenom>
+   <Rue>13Rue de Montigny</Rue>
+   <Ville>Montréal</Ville>
+   <Province>QC</Province>
+   <CodePostal>H1A 1K2</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>514-642-9662</Tel1>
+   <Tel2>514-642-9663</Tel2>
+   <AdresseEmail>Vendeur15@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>120</PoidsMaxLivraison>
+   <LivraisonGraduite>50</LivraisonGraduite>
+   <Taxes>1</Taxes>
+   <Pourcentage>0.03</Pourcentage>
+   <Configuration></Configuration>
+   <DateCreation>2017-05-14</DateCreation>
+   <DateMAJ>2017-08-06</DateMAJ>
+   <Statut>0</Statut>
+ </row>
+ <row>
+   <NoVendeur>16</NoVendeur>
+   <NomAffaires>Meuble Genie</NomAffaires>
+   <Nom>Brunelle</Nom>
+   <Prenom>Madana</Prenom>
+   <Rue>4212 Bd Laurentien</Rue>
+   <Ville>Montréal</Ville>
+   <Province>QC</Province>
+   <CodePostal>H4K 1N3</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>514-444-3231</Tel1>
+   <Tel2>514-921-2582</Tel2>
+   <AdresseEmail>Vendeur16@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>130</PoidsMaxLivraison>
+   <LivraisonGraduite>50</LivraisonGraduite>
+   <Taxes>1</Taxes>
+   <Pourcentage>0.10</Pourcentage>
+   <Configuration></Configuration>
+   <DateCreation>2017-03-21</DateCreation>
+   <DateMAJ>2017-12-27</DateMAJ>
+   <Statut>1</Statut>
+ </row>
+ <row>
+   <NoVendeur>17</NoVendeur>
+   <NomAffaires>La vie en NOIR</NomAffaires>
+   <Nom>Lumi</Nom>
+   <Prenom>Anis</Prenom>
+   <Rue>2134 Westmorland St</Rue>
+   <Ville>Fredericton</Ville>
+   <Province>NB</Province>
+   <CodePostal>E3B 3L9</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>506-451-0630</Tel1>
+   <Tel2>506-451-0611</Tel2>
+   <AdresseEmail>Vendeur17@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>140</PoidsMaxLivraison>
+   <LivraisonGraduite>170</LivraisonGraduite>
+   <Taxes>0</Taxes>
+   <Pourcentage>0.35</Pourcentage>
+   <Configuration></Configuration>
+   <DateCreation>2017-05-04</DateCreation>
+   <DateMAJ>2017-11-30</DateMAJ>
+   <Statut>1</Statut>
+ </row>
+</rows>
