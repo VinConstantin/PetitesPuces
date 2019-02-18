@@ -1,0 +1,20 @@
+@using PetitesPuces.Utilities
+@model PetitesPuces.Models.Panier
+
+<div class="panel panel-success">
+            <div class="panel-heading">Informations sur le vendeur: </div>
+            <div class="panel-body">
+                <div class="h4">
+                    <p><strong><i title="Contacter  @Model.Vendeur.NomAffaires" onclick="contacter(@Model.Vendeur.No);" style="font-size: 20px" class="btn btn-link"><span class="glyphicon glyphicon-envelope"></span></i>@Model.Vendeur.NomAffaires</strong></p> 
+                    
+                    <p>Membre depuis le @Model.Vendeur.DateCreation.Value.ToLongDateString()</p>
+                    <p>@Model.Vendeur.Province, @Model.Vendeur.Pays</p>
+
+                    <hr/>
+                    Prix minimal pour une livraison gratuite : 
+                    @Formatter.Money(Model.Vendeur.LivraisonGratuite,false)
+                    <br/>
+                    <p>Nombres de ventes : @Model.Vendeur.PPCommandes.Count</p>
+                </div>
+            </div>
+        </div>

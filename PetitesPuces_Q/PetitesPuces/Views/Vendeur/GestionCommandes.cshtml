@@ -56,6 +56,22 @@
             }
         });
     }
+
+    function infoClient(NoClient) {
+        $.ajax({
+            url: URLPATH +"/Vendeur/InfoClient",
+            type: "get",
+            data: {
+                "id": NoClient
+            },
+            success: function (result) {
+                $("#PLACEHOLDERModalDescription").html(result);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
 </script>
 
 <h2 class="text-center">@ViewBag.Title</h2>

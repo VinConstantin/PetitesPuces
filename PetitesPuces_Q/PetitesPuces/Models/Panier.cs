@@ -20,6 +20,7 @@ namespace PetitesPuces.Models
             get { return Articles.Any(a => a.PPProduit.DateVente >= DateTime.Now); }
         }
 
+        
         public DateTime DateRabais
         {
             get
@@ -30,9 +31,29 @@ namespace PetitesPuces.Models
             }
         }
 
+        public decimal GetTPS(decimal prixLivraison)
+        {
+            if (!Vendeur.Taxes.GetValueOrDefault())
+                return 0;
+            
+            return (getPrixTotal()+prixLivraison)*(decimal) 0.05;    
+        }
+        public decimal GetTVQ(decimal prixLivraison)
+        {
+            
+            if (Vendeur.Province != "QC" || !Vendeur.Taxes.GetValueOrDefault())
+                return 0;
+            return (getPrixTotal() + prixLivraison) * (decimal) 0.0975;
+
+        }
         public bool DepassePoidsMaximum
         {
             get { return GetPoidsTotal() > Vendeur.PoidsMaxLivraison; }
+        }
+
+        public bool EstAncien
+        {
+            get { return DateTime.Today.AddMonths(-6) > DateCreation; }
         }
 
         public decimal getPrixTotal()

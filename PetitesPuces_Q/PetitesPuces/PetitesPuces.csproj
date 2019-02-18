@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ephtmltopdf, Version=12.3.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExpertPdfHtmlToPdf.12.3.0\lib\net40\ephtmltopdf.dll</HintPath>
+    </Reference>
     <Reference Include="IronPdf, Version=4.4.9.15720, Culture=neutral, PublicKeyToken=94e1c31412563c75, processorArchitecture=MSIL">
       <HintPath>..\packages\IronPdf.4.4.9\lib\net40\IronPdf.dll</HintPath>
     </Reference>
@@ -227,6 +230,7 @@
     <Compile Include="Models\Ext\PPProduit.cs" />
     <Compile Include="Models\Ext\PPVendeur.cs" />
     <Compile Include="Models\Ext\RolesUtil.cs" />
+    <Compile Include="Models\Ext\ViewExtensions.cs" />
     <Compile Include="Models\IUtilisateur.cs" />
     <Compile Include="Models\Panier.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -365,6 +369,7 @@
     <Content Include="Views\Shared\Client\Commande\_Paiement.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_ProduitsInformation.cshtml" />
     <Content Include="Views\Shared\Client\Commande\_RecapitulatifCommande.cshtml" />
+    <Content Include="Views\Shared\Client\InformationVendeur.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_DetailPanier.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_ProduitsPanier.cshtml" />
@@ -462,8 +467,12 @@
     <Content Include="Views\Shared\Vendeur\_GestionProduit.cshtml" />
     <Content Include="Views\Shared\Vendeur\ModalModifierProduit.cshtml" />
     <Content Include="Views\Shared\Vendeur\ModalSupprimerProduit.cshtml" />
+    <Content Include="Views\Shared\Vendeur\ModalInfoClient.cshtml" />
+    <Content Include="Views\Shared\Vendeur\ModalInfoPanier.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_ProduitPanier.cshtml" />
     <Content Include="Views\Shared\Courriel\_CourrielBrouillon.cshtml" />
     <Content Include="Views\Shared\Courriel\_MessageEnvoye.cshtml" />
+    <Content Include="Views\Courriel\ApercuCourriel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

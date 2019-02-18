@@ -52,7 +52,18 @@
 </div>
 <script>
     function contacter(no) {
-        var url = '@Url.Action("Index", "Courriel")';
-        window.location.href = url;
+        const Objet = "Retour sur l'évaluation";
+        const DescMsg = "";
+        const destinataire = [no];
+        
+        const message = {
+            'DescMsg':DescMsg,
+            'objet':Objet,
+            'destinataires':destinataire
+        }
+        Courriel.enregistrerMessage(message,redirigerModuleCourriel);
+    }
+    function redirigerModuleCourriel(msg) {
+        Courriel.redirigerVersMessage(msg);
     }
 </script>

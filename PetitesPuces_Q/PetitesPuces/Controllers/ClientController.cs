@@ -46,6 +46,25 @@ namespace PetitesPuces.Controllers
             return View(viewModel);
         }
 
+        private void CreateVisiteVendeur(int noVendeur)
+        {
+            context.PPVendeursClients.InsertOnSubmit(
+                new PPVendeursClient
+                {
+                    NoClient = NOCLIENT,
+                    NoVendeur = noVendeur,
+                    DateVisite = DateTime.Now
+                });
+
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         private CatalogueViewModel GetCatalogueViewModel(ref IEnumerable<PPProduit> listeProduits,
             string Vendeur, string Categorie, string Page, string Size,
             string Filtre, Tri tri)
@@ -88,6 +107,7 @@ namespace PetitesPuces.Controllers
                     where unVendeur.NoVendeur == NoVendeur
                     select unVendeur);
                 vendeur = requete.FirstOrDefault();
+                CreateVisiteVendeur((int) vendeur.NoVendeur);
                 //creer la liste de produits
                 listeProduits = vendeur.PPProduits.Where(p => p.Disponibilité == true)
                     .Where(p => (categorie == null || p.PPCategory == categorie) && p.Disponibilité == true);
@@ -654,8 +674,8 @@ namespace PetitesPuces.Controllers
                 CoutLivraison = InfoCommande.PrixLivraison,
                 TypeLivraison = (short) InfoCommande.CodeLivraison,
                 MontantTotAvantTaxes = InfoCommande.Panier.getPrixTotal() + InfoCommande.PrixLivraison,
-                TPS = (decimal) ((double) (InfoCommande.Panier.getPrixTotal() + InfoCommande.PrixLivraison) * 0.05),
-                TVQ = (decimal) ((double) (InfoCommande.Panier.getPrixTotal() + InfoCommande.PrixLivraison) * 0.0975),
+                TPS = InfoCommande.Panier.GetTPS((decimal) InfoCommande.PrixLivraison),
+                TVQ = InfoCommande.Panier.GetTVQ((decimal) InfoCommande.PrixLivraison),
                 PoidsTotal = InfoCommande.Panier.GetPoidsTotal(),
                 Statut = 'T',
                 NoAutorisation = NoAutorisation
@@ -757,6 +777,7 @@ namespace PetitesPuces.Controllers
 
                 genererPDF(commande);
 
+                ComposerMessage(commande);
                 return RedirectToAction("Recu", "Client",
                     new RouteValueDictionary(new {noCommande = commande.NoCommande}));
             }
@@ -767,6 +788,43 @@ namespace PetitesPuces.Controllers
             }
         }
 
+        private void ComposerMessage(PPCommande commande)
+        {
+            var maxId = (from m in context.PPMessages
+                select m.NoMsg).ToList().DefaultIfEmpty().Max();
+            var noMessage = maxId + 1;
+            var descMsg = PartialView("Vendeur/_RecuCommande",commande).RenderToString();
+            
+            
+            context.PPMessages.InsertOnSubmit(
+                new PPMessage
+                {
+                    NoMsg = noMessage,
+                    objet = "Nouvelle commande",
+                    Lieu = 5,
+                    dateEnvoi = DateTime.Now,
+                    NoExpediteur = 101,
+                    DescMsg = descMsg
+                });
+            
+            context.PPDestinataires.InsertOnSubmit(
+                new PPDestinataire
+                {
+                    Lieu = 1,
+                    EtatLu = 0,
+                    NoMsg = noMessage,
+                    NoDestinataire = (int) NOCLIENT
+                });
+
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         private void genererPDF(PPCommande commande)
         {
             string view;
@@ -914,7 +972,37 @@ namespace PetitesPuces.Controllers
 
             return View();
         }
+        public ActionResult PdfCommande(int id)
+        {
+            var user = SessionUtilisateur.UtilisateurCourant;
 
+            var query = from commandes in context.PPCommandes
+                where commandes.NoCommande == id
+                select commandes;
+
+            var commande = query.FirstOrDefault();
+
+            if (user is PPVendeur)
+            {
+                PPVendeur vendeur = (PPVendeur)user;
+                if(commande.PPVendeur.NoVendeur != vendeur.NoVendeur)
+                    return new HttpStatusCodeResult(400, "Id commande invalide");
+            }
+            else if (user is PPClient)
+            {
+                PPClient client = (PPClient)user;
+                if(commande.PPClient.NoClient != client.NoClient)
+                    return new HttpStatusCodeResult(400, "Id commande invalide");
+            }
+
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Recus/" + id + ".pdf";
+
+            if (!System.IO.File.Exists(path))
+                genererPDF(commande);
+
+            return File(path, "application/pdf");
+            
+        }
         [System.Web.Mvc.HttpGet]
         public ActionResult modificationMDP()
         {

@@ -1,10 +1,10 @@
 ﻿@using PetitesPuces.Utilities
 @model PetitesPuces.Models.Panier
 
-<tr class="v-align-middle" style="height: 51px">
-    <th class="rowHead">@Model.Client.Nom</th>
+<tr onclick="infoPanier(@Model.Client.NoClient)" class="v-align-middle" style="height: 51px">
+    <th class="rowHead"><a onclick="infoClient(@Model.Client.NoClient)" class="alert-link" data-toggle="modal" data-target="#confirmationPanier">@Model.Client.DisplayName</a></th>
     <td>@Model.DateCreation.ToShortDateString()</td>
-    <td>@Model.Articles.Count()</td>
+    <td>@Model.GetNbItems()</td>
     <td>@Formatter.Money(Model.getPrixTotal())</td>
     <td>
         <button class="btn btn-danger" title="Supprimer" onclick="confirmer(@Model.Client.NoClient)" data-toggle="modal" data-target="#confirmationPanier">

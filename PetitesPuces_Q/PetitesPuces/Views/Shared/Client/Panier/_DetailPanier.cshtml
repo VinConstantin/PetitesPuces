@@ -98,22 +98,7 @@
                 }
             </div>
         </div>
-        <div class="panel panel-success">
-            <div class="panel-heading">Informations sur le vendeur: </div>
-            <div class="panel-body">
-                <div class="h4">
-                    <p><strong><i title="Contacter  @Model.Vendeur.NomAffaires" onclick="contacter(@Model.Vendeur.No);" style="font-size: 20px" class="btn btn-link"><span class="glyphicon glyphicon-envelope"></span></i>@Model.Vendeur.NomAffaires</strong></p> 
-                    
-                    <p>Membre depuis le @Model.Vendeur.DateCreation.Value.ToLongDateString()</p>
-
-                    <hr/>
-                    Prix minimal pour une livraison gratuite 
-                    @Formatter.Money(Model.Vendeur.LivraisonGratuite,true)
-                    <br/>
-                    <p>Nombres de ventes : @Model.Vendeur.PPCommandes.Count</p>
-                </div>
-            </div>
-        </div>
+        @Html.Partial("Client/InformationVendeur",Model)
     </div>
 </div>
 
@@ -180,10 +165,15 @@
     });
 
     function contacter(no) {
-        const objet = "Information sur mon panier";
+        const Objet = "Information sur mon panier";
         const DescMsg = "J'ai une petite question sur mon panier";
         const destinataire = [no];
-        const message = Courriel.Message(objet,DescMsg,destinataire)
+        
+        const message = {
+            'DescMsg':DescMsg,
+            'objet':Objet,
+            'destinataires':destinataire
+        }
         Courriel.enregistrerMessage(message,redirigerModuleCourriel);
     }
     function redirigerModuleCourriel(msg) {
