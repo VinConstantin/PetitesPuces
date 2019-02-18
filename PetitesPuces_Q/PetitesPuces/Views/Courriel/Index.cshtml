@@ -291,6 +291,7 @@
         });
     }
     function handleChange() {
+        $("a[href=\"https://www.froala.com/wysiwyg-editor?k=u\"]").remove();
         const timeout = 2000;
         if (!saveTimeoutId) {
             saveTimeoutId = window.setTimeout(sauvegarderBrouillon, timeout);
