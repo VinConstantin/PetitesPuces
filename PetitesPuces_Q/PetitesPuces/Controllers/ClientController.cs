@@ -777,6 +777,7 @@ namespace PetitesPuces.Controllers
 
                 genererPDF(commande);
 
+                ComposerMessage(commande);
                 return RedirectToAction("Recu", "Client",
                     new RouteValueDictionary(new {noCommande = commande.NoCommande}));
             }
@@ -787,6 +788,43 @@ namespace PetitesPuces.Controllers
             }
         }
 
+        private void ComposerMessage(PPCommande commande)
+        {
+            var maxId = (from m in context.PPMessages
+                select m.NoMsg).ToList().DefaultIfEmpty().Max();
+            var noMessage = maxId + 1;
+            var descMsg = PartialView("Vendeur/_RecuCommande",commande).RenderToString();
+            
+            
+            context.PPMessages.InsertOnSubmit(
+                new PPMessage
+                {
+                    NoMsg = noMessage,
+                    objet = "Nouvelle commande",
+                    Lieu = 5,
+                    dateEnvoi = DateTime.Now,
+                    NoExpediteur = 101,
+                    DescMsg = descMsg
+                });
+            
+            context.PPDestinataires.InsertOnSubmit(
+                new PPDestinataire
+                {
+                    Lieu = 1,
+                    EtatLu = 0,
+                    NoMsg = noMessage,
+                    NoDestinataire = (int) NOCLIENT
+                });
+
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         private void genererPDF(PPCommande commande)
         {
             string view;

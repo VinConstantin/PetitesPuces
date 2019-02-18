@@ -227,6 +227,7 @@
     <Compile Include="Models\Ext\PPProduit.cs" />
     <Compile Include="Models\Ext\PPVendeur.cs" />
     <Compile Include="Models\Ext\RolesUtil.cs" />
+    <Compile Include="Models\Ext\ViewExtensions.cs" />
     <Compile Include="Models\IUtilisateur.cs" />
     <Compile Include="Models\Panier.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
