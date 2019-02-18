@@ -16,8 +16,8 @@
         </div>
     </div>
     <br/>
+    @Html.Partial("Vendeur/_RecuCommande",Model)
 </div>
-@Html.Partial("Vendeur/_RecuCommande",Model)
 
 <script>
     function imprimer() {
@@ -30,7 +30,7 @@
             'width': 170,
             'elementHandlers': specialElementHandlers
         });
-        doc.save('sample-file.pdf');
+        doc.save('commande.pdf');
     }
     var specialElementHandlers = {
         '#receipt': function (element, renderer) {
