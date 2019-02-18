@@ -93,6 +93,7 @@ namespace PetitesPuces.Controllers
         [HttpGet]
         public ActionResult Profil()
         {
+            
             var objVendeur = (from unVendeur in context.PPVendeurs
                 where unVendeur.NoVendeur == NoVendeur
                 select unVendeur).FirstOrDefault();
@@ -111,14 +112,22 @@ namespace PetitesPuces.Controllers
                 Tel2 = objVendeur.Tel2,
                 PoidsMaxLivraison = Convert.ToInt32(objVendeur.PoidsMaxLivraison),
                 LivraisonGratuite = Convert.ToInt32(objVendeur.LivraisonGratuite),
+                configuration = objVendeur.Configuration,
                 Taxes = Convert.ToBoolean(objVendeur.Taxes)
             };
             return View(modiProfilVendeur);
         }
 
         [HttpPost]
-        public ActionResult Profil(ModiProfilVendeur modiProfilVendeur)
+        public ActionResult Profil(ModiProfilVendeur modiProfilVendeur,FormCollection formCollection)
         {
+            foreach (var key in formCollection.AllKeys)
+            {
+                Response.Write("key: " + key + ": ");
+                Response.Write(formCollection[key] + ",  type:/");
+                Response.Write(formCollection[key].GetType() + "/");
+                Response.Write("<br/> ");
+            }
             if (ModelState.IsValid)
             {
                 var objVendeur = (from unVendeur in context.PPVendeurs
@@ -140,7 +149,9 @@ namespace PetitesPuces.Controllers
                 if (modiProfilVendeur.LivraisonGratuite != null)
                     objVendeur.LivraisonGratuite = modiProfilVendeur.LivraisonGratuite;
                 if (modiProfilVendeur.Taxes != null) objVendeur.Taxes = modiProfilVendeur.Taxes;
-
+             
+                objVendeur.Configuration = "color:"+formCollection["couleurText"] + ";" + "background-color:"+formCollection["backgroundcolor"] +
+                                               ";" +"font-family:"+ formCollection["fontText"]+";";
 
                 try
                 {

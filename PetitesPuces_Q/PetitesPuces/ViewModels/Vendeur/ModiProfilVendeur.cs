@@ -55,7 +55,7 @@ namespace PetitesPuces.ViewModels.Vendeur
         [Range(0, 10000, ErrorMessage = "Le champs Poids MAX doit être entre 0 à 10000 kg")]
         [Required(ErrorMessage = "Veuillez rentrer le poids max pour la livraison!")]
         [DisplayName("Poids max (KG)")]
-        public int PoidsMaxLivraison { get;  set;}
+        public int PoidsMaxLivraison {     get;  set;}
 
         [Range(0, 10000, ErrorMessage = "Le champs prix minimum doit être un chiffre entre 0 à 10000 $")]
         [Required(ErrorMessage = "Veuillez rentrer un prix minimum pour avoir une livraison graduite!")]
@@ -65,5 +65,8 @@ namespace PetitesPuces.ViewModels.Vendeur
         [Required(ErrorMessage = "Veuillez rentrer si vous payez le taxe ou non")]
         [DisplayName("Taxes TPS/TVQ")]
         public Boolean Taxes { get;  set;}
+        
+        
+        public string configuration { get;  set;}
     }
 }

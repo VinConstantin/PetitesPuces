@@ -160,7 +160,8 @@ namespace PetitesPuces.Models
         [DisplayName("Téléphone No2")]
         public string Tel2 { get;  set;}
 
-
+        public string configuration { get; set; }
+        
         public string Role
         {
             get { return "Vendeur"; }
