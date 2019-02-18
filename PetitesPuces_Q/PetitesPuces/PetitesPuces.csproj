@@ -270,6 +270,8 @@
     <Compile Include="ViewModels\InscriptionEtModification\InscriptionClient.cs" />
     <Compile Include="ViewModels\InscriptionEtModification\InscriptionVendeur.cs" />
     <Compile Include="ViewModels\InscriptionEtModification\ModificationMDP.cs" />
+    <Compile Include="ViewModels\InscriptionEtModification\OubliMotDePasse.cs" />
+    <Compile Include="ViewModels\InscriptionEtModification\VerificationCourriel.cs" />
     <Compile Include="ViewModels\Vendeur\AccueilVendeurViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\GestionCatalogueViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\CommandesViewModel.cs" />
@@ -325,6 +327,7 @@
     <Content Include="Scripts\Courriel\CourrielLib.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
     <Content Include="Scripts\Home\Inscription.js" />
+    <Content Include="Scripts\Home\motDePasseOublie.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionClient.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionVendeur.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -348,7 +351,9 @@
     <Content Include="Views\Courriel\Index.cshtml" />
     <Content Include="Views\Courriel\_ViewStart.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
+    <Content Include="Views\Home\courrielMDPOublie.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\modiOubliMDP.cshtml" />
     <Content Include="Views\Shared\Client\Accueil\_Commande.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_EtoilesRating.cshtml" />

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rows>
+  <row>
+    <NoGestionnaire>101</NoGestionnaire>
+    <Nom>Guo</Nom>
+    <Prenom>Simon</Prenom>
+    <AdresseEmail>gestionnaire101@gmail.com</AdresseEmail>
+    <MotDePasse>1234</MotDePasse>
+  </row>
+</rows>
