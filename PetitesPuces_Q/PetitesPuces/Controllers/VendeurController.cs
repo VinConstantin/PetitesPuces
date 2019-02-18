@@ -11,9 +11,11 @@ using System.Web.Mvc;
 using PetitesPuces.Securite;
 using PetitesPuces.Utilities;
 
+using ExpertPdf.HtmlToPdf;
 using IronPdf;
 using System.Net;
 using PetitesPuces.ViewModels;
+using System.Drawing.Printing;
 
 namespace PetitesPuces.Controllers
 {
@@ -348,9 +350,32 @@ namespace PetitesPuces.Controllers
                 Directory.CreateDirectory(Server.MapPath("/Recus"));
             }
 
-            HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
+            // initialize PrintDocument object
+            PrintDocument doc = new PrintDocument()
+            {
+                PrinterSettings = new PrinterSettings()
+                {
+                    // set the printer to 'Microsoft Print to PDF'
+                    PrinterName = "Microsoft Print to PDF",
+                    
+                    
+
+                    // tell the object this document will print to file
+                    PrintToFile = true,
+
+                    // set the filename to whatever you like (full path)
+                    PrintFileName = path,
+                }
+            };
+
+            doc.Print();
+
+            PdfConverter pdf = new PdfConverter();
+            pdf.SavePdfFromHtmlStringToFile(view, path);
+
+            /*HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
             var PDF = Renderer.RenderHtmlAsPdf(view);
-            PDF.TrySaveAs(path);
+            PDF.TrySaveAs(path);*/
         }
 
         public void SupprimerProduit(int NoProduit) //TODO
