@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rows>
+  <row>
+    <CodePoids>10</CodePoids>
+    <PoidsMin>0</PoidsMin>
+    <PoidsMax>4.90</PoidsMax>
+  </row>
+  <row>
+    <CodePoids>20</CodePoids>
+    <PoidsMin>5</PoidsMin>
+    <PoidsMax>19.90</PoidsMax>
+  </row>
+  <row>
+    <CodePoids>30</CodePoids>
+    <PoidsMin>20</PoidsMin>
+    <PoidsMax>99.90</PoidsMax>
+  </row>
+  <row>
+    <CodePoids>40</CodePoids>
+    <PoidsMin>100</PoidsMin>
+    <PoidsMax>999,999.90</PoidsMax>
+  </row>
+</rows>
