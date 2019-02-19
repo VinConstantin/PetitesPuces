@@ -222,7 +222,7 @@
             data: {},
             success: function(result) {
                 $('#PLACEHOLDER').html(result);
-                if ($('#fileUploadText').val().trim() != '') {
+                if ($('#fileUploadText').val().trim() !== '') {
                     $('#deleteAttachment').removeClass('d-none');
                 }
                 $('#deleteAttachment').click(function() {
@@ -234,6 +234,7 @@
                             sauvegarderBrouillon();
                             $('#fileUploadText').val('');
                             $('#deleteAttachment').addClass('d-none');
+                            $('#pieceJointeLink').attr('href', 'javascript:void(0)');
                         }
                     });
                 });

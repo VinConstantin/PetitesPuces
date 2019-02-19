@@ -144,20 +144,23 @@
         </div>
         <table id="nbConnexionClient" class="table w-100 bg-light mt-2">
             <thead>
-                <tr>
-                    <th>
-                        Courriel
-                    </th>
-                    <th>
-                        Prénom
-                    </th>
-                    <th>
-                        Nom
-                    </th>
-                    <th class="text-right">
-                        Nb. connexions
-                    </th>
-                </tr>
+            <tr>
+                <th>
+                    No Client
+                </th>
+                <th>
+                    Courriel
+                </th>
+                <th>
+                    Prénom
+                </th>
+                <th>
+                    Nom
+                </th>
+                <th class="text-right">
+                    Nb. connexions
+                </th>
+            </tr>
             </thead>
             <tbody>
             
@@ -178,20 +181,23 @@
         </div>
         <table id="connexionsRecentes" class="table w-100 bg-light mt-2">
             <thead>
-                <tr>
-                    <th>
-                        Courriel
-                    </th>
-                    <th>
-                        Prénom
-                    </th>
-                    <th>
-                        Nom
-                    </th>
-                    <th class="text-right">
-                        Date
-                    </th>
-                </tr>
+            <tr>
+                <th>
+                    No utilisateur
+                </th>
+                <th>
+                    Courriel
+                </th>
+                <th>
+                    Prénom
+                </th>
+                <th>
+                    Nom
+                </th>
+                <th class="text-right">
+                    Date
+                </th>
+            </tr>
             </thead>
             <tbody>
             
@@ -224,7 +230,7 @@
                     <th>
                         Nom Client
                     </th>
-                    <th>
+                    <th class="text-right">
                         Total commande
                     </th>
                     <th>
@@ -277,13 +283,13 @@
                     <th>
                         Nom
                     </th>
-                    <th>
+                    <th class="text-right">
                         Nb. clients actifs
                     </th>
-                    <th>
+                    <th class="text-right">
                         Nb. clients potentiels
                     </th>
-                    <th>
+                    <th class="text-right">
                         Nb. visiteurs
                     </th>
                 </tr>
@@ -481,6 +487,7 @@
                 const row = $('<tr>', {class: 'data-row'});
                 
                 row.append($('<td>', {class: L_ALIGN, text: elem.NoClient}));
+                row.append($('<td>', { class: L_ALIGN, text: elem.AdresseEmail }));
                 row.append($('<td>', {class: L_ALIGN, text: elem.Prenom}));
                 row.append($('<td>', {class: L_ALIGN, text: elem.Nom}));
                 row.append($('<td>', {class: R_ALIGN, text: elem.NbConnexions}));
@@ -503,6 +510,7 @@
                 const elem = data[i];
                 const row = $('<tr>', {class: 'data-row'});
                 
+                row.append($('<td>', { class: L_ALIGN, text: elem.NoClient }));
                 row.append($('<td>', {class: L_ALIGN, text: elem.AdresseEmail}));
                 row.append($('<td>', {class: L_ALIGN, text: elem.Prenom}));
                 row.append($('<td>', {class: L_ALIGN, text: elem.Nom}));
@@ -525,7 +533,7 @@
                 
                     row.append($('<td>', {class: L_ALIGN, text: elem.NoClient}));
                     row.append($('<td>', {class: L_ALIGN, text: elem.Prenom + ' ' + elem.Nom}));
-                    row.append($('<td>', {class: L_ALIGN, html: formatMoney(stats.TotalCommandes)}));
+                    row.append($('<td>', {class: R_ALIGN, html: formatMoney(stats.TotalCommandes)}));
                     row.append($('<td>', {class: L_ALIGN, text: formatDateStr(stats.DateDerniereCommande)}));
                     row.append($('<td>', {class: L_ALIGN, text: noVendeur}));
                     row.append($('<td>', {class: L_ALIGN, text: stats.Vendeur.NomAffaires}));
@@ -703,7 +711,7 @@
                 '/Gestionnaire/Statistiques/NouveauxVendeurs',
                 {periode: filtres.periodeNouveauxVendeurs},
                 (data) => {
-                    let [ctx, config] = creerGraphique($('#cvNouveauVendeurs'), [['Demandes en attente', data[0]], ['Demandes acceptées', data[1]]], [COLORS.RED, COLORS.GREEN]);
+                    let [ctx, config] = creerGraphique($('#cvNouveauVendeurs'), [['Demandes', data[0]], ['Demandes acceptées', data[1]]], [COLORS.RED, COLORS.GREEN]);
                     if (totNVendChart) {
                         totNVendChart.data = config.data;
                         totNVendChart.update();
