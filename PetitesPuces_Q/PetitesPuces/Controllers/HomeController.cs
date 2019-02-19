@@ -5,15 +5,19 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web;
 using PetitesPuces.Models;
+using PetitesPuces.ViewModels;
 using PetitesPuces.ViewModels.Home;
+using System.IO;
+using IronPdf;
+using PetitesPuces.Securite;
 
 namespace PetitesPuces.Controllers
 {
     public class HomeController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
-        private DateTime dateCourante = DateTime.Now;
-
+        public static string courrielOublieMDP;
+        
         public ActionResult Index()
         {
             AccueilHomeViewModel viewModel = new AccueilHomeViewModel
@@ -55,7 +59,7 @@ namespace PetitesPuces.Controllers
                 ViewBag.souvenirCheck = "checked";
             }
             else ViewBag.souvenirCheck = "";
-          
+
             ViewBag.Status = Status;
             return View();
         }
@@ -77,11 +81,10 @@ namespace PetitesPuces.Controllers
                 where unGestionnaire.AdresseEmail == formCollection["AdresseEmail"]
                 select unGestionnaire;
 
-            if (unClientExist.Count() != 0 || unVendeurExist.Count() != 0 || unGestionnaireExist.Count() != 0 )
+            if (unClientExist.Count() != 0 || unVendeurExist.Count() != 0 || unGestionnaireExist.Count() != 0)
             {
                 if (formCollection["remember"] == "on")
                 {
-                   
                     Response.Cookies["courriel"].Value = formCollection["adresseEmail"];
                     Response.Cookies["mdp"].Value = formCollection["motDePasse"];
                     Response.Cookies["courriel"].Expires = DateTime.Now.AddYears(1);
@@ -89,7 +92,6 @@ namespace PetitesPuces.Controllers
                 }
                 else
                 {
-                   
                     Response.Cookies["courriel"].Expires = DateTime.Now.AddYears(-1);
                     Response.Cookies["mdp"].Expires = DateTime.Now.AddYears(-1);
                 }
@@ -97,7 +99,7 @@ namespace PetitesPuces.Controllers
                 if (unClientExist.Count() != 0)
                 {
                     System.Web.HttpContext.Current.Session["userId"] = unClientExist.First().NoClient;
-                    unClientExist.First().DateDerniereConnexion = dateCourante;
+                    unClientExist.First().DateDerniereConnexion = DateTime.Now;
                     unClientExist.First().NbConnexions++;
                     TempData["connexion"] = true;
                     try
@@ -134,8 +136,9 @@ namespace PetitesPuces.Controllers
 
 
         [HttpGet]
-        public ActionResult InscriptionClient()
+        public ActionResult InscriptionClient(string nouveauUtilisateur="")
         {
+            ViewBag.nouveauUtilisateur = nouveauUtilisateur;
             return View();
         }
 
@@ -164,7 +167,7 @@ namespace PetitesPuces.Controllers
 
                     nouveauClient.MotDePasse = formCollection["MotDePasse"];
                     nouveauClient.NoClient = maxNo;
-                    nouveauClient.DateCreation = dateCourante;
+                    nouveauClient.DateCreation = DateTime.Now;
                     nouveauClient.Statut = 1;
                     try
                     {
@@ -195,13 +198,15 @@ namespace PetitesPuces.Controllers
         [HttpPost]
         public ActionResult InscriptionVendeur(FormCollection formCollection)
         {
-            foreach (var key in formCollection.AllKeys)
+            /*
+             foreach (var key in formCollection.AllKeys)
             {
                 Response.Write("key: " + key + ": ");
                 Response.Write(formCollection[key] + ",  type:/");
                 Response.Write(formCollection[key].GetType() + "/");
                 Response.Write("<br/> ");
             }
+            */
 
             if (ModelState.IsValid)
             {
@@ -212,7 +217,9 @@ namespace PetitesPuces.Controllers
                 var VerificationAdresseCourriel = from unVendeur in context.PPVendeurs
                     where unVendeur.AdresseEmail == formCollection["AdresseEmail"]
                     select unVendeur;
+
                 PPVendeur nouveauVendeur = new PPVendeur();
+
                 if (VerificationAdresseCourriel.Count() == 0)
                 {
                     nouveauVendeur.NoVendeur = maxNoVendeur;
@@ -231,7 +238,7 @@ namespace PetitesPuces.Controllers
                     nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["Vendeur.LivraisonGratuite"]);
                     nouveauVendeur.MotDePasse = formCollection["MotDePasse"];
                     nouveauVendeur.Taxes = formCollection["Taxes"] == "on" ? true : false;
-                    nouveauVendeur.DateCreation = dateCourante;
+                    nouveauVendeur.DateCreation = DateTime.Now;
 
                     nouveauVendeur.Statut = 0;
                     try
@@ -254,13 +261,103 @@ namespace PetitesPuces.Controllers
             return View();
         }
 
-        public ActionResult OubliMDP()
+        [HttpGet]
+        public ActionResult OubliMDP(FormCollection formCollection)
         {
+            VerificationCourriel verificationCourriel = new VerificationCourriel();
+            verificationCourriel.AdresseEmail = formCollection["AdresseEmail"];
+            
+            return View(verificationCourriel);
+        }
+
+        [HttpPost]
+        public ActionResult OubliMDP(VerificationCourriel verificationCourriel)
+        {
+            if (ModelState.IsValid)
+            {
+                 courrielOublieMDP = verificationCourriel.AdresseEmail;
+           
+                var objClient = (from var in context.PPClients
+                    where var.AdresseEmail == courrielOublieMDP
+                    select var);
+                var objVendeur = (from var in context.PPVendeurs
+                    where var.AdresseEmail == courrielOublieMDP
+                    select var);
+                var objGestionnaire = (from var in context.PPGestionnaires
+                    where var.AdresseEmail == courrielOublieMDP
+                    select var);
+                if (objClient.Count() != 0 || objVendeur.Count() != 0 || objGestionnaire.Count() != 0)
+                {
+                    return RedirectToAction("courrielMDPOublie",new {courriel=courrielOublieMDP});
+                }
+                else
+                {
+                    return RedirectToAction("InscriptionClient",new{nouveauUtilisateur= "Cette adresse courriel n'est pas été enregistrée, vous pouvez créer un nouveau compte ici."});
+                }
+            }
             return View();
         }
 
-        public ActionResult modiOubliMDP()
+        [HttpGet]
+        public ActionResult modiOubliMDP(FormCollection formCollection )
         {
+            ViewBag.check = "hi "+courrielOublieMDP;
+            OubliMotDePasse oubliMotDePasse = new OubliMotDePasse
+            {
+                motDePass = formCollection["motDePass"]
+           
+            };
+            return View(oubliMotDePasse);
+        }
+
+        [HttpPost]
+        public ActionResult modiOubliMDP(OubliMotDePasse oubliMotDePasse)
+        {
+           
+        
+            if (ModelState.IsValid)
+            {
+                var objClient = (from var in context.PPClients
+                    where var.AdresseEmail == courrielOublieMDP
+                    select var);
+                var objVendeur = (from var in context.PPVendeurs
+                    where var.AdresseEmail == courrielOublieMDP
+                    select var);
+                var objGestionnaire = (from var in context.PPGestionnaires
+                    where var.AdresseEmail == courrielOublieMDP
+                    select var);
+                try
+                {
+                    if (objClient.Count() != 0)
+                    {
+                        objClient.First().MotDePasse = oubliMotDePasse.motDePass;
+                        context.SubmitChanges();
+                    }
+                    else if (objVendeur.Count() != 0)
+                    {
+                        objVendeur.First().MotDePasse = oubliMotDePasse.motDePass;
+                        context.SubmitChanges();
+                    }
+                    else if (objGestionnaire.Count() != 0)
+                    {
+                        objGestionnaire.First().MotDePasse = oubliMotDePasse.motDePass;
+                        context.SubmitChanges();
+                    }
+
+                }
+                catch (Exception e)
+                {
+                }
+                return RedirectToAction("Connexion",new{status="EnregistrementReussi"});
+            }
+
+            return View();
+        }
+
+        public ActionResult courrielMDPOublie(string courriel="")
+        {
+            ViewBag.courrielOublie = courriel;
+            
             return View();
         }
         public ActionResult Catalogue()

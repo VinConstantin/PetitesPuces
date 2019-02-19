@@ -107,25 +107,25 @@
             <tr>
 
                 <th class="rowHead">
-                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().NoCommande)
+                    No de commande
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().PPClient.Nom)
+                    Client
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().DateCommande)
+                    Date
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().CoutLivraison)
+                    Type de livraison
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().TypeLivraison)
+                <th class="prixQuantite">
+                    Coût de livraison
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().PoidsTotal)
+                <th class="prixQuantite">
+                    Poids total
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Commandes.FirstOrDefault().MontantTotAvantTaxes)
+                <th class="prixQuantite">
+                    Total av. taxes
                 </th>
                 <th>
 
@@ -160,15 +160,15 @@
         <table class="table m-0 bg-light">
             <tr>
                 <th class="rowHead">
-                    Nom du client
+                    Client
                 </th>
                 <th>
                     Date de création
                 </th>
-                <th>
-                    Nb d'items
+                <th class="prixQuantite">
+                    Nombre d'items
                 </th>
-                <th>
+                <th class="prixQuantite">
                     Total
                 </th>
             </tr>

@@ -41,22 +41,6 @@
         });
     }
 
-    function info(NoCommande) {
-        $.ajax({
-            url: URLPATH +"/Vendeur/InfoCommande",
-            type: "get",
-            data: {
-                "id": NoCommande
-            },
-            success: function (result) {
-                window.open(result);
-            },
-            error: function (req, status, err) {
-                $("#PLACEHOLDERModalDescription").html("@Html.Partial("_ErrorAlert")");
-            }
-        });
-    }
-
     function infoClient(NoClient) {
         $.ajax({
             url: URLPATH +"/Vendeur/InfoClient",
@@ -88,25 +72,25 @@
         <table class="table m-0 bg-light">
             <tr>
                 <th class="rowHead">
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().NoCommande)
+                    No de commande
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().PPClient.Nom)
+                    Client
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().DateCommande)
+                    Date
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().CoutLivraison)
+                    Type de livraison
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().TypeLivraison)
+                <th class="prixQuantite">
+                    Coût de livraison
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().PoidsTotal)
+                <th class="prixQuantite">
+                    Poids total
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().MontantTotAvantTaxes)
+                <th class="prixQuantite">
+                    Total av. taxes
                 </th>
                 <th>
 
@@ -139,25 +123,25 @@
         <table class="table m-0 bg-light">
             <tr>
                 <th class="rowHead">
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().NoCommande)
+                    No de commande
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().PPClient.Nom)
+                    Client
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().DateCommande)
+                    Date
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().CoutLivraison)
+                    Type de livraison
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().TypeLivraison)
+                <th class="prixQuantite">
+                    Coût de livraison
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().PoidsTotal)
+                <th class="prixQuantite">
+                    Poids total
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstOrDefault().MontantTotAvantTaxes)
+                <th class="prixQuantite">
+                    Total av. taxes
                 </th>
                 <th>
 

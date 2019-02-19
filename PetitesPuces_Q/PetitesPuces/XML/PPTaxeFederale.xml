@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rows>
+  <row>
+    <NoTPS>1</NoTPS>
+    <DateEffectiveTPS>01-01-2005</DateEffectiveTPS>
+    <TauxTPS>7.000</TauxTPS>
+  </row>
+  <row>
+    <NoTPS>2</NoTPS>
+    <DateEffectiveTPS>01-01-2011</DateEffectiveTPS>
+    <TauxTPS>6.000</TauxTPS>
+  </row>
+  <row>
+    <NoTPS>3</NoTPS>
+    <DateEffectiveTPS>01-01-2012</DateEffectiveTPS>
+    <TauxTPS>5.000</TauxTPS>
+  </row>
+</rows>

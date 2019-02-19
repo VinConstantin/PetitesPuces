@@ -5,14 +5,14 @@
     ViewBag.Title = "_Commande";
 }
 
-<tr class="v-align-middle text-right">
+<tr class="v-align-middle">
     <th scope="row" class="rowHead">@Model.NoCommande</th>
-    <td><a onclick="infoClient(@Model.NoClient)" class="alert-link" data-toggle="modal" data-target="#confirmationLivraison">@Model.PPClient.DisplayName</a></td>
-    <td>@Model.DateCommande.Value.ToShortDateString()</td>
-    <td>@Formatter.Money(Model.CoutLivraison)</td>
-    <td>@Model.PPTypesLivraison.Description</td>
-    <td>@Model.PoidsTotal lbs</td>
-    <td>@Formatter.Money(Model.MontantTotAvantTaxes)</td>
+    <td class="text-left"><a onclick="infoClient(@Model.NoClient)" class="alert-link" data-toggle="modal" data-target="#confirmationLivraison">@Model.PPClient.DisplayName</a></tdclass="rowHead">
+    <td class="text-left">@Model.DateCommande.Value.ToShortDateString()</td>
+    <td class="text-left">@Model.PPTypesLivraison.Description</td>
+    <td class="prixQuantite">@Formatter.Money(Model.CoutLivraison)</td>
+    <td class="prixQuantite">@Model.PoidsTotal lbs</td>
+    <td class="prixQuantite">@Formatter.Money(Model.MontantTotAvantTaxes)</td>
     <td>
         <form class="form-inline">
             @if (Model.Statut != 'L')
@@ -21,7 +21,7 @@
                     <span class="glyphicon glyphicon-send"></span>
                 </button>
             }
-            <button type="button" title="Visualiser" onclick="window.open('@Url.Action("InfoCommande", "Vendeur", new { id = Model.NoCommande })')" class="btn btn-info">
+            <button type="button" title="Visualiser" onclick="window.open('@Url.Action("InfoCommande", "PDF", new { id = Model.NoCommande })')" class="btn btn-info">
                 <span class="glyphicon glyphicon-file"></span>
             </button>
 

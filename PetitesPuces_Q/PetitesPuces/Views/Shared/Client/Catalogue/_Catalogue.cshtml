@@ -25,6 +25,9 @@
     #backTop:hover {
         opacity: 0.9;
     }
+    #catalogue {
+        @Model.Vendeur.Configuration
+    }
 </style>
 
 <div class="row">
@@ -118,7 +121,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-sm-5 col-md-10">
+    <div id="catalogue" class="col-xs-12 col-sm-5 col-md-10">
         @if (ViewBag.NbPage > 1)
         {
             @Html.Partial("Client/Catalogue/_Pagination")

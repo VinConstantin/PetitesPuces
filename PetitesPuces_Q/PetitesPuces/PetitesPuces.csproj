@@ -45,8 +45,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IronPdf, Version=4.4.9.15720, Culture=neutral, PublicKeyToken=94e1c31412563c75, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronPdf.4.4.9\lib\net40\IronPdf.dll</HintPath>
+    <Reference Include="ephtmltopdf, Version=12.3.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExpertPdfHtmlToPdf.12.3.0\lib\net40\ephtmltopdf.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPdf, Version=5.0.5.17148, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPdf.5.0.5.2\lib\net40\IronPdf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="mscorlib" />
@@ -92,6 +95,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -203,6 +207,7 @@
     <Compile Include="Controllers\GestionnaireController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JeuDessaiController.cs" />
+    <Compile Include="Controllers\PDFController.cs" />
     <Compile Include="Controllers\VendeurController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -267,6 +272,8 @@
     <Compile Include="ViewModels\InscriptionEtModification\InscriptionClient.cs" />
     <Compile Include="ViewModels\InscriptionEtModification\InscriptionVendeur.cs" />
     <Compile Include="ViewModels\InscriptionEtModification\ModificationMDP.cs" />
+    <Compile Include="ViewModels\InscriptionEtModification\OubliMotDePasse.cs" />
+    <Compile Include="ViewModels\InscriptionEtModification\VerificationCourriel.cs" />
     <Compile Include="ViewModels\Vendeur\AccueilVendeurViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\GestionCatalogueViewModel.cs" />
     <Compile Include="ViewModels\Vendeur\CommandesViewModel.cs" />
@@ -430,6 +437,7 @@
     <Content Include="Scripts\Courriel\CourrielLib.js" />
     <Content Include="Scripts\Gestionnaire\Index.js" />
     <Content Include="Scripts\Home\Inscription.js" />
+    <Content Include="Scripts\Home\motDePasseOublie.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionClient.js" />
     <Content Include="Scripts\InscriptionEtConnexion\InscriptionVendeur.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -453,7 +461,9 @@
     <Content Include="Views\Courriel\Index.cshtml" />
     <Content Include="Views\Courriel\_ViewStart.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
+    <Content Include="Views\Home\courrielMDPOublie.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\modiOubliMDP.cshtml" />
     <Content Include="Views\Shared\Client\Accueil\_Commande.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_EtoilesRating.cshtml" />
@@ -573,10 +583,12 @@
     <Content Include="Views\Shared\Courriel\_CourrielBrouillon.cshtml" />
     <Content Include="Views\Shared\Courriel\_MessageEnvoye.cshtml" />
     <Content Include="Views\Courriel\ApercuCourriel.cshtml" />
+    <Content Include="Views\Shared\Vendeur\_RecuImpression.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Recus\" />
+    <Folder Include="Views\PDF\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

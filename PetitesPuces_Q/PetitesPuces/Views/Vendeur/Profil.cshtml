@@ -46,14 +46,14 @@
                 @Html.DropDownListFor(model => model.Province, new List<SelectListItem>()
                 {
                     new SelectListItem() {Text = "Choisir votre province", Value = ""},
-                    new SelectListItem() {Text = "QuÃ©bec", Value = "QC"},
+                    new SelectListItem() {Text = "Québec", Value = "QC"},
                     new SelectListItem() {Text = "Ontario", Value = "ON"},
                     new SelectListItem() {Text = "Alberta", Value = "AB"},
                     new SelectListItem() {Text = "Colombie-Britanique", Value = "BC"},
-                    new SelectListItem() {Text = "ÃŽle-du-prince-Ã‰douard", Value = "PE"},
+                    new SelectListItem() {Text = "Île-du-prince-Édouard", Value = "PE"},
                     new SelectListItem() {Text = "Manitoba", Value = "MB"},
                     new SelectListItem() {Text = "Nouveau-Brunswick", Value = "NB"},
-                    new SelectListItem() {Text = "Nouvelle-Ã‰cosse", Value = "NS"},
+                    new SelectListItem() {Text = "Nouvelle-Écosse", Value = "NS"},
                     new SelectListItem() {Text = "Saskatchewan", Value = "SK"},
                     new SelectListItem() {Text = "Terre-Neuve-et-Labrador", Value = "NL"},
                     new SelectListItem() {Text = "Nunavut", Value = "NU"},
@@ -75,11 +75,11 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     @Html.LabelFor(model => model.Tel1, htmlAttributes: new {@class = ""})
-                    @Html.EditorFor(model => model.Tel1, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "NumÃ©ro tÃ©lÃ©phone 1 (999-999-9999)"}})
+                    @Html.EditorFor(model => model.Tel1, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Numéro téléphone 1 (999-999-9999)"}})
                 </div>
                 <div class="form-group col-md-6">
                     @Html.LabelFor(model => model.Tel2, htmlAttributes: new {@class = ""})
-                    @Html.EditorFor(model => model.Tel2, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "NumÃ©ro tÃ©lÃ©phone 2 (999-999-9999)"}})
+                    @Html.EditorFor(model => model.Tel2, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Numéro téléphone 2 (999-999-9999)"}})
                 </div>
 
             </div>
@@ -105,18 +105,39 @@
                         new SelectListItem() {Text = "Non", Value = "false"}
                     }, new {@class = "form-control text-primary"})
                 </div>
-                <div class="form-group col-md-6">
-                    @Html.ActionLink("Changer mot de passe","modificationMDP","vendeur",new {@class="btn btn-sm btn-primary"})
-
+                
+                <div class="form-group col-md-2 colorpicker-component">
+                    <label for="backgroundcolor">Couleur de fond</label>
+                    <input type="color" id="backgroundcolor" name="backgroundcolor" value="@Model.configuration.Split(';')[1].Split(':')[1]" class="colorpicker-component form-control">
                 </div>
+                <div class="form-group col-md-2">
+                    <label for="couleurText">Couleur de text</label>
+                    <input type="color" id="couleurText" name="couleurText" class="colorpicker-component 
+                        form-control" value="@Model.configuration.Split(';')[0].Split(':')[1]">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="fontText">Police</label>
+                    <select id="fontText" name="fontText" class="form-control text-primary">
+                        <option value="" selected disabled hidden>    @Model.configuration.Split(';')[2].Split(':')[1]</option>
+                    
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Lucida Console">Lucida Console</option>
+                    </select>
+
+                </div>@**@
             </div>
-
+          
             <div class="form-row">
-
-                <div class="col-md-6 form-group col-lg-offset-6">
-
-                    <input type="submit" class="btn btn-lg btn-info " value="Modifier"/>
-                    @Html.ActionLink("Retour","Index","Vendeur",new {@class="btn btn-lg btn-danger"})
+              
+                <div class="col-xs-6 form-group col-xs-offset-4">
+                    <br/> 
+                    <input type="submit" class="btn btn-lg btn-info " value="Modifier"/> &nbsp;
+                    @Html.ActionLink("Retour", "Index", "Vendeur", new {@class = "btn btn-lg btn-danger"})&nbsp;
+                    @Html.ActionLink("Changer mot de passe", "modificationMDP", "vendeur", new {@class = "btn btn-sm btn-primary"})
 
                 </div>
 

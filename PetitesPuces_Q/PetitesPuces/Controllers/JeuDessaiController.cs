@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
@@ -15,22 +16,165 @@ namespace PetitesPuces.Controllers
     public class JeuDessaiController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
-        // GET: JeuDessai
 
+        private CultureInfo culture = new CultureInfo("en-US");
+        // GET: JeuDessai
+      
         public ActionResult Index()
+        {
+            
+            var PPCategorie = (from val in context.PPCategories
+                select val).Count();
+            var PPArticlesEnPanier = (from val in context.PPArticlesEnPaniers
+                select val).Count();
+            var PPPoidsLivraisons = (from val in context.PPPoidsLivraisons
+                select val).Count();
+            var PPDetailsCommandes = (from val in context.PPDetailsCommandes
+                select val).Count();
+            var PPEvaluations = (from val in context.PPEvaluations
+                select val).Count();
+            var PPTypesPoids = (from val in context.PPTypesPoids
+                select val).Count();
+            var PPTypesLivraison = (from val in context.PPTypesLivraisons
+                select val).Count();
+            var PPCommandes = (from val in context.PPCommandes
+                select val).Count();
+            var PPTaxeFederale = (from val in context.PPTaxeFederales
+                select val).Count();
+            var PPTaxeProvinciale = (from val in context.PPTaxeProvinciales
+                select val).Count();
+            var PPProduits = (from val in context.PPProduits
+                select val).Count();
+            var PPClients = (from val in context.PPClients
+                select val).Count();
+            var PPVendeurs = (from val in context.PPVendeurs
+                select val).Count();
+            var PPGestionnaires = (from val in context.PPGestionnaires
+                select val).Count();
+            var PPVendeursClients = (from val in context.PPVendeursClients
+                select val).Count();
+            var PPDestinataires = (from val in context.PPDestinataires
+                select val).Count();
+            var PPMessages = (from val in context.PPMessages
+                select val).Count();
+            var PPLieu = (from val in context.PPLieus
+                select val).Count();
+            var PPCategories = (from val in context.PPCategories
+                select val).Count();
+
+
+            string lsMessage = "";
+            lsMessage = "Dans la table PPCategories, il y a : [ " + PPCategories + " ] enregistrement(s)" + "<br/>\n" +
+                        "Dans la table PPLieu, il y a : [ " + PPLieu + " ] enregistrement(s)" + "<br/>\n" +
+                        "Dans la table PPMessages, il y a : [ " + PPMessages + " ] enregistrement(s)" + "<br/>\n" +
+                        "Dans la table PPDestinataires, il y a : [ " + PPDestinataires + " ] enregistrement(s)" +
+                        "<br/>\n" +
+                        "Dans la table PPGestionnaires, il y a : [ " + PPGestionnaires + " ] enregistrement(s)" +
+                        "<br/>\n" +
+                        "Dans la table PPVendeurs, il y a : [ " + PPVendeurs + " ] enregistrement(s)" + "<br/>\n" +
+                        "Dans la table PPProduits, il y a : [ " + PPProduits + " ] enregistrement(s)" + "<br/>\n" +
+                        "Dans la table PPClients, il y a : [ " + PPClients + " ] enregistrement(s)" + "<br/>\n" +
+                        "Dans la table PPVendeursClients, il y a : [ " + PPVendeursClients + " ] enregistrement(s)" +
+                        "<br/>\n" +
+                        "Dans la table PPTaxeProvinciale, il y a : [ " + PPTaxeProvinciale + " ] enregistrement(s)" +
+                        "<br/>\n" +
+                        "Dans la table PPTaxeProvinciale, il y a : [ " + PPTaxeProvinciale + " ] enregistrement(s)" +
+                        "<br/>\n" +
+                        "Dans la table PPCommandes, il y a : [ " + PPCommandes + " ] enregistrement(s)" + "<br/>\n" +
+                        "Dans la table PPTypesLivraison, il y a : [ " + PPTypesLivraison + " ] enregistrement(s)" +
+                        "<br/>\n" +
+                        "Dans la table PPTypesPoids, il y a : [ " + PPTypesPoids + " ] enregistrement(s)" + "<br/>\n" +
+                        "Dans la table PPPoidsLivraisons, il y a : [ " + PPPoidsLivraisons + " ] enregistrement(s)" +
+                        "<br/>\n" +
+                        "Dans la table PPArticlesEnPanier, il y a : [ " + PPArticlesEnPanier + " ] enregistrement(s)" +
+                        "<br/>\n" +
+                        "Dans la table PPDetailsCommandes, il y a : [ " + PPDetailsCommandes + " ] enregistrement(s)" +
+                        "<br/>\n" +
+                        "Dans la table PPEvaluations, il y a : [ " + PPEvaluations + " ] enregistrement(s)";
+            ;
+            ViewBag.lsMessageAfficher = lsMessage;
+            return View();
+        }
+        public ActionResult effacerBaseDonnee()
+        {
+            try
+            {
+                using (SqlConnection connection =
+                    new SqlConnection(
+                        WebConfigurationManager.ConnectionStrings["BD6B8_424QConnectionString"].ToString()))
+                {
+                    connection.Open();
+                    SqlCommand delete = new SqlCommand
+                    {
+                        CommandText = "delete from PPEvaluations where 1=1" +
+                                      "delete from PPDetailsCommandes where 1=1" +
+                                      "delete from PPArticlesEnPanier where 1=1" +
+                                      "delete from PPPoidsLivraisons where 1=1" +
+                                      "delete from PPTypesPoids where 1=1" +
+                                      "delete from PPCommandes where 1=1" +
+                                      "delete from PPTypesLivraison where 1=1" +
+                                      "delete from PPTaxeFederale where 1=1" +
+                                      "delete from PPTaxeProvinciale where 1=1" +
+                                      "delete from PPHistoriquePaiements where 1=1" +
+                                      "delete from PPVendeursClients where 1=1" +
+                                      "delete from PPClients where 1=1" +
+                                      "delete from PPProduits where 1=1" +
+                                      "delete from PPVendeurs where 1=1" +
+                                      "delete from PPGestionnaires where 1=1" +
+                                      "delete from PPDestinataires where 1=1" +
+                                      "delete from PPMessages where 1=1" +
+                                      "delete from PPLieu where 1=1" +
+                                      "delete from PPCategories where 1=1",
+
+                        Connection = connection
+                    };
+                    delete.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            catch(Exception e)
+            {
+                ViewBag.lsMessageSupprime = e.Message;
+            }
+
+            string lsMessage = "La table PPEvaluations a été vidé réussite. " + "<br/>\n" +
+                               "La table PPDetailsCommandes a été vidé réussite. " + "<br/>\n" +
+                               "La table PPArticlesEnPanier a été vidé réussite. " + "<br/>\n" +
+                               "La table PPPoidsLivraisons a été vidé réussite. " + "<br/>\n" +
+                               "La table PPTypesPoids a été vidé réussite. " + "<br/>\n" +
+                               "La table PPCommandes a été vidé réussite. " + "<br/>\n" +
+                               "La table PPTypesLivraison a été vidé réussite. " + "<br/>\n" +
+                               "La table PPTaxeFederale a été vidé réussite. " + "<br/>\n" +
+                               "La table PPTaxeProvinciale a été vidé réussite. " + "<br/>\n" +
+                               "La table PPHistoriquePaiements a été vidé réussite. " + "<br/>\n" +
+                               "La table PPVendeursClients a été vidé réussite. " + "<br/>\n" +
+                               "La table PPClients a été vidé réussite. " + "<br/>\n" +
+                               "La table PPProduits a été vidé réussite. " + "<br/>\n" +
+                               "La table PPVendeurs a été vidé réussite. " + "<br/>\n" +
+                               "La table PPGestionnaires a été vidé réussite. " + "<br/>\n" +
+                               "La table PPDestinataires a été vidé réussite. " + "<br/>\n" +
+                               "La table PPMessages a été vidé réussite. " + "<br/>\n" +
+                               "La table PPLieu a été vidé réussite. " + "<br/>\n" +
+                               "La table PPCategories a été vidé réussite. " + "<br/>\n";
+                              
+            ViewBag.lsMessageSupprime = lsMessage;
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ajouterLesDonnees()
         {
             String test = "";
             /*
              * PPTypesPoids
              */
-            var docTypePoids = (from typePoids in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPTypesPoids.xml").Descendants("row")
-                                select new
-                                {
-                                    CodePoids = typePoids.Element("CodePoids").Value,
-                                    PoidsMin = typePoids.Element("PoidsMin").Value,
-                                    PoidsMax = typePoids.Element("PoidsMax").Value
-
-                                }).ToList();
+            var docTypePoids = (from typePoids in XDocument
+                    .Load(Server.MapPath("/XML/PPTypesPoids.xml")).Descendants("row")
+                select new
+                {
+                    CodePoids = typePoids.Element("CodePoids").Value,
+                    PoidsMin = typePoids.Element("PoidsMin").Value,
+                    PoidsMax = typePoids.Element("PoidsMax").Value
+                }).ToList();
 
             PPTypesPoid typesPoid;
 
@@ -38,9 +182,11 @@ namespace PetitesPuces.Controllers
             {
                 typesPoid = new PPTypesPoid();
 
+                
+                
                 typesPoid.CodePoids = Convert.ToInt16(type.CodePoids);
-                typesPoid.PoidsMin = Convert.ToDecimal(type.PoidsMin);
-                typesPoid.PoidsMax = Convert.ToDecimal(type.PoidsMax);
+                typesPoid.PoidsMin = Convert.ToDecimal(type.PoidsMin, culture);
+                typesPoid.PoidsMax = Convert.ToDecimal(type.PoidsMax, culture);
 
                 context.PPTypesPoids.InsertOnSubmit(typesPoid);
             }
@@ -48,12 +194,12 @@ namespace PetitesPuces.Controllers
             /*
              * PPTypesLivraison
              */
-            var docTypeLivraison = (from typeLivraison in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPTypesLivraison.xml").Descendants("row")
+            var docTypeLivraison = (from typeLivraison in XDocument
+                    .Load(Server.MapPath("/XML/PPTypesLivraison.xml")).Descendants("row")
                 select new
                 {
                     CodeLivraison = typeLivraison.Element("CodeLivraison").Value,
                     Description = typeLivraison.Element("Description").Value
-
                 }).ToList();
             PPTypesLivraison objTypesLivraison;
 
@@ -70,14 +216,14 @@ namespace PetitesPuces.Controllers
             /*
              * PPPoidsLivraison
              */
-            var docPoidsLivraison = (from poidslivraison in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPPoidsLivraison.xml").Descendants("row")
-                                     select new
-                                     {
-                                         CodeLivraison = poidslivraison.Element("CodeLivraison").Value,
-                                         CodePoids = poidslivraison.Element("CodePoids").Value,
-                                         Tarif = poidslivraison.Element("Tarif").Value
-
-                                     }).ToList();
+            var docPoidsLivraison = (from poidslivraison in XDocument
+                    .Load(Server.MapPath("/XML/PPPoidsLivraison.xml")).Descendants("row")
+                select new
+                {
+                    CodeLivraison = poidslivraison.Element("CodeLivraison").Value,
+                    CodePoids = poidslivraison.Element("CodePoids").Value,
+                    Tarif = poidslivraison.Element("Tarif").Value
+                }).ToList();
 
             PPPoidsLivraison podLivraison;
 
@@ -87,7 +233,7 @@ namespace PetitesPuces.Controllers
 
                 podLivraison.CodeLivraison = Convert.ToInt16(type.CodeLivraison);
                 podLivraison.CodePoids = Convert.ToInt16(type.CodePoids);
-                podLivraison.Tarif = Convert.ToDecimal(type.Tarif);
+                podLivraison.Tarif = Convert.ToDecimal(type.Tarif,culture);
                 test += "Code livraison du poids livraison" + type.CodeLivraison;
 
                 context.PPPoidsLivraisons.InsertOnSubmit(podLivraison);
@@ -96,14 +242,14 @@ namespace PetitesPuces.Controllers
             /*
              * PPCategories
              */
-            var docCategorie = (from unCategorie in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPCategorie.xml").Descendants("row")
-                             select new
-                             {
-                                 NoCategorie = unCategorie.Element("NoCategorie").Value,
-                                 Description = unCategorie.Element("Description").Value,
-                                 Details = unCategorie.Element("Details").Value
-                                
-                             }).ToList();
+            var docCategorie = (from unCategorie in XDocument
+                    .Load(Server.MapPath("/XML/PPCategorie.xml")).Descendants("row")
+                select new
+                {
+                    NoCategorie = unCategorie.Element("NoCategorie").Value,
+                    Description = unCategorie.Element("Description").Value,
+                    Details = unCategorie.Element("Details").Value
+                }).ToList();
 
             PPCategory category;
 
@@ -114,14 +260,15 @@ namespace PetitesPuces.Controllers
                 category.NoCategorie = Convert.ToInt32(unCat.NoCategorie);
                 category.Details = unCat.Details;
                 category.Description = unCat.Description;
-                
+
                 context.PPCategories.InsertOnSubmit(category);
             }
 
             /*
              * PPGestionnaires
              */
-            var objG = (from unGestionnaire in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPGestionnaire.xml").Descendants("row")
+            var objG = (from unGestionnaire in XDocument
+                    .Load(Server.MapPath("/XML/PPGestionnaire.xml")).Descendants("row")
                 select new PPGestionnaire
                 {
                     NoGestionnaire = Convert.ToInt64(unGestionnaire.Element("NoGestionnaire").Value),
@@ -137,8 +284,10 @@ namespace PetitesPuces.Controllers
                 connection.Open();
                 SqlCommand insert = new SqlCommand
                 {
-                    CommandText= string.Format("INSERT INTO PPGestionnaires (NoGestionnaire, Nom, Prenom, AdresseEmail, MotDePasse) VALUES (" +
-                                 "{0}, '{1}', '{2}', '{3}', '{4}')", objG.NoGestionnaire, objG.Nom, objG.Prenom, objG.AdresseEmail, objG.MotDePasse),
+                    CommandText = string.Format(
+                        "INSERT INTO PPGestionnaires (NoGestionnaire, Nom, Prenom, AdresseEmail, MotDePasse) VALUES (" +
+                        "{0}, '{1}', '{2}', '{3}', '{4}')", objG.NoGestionnaire, objG.Nom, objG.Prenom,
+                        objG.AdresseEmail, objG.MotDePasse),
                     Connection = connection
                 };
                 insert.ExecuteNonQuery();
@@ -146,34 +295,34 @@ namespace PetitesPuces.Controllers
             }
 
 
-
-                /*
-                 * PPClients
-                 */
-                var docClient = (from unClient in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPClients.xml").Descendants("row")
-                                 select new
-                                 {
-                                     NoClient = unClient.Element("NoClient").Value,
-                                     AdresseEmail = unClient.Element("AdresseEmail").Value,
-                                     MotDePasse = unClient.Element("MotDePasse").Value,
-                                     Nom = unClient.Element("Nom").Value,
-                                     Prenom = unClient.Element("Prenom").Value,
-                                     Rue = unClient.Element("Rue").Value,
-                                     Ville = unClient.Element("Ville").Value,
-                                     Province = unClient.Element("Province").Value,
-                                     CodePostal = unClient.Element("CodePostal").Value,
-                                     Pays = unClient.Element("Pays").Value,
-                                     Tel1 = unClient.Element("Tel1").Value,
-                                     Tel2 = unClient.Element("Tel2").Value,
-                                     DateCreation = unClient.Element("DateCreation").Value,
-                                     DateMAJ = unClient.Element("DateMAJ").Value,
-                                     NbConnexions = unClient.Element("NbConnexions").Value,
-                                     DateDerniereConnexion = unClient.Element("DateDerniereConnexion").Value,
-                                     Statut = unClient.Element("Statut").Value
-                                 }).ToList();
+            /*
+             * PPClients
+             */
+            var docClient = (from unClient in XDocument
+                    .Load(Server.MapPath("/XML/PPClients.xml")).Descendants("row")
+                select new
+                {
+                    NoClient = unClient.Element("NoClient").Value,
+                    AdresseEmail = unClient.Element("AdresseEmail").Value,
+                    MotDePasse = unClient.Element("MotDePasse").Value,
+                    Nom = unClient.Element("Nom").Value,
+                    Prenom = unClient.Element("Prenom").Value,
+                    Rue = unClient.Element("Rue").Value,
+                    Ville = unClient.Element("Ville").Value,
+                    Province = unClient.Element("Province").Value,
+                    CodePostal = unClient.Element("CodePostal").Value,
+                    Pays = unClient.Element("Pays").Value,
+                    Tel1 = unClient.Element("Tel1").Value,
+                    Tel2 = unClient.Element("Tel2").Value,
+                    DateCreation = unClient.Element("DateCreation").Value,
+                    DateMAJ = unClient.Element("DateMAJ").Value,
+                    NbConnexions = unClient.Element("NbConnexions").Value,
+                    DateDerniereConnexion = unClient.Element("DateDerniereConnexion").Value,
+                    Statut = unClient.Element("Statut").Value
+                }).ToList();
 
             PPClient objClient;
-          
+
             foreach (var unclient in docClient)
             {
                 objClient = new PPClient();
@@ -192,7 +341,8 @@ namespace PetitesPuces.Controllers
                 objClient.Tel2 = unclient.Tel2;
                 if (unclient.DateCreation != "") objClient.DateCreation = Convert.ToDateTime(unclient.DateCreation);
                 if (unclient.DateMAJ != "") objClient.DateMAJ = Convert.ToDateTime(unclient.DateMAJ);
-                if (unclient.DateDerniereConnexion != "") objClient.DateDerniereConnexion = Convert.ToDateTime(unclient.DateDerniereConnexion);
+                if (unclient.DateDerniereConnexion != "")
+                    objClient.DateDerniereConnexion = Convert.ToDateTime(unclient.DateDerniereConnexion);
                 objClient.NbConnexions = Convert.ToInt16(unclient.NbConnexions);
                 objClient.Statut = Convert.ToInt16(unclient.Statut);
 
@@ -202,37 +352,37 @@ namespace PetitesPuces.Controllers
             /*
              * PPVendeurs
              */
-            var docVendeur = (from unVendeur in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPVendeur.xml").Descendants("row")
-                              select new
-                              {
-                                  NoVendeur = unVendeur.Element("NoVendeur").Value,
-                                  NomAffaires = unVendeur.Element("NomAffaires").Value,
-                                  Nom = unVendeur.Element("Nom").Value,
-                                  Prenom = unVendeur.Element("Prenom").Value,
-                                  Rue = unVendeur.Element("Rue").Value,
-                                  Ville = unVendeur.Element("Ville").Value,
-                                  Province = unVendeur.Element("Province").Value,
-                                  CodePostal = unVendeur.Element("CodePostal").Value,
-                                  Pays = unVendeur.Element("Pays").Value,
-                                  Tel1 = unVendeur.Element("Tel1").Value,
-                                  Tel2 = unVendeur.Element("Tel2").Value,
-                                  AdresseEmail = unVendeur.Element("AdresseEmail").Value,
-                                  MotDePasse = unVendeur.Element("MotDePasse").Value,
-                                  PoidsMaxLivraison = unVendeur.Element("PoidsMaxLivraison").Value,
-                                  LivraisonGraduite = unVendeur.Element("LivraisonGraduite").Value,
-                                  Taxes = unVendeur.Element("Taxes").Value,
-                                  Pourcentage = unVendeur.Element("Pourcentage").Value,
-                                  Configuration = unVendeur.Element("Configuration").Value,
-                                  DateCreation = unVendeur.Element("DateCreation").Value,
-                                  DateMAJ = unVendeur.Element("DateMAJ").Value,
-                                  Statut = unVendeur.Element("Statut").Value
-                              }).ToList();
+            var docVendeur = (from unVendeur in XDocument
+                    .Load(Server.MapPath("/XML/PPVendeur.xml")).Descendants("row")
+                select new
+                {
+                    NoVendeur = unVendeur.Element("NoVendeur").Value,
+                    NomAffaires = unVendeur.Element("NomAffaires").Value,
+                    Nom = unVendeur.Element("Nom").Value,
+                    Prenom = unVendeur.Element("Prenom").Value,
+                    Rue = unVendeur.Element("Rue").Value,
+                    Ville = unVendeur.Element("Ville").Value,
+                    Province = unVendeur.Element("Province").Value,
+                    CodePostal = unVendeur.Element("CodePostal").Value,
+                    Pays = unVendeur.Element("Pays").Value,
+                    Tel1 = unVendeur.Element("Tel1").Value,
+                    Tel2 = unVendeur.Element("Tel2").Value,
+                    AdresseEmail = unVendeur.Element("AdresseEmail").Value,
+                    MotDePasse = unVendeur.Element("MotDePasse").Value,
+                    PoidsMaxLivraison = unVendeur.Element("PoidsMaxLivraison").Value,
+                    LivraisonGraduite = unVendeur.Element("LivraisonGraduite").Value,
+                    Taxes = unVendeur.Element("Taxes").Value,
+                    Pourcentage = unVendeur.Element("Pourcentage").Value,
+                    Configuration = unVendeur.Element("Configuration").Value,
+                    DateCreation = unVendeur.Element("DateCreation").Value,
+                    DateMAJ = unVendeur.Element("DateMAJ").Value,
+                    Statut = unVendeur.Element("Statut").Value
+                }).ToList();
 
             PPVendeur objVendeur;
-            
+
             foreach (var unVendeur in docVendeur)
             {
-
                 objVendeur = new PPVendeur();
 
                 objVendeur.NoVendeur = Convert.ToInt64(unVendeur.NoVendeur);
@@ -250,9 +400,9 @@ namespace PetitesPuces.Controllers
                 objVendeur.AdresseEmail = unVendeur.AdresseEmail;
                 objVendeur.MotDePasse = unVendeur.MotDePasse;
                 objVendeur.PoidsMaxLivraison = Convert.ToInt32(unVendeur.PoidsMaxLivraison);
-                objVendeur.LivraisonGratuite = Convert.ToDecimal(unVendeur.LivraisonGraduite);
+                objVendeur.LivraisonGratuite = Convert.ToDecimal(unVendeur.LivraisonGraduite,culture);
                 objVendeur.Taxes = unVendeur.Taxes == "1" ? true : false;
-                objVendeur.Pourcentage = Convert.ToDecimal(unVendeur.Pourcentage);
+                objVendeur.Pourcentage = Convert.ToDecimal(unVendeur.Pourcentage,culture);
                 if (unVendeur.DateCreation != "") objVendeur.DateCreation = Convert.ToDateTime(unVendeur.DateCreation);
                 if (unVendeur.DateMAJ != "") objVendeur.DateMAJ = Convert.ToDateTime(unVendeur.DateMAJ);
                 objVendeur.Configuration = unVendeur.Configuration;
@@ -264,40 +414,40 @@ namespace PetitesPuces.Controllers
             /*
              * PPVendeursClients
              */
-            var docVendeurClient = (from unVendeurClient in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPVendeurClient.xml").Descendants("row")
-                                      select new
-                                      {
-                                          NoVendeur = unVendeurClient.Element("NoVendeur").Value,
-                                          NoClient = unVendeurClient.Element("NoClient").Value,
-                                          DateVisite = unVendeurClient.Element("DateVisite").Value
-                                         }).ToList();
+            var docVendeurClient = (from unVendeurClient in XDocument
+                    .Load(Server.MapPath("/XML/PPVendeurClient.xml")).Descendants("row")
+                select new
+                {
+                    NoVendeur = unVendeurClient.Element("NoVendeur").Value,
+                    NoClient = unVendeurClient.Element("NoClient").Value,
+                    DateVisite = unVendeurClient.Element("DateVisite").Value
+                }).ToList();
 
             PPVendeursClient objVendeursClient;
-            
+
             foreach (var unvendeursClient in docVendeurClient)
             {
-
                 objVendeursClient = new PPVendeursClient();
 
                 objVendeursClient.NoVendeur = Convert.ToInt64(unvendeursClient.NoVendeur);
                 objVendeursClient.NoClient = Convert.ToInt64(unvendeursClient.NoClient);
-                if (unvendeursClient.DateVisite != "") objVendeursClient.DateVisite = Convert.ToDateTime(unvendeursClient.DateVisite);
-               
-                context.PPVendeursClients.InsertOnSubmit(objVendeursClient);
+                if (unvendeursClient.DateVisite != "")
+                    objVendeursClient.DateVisite = Convert.ToDateTime(unvendeursClient.DateVisite);
 
+                context.PPVendeursClients.InsertOnSubmit(objVendeursClient);
             }
 
             /*
              * PPTaxeFederale
              */
-            var docTPS = (from taxFederal in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPTaxeFederale.xml").Descendants("row")
-                         select new
-                         {
-                             NoTPS = taxFederal.Element("NoTPS").Value,
-                             DateEffectiveTPS = taxFederal.Element("DateEffectiveTPS").Value,
-                             TauxTPS = taxFederal.Element("TauxTPS").Value
-
-                         }).ToList();
+            var docTPS = (from taxFederal in XDocument
+                    .Load(Server.MapPath("/XML/PPTaxeFederale.xml")).Descendants("row")
+                select new
+                {
+                    NoTPS = taxFederal.Element("NoTPS").Value,
+                    DateEffectiveTPS = taxFederal.Element("DateEffectiveTPS").Value,
+                    TauxTPS = taxFederal.Element("TauxTPS").Value
+                }).ToList();
 
             PPTaxeFederale objTaxeFederale;
 
@@ -307,7 +457,7 @@ namespace PetitesPuces.Controllers
 
                 objTaxeFederale.NoTPS = Convert.ToByte(taxe.NoTPS);
                 objTaxeFederale.DateEffectiveTPS = Convert.ToDateTime(taxe.DateEffectiveTPS);
-                objTaxeFederale.TauxTPS = Convert.ToDecimal(taxe.TauxTPS);
+                objTaxeFederale.TauxTPS = Convert.ToDecimal(taxe.TauxTPS,culture);
 
                 context.PPTaxeFederales.InsertOnSubmit(objTaxeFederale);
             }
@@ -315,14 +465,14 @@ namespace PetitesPuces.Controllers
             /*
              * PPTaxeProvinciale
              */
-            var docTVQ = (from taxeTVQ in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPTaxeProvinciale.xml").Descendants("row")
-                         select new
-                         {
-                             NoTVQ = taxeTVQ.Element("NoTVQ").Value,
-                             DateEffectiveTVQ = taxeTVQ.Element("DateEffectiveTVQ").Value,
-                             TauxTVQ = taxeTVQ.Element("TauxTVQ").Value
-
-                         }).ToList();
+            var docTVQ = (from taxeTVQ in XDocument
+                    .Load(Server.MapPath("/XML/PPTaxeProvinciale.xml")).Descendants("row")
+                select new
+                {
+                    NoTVQ = taxeTVQ.Element("NoTVQ").Value,
+                    DateEffectiveTVQ = taxeTVQ.Element("DateEffectiveTVQ").Value,
+                    TauxTVQ = taxeTVQ.Element("TauxTVQ").Value
+                }).ToList();
 
             PPTaxeProvinciale objTaxeProvinciale;
 
@@ -332,35 +482,34 @@ namespace PetitesPuces.Controllers
 
                 objTaxeProvinciale.NoTVQ = Convert.ToByte(taxe.NoTVQ);
                 objTaxeProvinciale.DateEffectiveTVQ = Convert.ToDateTime(taxe.DateEffectiveTVQ);
-                objTaxeProvinciale.TauxTVQ = Convert.ToDecimal(taxe.TauxTVQ);
+                objTaxeProvinciale.TauxTVQ = Convert.ToDecimal(taxe.TauxTVQ,culture);
 
                 context.PPTaxeProvinciales.InsertOnSubmit(objTaxeProvinciale);
             }
 
-           
 
             /*
              * PPProduits
              */
-            var docProduits = (from unProduit in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPProduits.xml").Descendants("row")
-                               select new
-                               {
-                                   NoProduit = unProduit.Element("NoProduit").Value,
-                                   NoVendeur = unProduit.Element("NoVendeur").Value,
-                                   NoCategorie = unProduit.Element("NoCategorie").Value,
-                                   Nom = unProduit.Element("Nom").Value,
-                                   Description = unProduit.Element("Description").Value,
-                                   Photo = unProduit.Element("Photo").Value,
-                                   PrixDemande = unProduit.Element("PrixDemande").Value,
-                                   NombreItems = unProduit.Element("NombreItems").Value,
-                                   Disponibilite = unProduit.Element("Disponibilite").Value,
-                                   DateVente = unProduit.Element("DateVente").Value,
-                                   PrixVente = unProduit.Element("PrixVente").Value,
-                                   Poids = unProduit.Element("Poids").Value,
-                                   DateCreation = unProduit.Element("DateCreation").Value,
-                                   DateMAJ = unProduit.Element("DateMAJ").Value
-
-                               }).ToList();
+            var docProduits = (from unProduit in XDocument
+                    .Load(Server.MapPath("/XML/PPProduits.xml")).Descendants("row")
+                select new
+                {
+                    NoProduit = unProduit.Element("NoProduit").Value,
+                    NoVendeur = unProduit.Element("NoVendeur").Value,
+                    NoCategorie = unProduit.Element("NoCategorie").Value,
+                    Nom = unProduit.Element("Nom").Value,
+                    Description = unProduit.Element("Description").Value,
+                    Photo = unProduit.Element("Photo").Value,
+                    PrixDemande = unProduit.Element("PrixDemande").Value,
+                    NombreItems = unProduit.Element("NombreItems").Value,
+                    Disponibilite = unProduit.Element("Disponibilite").Value,
+                    DateVente = unProduit.Element("DateVente").Value,
+                    PrixVente = unProduit.Element("PrixVente").Value,
+                    Poids = unProduit.Element("Poids").Value,
+                    DateCreation = unProduit.Element("DateCreation").Value,
+                    DateMAJ = unProduit.Element("DateMAJ").Value
+                }).ToList();
             PPProduit objProduit;
 
             foreach (var type in docProduits)
@@ -374,11 +523,11 @@ namespace PetitesPuces.Controllers
                 objProduit.Description = type.Description;
                 objProduit.Photo = type.Photo;
                 objProduit.Disponibilité = type.Disponibilite != "1" ? false : true;
-                objProduit.PrixDemande = Convert.ToDecimal(type.PrixDemande);
+                objProduit.PrixDemande = Convert.ToDecimal(type.PrixDemande,culture);
                 objProduit.NombreItems = Convert.ToInt16(type.NombreItems);
-                if (type.DateVente != "") objProduit.DateVente = Convert.ToDateTime(type.DateVente);
-                if (type.PrixVente != "") objProduit.PrixVente = Convert.ToDecimal(type.PrixVente);
-                objProduit.Poids = Convert.ToDecimal(type.Poids);
+                if (type.DateVente != "") objProduit.DateVente = Convert.ToDateTime(type.DateVente,culture);
+                if (type.PrixVente != "") objProduit.PrixVente = Convert.ToDecimal(type.PrixVente,culture);
+                objProduit.Poids = Convert.ToDecimal(type.Poids,culture);
                 objProduit.DateCreation = Convert.ToDateTime(type.DateCreation);
                 if (type.DateMAJ != "") objProduit.DateMAJ = Convert.ToDateTime(type.DateMAJ);
 
@@ -388,16 +537,17 @@ namespace PetitesPuces.Controllers
             /*
              * PPArticlesEnPanier
              */
-            var docArticleEnPanier = (from unPanier in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPArticlesEnPanier.xml").Descendants("row")
-                                    select new
-                                    {
-                                        NoPanier = unPanier.Element("NoPanier").Value,
-                                        NoClient = unPanier.Element("NoClient").Value,
-                                        NoVendeur = unPanier.Element("NoVendeur").Value,
-                                        NoProduit = unPanier.Element("NoProduit").Value,
-                                        DateCreation = unPanier.Element("DateCreation").Value,
-                                        NbItems = unPanier.Element("NbItems").Value
-                                    }).ToList();
+            var docArticleEnPanier = (from unPanier in XDocument
+                    .Load(Server.MapPath("/XML/PPArticlesEnPanier.xml")).Descendants("row")
+                select new
+                {
+                    NoPanier = unPanier.Element("NoPanier").Value,
+                    NoClient = unPanier.Element("NoClient").Value,
+                    NoVendeur = unPanier.Element("NoVendeur").Value,
+                    NoProduit = unPanier.Element("NoProduit").Value,
+                    DateCreation = unPanier.Element("DateCreation").Value,
+                    NbItems = unPanier.Element("NbItems").Value
+                }).ToList();
 
             PPArticlesEnPanier objPanier;
 
@@ -418,60 +568,60 @@ namespace PetitesPuces.Controllers
             /*
              * PPCommandes
              */
-            var docCommande = (from commande in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPCommandes.xml").Descendants("row")
-                                select new
-                                {
-                                    NoCommande = commande.Element("NoCommande").Value,
-                                    NoClient = commande.Element("NoClient").Value,
-                                    NoVendeur = commande.Element("NoVendeur").Value,
-                                    DateCommande = commande.Element("DateCommande").Value,
-                                    CoutLivraison = commande.Element("CoutLivraison").Value,
-                                    TypeLivraison = commande.Element("TypeLivraison").Value,
-                                    MontantTotAvantTaxes = commande.Element("MontantTotAvantTaxes").Value,
-                                    TPS = commande.Element("TPS").Value,
-                                    TVQ = commande.Element("TVQ").Value,
-                                    PoidsTotal = commande.Element("PoidsTotal").Value,
-                                    Statut = commande.Element("Statut").Value,
-                                    NoAutorisation = commande.Element("NoAutorisation").Value
-
-                                }).ToList();
-
-                PPCommande objcommande;
-
-                foreach (var type in docCommande)
+            var docCommande = (from commande in XDocument
+                    .Load(Server.MapPath("/XML/PPCommandes.xml")).Descendants("row")
+                select new
                 {
-                    objcommande = new PPCommande();
+                    NoCommande = commande.Element("NoCommande").Value,
+                    NoClient = commande.Element("NoClient").Value,
+                    NoVendeur = commande.Element("NoVendeur").Value,
+                    DateCommande = commande.Element("DateCommande").Value,
+                    CoutLivraison = commande.Element("CoutLivraison").Value,
+                    TypeLivraison = commande.Element("TypeLivraison").Value,
+                    MontantTotAvantTaxes = commande.Element("MontantTotAvantTaxes").Value,
+                    TPS = commande.Element("TPS").Value,
+                    TVQ = commande.Element("TVQ").Value,
+                    PoidsTotal = commande.Element("PoidsTotal").Value,
+                    Statut = commande.Element("Statut").Value,
+                    NoAutorisation = commande.Element("NoAutorisation").Value
+                }).ToList();
 
-                    objcommande.NoCommande = Convert.ToInt64(type.NoCommande);
-                    objcommande.NoClient = Convert.ToInt64(type.NoClient);
-                    objcommande.NoVendeur = Convert.ToInt64(type.NoVendeur);
-                    objcommande.DateCommande = Convert.ToDateTime(type.DateCommande);
-                    if (type.CoutLivraison != "") objcommande.CoutLivraison = Convert.ToDecimal(type.CoutLivraison);
-                    objcommande.TypeLivraison = Convert.ToInt16(type.TypeLivraison);
-                    objcommande.MontantTotAvantTaxes = Convert.ToDecimal(type.MontantTotAvantTaxes);
-                    if (type.TPS != "") objcommande.TPS = Convert.ToDecimal(type.TPS);
-                    if (type.TVQ != "") objcommande.TVQ = Convert.ToDecimal(type.TVQ);
-                    objcommande.PoidsTotal = Convert.ToDecimal(type.PoidsTotal);
-                    objcommande.Statut = Convert.ToChar(type.Statut);
-                    objcommande.NoAutorisation = type.NoAutorisation;
+            PPCommande objcommande;
+
+            foreach (var type in docCommande)
+            {
+                objcommande = new PPCommande();
+
+                objcommande.NoCommande = Convert.ToInt64(type.NoCommande);
+                objcommande.NoClient = Convert.ToInt64(type.NoClient);
+                objcommande.NoVendeur = Convert.ToInt64(type.NoVendeur);
+                objcommande.DateCommande = Convert.ToDateTime(type.DateCommande);
+                if (type.CoutLivraison != "") objcommande.CoutLivraison = Convert.ToDecimal(type.CoutLivraison,culture);
+                objcommande.TypeLivraison = Convert.ToInt16(type.TypeLivraison);
+                objcommande.MontantTotAvantTaxes = Convert.ToDecimal(type.MontantTotAvantTaxes,culture);
+                if (type.TPS != "") objcommande.TPS = Convert.ToDecimal(type.TPS,culture);
+                if (type.TVQ != "") objcommande.TVQ = Convert.ToDecimal(type.TVQ,culture);
+                objcommande.PoidsTotal = Convert.ToDecimal(type.PoidsTotal,culture);
+                objcommande.Statut = Convert.ToChar(type.Statut);
+                objcommande.NoAutorisation = type.NoAutorisation;
 
                 context.PPCommandes.InsertOnSubmit(objcommande);
-                }
-          
-        
+            }
+
+
             /*
              * PPDetailsCommande
              */
-            var docDetailsCommande = (from unDetailCommande in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPDetailsCommande.xml").Descendants("row")
-                                        select new
-                                        {
-                                            NoDetailCommandes = unDetailCommande.Element("NoDetailCommandes").Value,
-                                            NoCommande = unDetailCommande.Element("NoCommande").Value,
-                                            NoProduit = unDetailCommande.Element("NoProduit").Value,
-                                            PrixVente = unDetailCommande.Element("PrixVente").Value,
-                                            Quantité = unDetailCommande.Element("Quantité").Value
-
-                                        }).ToList();
+            var docDetailsCommande = (from unDetailCommande in XDocument
+                    .Load(Server.MapPath("/XML/PPDetailsCommande.xml")).Descendants("row")
+                select new
+                {
+                    NoDetailCommandes = unDetailCommande.Element("NoDetailCommandes").Value,
+                    NoCommande = unDetailCommande.Element("NoCommande").Value,
+                    NoProduit = unDetailCommande.Element("NoProduit").Value,
+                    PrixVente = unDetailCommande.Element("PrixVente").Value,
+                    Quantité = unDetailCommande.Element("Quantité").Value
+                }).ToList();
 
             PPDetailsCommande objDetailsCommande;
 
@@ -482,7 +632,7 @@ namespace PetitesPuces.Controllers
                 objDetailsCommande.NoDetailCommandes = Convert.ToInt64(type.NoDetailCommandes);
                 objDetailsCommande.NoCommande = Convert.ToInt64(type.NoCommande);
                 objDetailsCommande.NoProduit = Convert.ToInt64(type.NoProduit);
-                objDetailsCommande.PrixVente = Convert.ToDecimal(type.PrixVente);
+                objDetailsCommande.PrixVente = Convert.ToDecimal(type.PrixVente,culture);
                 objDetailsCommande.Quantité = Convert.ToInt16(type.Quantité);
 
                 context.PPDetailsCommandes.InsertOnSubmit(objDetailsCommande);
@@ -491,23 +641,24 @@ namespace PetitesPuces.Controllers
             /*
              * PPHistoriquePayement
              */
-            var docHistorique = (from uneHistorique in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPHistoriquePayement.xml").Descendants("row")
-                                 select new
-                                 {
-                                     NoHistorique = uneHistorique.Element("NoHistorique").Value,
-                                     MontantVenteAvantLivraison = uneHistorique.Element("MontantVenteAvantLivraison").Value,
-                                     NoVendeur = uneHistorique.Element("NoVendeur").Value,
-                                     NoClient = uneHistorique.Element("NoClient").Value,
-                                     NoCommande = uneHistorique.Element("NoCommande").Value,
-                                     DateVente = uneHistorique.Element("DateVente").Value,
-                                     NoAutoristion = uneHistorique.Element("NoAutoristion").Value,
-                                     FraisLesi = uneHistorique.Element("FraisLesi").Value,
-                                     Redevance = uneHistorique.Element("Redevance").Value,
-                                     FraisLivraison = uneHistorique.Element("FraisLivraison").Value,
-                                     FraisTPS = uneHistorique.Element("FraisTPS").Value,
-                                     FraisTVQ = uneHistorique.Element("FraisTVQ").Value
-
-                                 }).ToList();
+            var docHistorique = (from uneHistorique in XDocument
+                    .Load(Server.MapPath("/XML/PPHistoriquePayement.xml"))
+                    .Descendants("row")
+                select new
+                {
+                    NoHistorique = uneHistorique.Element("NoHistorique").Value,
+                    MontantVenteAvantLivraison = uneHistorique.Element("MontantVenteAvantLivraison").Value,
+                    NoVendeur = uneHistorique.Element("NoVendeur").Value,
+                    NoClient = uneHistorique.Element("NoClient").Value,
+                    NoCommande = uneHistorique.Element("NoCommande").Value,
+                    DateVente = uneHistorique.Element("DateVente").Value,
+                    NoAutoristion = uneHistorique.Element("NoAutoristion").Value,
+                    FraisLesi = uneHistorique.Element("FraisLesi").Value,
+                    Redevance = uneHistorique.Element("Redevance").Value,
+                    FraisLivraison = uneHistorique.Element("FraisLivraison").Value,
+                    FraisTPS = uneHistorique.Element("FraisTPS").Value,
+                    FraisTVQ = uneHistorique.Element("FraisTVQ").Value
+                }).ToList();
 
             PPHistoriquePaiement objHistoriquePaiement;
 
@@ -516,55 +667,80 @@ namespace PetitesPuces.Controllers
                 objHistoriquePaiement = new PPHistoriquePaiement();
 
                 objHistoriquePaiement.NoHistorique = Convert.ToInt32(unHistorique.NoHistorique);
-                objHistoriquePaiement.MontantVenteAvantLivraison = Convert.ToDecimal(unHistorique.MontantVenteAvantLivraison);
+                objHistoriquePaiement.MontantVenteAvantLivraison =
+                    Convert.ToDecimal(unHistorique.MontantVenteAvantLivraison,culture);
                 objHistoriquePaiement.NoVendeur = Convert.ToInt64(unHistorique.NoVendeur);
                 objHistoriquePaiement.NoClient = Convert.ToInt64(unHistorique.NoClient);
                 objHistoriquePaiement.NoCommande = Convert.ToInt64(unHistorique.NoCommande);
                 objHistoriquePaiement.DateVente = Convert.ToDateTime(unHistorique.DateVente);
                 objHistoriquePaiement.NoAutorisation = unHistorique.NoAutoristion;
-                objHistoriquePaiement.FraisLesi = Convert.ToDecimal(unHistorique.FraisLesi);
-                objHistoriquePaiement.Redevance = Convert.ToDecimal(unHistorique.Redevance);
-                if (unHistorique.FraisLivraison != "") objHistoriquePaiement.FraisLivraison = Convert.ToDecimal(unHistorique.FraisLivraison);
-                if (unHistorique.FraisTPS != "") objHistoriquePaiement.FraisTPS = Convert.ToDecimal(unHistorique.FraisTPS);
-                if (unHistorique.FraisTVQ != "") objHistoriquePaiement.FraisTVQ = Convert.ToDecimal(unHistorique.FraisTVQ);
+                objHistoriquePaiement.FraisLesi = Convert.ToDecimal(unHistorique.FraisLesi,culture);
+                objHistoriquePaiement.Redevance = Convert.ToDecimal(unHistorique.Redevance,culture);
+                if (unHistorique.FraisLivraison != "")
+                    objHistoriquePaiement.FraisLivraison = Convert.ToDecimal(unHistorique.FraisLivraison,culture);
+                if (unHistorique.FraisTPS != "")
+                    objHistoriquePaiement.FraisTPS = Convert.ToDecimal(unHistorique.FraisTPS,culture);
+                if (unHistorique.FraisTVQ != "")
+                    objHistoriquePaiement.FraisTVQ = Convert.ToDecimal(unHistorique.FraisTVQ,culture);
 
-              
 
                 context.PPHistoriquePaiements.InsertOnSubmit(objHistoriquePaiement);
-
             }
+
             /*
              * PPLieu
              */
-            var docLieu = (from unLieu in XDocument.Load(@"E:\\Gerald-Godin\\ProjetFinalPetitePUCE'S\\XML\\PPLieu.xml").Descendants("row")
-                                 select new
-                                 {
-                                     NoLieu = unLieu.Element("NoLieu").Value,
-                                     Description = unLieu.Element("Description").Value
-                                    
-
-                                 }).ToList();
+            var docLieu = (from unLieu in XDocument.Load(Server.MapPath("/XML/PPLieu.xml"))
+                    .Descendants("row")
+                select new
+                {
+                    NoLieu = unLieu.Element("NoLieu").Value,
+                    Description = unLieu.Element("Description").Value
+                }).ToList();
 
             PPLieu objLieu;
 
             foreach (var unLieu in docLieu)
             {
                 objLieu = new PPLieu();
-                
+
                 objLieu.NoLieu = Convert.ToInt16(unLieu.NoLieu);
                 objLieu.Description = unLieu.Description;
 
-             
 
                 context.PPLieus.InsertOnSubmit(objLieu);
-
             }
-            context.SubmitChanges();
 
-            return View();
-        } 
-
-
+            try
+            {
+                context.SubmitChanges();
+            }
+            catch (Exception e)
+            {
+                ViewBag.lsMessageRemplir = e.Message;
+            }
+            string lsMessage = "La table PPEvaluations a été rempli réussite. " + "<br/>\n" +
+                               "La table PPDetailsCommandes a été rempli réussite. " + "<br/>\n" +
+                               "La table PPArticlesEnPanier a été rempli réussite. " + "<br/>\n" +
+                               "La table PPPoidsLivraisons a été rempli réussite. " + "<br/>\n" +
+                               "La table PPTypesPoids a été rempli réussite. " + "<br/>\n" +
+                               "La table PPCommandes a été rempli réussite. " + "<br/>\n" +
+                               "La table PPTypesLivraison a été rempli réussite. " + "<br/>\n" +
+                               "La table PPTaxeFederale a été rempli réussite. " + "<br/>\n" +
+                               "La table PPTaxeProvinciale a été rempli réussite. " + "<br/>\n" +
+                               "La table PPHistoriquePaiements a été rempli réussite. " + "<br/>\n" +
+                               "La table PPVendeursClients a été rempli réussite. " + "<br/>\n" +
+                               "La table PPClients a été rempli réussite. " + "<br/>\n" +
+                               "La table PPProduits a été rempli réussite. " + "<br/>\n" +
+                               "La table PPVendeurs a été rempli réussite. " + "<br/>\n" +
+                               "La table PPGestionnaires a été rempli réussite. " + "<br/>\n" +
+                               "La table PPDestinataires a été rempli réussite. " + "<br/>\n" +
+                               "La table PPMessages a été rempli réussite. " + "<br/>\n" +
+                               "La table PPLieu a été rempli réussite. " + "<br/>\n" +
+                               "La table PPCategories a été rempli réussite. " + "<br/>\n";
+                              
+            ViewBag.lsMessageRemplir = lsMessage;
+            return RedirectToAction("Index");
+        }
     }
-
 }

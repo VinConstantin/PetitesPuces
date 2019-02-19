@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rows>
+  <row>
+    <NoCategorie>10</NoCategorie>
+    <Description>Articles de maison</Description>
+    <Details>Électroménagers, accessoires de cuisines, de salle de bains, de chambres</Details>
+  </row>
+  <row>
+    <NoCategorie>20</NoCategorie>
+    <Description>Mobiliers</Description>
+    <Details>Mobilier d'intérieur et d'extérieur</Details>
+  </row>
+  <row>
+    <NoCategorie>30</NoCategorie>
+    <Description>Articles électroniques</Description>
+    <Details>Caméras, DVD, consoles de jeux, ordinateurs, portables, sans fil</Details>
+  </row>
+  <row>
+    <NoCategorie>40</NoCategorie>
+    <Description>Articles de bébé et enfants</Description>
+    <Details>Vêtements, mobiliers, jouets, articles de sports et loisirs</Details>
+  </row>
+  <row>
+    <NoCategorie>50</NoCategorie>
+    <Description>Rénovation, bricolage, loisirs</Description>
+    <Details>Outils, quincaillerie, articles variés</Details>
+  </row>
+  <row>
+    <NoCategorie>60</NoCategorie>
+    <Description>Vêtements et articles de sports</Description>
+    <Details>Chaussures, vêtements, patins, raquettes, ski, équipement de hockey</Details>
+  </row>
+  <row>
+    <NoCategorie>70</NoCategorie>
+    <Description>Articles de musique</Description>
+    <Details>Instruments, amplification, pièces et accessoires</Details>
+  </row>
+  <row>
+    <NoCategorie>80</NoCategorie>
+    <Description>Varia</Description>
+    <Details>Un peu de tout ce qui n'appartient à aucune autre catégorie</Details>
+  </row>
+</rows>
