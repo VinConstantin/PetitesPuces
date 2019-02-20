@@ -151,7 +151,7 @@
                         <input disabled type="text" style="width: 10%;" pattern="\d*" name="name" value="1" width="50px" id="@Model.NoProduit">
                         <span class="btn btn-link glyphicon glyphicon-plus" onclick="plusQuantite(@Model.NoProduit)" title="Augmenter la quantité"></span>
 
-                        <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());">
+                        <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit,@Model.NoVendeur, $('#@Model.NoProduit').val());">
                             <span class="glyphicon glyphicon-shopping-cart" onclick="ajouterAuPanier(@Model.NoProduit, $('#@Model.NoProduit').val());"></span>
                         </button>
                     </span>
