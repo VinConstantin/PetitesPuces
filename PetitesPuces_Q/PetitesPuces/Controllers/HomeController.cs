@@ -113,10 +113,19 @@ namespace PetitesPuces.Controllers
 
                 else if (unVendeurExist.Count() != 0)
                 {
-                    System.Web.HttpContext.Current.Session["userId"] = unVendeurExist.First().NoVendeur;
-                    TempData["connexion"] = true;
+                    if (unVendeurExist.First().Statut == 1)
+                    {
+                        System.Web.HttpContext.Current.Session["userId"] = unVendeurExist.First().NoVendeur;
+                        TempData["connexion"] = true;
 
-                    return RedirectToAction("Index", "Vendeur");
+                        return RedirectToAction("Index", "Vendeur");
+                    }
+                    else if (unVendeurExist.First().Statut == 0)
+                    {
+                        
+                        return View();
+                    }
+
                 }
                 else if (unGestionnaireExist.Count() != 0)
                 {
@@ -236,6 +245,8 @@ namespace PetitesPuces.Controllers
                     nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["Vendeur.PoidsMaxLivraison"]);
                     nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["Vendeur.LivraisonGratuite"]);
                     nouveauVendeur.MotDePasse = formCollection["MotDePasse"];
+                    nouveauVendeur.Configuration =
+                        "color:#000000; background-color:#FFFFFF; font-family:Comic Sans ms;";
                     nouveauVendeur.Taxes = formCollection["Taxes"] == "on" ? true : false;
                     nouveauVendeur.DateCreation = DateTime.Now;
 

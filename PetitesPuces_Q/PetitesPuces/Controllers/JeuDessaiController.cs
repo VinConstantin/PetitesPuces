@@ -19,12 +19,12 @@ namespace PetitesPuces.Controllers
 
         private CultureInfo culture = new CultureInfo("en-US");
         // GET: JeuDessai
-      
-        public ActionResult Index()
+
+        public ActionResult Index(string status="vider")
         {
             
-            var PPCategorie = (from val in context.PPCategories
-                select val).Count();
+            
+
             var PPArticlesEnPanier = (from val in context.PPArticlesEnPaniers
                 select val).Count();
             var PPPoidsLivraisons = (from val in context.PPPoidsLivraisons
@@ -61,8 +61,28 @@ namespace PetitesPuces.Controllers
                 select val).Count();
             var PPCategories = (from val in context.PPCategories
                 select val).Count();
+            var PPHistoriquePaiements = (from val in context.PPHistoriquePaiements
+                select val).Count();
 
+            int[] intNbEnregistrement; intNbEnregistrement = new int[]
+                {
+                    PPCategories, PPLieu, PPMessages, PPDestinataires, PPGestionnaires, PPVendeurs,
+                    PPProduits, PPClients, PPVendeursClients, PPHistoriquePaiements, PPTaxeProvinciale,
+                    PPTaxeFederale, PPTypesLivraison, PPCommandes, PPTypesPoids, PPPoidsLivraisons,
+                    PPArticlesEnPanier, PPDetailsCommandes, PPEvaluations
+                }
+                ; 
+            string[] strNomTable =
+            {
+                "PPCategories", "PPLieu", "PPMessages", "PPDestinataires", "PPGestionnaires", "PPVendeurs", "PPProduits", "PPClients",
+                "PPVendeursClients", "PPHistoriquePaiements", "PPTaxeProvinciale", "PPTaxeFederale", "PPTypesLivraison", "PPCommandes", "PPTypesPoids", "PPPoidsLivraisons",
+                "PPArticlesEnPanier", "PPDetailsCommandes", "PPEvaluations"
+            };
 
+            ViewBag.nomTable = strNomTable;
+            ViewBag.nbEnregistrement = intNbEnregistrement;
+
+/*
             string lsMessage = "";
             lsMessage = "Dans la table PPCategories, il y a : [ " + PPCategories + " ] enregistrement(s)" + "<br/>\n" +
                         "Dans la table PPLieu, il y a : [ " + PPLieu + " ] enregistrement(s)" + "<br/>\n" +
@@ -91,10 +111,13 @@ namespace PetitesPuces.Controllers
                         "Dans la table PPDetailsCommandes, il y a : [ " + PPDetailsCommandes + " ] enregistrement(s)" +
                         "<br/>\n" +
                         "Dans la table PPEvaluations, il y a : [ " + PPEvaluations + " ] enregistrement(s)";
-            ;
-            ViewBag.lsMessageAfficher = lsMessage;
+            ;*/
+          //  ViewBag.lsMessageAfficher = lsMessage;
+
+          ViewBag.statusVider = status;
             return View();
         }
+
         public ActionResult effacerBaseDonnee()
         {
             try
@@ -132,38 +155,19 @@ namespace PetitesPuces.Controllers
                     connection.Close();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ViewBag.lsMessageSupprime = e.Message;
             }
 
-            string lsMessage = "La table PPEvaluations a été vidé réussite. " + "<br/>\n" +
-                               "La table PPDetailsCommandes a été vidé réussite. " + "<br/>\n" +
-                               "La table PPArticlesEnPanier a été vidé réussite. " + "<br/>\n" +
-                               "La table PPPoidsLivraisons a été vidé réussite. " + "<br/>\n" +
-                               "La table PPTypesPoids a été vidé réussite. " + "<br/>\n" +
-                               "La table PPCommandes a été vidé réussite. " + "<br/>\n" +
-                               "La table PPTypesLivraison a été vidé réussite. " + "<br/>\n" +
-                               "La table PPTaxeFederale a été vidé réussite. " + "<br/>\n" +
-                               "La table PPTaxeProvinciale a été vidé réussite. " + "<br/>\n" +
-                               "La table PPHistoriquePaiements a été vidé réussite. " + "<br/>\n" +
-                               "La table PPVendeursClients a été vidé réussite. " + "<br/>\n" +
-                               "La table PPClients a été vidé réussite. " + "<br/>\n" +
-                               "La table PPProduits a été vidé réussite. " + "<br/>\n" +
-                               "La table PPVendeurs a été vidé réussite. " + "<br/>\n" +
-                               "La table PPGestionnaires a été vidé réussite. " + "<br/>\n" +
-                               "La table PPDestinataires a été vidé réussite. " + "<br/>\n" +
-                               "La table PPMessages a été vidé réussite. " + "<br/>\n" +
-                               "La table PPLieu a été vidé réussite. " + "<br/>\n" +
-                               "La table PPCategories a été vidé réussite. " + "<br/>\n";
-                              
-            ViewBag.lsMessageSupprime = lsMessage;
-            return RedirectToAction("Index");
+          
+        
+            return RedirectToAction("Index",new{status="remplir"});
         }
 
         public ActionResult ajouterLesDonnees()
         {
-            String test = "";
+          
             /*
              * PPTypesPoids
              */
@@ -182,8 +186,7 @@ namespace PetitesPuces.Controllers
             {
                 typesPoid = new PPTypesPoid();
 
-                
-                
+
                 typesPoid.CodePoids = Convert.ToInt16(type.CodePoids);
                 typesPoid.PoidsMin = Convert.ToDecimal(type.PoidsMin, culture);
                 typesPoid.PoidsMax = Convert.ToDecimal(type.PoidsMax, culture);
@@ -233,8 +236,8 @@ namespace PetitesPuces.Controllers
 
                 podLivraison.CodeLivraison = Convert.ToInt16(type.CodeLivraison);
                 podLivraison.CodePoids = Convert.ToInt16(type.CodePoids);
-                podLivraison.Tarif = Convert.ToDecimal(type.Tarif,culture);
-                test += "Code livraison du poids livraison" + type.CodeLivraison;
+                podLivraison.Tarif = Convert.ToDecimal(type.Tarif, culture);
+            
 
                 context.PPPoidsLivraisons.InsertOnSubmit(podLivraison);
             }
@@ -400,9 +403,9 @@ namespace PetitesPuces.Controllers
                 objVendeur.AdresseEmail = unVendeur.AdresseEmail;
                 objVendeur.MotDePasse = unVendeur.MotDePasse;
                 objVendeur.PoidsMaxLivraison = Convert.ToInt32(unVendeur.PoidsMaxLivraison);
-                objVendeur.LivraisonGratuite = Convert.ToDecimal(unVendeur.LivraisonGraduite,culture);
+                objVendeur.LivraisonGratuite = Convert.ToDecimal(unVendeur.LivraisonGraduite, culture);
                 objVendeur.Taxes = unVendeur.Taxes == "1" ? true : false;
-                objVendeur.Pourcentage = Convert.ToDecimal(unVendeur.Pourcentage,culture);
+                objVendeur.Pourcentage = Convert.ToDecimal(unVendeur.Pourcentage, culture);
                 if (unVendeur.DateCreation != "") objVendeur.DateCreation = Convert.ToDateTime(unVendeur.DateCreation);
                 if (unVendeur.DateMAJ != "") objVendeur.DateMAJ = Convert.ToDateTime(unVendeur.DateMAJ);
                 objVendeur.Configuration = unVendeur.Configuration;
@@ -457,7 +460,7 @@ namespace PetitesPuces.Controllers
 
                 objTaxeFederale.NoTPS = Convert.ToByte(taxe.NoTPS);
                 objTaxeFederale.DateEffectiveTPS = Convert.ToDateTime(taxe.DateEffectiveTPS);
-                objTaxeFederale.TauxTPS = Convert.ToDecimal(taxe.TauxTPS,culture);
+                objTaxeFederale.TauxTPS = Convert.ToDecimal(taxe.TauxTPS, culture);
 
                 context.PPTaxeFederales.InsertOnSubmit(objTaxeFederale);
             }
@@ -482,7 +485,7 @@ namespace PetitesPuces.Controllers
 
                 objTaxeProvinciale.NoTVQ = Convert.ToByte(taxe.NoTVQ);
                 objTaxeProvinciale.DateEffectiveTVQ = Convert.ToDateTime(taxe.DateEffectiveTVQ);
-                objTaxeProvinciale.TauxTVQ = Convert.ToDecimal(taxe.TauxTVQ,culture);
+                objTaxeProvinciale.TauxTVQ = Convert.ToDecimal(taxe.TauxTVQ, culture);
 
                 context.PPTaxeProvinciales.InsertOnSubmit(objTaxeProvinciale);
             }
@@ -523,11 +526,11 @@ namespace PetitesPuces.Controllers
                 objProduit.Description = type.Description;
                 objProduit.Photo = type.Photo;
                 objProduit.Disponibilité = type.Disponibilite != "1" ? false : true;
-                objProduit.PrixDemande = Convert.ToDecimal(type.PrixDemande,culture);
+                objProduit.PrixDemande = Convert.ToDecimal(type.PrixDemande, culture);
                 objProduit.NombreItems = Convert.ToInt16(type.NombreItems);
-                if (type.DateVente != "") objProduit.DateVente = Convert.ToDateTime(type.DateVente,culture);
-                if (type.PrixVente != "") objProduit.PrixVente = Convert.ToDecimal(type.PrixVente,culture);
-                objProduit.Poids = Convert.ToDecimal(type.Poids,culture);
+                if (type.DateVente != "") objProduit.DateVente = Convert.ToDateTime(type.DateVente, culture);
+                if (type.PrixVente != "") objProduit.PrixVente = Convert.ToDecimal(type.PrixVente, culture);
+                objProduit.Poids = Convert.ToDecimal(type.Poids, culture);
                 objProduit.DateCreation = Convert.ToDateTime(type.DateCreation);
                 if (type.DateMAJ != "") objProduit.DateMAJ = Convert.ToDateTime(type.DateMAJ);
 
@@ -596,12 +599,13 @@ namespace PetitesPuces.Controllers
                 objcommande.NoClient = Convert.ToInt64(type.NoClient);
                 objcommande.NoVendeur = Convert.ToInt64(type.NoVendeur);
                 objcommande.DateCommande = Convert.ToDateTime(type.DateCommande);
-                if (type.CoutLivraison != "") objcommande.CoutLivraison = Convert.ToDecimal(type.CoutLivraison,culture);
+                if (type.CoutLivraison != "")
+                    objcommande.CoutLivraison = Convert.ToDecimal(type.CoutLivraison, culture);
                 objcommande.TypeLivraison = Convert.ToInt16(type.TypeLivraison);
-                objcommande.MontantTotAvantTaxes = Convert.ToDecimal(type.MontantTotAvantTaxes,culture);
-                if (type.TPS != "") objcommande.TPS = Convert.ToDecimal(type.TPS,culture);
-                if (type.TVQ != "") objcommande.TVQ = Convert.ToDecimal(type.TVQ,culture);
-                objcommande.PoidsTotal = Convert.ToDecimal(type.PoidsTotal,culture);
+                objcommande.MontantTotAvantTaxes = Convert.ToDecimal(type.MontantTotAvantTaxes, culture);
+                if (type.TPS != "") objcommande.TPS = Convert.ToDecimal(type.TPS, culture);
+                if (type.TVQ != "") objcommande.TVQ = Convert.ToDecimal(type.TVQ, culture);
+                objcommande.PoidsTotal = Convert.ToDecimal(type.PoidsTotal, culture);
                 objcommande.Statut = Convert.ToChar(type.Statut);
                 objcommande.NoAutorisation = type.NoAutorisation;
 
@@ -632,7 +636,7 @@ namespace PetitesPuces.Controllers
                 objDetailsCommande.NoDetailCommandes = Convert.ToInt64(type.NoDetailCommandes);
                 objDetailsCommande.NoCommande = Convert.ToInt64(type.NoCommande);
                 objDetailsCommande.NoProduit = Convert.ToInt64(type.NoProduit);
-                objDetailsCommande.PrixVente = Convert.ToDecimal(type.PrixVente,culture);
+                objDetailsCommande.PrixVente = Convert.ToDecimal(type.PrixVente, culture);
                 objDetailsCommande.Quantité = Convert.ToInt16(type.Quantité);
 
                 context.PPDetailsCommandes.InsertOnSubmit(objDetailsCommande);
@@ -668,20 +672,20 @@ namespace PetitesPuces.Controllers
 
                 objHistoriquePaiement.NoHistorique = Convert.ToInt32(unHistorique.NoHistorique);
                 objHistoriquePaiement.MontantVenteAvantLivraison =
-                    Convert.ToDecimal(unHistorique.MontantVenteAvantLivraison,culture);
+                    Convert.ToDecimal(unHistorique.MontantVenteAvantLivraison, culture);
                 objHistoriquePaiement.NoVendeur = Convert.ToInt64(unHistorique.NoVendeur);
                 objHistoriquePaiement.NoClient = Convert.ToInt64(unHistorique.NoClient);
                 objHistoriquePaiement.NoCommande = Convert.ToInt64(unHistorique.NoCommande);
                 objHistoriquePaiement.DateVente = Convert.ToDateTime(unHistorique.DateVente);
                 objHistoriquePaiement.NoAutorisation = unHistorique.NoAutoristion;
-                objHistoriquePaiement.FraisLesi = Convert.ToDecimal(unHistorique.FraisLesi,culture);
-                objHistoriquePaiement.Redevance = Convert.ToDecimal(unHistorique.Redevance,culture);
+                objHistoriquePaiement.FraisLesi = Convert.ToDecimal(unHistorique.FraisLesi, culture);
+                objHistoriquePaiement.Redevance = Convert.ToDecimal(unHistorique.Redevance, culture);
                 if (unHistorique.FraisLivraison != "")
-                    objHistoriquePaiement.FraisLivraison = Convert.ToDecimal(unHistorique.FraisLivraison,culture);
+                    objHistoriquePaiement.FraisLivraison = Convert.ToDecimal(unHistorique.FraisLivraison, culture);
                 if (unHistorique.FraisTPS != "")
-                    objHistoriquePaiement.FraisTPS = Convert.ToDecimal(unHistorique.FraisTPS,culture);
+                    objHistoriquePaiement.FraisTPS = Convert.ToDecimal(unHistorique.FraisTPS, culture);
                 if (unHistorique.FraisTVQ != "")
-                    objHistoriquePaiement.FraisTVQ = Convert.ToDecimal(unHistorique.FraisTVQ,culture);
+                    objHistoriquePaiement.FraisTVQ = Convert.ToDecimal(unHistorique.FraisTVQ, culture);
 
 
                 context.PPHistoriquePaiements.InsertOnSubmit(objHistoriquePaiement);
@@ -719,28 +723,9 @@ namespace PetitesPuces.Controllers
             {
                 ViewBag.lsMessageRemplir = e.Message;
             }
-            string lsMessage = "La table PPEvaluations a été rempli réussite. " + "<br/>\n" +
-                               "La table PPDetailsCommandes a été rempli réussite. " + "<br/>\n" +
-                               "La table PPArticlesEnPanier a été rempli réussite. " + "<br/>\n" +
-                               "La table PPPoidsLivraisons a été rempli réussite. " + "<br/>\n" +
-                               "La table PPTypesPoids a été rempli réussite. " + "<br/>\n" +
-                               "La table PPCommandes a été rempli réussite. " + "<br/>\n" +
-                               "La table PPTypesLivraison a été rempli réussite. " + "<br/>\n" +
-                               "La table PPTaxeFederale a été rempli réussite. " + "<br/>\n" +
-                               "La table PPTaxeProvinciale a été rempli réussite. " + "<br/>\n" +
-                               "La table PPHistoriquePaiements a été rempli réussite. " + "<br/>\n" +
-                               "La table PPVendeursClients a été rempli réussite. " + "<br/>\n" +
-                               "La table PPClients a été rempli réussite. " + "<br/>\n" +
-                               "La table PPProduits a été rempli réussite. " + "<br/>\n" +
-                               "La table PPVendeurs a été rempli réussite. " + "<br/>\n" +
-                               "La table PPGestionnaires a été rempli réussite. " + "<br/>\n" +
-                               "La table PPDestinataires a été rempli réussite. " + "<br/>\n" +
-                               "La table PPMessages a été rempli réussite. " + "<br/>\n" +
-                               "La table PPLieu a été rempli réussite. " + "<br/>\n" +
-                               "La table PPCategories a été rempli réussite. " + "<br/>\n";
-                              
-            ViewBag.lsMessageRemplir = lsMessage;
-            return RedirectToAction("Index");
+
+           
+            return RedirectToAction("Index",new{status="vider"});
         }
     }
 }

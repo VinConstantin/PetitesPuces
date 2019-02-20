@@ -76,7 +76,7 @@ namespace PetitesPuces.Models
         [Required(ErrorMessage = "Veuillez rentrer votre mot de passe!")]
         [DataType(DataType.Password)]
         [RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,100}$", ErrorMessage =
-            "Votre format de mot de passe est incorrect. Il doit avoir minimum 8 caractères et inclure au moins une majuscule.")]
+            "Votre format de mot de passe est invalide. Il doit avoir un minimum de 8 caractères et inclure au moins une majuscule,un minuscule et un chiffre.")]
         [DisplayName("Mot de passe")]
         public string MotDePasse { get; set; }
 

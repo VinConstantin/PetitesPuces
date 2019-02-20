@@ -106,16 +106,16 @@
                     }, new {@class = "form-control text-primary"})
                 </div>
                 
-                <div class="form-group col-md-2 colorpicker-component">
+                <div class="form-group col-md-3 ">
                     <label for="backgroundcolor">Couleur de fond</label>
                     <input type="color" id="backgroundcolor" name="backgroundcolor" value="@Model.configuration.Split(';')[1].Split(':')[1]" class="colorpicker-component form-control">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                     <label for="couleurText">Couleur de text</label>
                     <input type="color" id="couleurText" name="couleurText" class="colorpicker-component 
                         form-control" value="@Model.configuration.Split(';')[0].Split(':')[1]">
                 </div>
-                <div class="form-group col-md-2">
+             @*   <div class="form-group col-md-2">
                     <label for="fontText">Police</label>
                     <select id="fontText" name="fontText" class="form-control text-primary">
                         <option value="" selected disabled hidden>    @Model.configuration.Split(';')[2].Split(':')[1]</option>
@@ -126,9 +126,10 @@
                         <option value="Verdana">Verdana</option>
                         <option value="Courier New">Courier New</option>
                         <option value="Lucida Console">Lucida Console</option>
+                        <option value="Comic Sans ms">Comic Sans ms</option>
                     </select>
 
-                </div>@**@
+                </div>*@
             </div>
           
             <div class="form-row">
