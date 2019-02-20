@@ -1,4 +1,5 @@
-﻿@using PetitesPuces.Securite
+﻿@using PetitesPuces.Models
+@using PetitesPuces.Securite
 <!--
 .____                   __________        __  .__  __
 |    |    ____   ______ \______   \ _____/  |_|__|/  |_  ____   ______
@@ -68,7 +69,23 @@ __________
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Les petites puces", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @{
+                    string controller = "Home";
+                }
+                @if (SessionUtilisateur.UtilisateurCourant == null)yna
+                {
+                    switch (SessionUtilisateur.UtilisateurCourant.Role)
+                    {
+                        case RolesUtil.CLIENT:
+                            break;
+                        case RolesUtil.ADMIN:
+                            break;
+                        case RolesUtil.VEND:
+                            break;
+                    }
+                }
+
+                @Html.ActionLink("Les petites puces", "Index", controller, new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -76,7 +93,7 @@ __________
                 </ul>
                 <ul class="nav navbar-nav pull-right">
                     @if (SessionUtilisateur.UtilisateurCourant != null)
-                    {
+                        {
                         <li>@Html.ActionLink("Bienvenue, " + SessionUtilisateur.UtilisateurCourant.Prenom + "!", "Profil", "Client")</li>
                         <li>
                             <a href="@Url.Action("Index", "Courriel")">
