@@ -12,7 +12,7 @@
             <h4>@Model.PPVendeur.NomAffaires</h4>
         </div>
         <div class="col-xs-3">
-            <h4>@Formatter.Money(Model.TPS.GetValueOrDefault() + Model.TVQ.GetValueOrDefault() + Model.MontantTotAvantTaxes + Model.CoutLivraison.GetValueOrDefault())</h4>
+            <h4>@Formatter.Money(Model.TPS.GetValueOrDefault() + Model.TVQ.GetValueOrDefault() + Model.MontantTotAvantTaxes)</h4>
         </div>
         <div class="col-xs-3">
             <h4>
