@@ -689,6 +689,7 @@ namespace PetitesPuces.Controllers
             {
                 NoHistorique = GetNextNoHistoriquePaiement(),
                 MontantVenteAvantLivraison = InfoCommande.Panier.getPrixTotal(),
+                FraisLivraison = commande.CoutLivraison,
                 NoVendeur = commande.NoVendeur,
                 NoClient = commande.NoClient,
                 NoCommande = commande.NoCommande,

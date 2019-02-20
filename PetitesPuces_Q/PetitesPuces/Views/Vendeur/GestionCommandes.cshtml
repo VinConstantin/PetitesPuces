@@ -56,6 +56,21 @@
             }
         });
     }
+    function ouvrirPdf(id) {
+        $.ajax({
+            url: URLPATH +"/PDF/GenererPDF",
+            type: "get",
+            data: {
+                "id" : id
+            },
+            success: function (result) {
+                window.open(`@Url.Action("InfoCommande", "PDF")/${id}`);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html(" @Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
 </script>
 
 <h2 class="text-center">@ViewBag.Title</h2>

@@ -75,6 +75,21 @@
             }
         });
     }
+    function ouvrirPdf(id) {
+        $.ajax({
+            url: URLPATH +"/PDF/GenererPDF",
+            type: "get",
+            data: {
+                "id" : id
+            },
+            success: function (result) {
+                window.open(`@Url.Action("InfoCommande", "PDF")/${id}`);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html(" @Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
 </script>
 
 <div class="jumbotron jumbotron-fluid">
