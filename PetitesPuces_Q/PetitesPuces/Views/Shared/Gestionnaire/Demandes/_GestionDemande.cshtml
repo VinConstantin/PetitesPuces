@@ -53,7 +53,7 @@
             <div class="form-inline">
                 <label for="tbPctRedevances">Redevances: </label>
                 <div class="input-group">
-                    <input required class="form-control" type="number" min="0" value="5" max="100" name="redevances" id="tbPctRedevances" />
+                    <input required class="form-control" type="number" min="0" value="5" max="50"  name="redevances" id="tbPctRedevances" />
                     <span class="input-group-addon">%</span>
                 </div>
             </div>
@@ -64,11 +64,11 @@
         <label for="tbMsg">Inscrire un message à envoyer au vendeur</label>
         @if (Model.Item2 == GestionnaireController.TypesModal.DETAILS)
         {
-            <textarea id="tbMsg" class="center-block text-left w-100" placeholder="@MSG_DEFAUT" rows="10" cols="90"></textarea>
+            <textarea required id="tbMsg" class="center-block text-left w-100" placeholder="@MSG_DEFAUT" rows="10" cols="90"></textarea>
         }
         else
         {
-            <textarea id="tbMsg" class="center-block text-left w-100" rows="10" cols="90">@MSG_DEFAUT</textarea>
+            <textarea required id="tbMsg" class="center-block text-left w-100" rows="10" cols="90">@MSG_DEFAUT</textarea>
         }
     </div>
 </div>
