@@ -776,8 +776,6 @@ namespace PetitesPuces.Controllers
 
                 context.SubmitChanges();
 
-                genererPDF(commande);
-
                 ComposerMessage(commande);
                 return RedirectToAction("Recu", "Client",
                     new RouteValueDictionary(new {noCommande = commande.NoCommande}));
