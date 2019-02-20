@@ -83,7 +83,7 @@ namespace PetitesPuces.Controllers
                 where unGestionnaire.AdresseEmail == formCollection["AdresseEmail"]
                 select unGestionnaire;
 
-            if (unClientExist.Count() != 0 || unVendeurExist.Count() != 0 || unGestionnaireExist.Count() != 0)
+             if (unClientExist.Count() != 0 || unVendeurExist.Count() != 0 || unGestionnaireExist.Count() != 0)
             {
                 if (unClientExist.Count() != 0)
                 {
