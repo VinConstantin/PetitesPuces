@@ -26,10 +26,12 @@
         <div class="panel-footer">
             <span id="@("QuantitePLACEHOLDER" + Model.NoProduit)">
             @if (nbItemsEnPanier > 0)
-            {
-                <span class="badge badge-primary pull-right" title="Vous avez @nbItemsEnPanier item(s) dans votre panier">
-                    <span id="@("Quantite" + Model.NoProduit)">@nbItemsEnPanier</span><span class="glyphicon glyphicon-shopping-cart"></span>
-                </span>
+            {    
+                <a href="@Url.Action("MonPanier","Client")/@Model.NoVendeur">
+                    <span class="badge badge-primary pull-right" title="Vous avez @nbItemsEnPanier item(s) dans votre panier">
+                        <span id="@("Quantite" + Model.NoProduit)">@nbItemsEnPanier</span><span class="glyphicon glyphicon-shopping-cart"></span>
+                    </span>
+                </a>
             }
             </span>
             <h4 style="overflow: hidden; height: 40px; text-overflow: ellipsis;">@Model.Nom</h4>
@@ -47,7 +49,7 @@
                 <div class=" col-md-8">
                     @if (Model.NombreItems > 0)
                     {
-                        <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit)">
+                        <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit,@Model.NoVendeur)">
                             <span class="glyphicon glyphicon-shopping-cart"></span>
                         </button>
                         

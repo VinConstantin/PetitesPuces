@@ -307,7 +307,7 @@
         });
     }
     //ajouter un item au produit
-    function ajouterAuPanier(noProduit, quantite = 1) {
+    function ajouterAuPanier(noProduit, noVendeur ,quantite = 1) {
         $.ajax({
             url: URLPATH + "/Client/AjouterProduitAuPanier",
             type: "post",
@@ -325,10 +325,12 @@
                 val += parseInt(quantite);
 
                 const txt =
-                    `<span class="badge badge-primary pull-right" title="Vous avez ${val} item(s) dans votre panier">
+                    `<a href="/Client/MonPanier/${noVendeur}">
+                    <span class="badge badge-primary pull-right" title="Vous avez ${val} item(s) dans votre panier">
                     <span id="("Quantite${noProduit}>${val}</span>
                     <span class="glyphicon glyphicon-shopping-cart"></span>
-                </span>`;
+                </span>
+                </a>`;
 
                 $(`#QuantitePLACEHOLDER${noProduit}`).html(txt);
                 
