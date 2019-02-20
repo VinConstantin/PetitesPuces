@@ -69,12 +69,14 @@ namespace PetitesPuces.Controllers
         {
             var unClientExist = from unClient in context.PPClients
                 where unClient.AdresseEmail == formCollection["adresseEmail"] &&
-                      unClient.MotDePasse == formCollection["motDePasse"]
+                      unClient.MotDePasse == formCollection["motDePasse"] &&
+                      unClient.Statut == (int)StatutCompte.ACTIF
                 select unClient;
 
             var unVendeurExist = from unVendeur in context.PPVendeurs
                 where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
-                      unVendeur.MotDePasse == formCollection["motDePasse"]
+                      unVendeur.MotDePasse == formCollection["motDePasse"] &&
+                      unVendeur.Statut == (int)StatutCompte.ACTIF
                 select unVendeur;
 
             var unGestionnaireExist = from unGestionnaire in context.PPGestionnaires
