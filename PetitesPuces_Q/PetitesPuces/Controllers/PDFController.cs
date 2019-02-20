@@ -75,7 +75,7 @@ namespace PetitesPuces.Controllers
             }
             string path = Server.MapPath("/Recus/" + commande.NoCommande + ".pdf");
             
-            if (!System.IO.File.Exists(path))
+            if (System.IO.File.Exists(path))
                 return new HttpStatusCodeResult(HttpStatusCode.OK);
             
             string view = PartialView("Vendeur/_RecuImpression", commande).RenderToString();
