@@ -7,4 +7,11 @@
     <AdresseEmail>gestionnaire101@gmail.com</AdresseEmail>
     <MotDePasse>1234</MotDePasse>
   </row>
+   <row>
+    <NoGestionnaire>102</NoGestionnaire>
+    <Nom>Lacasse</Nom>
+    <Prenom>Pierre</Prenom>
+    <AdresseEmail>pl@gmail.com</AdresseEmail>
+    <MotDePasse>1234</MotDePasse>
+  </row>
 </rows>

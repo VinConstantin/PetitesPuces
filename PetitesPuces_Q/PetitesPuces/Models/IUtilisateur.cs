@@ -12,8 +12,8 @@ namespace PetitesPuces.Models
     {
         string Role { get; }
 
-        [Required(ErrorMessage = "Veuillez rentrer votre adresse courriel!")]
-        [DisplayName ("Adresse courriel")]
+        [Required(ErrorMessage = "Veuillez entrer votre adresse courriel!")]
+        [DisplayName ("Adresse de courriel")]
         string AdresseEmail { get; }
 
         string Nom { get; }
@@ -23,7 +23,7 @@ namespace PetitesPuces.Models
         string DisplayName { get; }
 
         [DisplayName("Mot de passe")]
-        [Required (ErrorMessage = "Veuillez rentrer votre mot de passe!")]
+        [Required (ErrorMessage = "Veuillez entrer votre mot de passe!")]
         string MotDePasse { get;  }
 
       
