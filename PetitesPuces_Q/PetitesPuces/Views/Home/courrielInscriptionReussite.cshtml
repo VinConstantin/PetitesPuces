@@ -1,0 +1,42 @@
+﻿@using Newtonsoft.Json
+@model PetitesPuces.ViewModels.VerificationCourriel
+@{
+    ViewBag.Title = "Index";
+}
+
+
+@Scripts.Render("/Scripts/Home/motDePasseOublie.js")
+
+    <div class="container">
+        <div class="row">
+           
+            <form class="form" id="recuperationMDP" >
+
+
+                <h1>Titre: Réinitialisation de mot de passe</h1>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <h4>De: L'équipe de petites puces.</h4><br/>
+                <h4>À: @ViewBag.courrielOublie</h4><br/>
+                <h5>
+                    Voici le lien pour que vous puissez réinitialiser le mot de passe.<br/>
+                    Veuillez clicker ce lien et entrez votre nouveau mot de passe.
+                </h5>
+                <br/>
+
+                <div class="input-group">
+
+                    @Html.ActionLink("http://localhost.fsdafsadfads.sadfvzvzv.dsfdsafds/fdsafdsafds.fdsaf/", "modiOubliMDP")
+                </div>
+
+
+                <script>
+
+                </script>
+                <br/><br/>
+                @Html.ActionLink("Retourner à la connexion", "Connexion")
+            </form>
+        </div>
+    </div>
