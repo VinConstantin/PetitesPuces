@@ -178,7 +178,7 @@
         }
         
         function viderTableau(tableau) {
-            const nbUtilisateurs = $('#listeGestionVendeurs').find('tbody').find('tr').length;
+            const nbUtilisateurs = tableau.find('tbody').find('tr').length;
             if (!confirmerSuppression(nbUtilisateurs)) return;
             
             const ids = [];

@@ -10,12 +10,11 @@ using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Linq;
 using PetitesPuces.Models;
+using PetitesPuces.Securite;
 
 namespace PetitesPuces.Controllers
 {
-    #if !DEBUG
-            [Securise(RolesUtil.ADMIN)]
-    #endif
+    [Securise(RolesUtil.ADMIN)]
     public class JeuDessaiController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
