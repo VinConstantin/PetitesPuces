@@ -16,14 +16,12 @@ using PetitesPuces.ViewModels;
 
 namespace PetitesPuces.Controllers
 {
-#if !DEBUG
     [Securise(RolesUtil.VEND)]
-#endif
     public class VendeurController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
 
-        private int NoVendeur = Convert.ToInt32(SessionUtilisateur.UtilisateurCourant.No);
+        private long NoVendeur = SessionUtilisateur.NoUtilisateur ?? -1;
 
         // GET: Vendeur
         public ActionResult Index(string status="")

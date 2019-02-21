@@ -15,12 +15,10 @@ using PetitesPuces.ViewModels.Courriel;
 
 namespace PetitesPuces.Controllers
 {
-#if !DEBUG
-        [Securise]
-#endif
+    [Securise]
     public class CourrielController : Controller
     {
-        private readonly long noUtilisateur = SessionUtilisateur.UtilisateurCourant.No;
+        private readonly long noUtilisateur = SessionUtilisateur.NoUtilisateur ?? -1;
         private readonly BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
         private const int MAX_FILE_SIZE_BYTES = 50 * 1000;
         private const string ATTACHMENTS_DIR = "/Envoyés";
