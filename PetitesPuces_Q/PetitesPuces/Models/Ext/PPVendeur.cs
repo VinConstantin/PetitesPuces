@@ -80,7 +80,6 @@ namespace PetitesPuces.Models
         [DisplayName("Nom")]
         public string Nom { get; set; }
 
-        [DataType(DataType.Password)]
         [Required(ErrorMessage = "Veuillez entrer votre prénom!")]
         [StringLength(50, ErrorMessage = "Le champs du prénom doit avoir un maximum de 50 caractères.")]
         [DisplayName("Prénom")]

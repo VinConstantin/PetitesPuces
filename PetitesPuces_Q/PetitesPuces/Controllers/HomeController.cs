@@ -231,16 +231,6 @@ namespace PetitesPuces.Controllers
         [HttpPost]
         public ActionResult InscriptionVendeur(FormCollection formCollection)
         {
-            /*
-             foreach (var key in formCollection.AllKeys)
-            {
-                Response.Write("key: " + key + ": ");
-                Response.Write(formCollection[key] + ",  type:/");
-                Response.Write(formCollection[key].GetType() + "/");
-                Response.Write("<br/> ");
-            }
-            */
-
             if (ModelState.IsValid)
             {
                 var tousLesVendeurs = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
@@ -253,44 +243,41 @@ namespace PetitesPuces.Controllers
 
                 PPVendeur nouveauVendeur = new PPVendeur();
 
-                if (VerificationAdresseCourriel.Count() == 0)
-                {
-                    nouveauVendeur.NoVendeur = maxNoVendeur;
-                    nouveauVendeur.NomAffaires = formCollection["Vendeur.NomAffaires"];
-                    nouveauVendeur.Nom = formCollection["Vendeur.Nom"];
-                    nouveauVendeur.Prenom = formCollection["Vendeur.Prenom"];
-                    nouveauVendeur.Rue = formCollection["Vendeur.Rue"];
-                    nouveauVendeur.Ville = formCollection["Vendeur.Ville"];
-                    nouveauVendeur.Province = formCollection["Vendeur.Province"];
-                    nouveauVendeur.CodePostal = formCollection["Vendeur.CodePostal"];
-                    nouveauVendeur.Pays = formCollection["Vendeur.Pays"];
-                    nouveauVendeur.Tel1 = formCollection["Vendeur.Tel1"];
-                    nouveauVendeur.Tel2 = formCollection["Vendeur.Tel2"];
-                    nouveauVendeur.AdresseEmail = formCollection["AdresseEmail"];
-                    nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["Vendeur.PoidsMaxLivraison"]);
-                    nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["Vendeur.LivraisonGratuite"]);
-                    nouveauVendeur.MotDePasse = formCollection["MotDePasse"];
-                    nouveauVendeur.Configuration =
-                        "color:#000000; background-color:#FFFFFF; font-family:Comic Sans ms;";
-                    nouveauVendeur.Taxes = formCollection["Taxes"] == "on" ? true : false;
-                    nouveauVendeur.DateCreation = DateTime.Now;
-
-                    nouveauVendeur.Statut = 0;
-                    try
-                    {
-                        context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
-                        context.SubmitChanges();
-                        return RedirectToAction("Connexion", "Home", new {Status = "InscriptionReussi"});
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                }
-                else
-                {
+                if (VerificationAdresseCourriel.Count() > 0)
                     ModelState.AddModelError("AdresseEmail",
                         "Cette adresse courriel est déjà utilisée, veuillez réessayer un nouveau!");
+                
+                nouveauVendeur.NoVendeur = maxNoVendeur;
+                nouveauVendeur.NomAffaires = formCollection["Vendeur.NomAffaires"];
+                nouveauVendeur.Nom = formCollection["Vendeur.Nom"];
+                nouveauVendeur.Prenom = formCollection["Vendeur.Prenom"];
+                nouveauVendeur.Rue = formCollection["Vendeur.Rue"];
+                nouveauVendeur.Ville = formCollection["Vendeur.Ville"];
+                nouveauVendeur.Province = formCollection["Vendeur.Province"];
+                nouveauVendeur.CodePostal = formCollection["Vendeur.CodePostal"];
+                nouveauVendeur.Pays = formCollection["Vendeur.Pays"];
+                nouveauVendeur.Tel1 = formCollection["Vendeur.Tel1"];
+                nouveauVendeur.Tel2 = formCollection["Vendeur.Tel2"];
+                nouveauVendeur.AdresseEmail = formCollection["AdresseEmail"];
+                nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["Vendeur.PoidsMaxLivraison"]);
+                nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["Vendeur.LivraisonGratuite"]);
+                nouveauVendeur.MotDePasse = formCollection["MotDePasse"];
+                nouveauVendeur.Configuration =
+                    "color:#000000; background-color:#FFFFFF; font-family:Comic Sans ms;";
+                nouveauVendeur.Taxes = formCollection["Taxes"] == "on" ? true : false;
+                nouveauVendeur.DateCreation = DateTime.Now;
+
+                nouveauVendeur.Statut = 0;
+                try
+                {
+                    context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
+                    context.SubmitChanges();
+                    return RedirectToAction("Connexion", "Home", new {Status = "InscriptionReussi"});
                 }
+                catch (Exception e)
+                {
+                }
+                
             }
 
             return View();
