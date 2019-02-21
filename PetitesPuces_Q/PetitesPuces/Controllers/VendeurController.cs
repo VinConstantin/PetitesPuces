@@ -21,7 +21,7 @@ namespace PetitesPuces.Controllers
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
 
-        private long NoVendeur = SessionUtilisateur.NoUtilisateur ?? -1;
+        private int NoVendeur = (int)(SessionUtilisateur.NoUtilisateur ?? -1);
 
         // GET: Vendeur
         public ActionResult Index(string status="")
