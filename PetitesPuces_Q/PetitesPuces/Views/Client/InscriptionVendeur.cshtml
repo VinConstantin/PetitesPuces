@@ -20,30 +20,21 @@
 
 @using (Html.BeginForm())
 {
-    <div class="container">
+<div class="container">
     <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-    <div class="panel panel-login">
-    <div class="panel-heading">
-        <div class="row">
-            <div class="col-xs-6">
-
-                @Html.ActionLink("Se connecter", "Connexion", new {id = "login-form-link", @class = "active"})
-
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-login">
+            <div class="panel-heading">
+                <div class="row text-center">
+                    <a href="#" id="register-form-link" class="active">S'inscrire</a>
+                </div>
+                <hr>
             </div>
-            <div class="col-xs-6">
-
-                <a href="#" id="register-form-link" class="active">S'inscrire</a>
-
+            @Html.Partial("Client/_InscriptionVendeur",Model)
+        
+        
             </div>
         </div>
-        <hr>
     </div>
-    @Html.Partial("Home/_InscriptionVendeur",Model)
-
-
-    </div>
-    </div>
-    </div>
-    </div>
+</div>
 }

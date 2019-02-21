@@ -353,6 +353,9 @@ namespace PetitesPuces.Controllers
                 orderby articles.DateCreation ascending
                 select articles;
 
+            if (!query.Any())
+                return null;
+                
             Panier panier = new Panier
             {
                 Vendeur = query.FirstOrDefault().PPVendeur,
@@ -404,13 +407,21 @@ namespace PetitesPuces.Controllers
             return html;
         }
 
-        public ActionResult Commande(int noVendeur)
+        public ActionResult Commande(string id)
         {
+            int noVendeur;
+            if (!int.TryParse(id, out noVendeur))
+                return RedirectToAction("MonPanier", new {No = noVendeur});
+            
             Panier panier = GetPanierByVendeurClient(noVendeur);
-            InfoCommande.Panier = panier;
+            if (panier == null) 
+                return RedirectToAction("MonPanier", new {No = noVendeur});
 
             if (!CheckDisponibiliteArticlesPanier(noVendeur))
                 return RedirectToAction("MonPanier", new {No = noVendeur});
+            
+                        
+            InfoCommande.Panier = panier;
             return View(panier);
         }
 
@@ -1041,6 +1052,72 @@ namespace PetitesPuces.Controllers
             }
 
             return View(modificationMdp);
+        }
+
+        public ActionResult SuccessInscription()
+        {
+            return View();
+        }
+        [System.Web.Mvc.HttpGet]
+        public ActionResult InscriptionVendeur()
+        {
+            return View();
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public ActionResult InscriptionVendeur(FormCollection formCollection)
+        {
+            if (ModelState.IsValid)
+            {
+                var tousLesVendeurs = from unVendeur in context.PPVendeurs select unVendeur.NoVendeur;
+
+                int maxNoVendeur = Convert.ToInt32(tousLesVendeurs.Max()) + 1;
+
+                var VerificationAdresseCourriel = from unVendeur in context.PPVendeurs
+                    where unVendeur.AdresseEmail == formCollection["AdresseEmail"]
+                    select unVendeur;
+
+                PPVendeur nouveauVendeur = new PPVendeur();
+
+                if (VerificationAdresseCourriel.Count() > 0)
+                    ModelState.AddModelError("AdresseEmail",
+                        "Cette adresse courriel est déjà utilisée, veuillez réessayer un nouveau!");
+                
+                nouveauVendeur.NoVendeur = maxNoVendeur;
+                nouveauVendeur.NomAffaires = formCollection["Vendeur.NomAffaires"];
+                nouveauVendeur.Nom = formCollection["Vendeur.Nom"];
+                nouveauVendeur.Prenom = formCollection["Vendeur.Prenom"];
+                nouveauVendeur.Rue = formCollection["Vendeur.Rue"];
+                nouveauVendeur.Ville = formCollection["Vendeur.Ville"];
+                nouveauVendeur.Province = formCollection["Vendeur.Province"];
+                nouveauVendeur.CodePostal = formCollection["Vendeur.CodePostal"];
+                nouveauVendeur.Pays = formCollection["Vendeur.Pays"];
+                nouveauVendeur.Tel1 = formCollection["Vendeur.Tel1"];
+                nouveauVendeur.Tel2 = formCollection["Vendeur.Tel2"];
+                nouveauVendeur.AdresseEmail = formCollection["AdresseEmail"];
+                nouveauVendeur.PoidsMaxLivraison = Convert.ToInt32(formCollection["Vendeur.PoidsMaxLivraison"]);
+                nouveauVendeur.LivraisonGratuite = Convert.ToDecimal(formCollection["Vendeur.LivraisonGratuite"]);
+                nouveauVendeur.MotDePasse = formCollection["MotDePasse"];
+                nouveauVendeur.Configuration =
+                    "color:#000000; background-color:#FFFFFF; font-family:Comic Sans ms;";
+                nouveauVendeur.Taxes = formCollection["Taxes"] == "on" ? true : false;
+                nouveauVendeur.DateCreation = DateTime.Now;
+
+                nouveauVendeur.Statut = 0;
+                try
+                {
+                    context.PPVendeurs.InsertOnSubmit(nouveauVendeur);
+                    context.SubmitChanges();
+                    return RedirectToAction("SuccessInscription");
+                }
+                catch (Exception e)
+                {
+                    return View();
+                }
+                
+            }
+
+            return View();
         }
     }
 }

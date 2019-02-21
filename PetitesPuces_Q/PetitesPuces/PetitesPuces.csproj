@@ -456,8 +456,10 @@
     <Content Include="Views\Client\Catalogue.cshtml" />
     <Content Include="Views\Client\ErreurCommande.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
+    <Content Include="Views\Client\InscriptionVendeur.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
     <Content Include="Views\Client\ResultatCommande.cshtml" />
+    <Content Include="Views\Client\SuccessInscription.cshtml" />
     <Content Include="Views\Courriel\Index.cshtml" />
     <Content Include="Views\Courriel\_ViewStart.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
@@ -484,6 +486,7 @@
     <Content Include="Views\Shared\Client\Panier\_DetailPanier.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_ProduitsPanier.cshtml" />
+    <Content Include="Views\Shared\Client\_InscriptionVendeur.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireClient.cshtml" />
     <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireGestionnaire.cshtml" />
@@ -515,6 +518,7 @@
     <Content Include="Views\Shared\Gestionnaire\Redevances\_ListeVendeurRedevance.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_Redevance.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_VendeurRedevance.cshtml" />
+    <Content Include="Views\Shared\Home\_InscriptionVendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_RatingTooltip.cshtml" />
     <Content Include="Views\Shared\_ErrorAlert.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />

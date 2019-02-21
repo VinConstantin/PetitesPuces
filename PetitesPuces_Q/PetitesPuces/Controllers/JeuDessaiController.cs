@@ -13,6 +13,9 @@ using PetitesPuces.Models;
 
 namespace PetitesPuces.Controllers
 {
+    #if !DEBUG
+            [Securise(RolesUtil.ADMIN)]
+    #endif
     public class JeuDessaiController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
