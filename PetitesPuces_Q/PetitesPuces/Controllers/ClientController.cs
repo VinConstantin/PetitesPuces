@@ -353,6 +353,9 @@ namespace PetitesPuces.Controllers
                 orderby articles.DateCreation ascending
                 select articles;
 
+            if (!query.Any())
+                return null;
+                
             Panier panier = new Panier
             {
                 Vendeur = query.FirstOrDefault().PPVendeur,
@@ -411,10 +414,14 @@ namespace PetitesPuces.Controllers
                 return RedirectToAction("MonPanier", new {No = noVendeur});
             
             Panier panier = GetPanierByVendeurClient(noVendeur);
-            InfoCommande.Panier = panier;
+            if (panier == null) 
+                return RedirectToAction("MonPanier", new {No = noVendeur});
 
             if (!CheckDisponibiliteArticlesPanier(noVendeur))
                 return RedirectToAction("MonPanier", new {No = noVendeur});
+            
+                        
+            InfoCommande.Panier = panier;
             return View(panier);
         }
 
