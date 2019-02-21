@@ -404,8 +404,12 @@ namespace PetitesPuces.Controllers
             return html;
         }
 
-        public ActionResult Commande(int noVendeur)
+        public ActionResult Commande(string id)
         {
+            int noVendeur;
+            if (!int.TryParse(id, out noVendeur))
+                return RedirectToAction("MonPanier", new {No = noVendeur});
+            
             Panier panier = GetPanierByVendeurClient(noVendeur);
             InfoCommande.Panier = panier;
 
