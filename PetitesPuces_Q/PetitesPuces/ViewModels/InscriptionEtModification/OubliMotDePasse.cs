@@ -7,7 +7,7 @@ namespace PetitesPuces.ViewModels
     {
         [DisplayName("Nouveau mot de passe")]
         [Required(ErrorMessage = "Vous devez entrer un nouveau mot de passe")]
-        [StringLength(0-50, ErrorMessage = "Le champ mot de passe doit avoir un maximum de 50 caractères.")]
+        [StringLength(50, ErrorMessage = "Le champ mot de passe doit avoir un maximum de 50 caractères.")]
         [DataType(DataType.Password)]
         public string motDePass { get; set; }
 
