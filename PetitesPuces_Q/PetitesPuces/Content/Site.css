@@ -162,3 +162,7 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+.my-2 {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}

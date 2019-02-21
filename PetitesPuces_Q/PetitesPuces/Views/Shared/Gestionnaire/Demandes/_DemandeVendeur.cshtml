@@ -1,4 +1,5 @@
-﻿@model PetitesPuces.Models.PPVendeur
+﻿@using PetitesPuces.Utilities
+@model PetitesPuces.Models.PPVendeur
 
 @{
     ViewBag.Title = "_DemandeVendeur";
@@ -6,23 +7,19 @@
 
 <tr class="v-align-middle">
     <th >
-        No Vendeur
+        @Model.NoVendeur
     </th>
-
     <td>
-        Nom d'affaires
+        @Model.NomAffaires
     </td>
-
     <td>
-        Prenom
+        @Model.Prenom
     </td>
-
     <td>
-        Nom
+        @Model.Nom
     </td>
-
     <td>
-        Date Création
+        @Model.DateCreation.ToShortDateString()
     </td>
     <td class="text-right">
         <form class="form-inline">
