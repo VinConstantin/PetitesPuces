@@ -161,4 +161,73 @@
    <DateMAJ>2017-11-30</DateMAJ>
    <Statut>1</Statut>
  </row>
+ <row>
+   <NoVendeur>18</NoVendeur>
+   <NomAffaires>Imprimantes à bas prix</NomAffaires>
+   <Nom>Brodeur</Nom>
+   <Prenom>Jean-Luc</Prenom>
+   <Rue>747, Saint-Germain</Rue>
+   <Ville>Saint-Laurent</Ville>
+   <Province>QC</Province>
+   <CodePostal>H4L 3P8</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>514-748-7872</Tel1>
+   <Tel2>514-992-1092</Tel2>
+   <AdresseEmail>jeanluc.brodeur@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>50</PoidsMaxLivraison>
+   <LivraisonGraduite>1000</LivraisonGraduite>
+   <Taxes>1</Taxes>
+   <Pourcentage>0.1</Pourcentage>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <DateCreation>2018-11-30</DateCreation>
+   <DateMAJ>2018-11-30</DateMAJ>
+   <Statut>1</Statut>
+ </row>
+ <row>
+   <NoVendeur>19</NoVendeur>
+   <NomAffaires>Vendeur1</NomAffaires>
+   <Nom>Vendeur1</Nom>
+   <Prenom>Vendeur1</Prenom>
+   <Rue>747, Saint-Germain</Rue>
+   <Ville>Saint-Laurent</Ville>
+   <Province>QC</Province>
+   <CodePostal>H4L 3P8</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>514-748-7872</Tel1>
+   <Tel2>514-992-1092</Tel2>
+   <AdresseEmail>v1@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>50</PoidsMaxLivraison>
+   <LivraisonGraduite>1000</LivraisonGraduite>
+   <Taxes>1</Taxes>
+   <Pourcentage>0.1</Pourcentage>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <DateCreation>2018-11-30</DateCreation>
+   <DateMAJ>2018-11-30</DateMAJ>
+   <Statut>1</Statut>
+ </row>
+ <row>
+   <NoVendeur>20</NoVendeur>
+   <NomAffaires>Vendeur2</NomAffaires>
+   <Nom>Vendeur2</Nom>
+   <Prenom>Vendeur2</Prenom>
+   <Rue>747, Saint-Germain</Rue>
+   <Ville>Saint-Laurent</Ville>
+   <Province>QC</Province>
+   <CodePostal>H4L 3P8</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>514-748-7872</Tel1>
+   <Tel2>514-992-1092</Tel2>
+   <AdresseEmail>v2@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>50</PoidsMaxLivraison>
+   <LivraisonGraduite>1000</LivraisonGraduite>
+   <Taxes>1</Taxes>
+   <Pourcentage>0.1</Pourcentage>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <DateCreation>2018-11-30</DateCreation>
+   <DateMAJ>2018-11-30</DateMAJ>
+   <Statut>1</Statut>
+ </row>
 </rows>

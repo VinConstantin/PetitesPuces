@@ -232,4 +232,20 @@
     <DateCreation>2018-07-27</DateCreation>
     <NbItems>4</NbItems>
   </row>
+   <row>
+    <NoPanier>30</NoPanier>
+    <NoClient>10023</NoClient>
+    <NoVendeur>19</NoVendeur>
+    <NoProduit>1900001</NoProduit>
+    <DateCreation>2018-07-27</DateCreation>
+    <NbItems>4</NbItems>
+  </row>
+    <row>
+    <NoPanier>31</NoPanier>
+    <NoClient>10024</NoClient>
+    <NoVendeur>20</NoVendeur>
+    <NoProduit>2000001</NoProduit>
+    <DateCreation>2018-07-27</DateCreation>
+    <NbItems>4</NbItems>
+  </row>
 </rows>

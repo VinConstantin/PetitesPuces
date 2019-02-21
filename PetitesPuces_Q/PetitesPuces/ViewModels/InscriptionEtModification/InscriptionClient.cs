@@ -11,29 +11,30 @@ namespace PetitesPuces.ViewModels
     public class InscriptionClient
     {
         public PPClient client { get; set; }
-
-        [Required(ErrorMessage = "Veuillez rentrer votre adresse courriel!")]
+        
+        [DisplayName("Adresse de courriel")]
+        [Required(ErrorMessage = "Veuillez entrer votre adresse de courriel!")]
         [RegularExpression("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", ErrorMessage = "Votre format de courriel est incorrect.")]
         public string AdresseEmail
         {
             get { return client.AdresseEmail; }
         }
-
-        [Required(ErrorMessage = "Veuillez rentrer votre mot de passe!")]
+        [DisplayName("Mot de passe")]
+        [Required(ErrorMessage = "Veuillez entrer votre mot de passe!")]
         [DataType(DataType.Password)]
-        [RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,100}$", ErrorMessage =  "Votre format de mot de passe est invalide. Il doit avoir un minimum de 8 caractères et inclure au moins une majuscule,un minuscule et un chiffre.")]
-        public string MotDePasse
+        [StringLength(50, ErrorMessage = "Le champ mot de passe doit avoir un maximum de 50 caractères.")]
+         public string MotDePasse
         {
             get { return client.MotDePasse; }
         }
 
-       
-        [Required(ErrorMessage = "Veuillez rentrer votre adresse courriel!")]
+      
+        [Required(ErrorMessage = "Veuillez entrer votre adresse de courriel!")]
         [System.ComponentModel.DataAnnotations.Compare("AdresseEmail", ErrorMessage = "Le second courriel ne corespond pas au premier")]
-        [DisplayName("Confirmation Courriel")]
+        [DisplayName("Confirmation de courriel")]
         public string ConfirmationCourriel { get; set; }
 
-        [Required(ErrorMessage = "Veuillez rentrer votre mot de passe encore une autre fois!")]
+        [Required(ErrorMessage = "Veuillez entrer votre mot de passe encore une autre fois!")]
         [DataType(DataType.Password)]
         [System.ComponentModel.DataAnnotations.Compare("MotDePasse", ErrorMessage = "Le second mot de passe ne corespond pas au premier.")]
         [DisplayName("Confirmation de mot de passe")]

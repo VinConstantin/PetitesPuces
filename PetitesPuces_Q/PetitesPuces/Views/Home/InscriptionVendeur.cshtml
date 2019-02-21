@@ -53,7 +53,7 @@
         </div>
         <div class="form-group col-lg-8">
 
-            @Html.EditorFor(model => model.Vendeur.NomAffaires, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Nom d'affaire"}})
+            @Html.EditorFor(model => model.Vendeur.NomAffaires, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Nom d'affaires"}})
             @Html.ValidationMessageFor(model => model.Vendeur.NomAffaires, "", new {@class = "text-danger"})
 
         </div>
@@ -67,7 +67,7 @@
         </div>
         <div class="form-group col-lg-8">
 
-            @Html.EditorFor(model => model.Vendeur.Nom, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Nom"}})
+            @Html.EditorFor(model => model.Vendeur.Nom, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Nom de famille"}})
             @Html.ValidationMessageFor(model => model.Vendeur.Nom, "", new {@class = "text-danger"})
         </div>
     </div>
@@ -91,7 +91,7 @@
         </div>
         <div class="form-group col-lg-8">
 
-            @Html.EditorFor(model => model.AdresseEmail, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Adresse courriel"}})
+            @Html.EditorFor(model => model.AdresseEmail, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Adresse de courriel"}})
             @Html.ValidationMessageFor(model => model.AdresseEmail, "", new {@class = "text-danger"})
         </div>
 
@@ -104,7 +104,7 @@
         </div>
         <div class="form-group col-lg-8">
 
-            @Html.EditorFor(model => model.confirmationCourriel, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer votre courriel"}})
+            @Html.EditorFor(model => model.confirmationCourriel, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer votre adresse de courriel"}})
             @Html.ValidationMessageFor(model => model.confirmationCourriel, "", new {@class = "text-danger"})
 
 
@@ -193,7 +193,7 @@
         </div>
         <div class="form-group col-lg-8">
 
-            @Html.EditorFor(model => model.Vendeur.CodePostal, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Code Postal (A9A 9A9)"}})
+            @Html.EditorFor(model => model.Vendeur.CodePostal, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Code Postal (ex: A9A 9A9)"}})
             @Html.ValidationMessageFor(model => model.Vendeur.CodePostal, "", new {@class = "text-danger"})
         </div>
     </div>
@@ -218,7 +218,7 @@
         </div>
         <div class="form-group col-lg-8">
 
-            @Html.EditorFor(model => model.Vendeur.Tel1, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Téléphone 1 (999-999-9999)"}})
+            @Html.EditorFor(model => model.Vendeur.Tel1, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Téléphone 1 (ex: 999-999-9999)"}})
             @Html.ValidationMessageFor(model => model.Vendeur.Tel1, "", new {@class = "text-danger"})
         </div>
     </div>
@@ -230,7 +230,7 @@
         </div>
         <div class="form-group col-lg-8 ">
 
-            @Html.EditorFor(model => model.Vendeur.Tel2, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Téléphone 2 (999-999-9999)"}})
+            @Html.EditorFor(model => model.Vendeur.Tel2, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Téléphone 2 (ex: 999-999-9999)"}})
             @Html.ValidationMessageFor(model => model.Vendeur.Tel2, "", new {@class = "text-danger"})
 
         </div>

@@ -66,60 +66,58 @@ namespace PetitesPuces.Models
     public class PPClient_Validation
     {
         [DisplayName("No Client")] public int NoClient { get; set; }
-        [Required(ErrorMessage = "Veuillez rentrer votre adresse courriel!")]
+        
+        [Required(ErrorMessage = "Veuillez entrer votre adresse de courriel!")]
         [RegularExpression("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", ErrorMessage =
             "Votre format de courriel est incorrect.")]
-        [DisplayName("Adresse Courriel")]
+        [DisplayName("Adresse de courriel")]
         public string AdresseEmail { get; set; }
 
 
-        [Required(ErrorMessage = "Veuillez rentrer votre mot de passe!")]
+        [Required(ErrorMessage = "Veuillez entrer votre mot de passe!")]
         [DataType(DataType.Password)]
-        [RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,100}$", ErrorMessage =
-            "Votre format de mot de passe est invalide. Il doit avoir un minimum de 8 caractères et inclure au moins une majuscule,un minuscule et un chiffre.")]
+        [StringLength(50, ErrorMessage = "Le champ mot de passe doit avoir un maximum de 50 caractères.")]
         [DisplayName("Mot de passe")]
         public string MotDePasse { get; set; }
 
-        // [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
-        [DataType(DataType.Text)]
+       
         [DisplayName("Nom")] public string Nom { get; set; }
 
-        [DataType(DataType.Text)]
-        //     [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins 2 caractères.", MinimumLength = 2)]
+     
         [DisplayName("Prénom")] public string Prenom { get; set; }
 
-        [DataType(DataType.Date)]
+       
         [DisplayName("Date de dernière connexion")]
         public DateTime DateDerniereConnexion { get; set; }
 
-        [DataType(DataType.Text)]
+     
         public string Rue { get; set; }
         
-        [DataType(DataType.Text)]
+     
         public string Ville { get; set; }
 
         public string Province { get; set; }
         
-        [DataType(DataType.PostalCode)]
+      
         public string CodePostal { get; set; }
         
-        [DataType(DataType.Text)]
+     
         public string Pays { get; set; }
         
-        [DataType(DataType.PhoneNumber)]
+     
         public string Tel1 { get; set; }
         
-        [DataType(DataType.PhoneNumber)]
+
         public string Tel2 { get; set; }
 
 
-        [DataType(DataType.Date)]
+     
         public DateTime? DateCreation { get; set; }
         
-        [DataType(DataType.Date)]
+  
         public DateTime DateDerniereActivite { get; set; }
         
-        [DataType(DataType.Date)]
+  
         public DateTime DateMAJ { get; set; }
 
         public string Role

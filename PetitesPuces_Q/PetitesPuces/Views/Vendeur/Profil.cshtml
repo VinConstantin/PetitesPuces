@@ -90,7 +90,7 @@
                     @Html.EditorFor(model => model.PoidsMaxLivraison, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Poids max pour la livraison"}})
                 </div>
                 <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.LivraisonGratuite, htmlAttributes: new {@class = ""})
+                    @Html.LabelFor(model => model.LivraisonGratuite,  new {@class = ""})
                     @Html.EditorFor(model => model.LivraisonGratuite, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Montant min pour livraison graduit"}})
 
                 </div>
@@ -98,8 +98,8 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Taxes, htmlAttributes: new {@class = ""})
-                    @Html.DropDownListFor(model => model.Taxes, new List<SelectListItem>()
+                    @Html.LabelFor(model => model.Taxes,  new {@class = ""})
+                    @Html.DropDownListFor(model => model.Taxes, new List<SelectListItem>
                     {
                         new SelectListItem() {Text = "Oui", Value = "true"},
                         new SelectListItem() {Text = "Non", Value = "false"}

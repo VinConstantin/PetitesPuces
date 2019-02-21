@@ -6,9 +6,8 @@ namespace PetitesPuces.ViewModels
     public class OubliMotDePasse
     {
         [DisplayName("Nouveau mot de passe")]
-        [RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,100}$", ErrorMessage =
-            "Votre format de mot de passe est invalide. Il doit avoir un minimum de 8 caractères et inclure au moins une majuscule,un minuscule et un chiffre.")]
         [Required(ErrorMessage = "Vous devez entrer un nouveau mot de passe")]
+        [StringLength(0-50, ErrorMessage = "Le champ mot de passe doit avoir un maximum de 50 caractères.")]
         [DataType(DataType.Password)]
         public string motDePass { get; set; }
 

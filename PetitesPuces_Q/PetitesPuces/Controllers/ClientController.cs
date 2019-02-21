@@ -948,15 +948,15 @@ namespace PetitesPuces.Controllers
                     select cli).First();
 
 
-                if (objClient.Nom != "") ClientData.Nom = objClient.Nom;
-                if (objClient.Prenom != "") ClientData.Prenom = objClient.Prenom;
-                if (objClient.Rue != "") ClientData.Rue = objClient.Rue;
-                if (objClient.Ville != "") ClientData.Ville = objClient.Ville;
-                if (objClient.Province != "") ClientData.Province = objClient.Province;
-                if (objClient.CodePostal != "") ClientData.CodePostal = objClient.CodePostal.ToUpper();
-                if (objClient.Pays != "") ClientData.Pays = objClient.Pays;
-                if (objClient.Tel1 != "") ClientData.Tel1 = objClient.Tel1;
-                if (objClient.Tel2 != "") ClientData.Tel2 = objClient.Tel2;
+                if (objClient.Nom != "") ClientData.Nom = objClient.Nom; else ClientData.Nom ="";
+                if (objClient.Prenom != "") ClientData.Prenom = objClient.Prenom; else ClientData.Prenom = "";
+                if (objClient.Rue != "") ClientData.Rue = objClient.Rue; else ClientData.Rue = "";
+                if (objClient.Ville != "") ClientData.Ville = objClient.Ville; else ClientData.Ville = "";
+                if (objClient.Province != "") ClientData.Province = objClient.Province; else ClientData.Province = "";
+                if (objClient.CodePostal != "") ClientData.CodePostal = objClient.CodePostal; else ClientData.CodePostal = "";
+                if (objClient.Pays != "") ClientData.Pays = objClient.Pays; else ClientData.Pays = "";
+                if (objClient.Tel1 != "") ClientData.Tel1 = objClient.Tel1; else ClientData.Tel1 = "";
+                if (objClient.Tel2 != "") ClientData.Tel2 = objClient.Tel2; else ClientData.Tel2 = "";
                 try
                 {
                     context.SubmitChanges();

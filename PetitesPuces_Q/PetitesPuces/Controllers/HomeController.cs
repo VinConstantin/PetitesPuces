@@ -8,6 +8,8 @@ using PetitesPuces.Models;
 using PetitesPuces.ViewModels;
 using PetitesPuces.ViewModels.Home;
 using System.IO;
+using System.Net.Http;
+using System.Windows.Forms.VisualStyles;
 using IronPdf;
 using PetitesPuces.Securite;
 
@@ -69,14 +71,14 @@ namespace PetitesPuces.Controllers
         {
             var unClientExist = from unClient in context.PPClients
                 where unClient.AdresseEmail == formCollection["adresseEmail"] &&
-                      unClient.MotDePasse == formCollection["motDePasse"] &&
-                      unClient.Statut == (int)StatutCompte.ACTIF
+                      unClient.MotDePasse == formCollection["motDePasse"] 
+                     
                 select unClient;
 
             var unVendeurExist = from unVendeur in context.PPVendeurs
                 where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
-                      unVendeur.MotDePasse == formCollection["motDePasse"] &&
-                      unVendeur.Statut == (int)StatutCompte.ACTIF
+                      unVendeur.MotDePasse == formCollection["motDePasse"] 
+                  
                 select unVendeur;
 
             var unGestionnaireExist = from unGestionnaire in context.PPGestionnaires
@@ -100,17 +102,25 @@ namespace PetitesPuces.Controllers
 
                 if (unClientExist.Count() != 0)
                 {
-                    System.Web.HttpContext.Current.Session["userId"] = unClientExist.First().NoClient;
-                    unClientExist.First().DateDerniereConnexion = DateTime.Now;
-                    unClientExist.First().NbConnexions++;
-                    TempData["connexion"] = true;
-                    try
+                    if (unClientExist.First().Statut == 1)
                     {
-                        context.SubmitChanges();
-                        return RedirectToAction("Index", "Client");
+                        System.Web.HttpContext.Current.Session["userId"] = unClientExist.First().NoClient;
+                        unClientExist.First().DateDerniereConnexion = DateTime.Now;
+                        unClientExist.First().NbConnexions++;
+                        TempData["connexion"] = true;
+                        try
+                        {
+                            context.SubmitChanges();
+                            return RedirectToAction("Index", "Client");
+                        }
+                        catch (Exception e)
+                        {
+                        }
                     }
-                    catch (Exception e)
+                    else if (unClientExist.First().Statut == 2)
                     {
+                       ModelState.AddModelError("AdresseEmail", "Connexion échouée!");
+                        return View();
                     }
                 }
 
@@ -123,15 +133,21 @@ namespace PetitesPuces.Controllers
 
                         return RedirectToAction("Index", "Vendeur");
                     }
+                    else if (unVendeurExist.First().Statut == 2)
+                    {
+                        ModelState.AddModelError("motDePasse", "Connexion échouée!");
+                        //return View();
+                    }
                     else if (unVendeurExist.First().Statut == 0)
                     {
-                        
-                        return View();
+                        ModelState.AddModelError("motDePasse", "Ce compte est encore en mode attente.");
+                      //  return View();
                     }
 
                 }
                 else if (unGestionnaireExist.Count() != 0)
                 {
+                    
                     System.Web.HttpContext.Current.Session["userId"] = unGestionnaireExist.First().NoGestionnaire;
                     TempData["connexion"] = true;
                     return RedirectToAction("Index", "Gestionnaire");
