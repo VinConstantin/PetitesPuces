@@ -48,7 +48,28 @@
 </div>
 
 <script>
-    function envoyerInfo(){
+    function envoyerInfo() {
+        let expiration = $("#DateExpirationCarteCredit").val();
+        
+        let today, someday;
+        const exMonth=expiration.split('/')[0];
+        const exYear=`20${expiration.split('/')[1]}`;
+
+        if(exYear>2023) {
+            $("#error").html("La date d' expiration n' est pas valide");
+            $("#error").show();
+            return false;
+        }
+        today = new Date();
+        someday = new Date();
+        someday.setFullYear(exYear, exMonth, 1);
+
+        if (someday < today) {
+            $("#error").html("La date d' expiration n' est pas valide");
+            $("#error").show();
+            return false;
+        }
+        
         var data = $("form").serialize();
         
         $.ajax({
@@ -57,11 +78,24 @@
             data: data, 
             success: next,
             error: function(req, status, err) {
+                $("#error").html("Veuillez remplir tout les champs dans le bon format");
                 $("#error").show();
                 console.log(req, status, err);
             }
         });
         return false;
+    }
+    function validateDateExpiration(expiration) {
+        let today, someday;
+        const exMonth=expiration.split('/')[0];
+        const exYear=expiration.split('/')[1];
+        today = new Date();
+        someday = new Date();
+        someday.setFullYear(exYear, exMonth, 1);
+
+        if (someday < today) {
+            return false;
+        }
     }
     function next(){
         $('#Confirmation').addClass('active');

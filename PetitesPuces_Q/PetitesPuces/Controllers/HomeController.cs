@@ -9,6 +9,7 @@ using PetitesPuces.ViewModels;
 using PetitesPuces.ViewModels.Home;
 using System.IO;
 using IronPdf;
+using PetitesPuces.Securite;
 
 namespace PetitesPuces.Controllers
 {
@@ -68,12 +69,14 @@ namespace PetitesPuces.Controllers
         {
             var unClientExist = from unClient in context.PPClients
                 where unClient.AdresseEmail == formCollection["adresseEmail"] &&
-                      unClient.MotDePasse == formCollection["motDePasse"]
+                      unClient.MotDePasse == formCollection["motDePasse"] &&
+                      unClient.Statut == (int)StatutCompte.ACTIF
                 select unClient;
 
             var unVendeurExist = from unVendeur in context.PPVendeurs
                 where unVendeur.AdresseEmail == formCollection["adresseEmail"] &&
-                      unVendeur.MotDePasse == formCollection["motDePasse"]
+                      unVendeur.MotDePasse == formCollection["motDePasse"] &&
+                      unVendeur.Statut == (int)StatutCompte.ACTIF
                 select unVendeur;
 
             var unGestionnaireExist = from unGestionnaire in context.PPGestionnaires
@@ -378,21 +381,6 @@ namespace PetitesPuces.Controllers
         public ActionResult testValidation()
         {
             return View();
-        }
-
-        private async void GenererPDF(PPCommande commande)
-        {
-            string view = PartialView("Vendeur/_RecuImpression", commande).RenderToString();
-
-            string path = Server.MapPath("/Recus/" + commande.NoCommande + ".pdf");
-            if (!Directory.Exists(Server.MapPath("/Recus/")))
-            {
-                Directory.CreateDirectory(Server.MapPath("/Recus"));
-            }
-
-            HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
-            var PDF = Renderer.RenderHtmlAsPdf(view);
-            PDF.TrySaveAs(path);
         }
     }
 }

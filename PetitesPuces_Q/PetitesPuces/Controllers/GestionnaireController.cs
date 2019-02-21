@@ -149,9 +149,7 @@ namespace PetitesPuces.Controllers
             var demandesVendeur = 
                 (from vendeurs
                     in ctxt.PPVendeurs
-                where !vendeurs.Statut.HasValue ||
-                      vendeurs.Statut.Value == (short) StatutCompte.INACTIF &&
-                      vendeurs.DateCreation > DateTime.Today - INDEX_STATS_PERIOD
+                where vendeurs.Statut.Value == (short) StatutCompte.INACTIF
                 select vendeurs).AsEnumerable().ToList();
 
             return ConvertirEnDictionnaire(
@@ -360,6 +358,7 @@ namespace PetitesPuces.Controllers
                 {
                     vendeurAAccepter.Statut = (int) StatutCompte.ACTIF;
                     vendeurAAccepter.Pourcentage = reponse.Redevances;
+                    vendeurAAccepter.DateMAJ = DateTime.Now;
                 }
                 else
                 {

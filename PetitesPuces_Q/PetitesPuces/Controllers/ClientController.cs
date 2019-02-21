@@ -921,9 +921,7 @@ namespace PetitesPuces.Controllers
         [System.Web.Mvc.HttpGet]
         public ActionResult Profil()
         {
-            var objClient = (from clientCourrant in context.PPClients
-                where clientCourrant.NoClient == NOCLIENT
-                select clientCourrant).FirstOrDefault();
+            var objClient = (PPClient)SessionUtilisateur.UtilisateurCourant;
 
             ModiProfilClient modiProfilClient = new ModiProfilClient
             {

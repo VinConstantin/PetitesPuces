@@ -26,6 +26,7 @@ namespace PetitesPuces
             #if DEBUG
             defaultId = 101;
             #endif
+            Session.Timeout = 24 * 60;
             HttpContext.Current.Session.Add("userId", defaultId);
         }
     }

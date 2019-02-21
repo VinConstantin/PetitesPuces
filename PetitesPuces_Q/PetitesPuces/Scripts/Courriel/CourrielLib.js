@@ -1,4 +1,4 @@
-﻿const Courriel = (function() {
+﻿const Courriel = Object.freeze((function() {
     return {
         enregistrerMessage: enregistrerMessage,
         Message: Message,
@@ -75,4 +75,4 @@
             });
         });
     }
-})();
+})());

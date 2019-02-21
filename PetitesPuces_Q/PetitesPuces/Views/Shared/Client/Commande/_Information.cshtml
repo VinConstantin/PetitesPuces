@@ -8,11 +8,11 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="nom">Nom</label>
-                    <input required type="text" class="form-control" name="nom" id="nom" placeholder="Nom" value="@Model.Client.Nom">
+                    <input required type="text" class="form-control" pattern="[A-Za-z \-]{1,32}" name="nom" id="nom" placeholder="Nom" value="@Model.Client.Nom">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="prenom">Prénom</label>
-                    <input required type="text" class="form-control" name="prenom" id="prenom" placeholder="Prénom" value="@Model.Client.Prenom">
+                    <input required type="text" pattern="[A-Za-z \-]{1,32}" class="form-control" name="prenom" id="prenom" placeholder="Prénom" value="@Model.Client.Prenom">
                 </div>
             </div>
             <div class="form-row">
@@ -31,7 +31,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="inputEmail4">Adresse</label>
-                    <input type="text" class="form-control" id="adresse" name="rue" placeholder="Adresse" value="@Model.Client.Rue">
+                    <input required pattern="[0-9]+\s[A-Za-z]+" type="text" class="form-control" id="adresse" name="rue" placeholder="Adresse" value="@Model.Client.Rue">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputPassword4">(Cellulaire)</label>
@@ -44,7 +44,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="inputCity">Ville</label>
-                    <input required type="text" placeholder="Ville" class="form-control" name="ville" id="ville" value="@Model.Client.Ville">
+                    <input required pattern="([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*" type="text" placeholder="Ville" class="form-control" name="ville" id="ville" value="@Model.Client.Ville">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputState">Province</label>
