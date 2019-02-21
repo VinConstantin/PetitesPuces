@@ -90,7 +90,7 @@
                     @Html.EditorFor(model => model.PoidsMaxLivraison, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Poids max pour la livraison"}})
                 </div>
                 <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.LivraisonGratuite, htmlAttributes: new {@class = ""})
+                    @Html.LabelFor(model => model.LivraisonGratuite,  new {@class = ""})
                     @Html.EditorFor(model => model.LivraisonGratuite, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Montant min pour livraison graduit"}})
 
                 </div>
@@ -98,24 +98,24 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Taxes, htmlAttributes: new {@class = ""})
-                    @Html.DropDownListFor(model => model.Taxes, new List<SelectListItem>()
+                    @Html.LabelFor(model => model.Taxes,  new {@class = ""})
+                    @Html.DropDownListFor(model => model.Taxes, new List<SelectListItem>
                     {
                         new SelectListItem() {Text = "Oui", Value = "true"},
                         new SelectListItem() {Text = "Non", Value = "false"}
                     }, new {@class = "form-control text-primary"})
                 </div>
                 
-                <div class="form-group col-md-2 colorpicker-component">
+                <div class="form-group col-md-3 ">
                     <label for="backgroundcolor">Couleur de fond</label>
                     <input type="color" id="backgroundcolor" name="backgroundcolor" value="@Model.configuration.Split(';')[1].Split(':')[1]" class="colorpicker-component form-control">
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                     <label for="couleurText">Couleur de text</label>
                     <input type="color" id="couleurText" name="couleurText" class="colorpicker-component 
                         form-control" value="@Model.configuration.Split(';')[0].Split(':')[1]">
                 </div>
-                <div class="form-group col-md-2">
+             @*   <div class="form-group col-md-2">
                     <label for="fontText">Police</label>
                     <select id="fontText" name="fontText" class="form-control text-primary">
                         <option value="" selected disabled hidden>    @Model.configuration.Split(';')[2].Split(':')[1]</option>
@@ -126,9 +126,10 @@
                         <option value="Verdana">Verdana</option>
                         <option value="Courier New">Courier New</option>
                         <option value="Lucida Console">Lucida Console</option>
+                        <option value="Comic Sans ms">Comic Sans ms</option>
                     </select>
 
-                </div>@**@
+                </div>*@
             </div>
           
             <div class="form-row">
@@ -136,7 +137,7 @@
                 <div class="col-xs-6 form-group col-xs-offset-4">
                     <br/> 
                     <input type="submit" class="btn btn-lg btn-info " value="Modifier"/> &nbsp;
-                    @Html.ActionLink("Retour", "Index", "Vendeur", new {@class = "btn btn-lg btn-danger"})&nbsp;
+                    @Html.ActionLink("Retour à la page d'accueil", "Index", "Vendeur", new {@class = "btn btn-lg btn-danger"})&nbsp;
                     @Html.ActionLink("Changer mot de passe", "modificationMDP", "vendeur", new {@class = "btn btn-sm btn-primary"})
 
                 </div>

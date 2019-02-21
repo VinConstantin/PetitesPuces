@@ -18,7 +18,7 @@
    <LivraisonGraduite>300</LivraisonGraduite>
    <Taxes>1</Taxes>
    <Pourcentage>0.15</Pourcentage>
-   <Configuration>color:#0000FF; background-color:#000080; font-family:arial;</Configuration>
+   <Configuration>color:#000000; background-color:#FFFFFF; font-family:Comic Sans ms;</Configuration>
    <DateCreation>2017-01-20</DateCreation>
    <DateMAJ>2017-11-26</DateMAJ>
    <Statut>1</Statut>
@@ -41,7 +41,7 @@
    <LivraisonGraduite>35</LivraisonGraduite>
    <Taxes>0</Taxes>
    <Pourcentage>0.05</Pourcentage>
-   <Configuration>color:#0000FF; background-color:#000080; font-family:arial;</Configuration>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
    <DateCreation>2017-04-25</DateCreation>
    <DateMAJ>2017-08-07</DateMAJ>
    <Statut>1</Statut>
@@ -64,7 +64,7 @@
    <LivraisonGraduite>400</LivraisonGraduite>
    <Taxes>1</Taxes>
    <Pourcentage>0.20</Pourcentage>
-   <Configuration>color:#0000FF; background-color:#000080; font-family:arial;</Configuration>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
    <DateCreation>2017-03-13</DateCreation>
    <DateMAJ>2017-09-18</DateMAJ>
    <Statut>0</Statut>
@@ -87,7 +87,7 @@
    <LivraisonGraduite>75</LivraisonGraduite>
    <Taxes>0</Taxes>
    <Pourcentage>0.25</Pourcentage>
-   <Configuration>color:#0000FF; background-color:#000080; font-family:arial;</Configuration>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
    <DateCreation>2017-04-12</DateCreation>
    <DateMAJ>2017-08-23</DateMAJ>
    <Statut>1</Statut>
@@ -110,7 +110,7 @@
    <LivraisonGraduite>50</LivraisonGraduite>
    <Taxes>1</Taxes>
    <Pourcentage>0.03</Pourcentage>
-   <Configuration>color:#0000FF; background-color:#000080; font-family:arial;</Configuration>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
    <DateCreation>2017-05-14</DateCreation>
    <DateMAJ>2017-08-06</DateMAJ>
    <Statut>0</Statut>
@@ -133,7 +133,7 @@
    <LivraisonGraduite>50</LivraisonGraduite>
    <Taxes>1</Taxes>
    <Pourcentage>0.10</Pourcentage>
-   <Configuration>color:#0000FF; background-color:#000080; font-family:arial;</Configuration>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
    <DateCreation>2017-03-21</DateCreation>
    <DateMAJ>2017-12-27</DateMAJ>
    <Statut>1</Statut>
@@ -156,9 +156,78 @@
    <LivraisonGraduite>170</LivraisonGraduite>
    <Taxes>0</Taxes>
    <Pourcentage>0.35</Pourcentage>
-   <Configuration>color:#0000FF; background-color:#000080; font-family:arial;</Configuration>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
    <DateCreation>2017-05-04</DateCreation>
    <DateMAJ>2017-11-30</DateMAJ>
+   <Statut>1</Statut>
+ </row>
+ <row>
+   <NoVendeur>18</NoVendeur>
+   <NomAffaires>Imprimantes à bas prix</NomAffaires>
+   <Nom>Brodeur</Nom>
+   <Prenom>Jean-Luc</Prenom>
+   <Rue>747, Saint-Germain</Rue>
+   <Ville>Saint-Laurent</Ville>
+   <Province>QC</Province>
+   <CodePostal>H4L 3P8</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>514-748-7872</Tel1>
+   <Tel2>514-992-1092</Tel2>
+   <AdresseEmail>jeanluc.brodeur@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>50</PoidsMaxLivraison>
+   <LivraisonGraduite>1000</LivraisonGraduite>
+   <Taxes>1</Taxes>
+   <Pourcentage>0.1</Pourcentage>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <DateCreation>2018-11-30</DateCreation>
+   <DateMAJ>2018-11-30</DateMAJ>
+   <Statut>1</Statut>
+ </row>
+ <row>
+   <NoVendeur>19</NoVendeur>
+   <NomAffaires>Vendeur1</NomAffaires>
+   <Nom>Vendeur1</Nom>
+   <Prenom>Vendeur1</Prenom>
+   <Rue>747, Saint-Germain</Rue>
+   <Ville>Saint-Laurent</Ville>
+   <Province>QC</Province>
+   <CodePostal>H4L 3P8</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>514-748-7872</Tel1>
+   <Tel2>514-992-1092</Tel2>
+   <AdresseEmail>v1@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>50</PoidsMaxLivraison>
+   <LivraisonGraduite>1000</LivraisonGraduite>
+   <Taxes>1</Taxes>
+   <Pourcentage>0.1</Pourcentage>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <DateCreation>2018-11-30</DateCreation>
+   <DateMAJ>2018-11-30</DateMAJ>
+   <Statut>1</Statut>
+ </row>
+ <row>
+   <NoVendeur>20</NoVendeur>
+   <NomAffaires>Vendeur2</NomAffaires>
+   <Nom>Vendeur2</Nom>
+   <Prenom>Vendeur2</Prenom>
+   <Rue>747, Saint-Germain</Rue>
+   <Ville>Saint-Laurent</Ville>
+   <Province>QC</Province>
+   <CodePostal>H4L 3P8</CodePostal>
+   <Pays>Canada</Pays>
+   <Tel1>514-748-7872</Tel1>
+   <Tel2>514-992-1092</Tel2>
+   <AdresseEmail>v2@gmail.com</AdresseEmail>
+   <MotDePasse>1234</MotDePasse>
+   <PoidsMaxLivraison>50</PoidsMaxLivraison>
+   <LivraisonGraduite>1000</LivraisonGraduite>
+   <Taxes>1</Taxes>
+   <Pourcentage>0.1</Pourcentage>
+   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <DateCreation>2018-11-30</DateCreation>
+   <DateMAJ>2018-11-30</DateMAJ>
    <Statut>1</Statut>
  </row>
 </rows>
