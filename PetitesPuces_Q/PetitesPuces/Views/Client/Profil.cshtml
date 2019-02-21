@@ -10,52 +10,68 @@
         <h1>Mon Profil</h1>
     </div>
 </div>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     
+     
     <form id="modifierProfil-form" method="post" role="form" class="text-center">
         <div class="container">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-
-
-            
-                    @Html.LabelFor(model=>model.Nom, htmlAttributes: new { @class = "" })
-
-
-                    @Html.EditorFor(model => model.Nom, new { htmlAttributes = new { @class = "form-control" ,@PlaceHolder = "Nom"} })
-                  
-                </div>
-
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Prenom, htmlAttributes: new { @class = "" })
-
-
-                    @Html.EditorFor(model => model.Prenom, new { htmlAttributes = new { @class = "form-control",@PlaceHolder = "Prénom"} })
-                   
-                </div>
+            @if (ViewBag.Status == "ModificationReussite")
+            {
+            <div class="alert alert-info text-center" role="alert" style="margin: 25px;">
+                Modification réussite!
             </div>
+            }
             <div class="form-row">
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Rue, htmlAttributes: new { @class = "" })
-
-
-                    @Html.EditorFor(model => model.Rue, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Rue" } })
-                 </div>
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Ville, htmlAttributes: new { @class = "" })
-
-
-                    @Html.EditorFor(model => model.Ville, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Ville" } })
+                <div class="col-md-12">
+                    @Html.ActionLink("Changer mot de passe", "modificationMDP", "client", new {@class = "btn btn-sm btn-primary"})
+                    
                 </div>
-              
-            </div>
-            <div class="form-row">
                 
+            </div>
+       
+            <div class="form-row">
                 <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Province, htmlAttributes: new { @class = "" })
+
+
+
+                    @Html.LabelFor(model => model.Nom, htmlAttributes: new {@class = ""})
+
+
+                    @Html.EditorFor(model => model.Nom, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Nom"}})
+
+                </div>
+
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Prenom, htmlAttributes: new {@class = ""})
+
+
+                    @Html.EditorFor(model => model.Prenom, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Prénom"}})
+
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Rue, htmlAttributes: new {@class = ""})
+
+
+                    @Html.EditorFor(model => model.Rue, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Rue"}})
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Ville, htmlAttributes: new {@class = ""})
+
+
+                    @Html.EditorFor(model => model.Ville, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Ville"}})
+                </div>
+
+            </div>
+            <div class="form-row">
+
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Province, htmlAttributes: new {@class = ""})
 
 
                     @Html.DropDownListFor(model => model.Province, new List<SelectListItem>()
@@ -63,54 +79,42 @@
                         new SelectListItem() {Text = "Choissez votre province", Value = ""},
                         new SelectListItem() {Text = "Québec", Value = "QC"},
                         new SelectListItem() {Text = "Ontario", Value = "ON"},
-                        new SelectListItem() {Text = "Alberta", Value = "AB"},
-                        new SelectListItem() {Text = "Colombie-Britanique", Value = "BC"},
-                        new SelectListItem() {Text = "Île-du-prince-Édouard", Value = "PE"},
-                        new SelectListItem() {Text = "Manitoba", Value = "MB"},
-                        new SelectListItem() {Text = "Nouveau-Brunswick", Value = "NB"},
-                        new SelectListItem() {Text = "Nouvelle-Écosse", Value = "NS"},
-                        new SelectListItem() {Text = "Saskatchewan", Value = "SK"},
-                        new SelectListItem() {Text = "Terre-Neuve-et-Labrador", Value = "NL"},
-                        new SelectListItem() {Text = "Nunavut", Value = "NU"},
-                        new SelectListItem() {Text = "Territoires du Nord-Ouest", Value = "NT"},
-                        new SelectListItem() {Text = "Yukon", Value = "YT"},
+                        new SelectListItem() {Text = "Nouveau-Brunswick", Value = "NB"}
                     }, new {@class = "form-control text-primary"})
 
                 </div>
                 <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Pays, htmlAttributes: new { @class = "" })
+                    @Html.LabelFor(model => model.Pays, htmlAttributes: new {@class = ""})
 
 
-                    @Html.EditorFor(model => model.Pays, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Pays" } })
+                    @Html.EditorFor(model => model.Pays, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Pays", @Value = "Canada", @Readonly = "true"}})
                 </div>
             </div>
-           
+
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Tel1, htmlAttributes: new { @class = "" })
+                    @Html.LabelFor(model => model.Tel1, htmlAttributes: new {@class = ""})
 
 
-                    @Html.EditorFor(model => model.Tel1, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Tel1" } })
-                  </div>
+                    @Html.EditorFor(model => model.Tel1, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Tel1"}})
+                </div>
                 <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Tel2, htmlAttributes: new { @class = "" })
+                    @Html.LabelFor(model => model.Tel2, htmlAttributes: new {@class = ""})
 
 
-                    @Html.EditorFor(model => model.Tel2, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Tel2" } })
+                    @Html.EditorFor(model => model.Tel2, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Tel2"}})
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.CodePostal, htmlAttributes: new { @class = "" })
+                    @Html.LabelFor(model => model.CodePostal, htmlAttributes: new {@class = ""})
 
 
-                    @Html.EditorFor(model => model.CodePostal, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Code Postal" } })
+                    @Html.EditorFor(model => model.CodePostal, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Code Postal"}})
                 </div>
-                <div class="col-md-6 form-group">
-                    @Html.ActionLink("Changer mot de passe","modificationMDP","client",new {@class="btn btn-sm btn-primary"})
-                </div>
+               
             </div>
-           
+
         </div>
         <div class="form-row">
             <div class="col-xs-4 form-group col-xs-offset-4">

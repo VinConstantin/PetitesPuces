@@ -929,9 +929,12 @@ namespace PetitesPuces.Controllers
         }
 
         [System.Web.Mvc.HttpGet]
-        public ActionResult Profil()
+        public ActionResult Profil(string status="")
         {
-            var objClient = (PPClient)SessionUtilisateur.UtilisateurCourant;
+            ViewBag.status = status;
+            var objClient = (from unClient in context.PPClients
+                where unClient.NoClient == NOCLIENT
+                select unClient).FirstOrDefault();
 
             ModiProfilClient modiProfilClient = new ModiProfilClient
             {
@@ -971,7 +974,7 @@ namespace PetitesPuces.Controllers
                 {
                     context.SubmitChanges();
 
-                    return RedirectToAction("Index", new {Status = "ModificationReussite"});
+                    return RedirectToAction("Profil", new {Status = "ModificationReussite"});
                 }
                 catch (Exception e)
                 {

@@ -57,7 +57,6 @@ namespace PetitesPuces.Controllers
             if (Request.Cookies["courriel"] != null && Request.Cookies["mdp"] != null)
             {
                 ViewBag.courriel = Request.Cookies["courriel"].Value;
-                ViewBag.mdp = Request.Cookies["mdp"].Value;
                 ViewBag.souvenirCheck = "checked";
             }
             else ViewBag.souvenirCheck = "";
@@ -167,6 +166,15 @@ namespace PetitesPuces.Controllers
             return View();
         }
 
+        
+        public ActionResult courrielInscriptionReussite(string courriel="")
+        {
+            var unClient = from unclient in context.PPClients
+                where unclient.AdresseEmail == courriel
+                select unclient;
+            
+            return View(unClient.First());
+        }
 
         [HttpGet]
         public ActionResult InscriptionClient(string nouveauUtilisateur="")
@@ -201,12 +209,13 @@ namespace PetitesPuces.Controllers
                     nouveauClient.MotDePasse = formCollection["MotDePasse"];
                     nouveauClient.NoClient = maxNo;
                     nouveauClient.DateCreation = DateTime.Now;
+                    nouveauClient.NbConnexions = 0;
                     nouveauClient.Statut = 1;
                     try
                     {
                         context.PPClients.InsertOnSubmit(nouveauClient);
                         context.SubmitChanges();
-                        return RedirectToAction("Connexion", "Home", new {Status = "InscriptionReussi"});
+                        return RedirectToAction("courrielInscriptionReussite", "Home", new {courriel =formCollection["AdresseEmail"]});
                     }
                     catch (Exception e)
                     {

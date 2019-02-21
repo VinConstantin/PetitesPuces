@@ -91,9 +91,9 @@ namespace PetitesPuces.Controllers
         }
 
         [HttpGet]
-        public ActionResult Profil()
+        public ActionResult Profil(string status="")
         {
-            
+            ViewBag.Status = status;
             var objVendeur = (from unVendeur in context.PPVendeurs
                 where unVendeur.NoVendeur == NoVendeur
                 select unVendeur).FirstOrDefault();
@@ -157,7 +157,7 @@ namespace PetitesPuces.Controllers
                 {
                     context.SubmitChanges();
                    
-                    return RedirectToAction("Index",new{status="ModificationReussite"});
+                    return RedirectToAction("Profil",new{status="ModificationReussite"});
                 }
                 catch (Exception e)
                 {
