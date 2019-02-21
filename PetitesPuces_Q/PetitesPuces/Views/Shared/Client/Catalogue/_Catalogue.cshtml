@@ -356,7 +356,7 @@
     }
     //diminuer la quantite
     function moinsQuantite(id) {
-        if ($("#" + id).val() >= 1)
+        if ($("#" + id).val() > 1)
             $("#" + id).val(parseInt($("#" + id).val()) - 1);
     }
     //Quand scroll, afficher le button pour remonter en haut

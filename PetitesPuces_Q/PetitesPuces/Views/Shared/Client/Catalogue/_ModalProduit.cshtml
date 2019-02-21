@@ -147,11 +147,16 @@
                 @if (Model.NombreItems > 0)
                 {
                     <span style="border-right: 1px solid #ccc;">
-                        <span class="btn btn-link glyphicon glyphicon-minus" onclick="moinsQuantite(@Model.NoProduit)" title="Diminuer la quantité"></span>
+                        <button class="btn btn-link" type="button" onclick="moinsQuantite(@Model.NoProduit)">
+                            <span class="glyphicon glyphicon-minus" title="Diminuer la quantité"></span>
+                        </button>               
                         <input disabled type="text" style="width: 10%;" pattern="\d*" name="name" value="1" width="50px" id="@Model.NoProduit">
-                        <span class="btn btn-link glyphicon glyphicon-plus" onclick="plusQuantite(@Model.NoProduit)" title="Augmenter la quantité"></span>
+                        <button class="btn btn-link" type="button" onclick="plusQuantite(@Model.NoProduit)">
+                            <span class="glyphicon glyphicon-plus" title="Augmenter la quantité"></span>
+                        </button>
+                        
 
-                        <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit,@Model.NoVendeur, $('#@Model.NoProduit').val());">
+                        <button class="btn btn-link btn-lg" title="Ajouter au panier" onclick="ajouterAuPanier(@Model.NoProduit, @Model.NoVendeur, $('#@Model.NoProduit').val());">
                             <span class="glyphicon glyphicon-shopping-cart"></span>
                         </button>
                     </span>
