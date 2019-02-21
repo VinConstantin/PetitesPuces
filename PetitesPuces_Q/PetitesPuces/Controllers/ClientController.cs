@@ -23,12 +23,10 @@ using Rotativa;
 
 namespace PetitesPuces.Controllers
 {
-#if !DEBUG
-        [Securise(RolesUtil.CLIENT)]
-#endif
+    [Securise(RolesUtil.CLIENT)]
     public class ClientController : Controller
     {
-        private long NOCLIENT = SessionUtilisateur.UtilisateurCourant.No;
+        private readonly long NOCLIENT = SessionUtilisateur.NoUtilisateur ?? -1;
         private const int DEFAULTITEMPARPAGE = 8;
         private BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
 
