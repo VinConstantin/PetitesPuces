@@ -238,4 +238,18 @@
     <Statut>L</Statut>
     <NoAutorisation>4799</NoAutorisation>
  </row>
+ <row>
+    <NoCommande>18</NoCommande>
+    <NoClient>10025</NoClient>
+    <NoVendeur>20</NoVendeur>
+    <DateCommande>2019-01-09</DateCommande>
+    <CoutLivraison>4.5</CoutLivraison>
+    <TypeLivraison>1</TypeLivraison>
+    <MontantTotAvantTaxes>100</MontantTotAvantTaxes>
+    <TPS></TPS>
+    <TVQ></TVQ>
+    <PoidsTotal>1</PoidsTotal>
+    <Statut>T</Statut>
+    <NoAutorisation>4399</NoAutorisation>
+ </row>
 </rows>
