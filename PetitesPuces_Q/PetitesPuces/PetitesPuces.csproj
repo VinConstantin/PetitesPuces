@@ -459,7 +459,6 @@
     <Content Include="Views\Client\InscriptionVendeur.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
     <Content Include="Views\Client\ResultatCommande.cshtml" />
-    <Content Include="Views\Client\SuccessInscription.cshtml" />
     <Content Include="Views\Courriel\Index.cshtml" />
     <Content Include="Views\Courriel\_ViewStart.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
