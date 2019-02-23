@@ -1,5 +1,6 @@
+@using PetitesPuces.Models
 @using PetitesPuces.Securite
-@model PetitesPuces.Models.PPMessage
+@model PPMessage
 <style>
 	.btn-file {
 		position: relative;
@@ -26,75 +27,76 @@
 	}
 </style>
 <div class="panel panel-default">
-	<div class="panel-body">
-		<div>
-			<div class="btn-group">
-				<button type="button" onclick="envoyerMessage();" class="btn btn-info" ><span class="glyphicon glyphicon-send"></span> Envoyer</button>
-			</div>
-			<h2>Composer un message</h2>
+    <input id="msgIdInput" value="@(Model != null ? Model.NoMsg.ToString() : "")" type="hidden"/>
+    <div class="panel-body">
+        <div>
+            <div class="btn-group">
+                <button type="button" onclick="envoyerMessage();" class="btn btn-info"><span class="glyphicon glyphicon-send"></span> Envoyer</button>
+            </div>
+            <h2>Composer un message</h2>
 
-			<div id="errorMsg" class="alert alert-warning" hidden>
-				PLACEHOLDER message d'erreure
-			</div>
-			<div class="well">
-				<div class="row">
-					<label class="col-xs-6">
-						Destinataires :
-						<button type="button" onclick="loadModalDestinataire();" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#modalAjoutDestinataire">
-							<span title="Ajouter des destinataires" class="glyphicon glyphicon-plus"></span>
-						</button>
-					</label>
-					<span id="lastSave" class="col-xs-6 text-right"></span>
-				</div>		
-				<div class="row">
-					<div class="col-xs-12" id="destinataire">
-				
-					</div>
-				</div>
-				<div class="row mt-2">
-					<div class="col-xs-7">
-						<label>Objet : </label>
-					</div>
-					<div class="col-xs-5">
-						<label>Pièce jointe : </label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-7"> 
-						<input id="tbObjet" value="@(Model != null ? (Model.objet ?? "") : "")" type="text" class="form-control"/>
-					</div>
-					<form id="fileForm" class="col-xs-5">
-						<div class="input-group w-100">
-							<a id="pieceJointeLink" href="@(Model != null ? "/Courriel/PieceJointe/" + Model.NoMsg : "javascript:void(0)")">
-								<input name="fichierJoint" value="@(Model != null ? (Model.FichierJoint ?? "").ToString() : "")" id="fileUploadText" readonly class="form-control t-overflow-ellipsis"/>
-							</a>
-							<span class="input-group-btn">
-								<button id="deleteAttachment" type="button" class="d-none btn btn-danger">
-									<i class="glyphicon glyphicon-remove"></i>
-								</button>
-								<button class="btn btn-primary btn-file" type="button">
-									<i class="glyphicon glyphicon-paperclip"></i>
-									<input id="upload" value="" type="file"/>
-								</button>
-							</span>
-						</div>
-					</form>
-				</div>
-				<div class="row mt-2">
-					<div class="col-xs-12">
-						<label>Message :</label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12">
-						<textarea id="textarea" style="max-width: 100%" cols="300" rows="20">
+            <div id="errorMsg" class="alert alert-warning" hidden>
+                PLACEHOLDER message d'erreure
+            </div>
+            <div class="well">
+                <div class="row">
+                    <label class="col-xs-6">
+                        Destinataires :
+                        <button type="button" onclick="loadModalDestinataire();" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#modalAjoutDestinataire">
+                            <span title="Ajouter des destinataires" class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </label>
+                    <span id="lastSave" class="col-xs-6 text-right"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12" id="destinataire">
+
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-xs-7">
+                        <label>Objet : </label>
+                    </div>
+                    <div class="col-xs-5">
+                        <label>Pièce jointe : </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-7">
+                        <input id="tbObjet" value="@(Model != null ? (Model.objet ?? "") : "")" type="text" class="form-control"/>
+                    </div>
+                    <form id="fileForm" class="col-xs-5">
+                        <div class="input-group w-100">
+                            <a id="pieceJointeLink" href="@(Model != null ? "/Courriel/PieceJointe/" + Model.NoMsg : "javascript:void(0)")">
+                                <input name="fichierJoint" value="@(Model != null ? (Model.FichierJoint ?? "").ToString() : "")" id="fileUploadText" readonly class="form-control t-overflow-ellipsis"/>
+                            </a>
+                            <span class="input-group-btn">
+                                <button id="deleteAttachment" type="button" class="d-none btn btn-danger">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </button>
+                                <button class="btn btn-primary btn-file" type="button">
+                                    <i class="glyphicon glyphicon-paperclip"></i>
+                                    <input id="upload" value="" type="file"/>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-xs-12">
+                        <label>Message :</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <textarea id="textarea" style="max-width: 100%" cols="300" rows="20">
                     @(Model != null ? (Model.DescMsg ?? "") : "")
                 </textarea>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal -->
@@ -106,7 +108,6 @@
 	</div>
 </div>
 <script>
-
     var lstDestinataires = [
         @if (Model != null)
         {
@@ -121,57 +122,57 @@
         }
     ];
 
-	function retirerDestinataire(id) {
-		console.log(id);
-		$('#Dest'+id).remove();
+    function retirerDestinataire(id) {
+        console.log(id);
+        $('#Dest'+id).remove();
 		
-		lstDestinataires.forEach(function(temp) {
-			if (temp.No ===id) {
-				let index = lstDestinataires.indexOf(temp);
-				lstDestinataires.splice(index, 1);
-			}
-		});
-	}
-	function afficherDestinataire(save = true) {
-		$('#destinataire span').remove();
-		lstDestinataires.forEach(function(temp) {
-			let str = `<span style="background-color: #adadad;" class="badge badge-primary" id="Dest${temp.No}">
+        lstDestinataires.forEach(function(temp) {
+            if (temp.No ===id) {
+                let index = lstDestinataires.indexOf(temp);
+                lstDestinataires.splice(index, 1);
+            }
+        });
+    }
+    function afficherDestinataire(save = true) {
+        $('#destinataire span').remove();
+        lstDestinataires.forEach(function(temp) {
+            let str = `<span style="background-color: #adadad;" class="badge badge-primary" id="Dest${temp.No}">
                             ${temp.Nom}<a onclick="retirerDestinataire(${temp.No});" style="color:red;" class="glyphicon glyphicon-remove">
                          </a></span>&nbsp;`;
-			$("#destinataire").append(str);
+            $("#destinataire").append(str);
         });
         if (save) {
             $('#destinataire').trigger('change');
         }
     }
-	function retirerDestinataire(no, nom) {
-		console.log(no);
-		const desinataire = { No : no, Nom : nom };     
-		const index = lstDestinataires.indexOf(desinataire);
-		lstDestinataires.splice(index, 1);
-		$('#Dest'+no).remove();
-	}
+    function retirerDestinataire(no, nom) {
+        console.log(no);
+        const desinataire = { No : no, Nom : nom };     
+        const index = lstDestinataires.indexOf(desinataire);
+        lstDestinataires.splice(index, 1);
+        $('#Dest'+no).remove();
+    }
     function envoyerMessage() {
         if (!$('#textarea').val() || $('#textarea').val().trim() == '') {
-	        $("#errorMsg").show();
-	        $("#errorMsg").html('Votre message doit avoir un corps');
+            $("#errorMsg").show();
+            $("#errorMsg").html('Votre message doit avoir un corps');
             return;
         }
 
         if (!$('#tbObjet').val() || $('#tbObjet').val().trim() == '') {
-	        $("#errorMsg").show();
-	        $("#errorMsg").html('Votre message doit avoir un objet');
+            $("#errorMsg").show();
+            $("#errorMsg").html('Votre message doit avoir un objet');
             return;
         }
 
         if (lstDestinataires.length == 0) {
-	        $("#errorMsg").show();
-	        $("#errorMsg").html('Votre message doit avoir au moins un destinataire');
+            $("#errorMsg").show();
+            $("#errorMsg").html('Votre message doit avoir au moins un destinataire');
             return;
         }
 
         sauvegarderBrouillon(function() {
-            const url = "/Courriel/Envoyer/" + msgId;
+            const url = "/Courriel/Envoyer/" + $('#msgIdInput').val();
 
             $.ajax({
                 url: url,
@@ -184,45 +185,45 @@
                 }
             });
         });
-	}
-	function loadModalDestinataire() {
-		$.ajax({
-			url: URLPATH + "/Courriel/Destinataire",
-			type: "GET",
-			data: {
+    }
+    function loadModalDestinataire() {
+        $.ajax({
+            url: URLPATH + "/Courriel/Destinataire",
+            type: "GET",
+            data: {
                 
-			}, 
-			success: function(result) {
-				/** @@type{Object<>[]} */
+            }, 
+            success: function(result) {
+                /** @@type{Object<>[]} */
                 $('#ModalDestinatairePLACEHOLDER').html(result);
             },
-			error: function(req, status, err) {
-				console.log(req, status, err);
-			}
-		});
-	}
+            error: function(req, status, err) {
+                console.log(req, status, err);
+            }
+        });
+    }
 </script>
 
 <script>
-	$(function() {
-		/** @@type{Object<>[]} */
+    $(function() {
+        /** @@type{Object<>[]} */
         afficherDestinataire(false);
-		lstClients = [];
-		lstVendeurs = [];
-		$('textarea').froalaEditor({
-			language: 'fr',
-			toolbarButtons: [
-				'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize',
-				'|', 'color', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL',
-				'-', '|', 'quote', 'insertHR', 'undo', 'redo', 'clearFormatting', 'selectAll', 'html'
-			],
-			fontFamilySelection: true,
-			fontSizeSelection: true,
-			paragraphFormatSelection: true,
-			heightMin: 250,
-			quickInsertTags: [],
-			toolbarButtonsXS: ['undo', 'redo', 'bold', 'italic', 'underline']
-		});
-		$("a[href=\"https://www.froala.com/wysiwyg-editor?k=u\"]").remove();
-	});
+        lstClients = [];
+        lstVendeurs = [];
+        $('textarea').froalaEditor({
+            language: 'fr',
+            toolbarButtons: [
+                'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize',
+                '|', 'color', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL',
+                '-', '|', 'quote', 'insertHR', 'undo', 'redo', 'clearFormatting', 'selectAll', 'html'
+            ],
+            fontFamilySelection: true,
+            fontSizeSelection: true,
+            paragraphFormatSelection: true,
+            heightMin: 250,
+            quickInsertTags: [],
+            toolbarButtonsXS: ['undo', 'redo', 'bold', 'italic', 'underline']
+        });
+        $("a[href=\"https://www.froala.com/wysiwyg-editor?k=u\"]").remove();
+    });
 </script>
