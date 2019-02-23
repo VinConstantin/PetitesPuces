@@ -68,8 +68,7 @@
         Supprime: new Etat(loadElementSupprimes)
     });
     let stateName = '@Model.Item1';
-    var msgId = @(Model.Item2 != null ? Model.Item2.NoMsg.ToString() : "null");
-    let etat = etats[stateName];
+    let etat = etats[stateName == null ? 'Reception' : stateName];
     let selected;
 
     function Etat(loadFunc) {
@@ -87,28 +86,35 @@
             }
             $(this).addClass('active');
             stateName = $(this).attr('data-state');
-
-            msgId = null;
+            $('#msgIdInput').val(null);
 
             displayPageState(stateName);
         });
     });
 
-    function displayPageState(stateName, noMsgALoad) {
+    function displayPageState(stateName, id) {
+        console.log(stateName);
         etat = etats[stateName];
         let reqUrl = `/Courriel/Boite/${stateName}`;
-        if (noMsgALoad) {
-            reqUrl += '/' + noMsgALoad;
+        let noMsgALoad = $('#msgIdInput').val();
+
+        if (id) {
+            reqUrl += '/' + id;
+        } else {
+            if (noMsgALoad) {
+                reqUrl += '/' + noMsgALoad;
+                id = noMsgALoad
+            }
         }
 
-        history.pushState({ state: stateName, id: noMsgALoad}, `${stateName} - Courriel - Les Petites Puces`, reqUrl);
+        history.pushState({ state: stateName, id: id}, `${stateName} - Courriel - Les Petites Puces`, reqUrl);
         etat.load();
     }
 
     $(document).ready(function() {
-        displayPageState(stateName, msgId);
-        window.onpopstate = function(event) {
-            displayPageState(history.state || 'Reception');
+        displayPageState(stateName);
+        window.onpopstate = function (event) {
+            displayPageState(history.state.state || 'Reception');
         }
     });
 
@@ -308,6 +314,7 @@
             destinataires: destinataires,
         };
         let method = 'POST';
+        let msgId = $('#msgIdInput').val();
         if (msgId) {
             method = 'PUT';
             msg.NoMsg = msgId;
@@ -323,7 +330,7 @@
             dataType: 'json',
             processData: false,
             success: (data) => {
-                msgId = data.NoMsg;
+                $('#msgIdInput').val(data.NoMsg);
 
                 if (callback && callback instanceof Function) {
                     callback();

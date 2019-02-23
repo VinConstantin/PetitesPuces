@@ -611,8 +611,8 @@ namespace PetitesPuces.Controllers
 
             int noMessage = maxId + 1;
             brouillon.NoMsg = noMessage;
-            if(brouillon.DescMsg.Contains("Froala"))
-                brouillon.DescMsg.Substring(brouillon.DescMsg.Length - 229);
+            if((brouillon.DescMsg ?? "").Contains("Froala"))
+                brouillon.DescMsg = brouillon.DescMsg.Substring(brouillon.DescMsg.Length - 229);
             var message = EnregistrerMessage(brouillon);
 
             context.PPMessages.InsertOnSubmit(message);
