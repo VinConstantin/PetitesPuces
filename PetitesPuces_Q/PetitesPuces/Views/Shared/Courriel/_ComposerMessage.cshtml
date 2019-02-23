@@ -179,6 +179,7 @@
                 type: "POST",
                 success: function(partial) {
                     $('#PLACEHOLDER').html(partial);
+                    history.pushState({ state: 'Composer', id: null}, `Composer - Courriel - Les Petites Puces`, '/Courriel/Boite/Composer');
                 },
                 error: function(req, status, err) {
                     console.log(req, status, err);

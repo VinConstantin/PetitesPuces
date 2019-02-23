@@ -93,10 +93,10 @@
     });
 
     function displayPageState(stateName, id) {
+        console.log(stateName);
         etat = etats[stateName];
         let reqUrl = `/Courriel/Boite/${stateName}`;
         let noMsgALoad = $('#msgIdInput').val();
-        console.log($('#msgIdInput').val());
 
         if (id) {
             reqUrl += '/' + id;
@@ -113,8 +113,8 @@
 
     $(document).ready(function() {
         displayPageState(stateName);
-        window.onpopstate = function(event) {
-            displayPageState(history.state || 'Reception');
+        window.onpopstate = function (event) {
+            displayPageState(history.state.state || 'Reception');
         }
     });
 
