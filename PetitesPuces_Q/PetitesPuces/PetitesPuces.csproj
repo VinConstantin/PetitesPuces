@@ -459,9 +459,12 @@
     <Content Include="Views\Client\InscriptionVendeur.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
     <Content Include="Views\Client\ResultatCommande.cshtml" />
+    <Content Include="Views\Client\SuccessInscription.cshtml" />
     <Content Include="Views\Courriel\Index.cshtml" />
     <Content Include="Views\Courriel\_ViewStart.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
+    <Content Include="Views\Home\courrielInscriptionReussite.cshtml" />
+    <Content Include="Views\Home\courrielInscriptionReussiteVendeur.cshtml" />
     <Content Include="Views\Home\courrielMDPOublie.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\modiOubliMDP.cshtml" />

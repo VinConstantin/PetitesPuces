@@ -8,231 +8,242 @@
 <br/>
 
 <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.NomAffaires, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.Vendeur.NomAffaires, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Nom d'affaires"}})
-            @Html.ValidationMessageFor(model => model.Vendeur.NomAffaires, "", new {@class = "text-danger"})
-    
-        </div>
-    
-    
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.NomAffaires, htmlAttributes: new {@class = "text-right w-100"})
     </div>
-    
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.Nom, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.Vendeur.Nom, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Nom de famille"}})
-            @Html.ValidationMessageFor(model => model.Vendeur.Nom, "", new {@class = "text-danger"})
-        </div>
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.Vendeur.NomAffaires, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Nom d'affaires"}})
+        @Html.ValidationMessageFor(model => model.Vendeur.NomAffaires, "", new {@class = "text-danger"})
+
     </div>
-    
-    
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.Prenom, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.Vendeur.Prenom, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Prénom"}})
-            @Html.ValidationMessageFor(model => model.Vendeur.Prenom, "", new {@class = "text-danger"})
-        </div>
-    
+
+
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.Nom, htmlAttributes: new {@class = "text-right w-100"})
     </div>
-    
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.AdresseEmail, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Adresse de courriel"}})
-            @Html.ValidationMessageFor(model => model.AdresseEmail, "", new {@class = "text-danger"})
-        </div>
-    
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.Vendeur.Nom, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Nom de famille"}})
+        @Html.ValidationMessageFor(model => model.Vendeur.Nom, "", new {@class = "text-danger"})
     </div>
-    
-    <div class="row">
-    
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.confirmationCourriel, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.confirmationCourriel, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer votre adresse de courriel"}})
-            @Html.ValidationMessageFor(model => model.confirmationCourriel, "", new {@class = "text-danger"})
-    
-    
-    
-        </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.Prenom, htmlAttributes: new {@class = "text-right w-100"})
     </div>
-    
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.MotDePasse, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.MotDePasse, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Mot de passe"}})
-            @Html.ValidationMessageFor(model => model.MotDePasse, "", new {@class = "text-danger"})
-        </div>
-    
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.Vendeur.Prenom, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Prénom"}})
+        @Html.ValidationMessageFor(model => model.Vendeur.Prenom, "", new {@class = "text-danger"})
     </div>
-    
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.ConfirmationMDP, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8 ">
-    
-            @Html.EditorFor(model => model.ConfirmationMDP, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer votre mot de passe"}})
-            @Html.ValidationMessageFor(model => model.ConfirmationMDP, "", new {@class = "text-danger"})
-    
-    
-    
-        </div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new {@class = "text-right w-100"})
     </div>
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.Rue, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.Vendeur.Rue, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Rue"}})
-            @Html.ValidationMessageFor(model => model.Vendeur.Rue, "", new {@class = "text-danger"})
-    
-        </div>
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.AdresseEmail, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Adresse de courriel"}})
+        @Html.ValidationMessageFor(model => model.AdresseEmail, "", new {@class = "text-danger"})
     </div>
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.Ville, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.Vendeur.Ville, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Ville"}})
-            @Html.ValidationMessageFor(model => model.Vendeur.Ville, "", new {@class = "text-danger"})
-    
-        </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.confirmationCourriel, htmlAttributes: new {@class = "text-right w-100"})
     </div>
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.Province, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.DropDownListFor(model => model.Vendeur.Province, new List<SelectListItem>()
-            {
-                new SelectListItem() {Text = "Choisir votre province", Value = ""},
-                new SelectListItem() {Text = "Québec", Value = "QC"},
-                new SelectListItem() {Text = "Ontario", Value = "ON"},
-                new SelectListItem() {Text = "Nouveau-Brunswick", Value = "NB"}
-            }, new {@class = "form-control text-primary"})
-    
-            @Html.ValidationMessageFor(model => model.Vendeur.Province, "", new {@class = "text-danger"})
-    
-        </div>
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.confirmationCourriel, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer votre adresse de courriel"}})
+        @Html.ValidationMessageFor(model => model.confirmationCourriel, "", new {@class = "text-danger"})
+
+
+
     </div>
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.CodePostal, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.Vendeur.CodePostal, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Code Postal (ex: A9A 9A9)"}})
-            @Html.ValidationMessageFor(model => model.Vendeur.CodePostal, "", new {@class = "text-danger"})
-        </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.MotDePasse, htmlAttributes: new {@class = "text-right w-100"})
     </div>
-    
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.Pays, htmlAttributes: new {@class = "text-right w-100", @value="Canada",@readonly="true"})
-        </div>
-    
-        <div class="form-group col-lg-8 ">
-    
-            @Html.EditorFor(model => model.Vendeur.Pays, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Pays",@Value = "Canada",@Readonly="true"}})
-            @Html.ValidationMessageFor(model => model.Vendeur.Pays, "", new {@class = "text-danger"})
-    
-    
-    
-        </div>
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.MotDePasse, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Mot de passe"}})
+        @Html.ValidationMessageFor(model => model.MotDePasse, "", new {@class = "text-danger"})
     </div>
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.Tel1, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.Vendeur.Tel1, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Téléphone 1 (ex: 999-999-9999)"}})
-            @Html.ValidationMessageFor(model => model.Vendeur.Tel1, "", new {@class = "text-danger"})
-        </div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.ConfirmationMDP, htmlAttributes: new {@class = "text-right w-100"})
     </div>
-    
-    <div class="row">
-    
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.Tel2, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8 ">
-    
-            @Html.EditorFor(model => model.Vendeur.Tel2, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Téléphone 2 (ex: 999-999-9999)"}})
-            @Html.ValidationMessageFor(model => model.Vendeur.Tel2, "", new {@class = "text-danger"})
-    
-        </div>
+    <div class="form-group col-lg-8 ">
+
+        @Html.EditorFor(model => model.ConfirmationMDP, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Confirmer votre mot de passe"}})
+        @Html.ValidationMessageFor(model => model.ConfirmationMDP, "", new {@class = "text-danger"})
+
+
+
     </div>
-    
-    
-    <div class="row">
-    
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.PoidsMaxLivraison, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.Vendeur.PoidsMaxLivraison, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Poids max pour la livraison"}})
-            @Html.ValidationMessageFor(model => model.Vendeur.PoidsMaxLivraison, "", new {@class = "text-danger"})
-    
-        </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.Rue, htmlAttributes: new {@class = "text-right w-100"})
     </div>
-    
-    <div class="row">
-        <div class="col-lg-4">
-            @Html.LabelFor(model => model.Vendeur.LivraisonGratuite, htmlAttributes: new {@class = "text-right w-100"})
-        </div>
-        <div class="form-group col-lg-8">
-    
-            @Html.EditorFor(model => model.Vendeur.LivraisonGratuite, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Prix minimum pour une livraison graduite"}})
-            @Html.ValidationMessageFor(model => model.Vendeur.LivraisonGratuite, "", new {@class = "text-danger"})
-    
-    
-    
-        </div>
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.Vendeur.Rue, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Rue"}})
+        @Html.ValidationMessageFor(model => model.Vendeur.Rue, "", new {@class = "text-danger"})
+
     </div>
-    
-    <div class="row">
-        <div class="col-lg-4">
-    
-    
-        </div>
-        <div class="form-group col-lg-8">
-            @Html.LabelFor(Model => Model.Vendeur.Taxes)
-            <input name="Taxes" class="" type="checkbox" checked/>
-    
-    
-        </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.Ville, htmlAttributes: new {@class = "text-right w-100"})
     </div>
-    
-    <div class="form-row">
-        <div class="col-lg-6 col-sm-offset-3">
-            <br/>
-            <input type="submit" name="register-submit" id="register-submitVendeur" tabindex="17" class="btn btn-lg btn-primary btn-block btn-rounded z-depth-0 my-4 waves-effect" value="S'inscrire maintenant">
-        </div>
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.Vendeur.Ville, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Ville"}})
+        @Html.ValidationMessageFor(model => model.Vendeur.Ville, "", new {@class = "text-danger"})
+
     </div>
-    
-    </form>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.Province, htmlAttributes: new {@class = "text-right w-100"})
+    </div>
+    <div class="form-group col-lg-8">
+
+        @Html.DropDownListFor(model => model.Vendeur.Province, new List<SelectListItem>()
+        {
+            new SelectListItem() {Text = "Choisir votre province", Value = ""},
+            new SelectListItem() {Text = "Québec", Value = "QC"},
+            new SelectListItem() {Text = "Ontario", Value = "ON"},
+            new SelectListItem() {Text = "Nouveau-Brunswick", Value = "NB"}
+        }, new {@class = "form-control text-primary"})
+
+        @Html.ValidationMessageFor(model => model.Vendeur.Province, "", new {@class = "text-danger"})
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.CodePostal, htmlAttributes: new {@class = "text-right w-100"})
+    </div>
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.Vendeur.CodePostal, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Code Postal (ex: A9A 9A9)"}})
+        @Html.ValidationMessageFor(model => model.Vendeur.CodePostal, "", new {@class = "text-danger"})
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.Pays, htmlAttributes: new {@class = "text-right w-100", @value = "Canada", @readonly = "true"})
+    </div>
+
+    <div class="form-group col-lg-8 ">
+
+        @Html.EditorFor(model => model.Vendeur.Pays, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Pays", @Value = "Canada", @Readonly = "true"}})
+        @Html.ValidationMessageFor(model => model.Vendeur.Pays, "", new {@class = "text-danger"})
+
+
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.Tel1, htmlAttributes: new {@class = "text-right w-100"})
+    </div>
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.Vendeur.Tel1, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Téléphone 1 (ex: 999-999-9999)"}})
+        @Html.ValidationMessageFor(model => model.Vendeur.Tel1, "", new {@class = "text-danger"})
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.Tel2, htmlAttributes: new {@class = "text-right w-100"})
+    </div>
+    <div class="form-group col-lg-8 ">
+
+        @Html.EditorFor(model => model.Vendeur.Tel2, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Téléphone 2 (ex: 999-999-9999) (facultatif)"}})
+        @Html.ValidationMessageFor(model => model.Vendeur.Tel2, "", new {@class = "text-danger"})
+
+    </div>
+</div>
+
+
+
+<div class="row">
+
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.PoidsMaxLivraison, htmlAttributes: new {@class = "text-right w-100"})
+    </div>
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.Vendeur.PoidsMaxLivraison, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Poids max pour la livraison"}})
+        @Html.ValidationMessageFor(model => model.Vendeur.PoidsMaxLivraison, "", new {@class = "text-danger"})
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+        @Html.LabelFor(model => model.Vendeur.LivraisonGratuite, htmlAttributes: new {@class = "text-right w-100"})
+    </div>
+    <div class="form-group col-lg-8">
+
+        @Html.EditorFor(model => model.Vendeur.LivraisonGratuite, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Prix minimum pour une livraison graduite"}})
+        @Html.ValidationMessageFor(model => model.Vendeur.LivraisonGratuite, "", new {@class = "text-danger"})
+
+
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+
+
+    </div>
+    <div class="form-group col-lg-8">
+        @Html.LabelFor(Model => Model.Vendeur.Taxes)
+        <input name="Taxes" class="" type="checkbox" checked/>
+
+
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-lg-8 col-sm-offset-2">
+        <br/>
+        <input type="submit" name="register-submit" id="register-submitVendeur" tabindex="17" class="btn btn-lg btn-primary btn-block btn-rounded z-depth-0 my-4 waves-effect" value="Envoyer la demande d'inscription">
+        
+    </div>
+    <div class="col-sm-6 col-sm-offset-3 text-center">
+        <br/>
+        @Html.ActionLink("S'inscrire en tant que client", "InscriptionClient","Home")
+    </div>
+    <div class="col-sm-6 col-sm-offset-3  text-center">
+        <br/>
+        @Html.ActionLink("Retourner au menu", "Index","Home")
+    </div>
+</div>
+
+
+</form>
 </div>

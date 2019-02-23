@@ -77,15 +77,17 @@ namespace PetitesPuces.Models
       
         [Required(ErrorMessage = "Veuillez entrer votre nom!")]
         [StringLength(50, ErrorMessage = "Le champs du nom doit avoir un maximum de 50 caractères.")]
+        [RegularExpression(@"^([a-zA-Z0-9 \.\&\'\-]+)$", ErrorMessage = "Votre format de nom est incorrect.")]
         [DisplayName("Nom")]
         public string Nom { get; set; }
 
         [Required(ErrorMessage = "Veuillez entrer votre prénom!")]
         [StringLength(50, ErrorMessage = "Le champs du prénom doit avoir un maximum de 50 caractères.")]
+        [RegularExpression(@"^([a-zA-Z0-9 \.\&\'\-]+)$", ErrorMessage = "Votre format de prénom est incorrect.")]
         [DisplayName("Prénom")]
         public string Prenom { get; set; }
 
-
+     
        
         public DateTime? DateCreation { get; set; }
 
@@ -103,12 +105,14 @@ namespace PetitesPuces.Models
       
         [Required(ErrorMessage = "Veuillez entrer votre rue!")]
         [StringLength(50, ErrorMessage = "Le champs de la rue doit avoir un maximum de 50 caractères.")]
-        [DisplayName("Rue")]
+        [RegularExpression(@"^(\d+\s[A-z]+([ -]?[A-z]+)+?)$", ErrorMessage = "Votre format d'adresse est incorrect. Ex: 999 lavoie rue.")]
+        [DisplayName("Adresse")]
         public string Rue { get; set; }
 
       
         [Required(ErrorMessage = "Veuillez entrer votre ville!")]
         [StringLength(50, ErrorMessage = "Le champs de la ville doit avoir un maximum de 50 caractères.")]
+        [RegularExpression(@"^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$", ErrorMessage = "Votre format de ville est incorrect." )]
         [DisplayName("Ville")]
         public string Ville { get; set; }
 
@@ -120,6 +124,7 @@ namespace PetitesPuces.Models
      
         [Required(ErrorMessage = "Veuillez entrer votre code postal!")]
         [DisplayName("Code Postal")]
+        [RegularExpression(@"^[\w][\d][\w][- ]?[\d][\w][\d]$", ErrorMessage = "Votre format de code postal est incorrect.")]
         [StringLength(7, ErrorMessage = "Le champs du code postal doit avoir un maximum de 7 caractères.")]
         public string CodePostal { get;  set;}
 
@@ -135,7 +140,7 @@ namespace PetitesPuces.Models
         [DisplayName("Poids max (KG)")]
         public int PoidsMaxLivraison { get;  set;}
 
-        [DataType(DataType.Currency)]
+       
         [Range(0, 10000, ErrorMessage = "S.V.P de entrer un chiffre entre 0 à 10000 $")]
         [Required(ErrorMessage = "Veuillez entrer un prix au moins pour une livraison graduite!")]
         [DisplayName("Prix minimum livraison graduite ($)")]
@@ -153,10 +158,10 @@ namespace PetitesPuces.Models
         public string Tel1 { get;  set;}
 
      
-        [Required(ErrorMessage = "Veuillez entrer un autre numéro de téléphone!")]
+       
         [StringLength(20, ErrorMessage = "Le champs de la téléphone 2 doit avoir un maximum de 20 caractères.")]
         [RegularExpression("^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$", ErrorMessage = "Le format de téléphone est invalide! Ex:9999999999/  (999) 999-9999 / 999-999-9999 / 999 999 9999 / 999.999.9999 / +99 (999) 999-9999")]
-        [DisplayName("Téléphone No2")]
+        [DisplayName("Téléphone No2 (facultatif)")]
         public string Tel2 { get;  set;}
 
         public string Configuration { get;set; }

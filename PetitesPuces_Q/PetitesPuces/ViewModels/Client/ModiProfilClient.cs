@@ -8,17 +8,19 @@ namespace PetitesPuces.Models
     public class ModiProfilClient
     {
         [DisplayName("Nom de famille")]
-        [RegularExpression("^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$", ErrorMessage = "Le champs du nom a un format invalide.")]
+        [RegularExpression(@"^([a-zA-Z0-9 \.\&\'\-]+)$", ErrorMessage = "Votre format de nom est incorrect.")]
         [StringLength(50, ErrorMessage = "Le champs du nom doit avoir un maximum de 50 caractères.")]
         public string Nom { get; set; }
 
        
        
         [DisplayName("Prénom")]
-        [RegularExpression("^[\\w'\\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$", ErrorMessage = "Le champs du prénom a un format invalide.")]
+        [RegularExpression(@"^([a-zA-Z0-9 \.\&\'\-]+)$", ErrorMessage = "Votre format de prénom est incorrect.")]
         [StringLength(50, ErrorMessage = "Le champs du prénom doit avoir un maximum de 50 caractères.")]
         public string Prenom { get; set; }
         
+        [DisplayName("Adresse")]
+        [RegularExpression(@"^(\d+\s[A-z]+([ -]?[A-z]+)+?)$", ErrorMessage = "Votre format d'adresse est incorrect. Ex: 999 lavoie rue.")]
         [StringLength(50, ErrorMessage = "Le champs de la rue doit avoir un maximum de 50 caractères.")]
         public string Rue { get; set; }
         
