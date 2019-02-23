@@ -96,7 +96,7 @@ __________
                 <ul class="nav navbar-nav pull-right">
                     @if (SessionUtilisateur.UtilisateurCourant != null)
                         {
-                        <li>@Html.ActionLink("Bienvenue, " + SessionUtilisateur.UtilisateurCourant.Prenom + "!", controller == "Gestionnaire" ? "Index" : "Profil", controller)</li>
+                        <li>@Html.ActionLink("Bienvenue, " + SessionUtilisateur.UtilisateurCourant.DisplayName + "!", controller == "Gestionnaire" ? "Index" : "Profil", controller)</li>
                         <li>
                             <a href="@Url.Action("Index", "Courriel")">
                                 <span style="vertical-align:middle" class="glyphicon glyphicon-envelope"></span>

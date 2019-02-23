@@ -22,10 +22,14 @@ namespace PetitesPuces.Models
         public string DisplayName
         {
             get { 
-                if(string.IsNullOrEmpty(Nom))
+                if (string.IsNullOrEmpty(Nom) || string.IsNullOrEmpty(Prenom))
                 {
                     return AdresseEmail.Split('@')[0];
-                } return Nom + ", " + Prenom; 
+                }
+                else
+                {
+                    return Nom + ", " + Prenom;
+                } 
             }
         }
 
