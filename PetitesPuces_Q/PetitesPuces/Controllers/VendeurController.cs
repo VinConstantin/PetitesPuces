@@ -88,10 +88,10 @@ namespace PetitesPuces.Controllers
         }
 
         [HttpGet]
-        public ActionResult Profil(string status="")
+        public ActionResult Profil(string status = "")
         {
             ViewBag.Status = status;
-             
+
             var objVendeur = (from unVendeur in context.PPVendeurs
                 where unVendeur.NoVendeur == NoVendeur
                 select unVendeur).FirstOrDefault();
@@ -111,7 +111,8 @@ namespace PetitesPuces.Controllers
                 PoidsMaxLivraison = Convert.ToInt32(objVendeur.PoidsMaxLivraison),
                 LivraisonGratuite = Convert.ToInt32(objVendeur.LivraisonGratuite),
                 configuration = objVendeur.Configuration,
-                Taxes = Convert.ToBoolean(objVendeur.Taxes)
+                Taxes = Convert.ToBoolean(objVendeur.Taxes),
+                AdresseCourriel = objVendeur.AdresseEmail
             };
             return View(modiProfilVendeur);
         }
@@ -119,22 +120,27 @@ namespace PetitesPuces.Controllers
         [HttpPost]
         public ActionResult Profil(ModiProfilVendeur modiProfilVendeur, FormCollection formCollection)
         {
-            try
+          /*   foreach (var key in formCollection.AllKeys)
             {
-                /* foreach (var key in formCollection.AllKeys)
-                 {
-                     Response.Write("key: " + key + ": ");
-                     Response.Write(formCollection[key] + ",  type:/");
-                     Response.Write(formCollection[key].GetType() + "/");
-                     Response.Write("<br/> ");
-                 }*/
-                if (ModelState.IsValid)
-                {
-                    var objVendeur = (from unVendeur in context.PPVendeurs
-                        where unVendeur.NoVendeur == NoVendeur
-                        select unVendeur).First();
+                Response.Write("key: " + key + ": ");
+                Response.Write(formCollection[key] + ",  type:/");
+                Response.Write(formCollection[key].GetType() + "/");
+                Response.Write("<br/> ");
+            }
+*/
+           
+            if (ModelState.IsValid)
+            {
+                var objVendeur = (from unVendeur in context.PPVendeurs
+                    where unVendeur.NoVendeur == NoVendeur
+                    select unVendeur).First();
 
-                    if (modiProfilVendeur.NomAffaires != "") objVendeur.NomAffaires = modiProfilVendeur.NomAffaires;
+                var nomAffaireExiste = (from unNom in context.PPVendeurs
+                    where unNom.NomAffaires == modiProfilVendeur.NomAffaires
+                    select unNom);
+                if (nomAffaireExiste.Count()==0)
+                {
+                    objVendeur.NomAffaires = modiProfilVendeur.NomAffaires;
                     if (modiProfilVendeur.Nom != "") objVendeur.Nom = modiProfilVendeur.Nom;
                     if (modiProfilVendeur.Prenom != "") objVendeur.Prenom = modiProfilVendeur.Prenom;
                     if (modiProfilVendeur.Rue != "") objVendeur.Rue = modiProfilVendeur.Rue;
@@ -153,19 +159,46 @@ namespace PetitesPuces.Controllers
                     objVendeur.Configuration = "color:" + formCollection["couleurText"] + ";" + "background-color:" +
                                                formCollection["backgroundcolor"] +
                                                ";" + "font-family:" + formCollection["fontText"] + ";";
+                    try
+                    {
+                        context.SubmitChanges();
 
+                        return RedirectToAction("Profil", new {status = "ModificationReussite"});
+                    }
 
-                    context.SubmitChanges();
-
-                    return RedirectToAction("Profil", new {status = "ModificationReussite"});
+                    catch (Exception e)
+                    {
+                    }
                 }
+                else
+                {
+                    ModelState.AddModelError("NomAffaires","Ce nom d'affaires existe déjà, veuillez changer un nouveau.");
+                }
+                
             }
 
-            catch (Exception e)
+            var current = (from unVendeur in context.PPVendeurs
+                where unVendeur.NoVendeur == NoVendeur
+                select unVendeur).FirstOrDefault();
+
+            ModiProfilVendeur ProfilVendeur = new ModiProfilVendeur
             {
-            }
-
-            return View();
+                NomAffaires = current.NomAffaires,
+                Nom = current.Nom,
+                Prenom = current.Prenom,
+                Rue = current.Rue,
+                Ville = current.Ville,
+                Province = current.Province,
+                Pays = current.Pays,
+                CodePostal = current.CodePostal.ToUpper(),
+                Tel1 = current.Tel1,
+                Tel2 = current.Tel2,
+                PoidsMaxLivraison = Convert.ToInt32(current.PoidsMaxLivraison),
+                LivraisonGratuite = Convert.ToInt32(current.LivraisonGratuite),
+                configuration = current.Configuration,
+                Taxes = Convert.ToBoolean(current.Taxes)
+            };
+            return View(ProfilVendeur);
         }
 
         public ActionResult VisualiserPaniers(int NbMois)

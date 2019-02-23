@@ -82,6 +82,8 @@ namespace PetitesPuces.ViewModels.Vendeur
         [DisplayName("Les clients paieront les taxes TPS et TVQ?")]
         public Boolean Taxes { get; set; }
 
+        [DisplayName("Adresse de courriel")]
+        public string AdresseCourriel { get; set; }
 
         public string configuration { get; set; }
     }

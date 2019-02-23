@@ -135,14 +135,14 @@ namespace PetitesPuces.Models
         public string Pays { get;  set;}
 
 
-        [Range(0, 10000, ErrorMessage = "S.V.P de entrer un chiffre entre 0 à 10000 kg")]
-        [Required(ErrorMessage = "Veuillez entrer le poids max pour la livraison!")]
+        [Range(0, 10000, ErrorMessage = "Le champs du poids MAX doit être entre 0 à 10000 kg")]
+        [Required(ErrorMessage = "Veuillez entrer un poids max pour une livraison!")]
         [DisplayName("Poids max (KG)")]
         public int PoidsMaxLivraison { get;  set;}
 
        
-        [Range(0, 10000, ErrorMessage = "S.V.P de entrer un chiffre entre 0 à 10000 $")]
-        [Required(ErrorMessage = "Veuillez entrer un prix au moins pour une livraison graduite!")]
+        [Range(0, 10000, ErrorMessage = "Le champs du prix minimum doit être un chiffre entre 0 à 10000 $")]
+        [Required(ErrorMessage = "Veuillez entrer un prix pour une livraison graduite!")]
         [DisplayName("Prix minimum livraison graduite ($)")]
         public int LivraisonGratuite { get;  set;}
 
