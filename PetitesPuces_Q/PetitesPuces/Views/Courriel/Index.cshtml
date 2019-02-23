@@ -86,6 +86,7 @@
             }
             $(this).addClass('active');
             stateName = $(this).attr('data-state');
+            $('#msgIdInput').val(null);
 
             displayPageState(stateName);
         });
@@ -95,6 +96,7 @@
         etat = etats[stateName];
         let reqUrl = `/Courriel/Boite/${stateName}`;
         let noMsgALoad = $('#msgIdInput').val();
+        console.log($('#msgIdInput').val());
 
         if (id) {
             reqUrl += '/' + id;
@@ -104,8 +106,6 @@
                 id = noMsgALoad
             }
         }
-
-        
 
         history.pushState({ state: stateName, id: id}, `${stateName} - Courriel - Les Petites Puces`, reqUrl);
         etat.load();
