@@ -14,9 +14,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     
-     
     <form id="modifierProfil-form" method="post" role="form" class="text-center">
         <div class="container">
             @if (ViewBag.Status == "ModificationReussite")
@@ -25,6 +23,14 @@
                 Modification réussite!
             </div>
             }
+            <div class="form-row">
+                <div class="col-md-12 center-block">
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+
+                </div>
+                
+            </div>
             <div class="form-row">
                 <div class="col-md-12">
                     @Html.ActionLink("Changer mot de passe", "modificationMDP", "client", new {@class = "btn btn-sm btn-primary"})
@@ -111,6 +117,12 @@
 
 
                     @Html.EditorFor(model => model.CodePostal, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Code Postal"}})
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.AdresseCourriel, htmlAttributes: new {@class = ""})
+
+
+                    @Html.EditorFor(model => model.AdresseCourriel, new {htmlAttributes = new {@class = "form-control",@Value = Model.AdresseCourriel, @Readonly = "true"}})
                 </div>
                
             </div>

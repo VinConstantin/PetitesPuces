@@ -273,7 +273,7 @@ namespace PetitesPuces.Controllers
                 /*
                  * PPGestionnaires
                  */
-                var objG = (from unGestionnaire in XDocument
+                var objGestionnaire = (from unGestionnaire in XDocument
                         .Load(Server.MapPath("/XML/PPGestionnaire.xml")).Descendants("row")
                     select new PPGestionnaire
                     {
@@ -282,8 +282,9 @@ namespace PetitesPuces.Controllers
                         Prenom = unGestionnaire.Element("Prenom").Value,
                         AdresseEmail = unGestionnaire.Element("AdresseEmail").Value,
                         MotDePasse = unGestionnaire.Element("MotDePasse").Value
-                    }).First();
+                    }).ToList();
 
+                foreach(var objG in objGestionnaire)
                 using (SqlConnection connection =
                     new SqlConnection(
                         WebConfigurationManager.ConnectionStrings["BD6B8_424QConnectionString"].ToString()))

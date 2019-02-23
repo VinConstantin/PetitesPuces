@@ -944,7 +944,9 @@ namespace PetitesPuces.Controllers
                 Tel2 = objClient.Tel2,
                 CodePostal = objClient.CodePostal,
                 Pays = objClient.Pays,
-                Ville = objClient.Ville
+                Ville = objClient.Ville,
+                AdresseCourriel = objClient.AdresseEmail
+                
             };
             return View(modiProfilClient);
         }
