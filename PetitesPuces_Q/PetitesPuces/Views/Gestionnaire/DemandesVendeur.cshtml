@@ -103,12 +103,11 @@
                 idDemande = noVendeur;
                 const actionUrl = `/Gestionnaire/GererDemande/Details/${noVendeur}`;
 
-                $.ajax(actionUrl,
-                    {
-                        method: "GET",
-                        success: gererDetails,
-                        error: genererErreur
-                    });
+                $.ajax(actionUrl, {
+                    method: "GET",
+                    success: gererDetails,
+                    error: genererErreur
+                });
             }            
         }
 
@@ -155,6 +154,11 @@
                     Message: message,
                     Redevances: redevances / 100,
                 };
+
+                const objet = accepter ? "Votre demande a été accepté" : 'Votre demande a été refusée';
+
+                const msg = new Courriel.Message(objet, message.replace('\n', '<br/>').replace('X', (redevances || '').toString() + '%'), [idDemande]);
+                Courriel.envoyerMessage(msg);
 
                 $.ajax({
                     url: `/Gestionnaire/GererDemande/${idDemande}`,
