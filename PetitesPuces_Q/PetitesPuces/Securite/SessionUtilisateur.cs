@@ -11,6 +11,8 @@ namespace PetitesPuces.Securite
     {
         private static readonly BDPetitesPucesDataContext ctxt = new BDPetitesPucesDataContext();
 
+        private static IUtilisateur _utilisateur;
+
         public static long? NoUtilisateur
         {
             get { return (long?) HttpContext.Current.Session["userId"]; }
@@ -20,6 +22,8 @@ namespace PetitesPuces.Securite
         {
             get
             {
+                if (_utilisateur != null && _utilisateur.No == NoUtilisateur) return _utilisateur;
+
                 var userId = (long?)HttpContext.Current.Session["userId"];
 
                 if (!userId.HasValue) return null;

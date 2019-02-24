@@ -13,39 +13,52 @@
 <h3 class="text-center">Clients Inactifs</h3>
 
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
-        <strong class="text-bold mx-1">Inactif depuis:</strong>
-        <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="depuisClient" value="1m" autocomplete="off" /> 1
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="depuisClient" value="2m" autocomplete="off" /> 2
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="depuisClient" value="3m" autocomplete="off" /> 3
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="depuisClient" value="6m" autocomplete="off" /> 6
-            </label>
-            <strong class="mx-1">Mois</strong>
+    <div class="col-xs-6 col-xs-offset-3">
+        <div class="input-group">
+            <input id="tbRechercheClients" type="search" class="form-control">
+            <span class="input-group-btn">
+                <button id="btnRechercheClients" class="btn btn-default" type="button">
+                    <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                    </span>
+                </button>    
+            </span>
         </div>
-        <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="depuisClient" value="1y" autocomplete="off" /> 1
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="depuisClient" value="2y" autocomplete="off" /> 2
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="depuisClient" value="3y" autocomplete="off" /> 3
-            </label>
-            <strong class="mx-1">Ans</strong>
-        </div>
-        <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default " >
-                <input type="radio" name="depuisClient" value="T" autocomplete="off" /> Toujours
-            </label>
+    </div>
+    <div class="col-xs-12 my-2">
+        <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
+            <strong class="text-bold mx-1">Inactif depuis:</strong>
+            <div class="btn-group d-flex align-items-baseline">
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="depuisClient" value="1m" autocomplete="off"/> 1
+                </label>
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="depuisClient" value="2m" autocomplete="off"/> 2
+                </label>
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="depuisClient" value="3m" autocomplete="off"/> 3
+                </label>
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="depuisClient" value="6m" autocomplete="off"/> 6
+                </label>
+                <strong class="mx-1">Mois</strong>
+            </div>
+            <div class="btn-group d-flex align-items-baseline">
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="depuisClient" value="1y" autocomplete="off"/> 1
+                </label>
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="depuisClient" value="2y" autocomplete="off"/> 2
+                </label>
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="depuisClient" value="3y" autocomplete="off"/> 3
+                </label>
+                <strong class="mx-1">Ans</strong>
+            </div>
+            <div class="btn-group d-flex align-items-baseline">
+                <label type="button" class="btn btn-default ">
+                    <input type="radio" name="depuisClient" value="T" autocomplete="off"/> Toujours
+                </label>
+            </div>
         </div>
     </div>
     <div id="listeGestionClients">
@@ -56,24 +69,37 @@
 
 <h3 class="text-center col-xs-12">Vendeurs Inactifs</h3>
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
-        <strong class="text-bold mx-1">Inactif depuis:</strong>
-        <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="depuisVendeur" value="1y" autocomplete="off" /> 1
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="depuisVendeur" value="2y" autocomplete="off" /> 2
-            </label>
-            <label type="button" class="btn btn-default">
-                <input type="radio" name="depuisVendeur" value="3y" autocomplete="off" /> 3
-            </label>
-            <strong class="mx-1">Ans</strong>
+    <div class="col-xs-6 col-xs-offset-3">
+        <div class="input-group">
+            <input id="tbRechercheVendeurs" type="search" class="form-control">
+            <span class="input-group-btn">
+                <button id="btnRechercheVendeurs" class="btn btn-default" type="button">
+                    <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                    </span>
+                </button>    
+            </span>
         </div>
-        <div class="btn-group d-flex align-items-baseline">
-            <label type="button" class="btn btn-default ">
-                <input type="radio" name="depuisVendeur" value="T" autocomplete="off" /> Toujours
-            </label>
+    </div>
+    <div class="col-xs-12 my-2">
+        <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
+            <strong class="text-bold mx-1">Inactif depuis:</strong>
+            <div class="btn-group d-flex align-items-baseline">
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="depuisVendeur" value="1y" autocomplete="off"/> 1
+                </label>
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="depuisVendeur" value="2y" autocomplete="off"/> 2
+                </label>
+                <label type="button" class="btn btn-default">
+                    <input type="radio" name="depuisVendeur" value="3y" autocomplete="off"/> 3
+                </label>
+                <strong class="mx-1">Ans</strong>
+            </div>
+            <div class="btn-group d-flex align-items-baseline">
+                <label type="button" class="btn btn-default ">
+                    <input type="radio" name="depuisVendeur" value="T" autocomplete="off"/> Toujours
+                </label>
+            </div>
         </div>
     </div>
     <div id="listeGestionVendeurs">
@@ -121,6 +147,8 @@
             typeUtilisateur: 'Utilisateur',
         }
         let utilisateursSupprimable = $('#listeGestionInactivite').find('tbody').find('tr');
+        let clientsSupprimables = $('#listeGestionClients').find('tbody').find('tr');
+        let vendeursSupprimables = $('#listeGestionVendeurs').find('tbody').find('tr');
         
         for (let prop in filterDefaults) {
             if (!filtres.has(prop)) {
@@ -150,7 +178,7 @@
         }
         
         function viderTableau(tableau) {
-            const nbUtilisateurs = $('#listeGestionVendeurs').find('tbody').find('tr').length;
+            const nbUtilisateurs = tableau.find('tbody').find('tr').length;
             if (!confirmerSuppression(nbUtilisateurs)) return;
             
             const ids = [];
@@ -264,7 +292,55 @@
                 }
             });
         }
-        
+
+        $('#tbRechercheVendeurs').keyup(rechercheVendeur);
+        $('#tbRechercheVendeurs').change(() => {
+            rechercheVendeur();
+            $('#tbRechercheVendeurs').blur();
+        });
+        $('#btnRecherchesVendeurs').click(rechercheVendeur);
+
+        function rechercheVendeur() {
+            const queryText = $('#tbRechercheVendeurs').val();
+
+            const searchableColRange = [0,1,2,3];
+
+            const corpsTableau = $('#listeGestionVendeurs').find('tbody');
+            corpsTableau.empty();
+
+            vendeursSupprimables.each(function() {
+                const searchableText = $(this).slice(searchableColRange[0], searchableColRange[1]).text();
+                
+                if (searchableText.toLowerCase().includes(queryText.toLowerCase())) {
+                    corpsTableau.append($(this));
+                }
+            });
+        }
+
+        $('#tbRechercheClients').keyup(rechercheClient);
+        $('#tbRechercheClients').change(() => {
+            rechercheClient();
+            $('#tbRechercheClients').blur();
+        });
+        $('#btnRechercheClients').click(rechercheClient);
+
+        function rechercheClient() {
+            const queryText = $('#tbRechercheClients').val();
+
+            const searchableColRange = [0, 1, 2, 3];
+
+            const corpsTableau = $('#listeGestionClients').find('tbody');
+            corpsTableau.empty();
+
+            clientsSupprimables.each(function () {
+                const searchableText = $(this).slice(searchableColRange[0], searchableColRange[1]).text();
+
+                if (searchableText.toLowerCase().includes(queryText.toLowerCase())) {
+                    corpsTableau.append($(this));
+                }
+            });
+        }
+
         function deleteUserFilterChanged() {
             if (!$(this).prop('checked')) return;
 

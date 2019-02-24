@@ -11,8 +11,7 @@
                     <p>@Model.Vendeur.Province, @Model.Vendeur.Pays</p>
 
                     <hr/>
-                    Prix minimal pour une livraison gratuite : 
-                    @Formatter.Money(Model.Vendeur.LivraisonGratuite,false)
+                    <a href='@Url.Action("Catalogue","Client")?Vendeur=@Model.Vendeur.No'>Consulter le catalogue</a>
                     <br/>
                     <p>Nombres de ventes : @Model.Vendeur.PPCommandes.Count</p>
                 </div>

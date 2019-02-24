@@ -61,10 +61,11 @@
                         <div class="col-xs-5" style="text-align: right">@Formatter.Poids(Model.GetPoidsTotal())</div></p>
                     
                     <p class="row">
-                        <div class="col-xs-7">Sous total :</div>
+                        <div class="col-xs-7">*Sous total :</div>
                         <div class="col-xs-5">@Formatter.Money(Model.getPrixTotal())</div></p>
 
                     <div class="row">
+                        <div class="col-xs-12"><small>*Des frais de livraisons et taxes peuvent s'appliquer</small></div>
                         <br/><hr/>
                     </div>
                     @if (Model.EstEnRabais)
@@ -140,7 +141,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button type="button" onclick="location.href = '@Url.Action("Commande", "Client",new RouteValueDictionary(new { noVendeur = Model.Vendeur.NoVendeur }))'" class="btn btn-primary">Continuer</button>
+                <button type="button" onclick="location.href = '@Url.Action("Commande", "Client",new RouteValueDictionary(new { id = Model.Vendeur.NoVendeur }))'" class="btn btn-primary">Continuer</button>
             </div>
         </div>
     </div>

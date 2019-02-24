@@ -9,24 +9,21 @@ using System.Web;
 using System.Web.Mvc;
 using PetitesPuces.Securite;
 using PetitesPuces.Utilities;
-
 using IronPdf;
 using System.Net;
 using PetitesPuces.ViewModels;
 
 namespace PetitesPuces.Controllers
 {
-#if !DEBUG
     [Securise(RolesUtil.VEND)]
-#endif
     public class VendeurController : Controller
     {
         BDPetitesPucesDataContext context = new BDPetitesPucesDataContext();
 
-        private int NoVendeur = Convert.ToInt32(SessionUtilisateur.UtilisateurCourant.No);
+        private int NoVendeur = (int) (SessionUtilisateur.NoUtilisateur ?? -1);
 
         // GET: Vendeur
-        public ActionResult Index(string status="")
+        public ActionResult Index(string status = "")
         {
             ViewBag.status = status;
             List<PPCommande> commandes = GetCommandesVendeurs(NoVendeur);
@@ -76,8 +73,8 @@ namespace PetitesPuces.Controllers
         public ActionResult InfoClient(int id)
         {
             var client = from clients in context.PPClients
-                         where clients.NoClient == id
-                         select clients;
+                where clients.NoClient == id
+                select clients;
 
             return PartialView("Vendeur/ModalInfoClient", client.FirstOrDefault());
         }
@@ -91,9 +88,10 @@ namespace PetitesPuces.Controllers
         }
 
         [HttpGet]
-        public ActionResult Profil()
+        public ActionResult Profil(string status = "")
         {
-            
+            ViewBag.Status = status;
+
             var objVendeur = (from unVendeur in context.PPVendeurs
                 where unVendeur.NoVendeur == NoVendeur
                 select unVendeur).FirstOrDefault();
@@ -113,58 +111,94 @@ namespace PetitesPuces.Controllers
                 PoidsMaxLivraison = Convert.ToInt32(objVendeur.PoidsMaxLivraison),
                 LivraisonGratuite = Convert.ToInt32(objVendeur.LivraisonGratuite),
                 configuration = objVendeur.Configuration,
-                Taxes = Convert.ToBoolean(objVendeur.Taxes)
+                Taxes = Convert.ToBoolean(objVendeur.Taxes),
+                AdresseCourriel = objVendeur.AdresseEmail
             };
             return View(modiProfilVendeur);
         }
 
         [HttpPost]
-        public ActionResult Profil(ModiProfilVendeur modiProfilVendeur,FormCollection formCollection)
+        public ActionResult Profil(ModiProfilVendeur modiProfilVendeur, FormCollection formCollection)
         {
-            foreach (var key in formCollection.AllKeys)
+          /*   foreach (var key in formCollection.AllKeys)
             {
                 Response.Write("key: " + key + ": ");
                 Response.Write(formCollection[key] + ",  type:/");
                 Response.Write(formCollection[key].GetType() + "/");
                 Response.Write("<br/> ");
             }
+*/
+           
             if (ModelState.IsValid)
             {
                 var objVendeur = (from unVendeur in context.PPVendeurs
                     where unVendeur.NoVendeur == NoVendeur
-                    select unVendeur).FirstOrDefault();
+                    select unVendeur).First();
 
-                if (modiProfilVendeur.NomAffaires != "") objVendeur.NomAffaires = modiProfilVendeur.NomAffaires;
-                if (modiProfilVendeur.Nom != "") objVendeur.Nom = modiProfilVendeur.Nom;
-                if (modiProfilVendeur.Prenom != "") objVendeur.Prenom = modiProfilVendeur.Prenom;
-                if (modiProfilVendeur.Rue != "") objVendeur.Rue = modiProfilVendeur.Rue;
-                if (modiProfilVendeur.Ville != "") objVendeur.Ville = modiProfilVendeur.Ville;
-                if (modiProfilVendeur.Province != "") objVendeur.Province = modiProfilVendeur.Province;
-                if (modiProfilVendeur.Pays != "") objVendeur.Pays = modiProfilVendeur.Pays;
-                if (modiProfilVendeur.CodePostal != "") objVendeur.CodePostal = modiProfilVendeur.CodePostal;
-                if (modiProfilVendeur.Tel1 != "") objVendeur.Tel1 = modiProfilVendeur.Tel1;
-                if (modiProfilVendeur.Tel2 != "") objVendeur.Tel2 = modiProfilVendeur.Tel2;
-                if (modiProfilVendeur.PoidsMaxLivraison != null)
-                    objVendeur.PoidsMaxLivraison = modiProfilVendeur.PoidsMaxLivraison;
-                if (modiProfilVendeur.LivraisonGratuite != null)
-                    objVendeur.LivraisonGratuite = modiProfilVendeur.LivraisonGratuite;
-                if (modiProfilVendeur.Taxes != null) objVendeur.Taxes = modiProfilVendeur.Taxes;
-             
-                objVendeur.Configuration = "color:"+formCollection["couleurText"] + ";" + "background-color:"+formCollection["backgroundcolor"] +
-                                               ";" +"font-family:"+ formCollection["fontText"]+";";
+                var nomAffaireExiste = (from unNom in context.PPVendeurs
+                    where unNom.NomAffaires == modiProfilVendeur.NomAffaires
+                    select unNom);
+                if (nomAffaireExiste.Count()==0)
+                {
+                    objVendeur.NomAffaires = modiProfilVendeur.NomAffaires;
+                    if (modiProfilVendeur.Nom != "") objVendeur.Nom = modiProfilVendeur.Nom;
+                    if (modiProfilVendeur.Prenom != "") objVendeur.Prenom = modiProfilVendeur.Prenom;
+                    if (modiProfilVendeur.Rue != "") objVendeur.Rue = modiProfilVendeur.Rue;
+                    if (modiProfilVendeur.Ville != "") objVendeur.Ville = modiProfilVendeur.Ville;
+                    if (modiProfilVendeur.Province != "") objVendeur.Province = modiProfilVendeur.Province;
+                    if (modiProfilVendeur.Pays != "") objVendeur.Pays = modiProfilVendeur.Pays;
+                    if (modiProfilVendeur.CodePostal != "") objVendeur.CodePostal = modiProfilVendeur.CodePostal;
+                    if (modiProfilVendeur.Tel1 != "") objVendeur.Tel1 = modiProfilVendeur.Tel1;
+                    if (modiProfilVendeur.Tel2 != "") objVendeur.Tel2 = modiProfilVendeur.Tel2;
+                    if (modiProfilVendeur.PoidsMaxLivraison != null)
+                        objVendeur.PoidsMaxLivraison = modiProfilVendeur.PoidsMaxLivraison;
+                    if (modiProfilVendeur.LivraisonGratuite != null)
+                        objVendeur.LivraisonGratuite = modiProfilVendeur.LivraisonGratuite;
+                    if (modiProfilVendeur.Taxes != null) objVendeur.Taxes = Convert.ToBoolean(modiProfilVendeur.Taxes);
 
-                try
-                {
-                    context.SubmitChanges();
-                   
-                    return RedirectToAction("Index",new{status="ModificationReussite"});
+                    objVendeur.Configuration = "color:" + formCollection["couleurText"] + ";" + "background-color:" +
+                                               formCollection["backgroundcolor"] +
+                                               ";" + "font-family:" + formCollection["fontText"] + ";";
+                    try
+                    {
+                        context.SubmitChanges();
+
+                        return RedirectToAction("Profil", new {status = "ModificationReussite"});
+                    }
+
+                    catch (Exception e)
+                    {
+                    }
                 }
-                catch (Exception e)
+                else
                 {
+                    ModelState.AddModelError("NomAffaires","Ce nom d'affaires existe déjà, veuillez changer un nouveau.");
                 }
+                
             }
 
-            return View();
+            var current = (from unVendeur in context.PPVendeurs
+                where unVendeur.NoVendeur == NoVendeur
+                select unVendeur).FirstOrDefault();
+
+            ModiProfilVendeur ProfilVendeur = new ModiProfilVendeur
+            {
+                NomAffaires = current.NomAffaires,
+                Nom = current.Nom,
+                Prenom = current.Prenom,
+                Rue = current.Rue,
+                Ville = current.Ville,
+                Province = current.Province,
+                Pays = current.Pays,
+                CodePostal = current.CodePostal.ToUpper(),
+                Tel1 = current.Tel1,
+                Tel2 = current.Tel2,
+                PoidsMaxLivraison = Convert.ToInt32(current.PoidsMaxLivraison),
+                LivraisonGratuite = Convert.ToInt32(current.LivraisonGratuite),
+                configuration = current.Configuration,
+                Taxes = Convert.ToBoolean(current.Taxes)
+            };
+            return View(ProfilVendeur);
         }
 
         public ActionResult VisualiserPaniers(int NbMois)
@@ -212,8 +246,8 @@ namespace PetitesPuces.Controllers
         public ActionResult ModalSupprimerProduit(long NoProduit) //TODO
         {
             var produit = (from produits in context.PPProduits
-                           where produits.NoProduit == NoProduit
-                           select produits).FirstOrDefault();
+                where produits.NoProduit == NoProduit
+                select produits).FirstOrDefault();
 
             string strBody = "<p>Êtes-vous sûr de vouloir supprimer ce produit?</p>";
 
@@ -239,12 +273,12 @@ namespace PetitesPuces.Controllers
         public ActionResult Evaluations(int NoProduit)
         {
             List<PPEvaluation> evaluations = (from e in context.PPEvaluations
-                                              where e.NoProduit == NoProduit && e.PPProduit.NoVendeur == NoVendeur
-                                              select e).ToList();
+                where e.NoProduit == NoProduit && e.PPProduit.NoVendeur == NoVendeur
+                select e).ToList();
 
             PPProduit produit = (from p in context.PPProduits
-                                 where p.NoProduit == NoProduit
-                                 select p).FirstOrDefault();
+                where p.NoProduit == NoProduit
+                select p).FirstOrDefault();
 
             if (produit == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -258,8 +292,8 @@ namespace PetitesPuces.Controllers
             NameValueCollection nvc = Request.Form;
 
             var produit = (from produits in context.PPProduits
-                           where produits.NoProduit == long.Parse(nvc["NoProduit"])
-                           select produits).FirstOrDefault();
+                where produits.NoProduit == long.Parse(nvc["NoProduit"])
+                select produits).FirstOrDefault();
 
             produit.NoCategorie = int.Parse(nvc["NoCategorie"]);
             produit.NombreItems = short.Parse(nvc["NombreItems"]);
@@ -299,14 +333,15 @@ namespace PetitesPuces.Controllers
             {
                 Console.WriteLine(e);
             }
+
             return produit.NoProduit;
         }
 
         public void SupprimerProduit(int NoProduit) //TODO
         {
             var produit = (from produits in context.PPProduits
-                           where produits.NoProduit == NoProduit
-                           select produits).FirstOrDefault();
+                where produits.NoProduit == NoProduit
+                select produits).FirstOrDefault();
 
             produit.NombreItems = 0;
 
@@ -522,7 +557,7 @@ namespace PetitesPuces.Controllers
                 try
                 {
                     context.SubmitChanges();
-                    return RedirectToAction("Index",new{status="ModificationReussite"});
+                    return RedirectToAction("Index", new {status = "ModificationReussite"});
                 }
                 catch (Exception e)
                 {

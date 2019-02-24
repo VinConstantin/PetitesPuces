@@ -6,8 +6,8 @@ namespace PetitesPuces.ViewModels
     public class VerificationCourriel
     {
 
-        
-        [Required(ErrorMessage = "Veuillez rentrer votre adresse courriel!")]
+        [DisplayName("Adresse de courriel")]
+        [Required(ErrorMessage = "Veuillez entrer votre adresse de courriel!")]
         [RegularExpression("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", ErrorMessage = "Votre format de courriel est incorrect.")]
         public string AdresseEmail { get; set; }
     }

@@ -75,6 +75,21 @@
             }
         });
     }
+    function ouvrirPdf(id) {
+        $.ajax({
+            url: URLPATH +"/PDF/GenererPDF",
+            type: "get",
+            data: {
+                "id" : id
+            },
+            success: function (result) {
+                window.open(`@Url.Action("InfoCommande", "PDF")/${id}`);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html(" @Html.Partial("_ErrorAlert")");
+            }
+        });
+    }
 </script>
 
 <div class="jumbotron jumbotron-fluid">
@@ -86,7 +101,7 @@
 @if (ViewBag.Status == "ModificationReussite")
 {
     <div class="alert alert-info text-center" role="alert" style="margin: 20px;">
-        Modification profil réussite!
+        Modification du profil réussie!
     </div>
 }
 @if (!string.IsNullOrWhiteSpace(ViewBag.SuccessMessage)) {

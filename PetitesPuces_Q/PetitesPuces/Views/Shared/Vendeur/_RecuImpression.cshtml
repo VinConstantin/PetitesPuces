@@ -60,7 +60,7 @@
                     <td></td>
                     <td></td>
                     <th scope="row" class="text-right">Avant-total: </th>
-                    <td>@Formatter.Money(Model.MontantTotAvantTaxes)</td>
+                    <td>@Formatter.Money(Model.PPDetailsCommandes.Sum(p=>p.PrixVente*p.Quantité))</td>
                 </tr>
             </table>
         </div>
@@ -86,7 +86,7 @@
             <table class="table bg-light">
                 <tr class="v-align-middle">
                     <th scope="row">Avant-total + livraison</th>
-                    <td>@Formatter.Money(Model.MontantTotAvantTaxes + Model.CoutLivraison.GetValueOrDefault())</td>
+                    <td>@Formatter.Money(Model.MontantTotAvantTaxes)</td>
                 </tr>
                 <tr class="v-align-middle">
                     <th scope="row">TPS</th>
@@ -98,7 +98,7 @@
                 </tr>
                 <tr class="v-align-middle">
                     <th scope="row">Grand total</th>
-                    <th>@Formatter.Money(Model.TPS.GetValueOrDefault() + Model.TVQ.GetValueOrDefault() + Model.MontantTotAvantTaxes + Model.CoutLivraison.GetValueOrDefault())</th>
+                    <th>@Formatter.Money(Model.TPS.GetValueOrDefault() + Model.TVQ.GetValueOrDefault() + Model.MontantTotAvantTaxes)</th>
                 </tr>
             </table>
         </div>

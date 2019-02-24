@@ -39,11 +39,12 @@
 </div>
 <button id="wack" class="d-none"></button>
 <div class="modal fade" id="modalDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <form id="modalForm" class="modal-dialog modal-dialog-centered" role="document">
         <div id="contenuDetails" class="modal-content">
 
         </div>
-    </div>
+        <button id="#validerAcceptation" type="submit" class="d-none"></button>
+    </form>
 </div>
 
 <script>
@@ -102,12 +103,11 @@
                 idDemande = noVendeur;
                 const actionUrl = `/Gestionnaire/GererDemande/Details/${noVendeur}`;
 
-                $.ajax(actionUrl,
-                    {
-                        method: "GET",
-                        success: gererDetails,
-                        error: genererErreur
-                    });
+                $.ajax(actionUrl, {
+                    method: "GET",
+                    success: gererDetails,
+                    error: genererErreur
+                });
             }            
         }
 
@@ -142,6 +142,11 @@
             $('#btnRefuserDemande').click(function() { gererDemande(false) });
 
             function gererDemande(accepter) {
+                const form = $('#modalForm');
+                if (!form[0].checkValidity()) {
+                    form.find(':submit').click();
+                }
+
                 const message = $('#tbMsg').val();
                 const redevances = $('#tbPctRedevances').val();
                 const reponseDemande = {
@@ -149,6 +154,11 @@
                     Message: message,
                     Redevances: redevances / 100,
                 };
+
+                const objet = accepter ? "Votre demande a été accepté" : 'Votre demande a été refusée';
+
+                const msg = new Courriel.Message(objet, message.replace('\n', '<br/>').replace('X', (redevances || '').toString() + '%'), [idDemande]);
+                Courriel.envoyerMessage(msg);
 
                 $.ajax({
                     url: `/Gestionnaire/GererDemande/${idDemande}`,
@@ -170,7 +180,7 @@
                 corps = (!corps) ? (accepter ? $('#accepterDefault').val() : $('#refuserDefault').val()) : corps;
                 const courriel = new Courriel.Message(objet, corps, [destinataire]);
                 $.get(`/Gestionnaire/DemandesVendeur`, null, afficherDemandes);
-                //if (jqxhr.status === 200) { 
+                if (jqxhr.status === 200) { 
                     $.ajax({
                         url: `/Courriel/ApercuCourriel`,
                         method: 'POST',
@@ -183,7 +193,7 @@
                             $('#wack').trigger('click');
                         },
                     });
-                //}
+                }
             }
 
             function afficherDemandes(partialView) {

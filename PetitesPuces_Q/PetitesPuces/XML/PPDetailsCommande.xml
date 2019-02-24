@@ -336,4 +336,12 @@
     <Quantité>8</Quantité>
     
   </row>
+  <row>
+    <NoDetailCommandes>43</NoDetailCommandes>
+    <NoCommande>18</NoCommande>
+    <NoProduit>2000001</NoProduit>
+    <PrixVente>100</PrixVente>
+    <Quantité>1</Quantité>
+    
+  </row>
 </rows>

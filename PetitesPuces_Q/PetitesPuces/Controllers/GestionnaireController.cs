@@ -14,9 +14,7 @@ using PetitesPuces.ViewModels.Gestionnaire;
 
 namespace PetitesPuces.Controllers
 {
-    #if !DEBUG
-        [Securise(RolesUtil.ADMIN)]
-    #endif
+    [Securise(RolesUtil.ADMIN)]
     [System.Web.Mvc.RoutePrefix("Gestionnaire")]
     public class GestionnaireController : Controller
     {

@@ -3,6 +3,7 @@ using PetitesPuces.Models;
 using PetitesPuces.Securite;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web.Http;
 using System.Web.Mvc;
 
@@ -44,11 +45,15 @@ namespace PetitesPuces.Controllers
             }
 
             string path = Server.MapPath("/Recus/" + id + ".pdf");
+           
+
+            if (!System.IO.File.Exists(path))
+                GenererPDF((int) commande.NoCommande);
 
             return File(path, "application/pdf");
         }
 
-        public void GenererPDF(int id)
+        public ActionResult GenererPDF(int id)
         {
             var commande = (from commandes in context.PPCommandes
                             where commandes.NoCommande == id
@@ -68,10 +73,13 @@ namespace PetitesPuces.Controllers
                 if (commande.PPClient.NoClient != client.NoClient)
                     throw new HttpResponseException(System.Net.HttpStatusCode.Unauthorized);
             }
-
-            string view = PartialView("Vendeur/_RecuImpression", commande).RenderToString();
-
             string path = Server.MapPath("/Recus/" + commande.NoCommande + ".pdf");
+            
+            if (System.IO.File.Exists(path))
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            
+            string view = PartialView("Vendeur/_RecuImpression", commande).RenderToString();
+   
             if (!Directory.Exists(Server.MapPath("/Recus/")))
             {
                 Directory.CreateDirectory(Server.MapPath("/Recus"));
@@ -80,6 +88,8 @@ namespace PetitesPuces.Controllers
             HtmlToPdf Renderer = new HtmlToPdf();
             var PDF = Renderer.RenderHtmlAsPdf(view);
             PDF.TrySaveAs(path);
+            
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
     }
 }

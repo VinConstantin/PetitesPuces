@@ -37,11 +37,14 @@
             <div class="item">
                 <div class="panel-footer"><h4>Recherche :</h4></div>
                 <div class="panel-body">
-                    <input class="form-control" value="@ViewBag.Filtre" style="width: 100%" type="text" id="tbRecherche" onchange="filtrerListe()">
-
-                    <div class="row">&nbsp;&nbsp;&nbsp;
-                        Nom <input type="checkbox" name="Nom"/>
-                        Description <input type="checkbox"/>
+                    <div class="input-group">
+                        <input value="@ViewBag.Filtre" id="tbRecherche" type="search" class="form-control"  onchange="filtrerListe()">
+                        <span class="input-group-btn">
+                            <button id="btnRecherche" class="btn btn-default" type="button" onclick="filtrerListe()">
+                                <span class="glyphicon glyphicon-search v-align-middle" aria-hidden="true">
+                                </span>
+                            </button>
+                        </span>
                     </div>
                 </div>
                     
@@ -312,7 +315,7 @@
         });
     }
     //ajouter un item au produit
-    function ajouterAuPanier(noProduit, quantite = 1) {
+    function ajouterAuPanier(noProduit, noVendeur ,quantite = 1) {
         $.ajax({
             url: URLPATH + "/Client/AjouterProduitAuPanier",
             type: "post",
@@ -330,10 +333,12 @@
                 val += parseInt(quantite);
 
                 const txt =
-                    `<span class="badge badge-primary pull-right" title="Vous avez ${val} item(s) dans votre panier">
+                    `<a href="/Client/MonPanier/${noVendeur}">
+                    <span class="badge badge-primary pull-right" title="Vous avez ${val} item(s) dans votre panier">
                     <span id="("Quantite${noProduit}>${val}</span>
                     <span class="glyphicon glyphicon-shopping-cart"></span>
-                </span>`;
+                </span>
+                </a>`;
 
                 $(`#QuantitePLACEHOLDER${noProduit}`).html(txt);
                 
@@ -351,7 +356,7 @@
     }
     //diminuer la quantite
     function moinsQuantite(id) {
-        if ($("#" + id).val() >= 1)
+        if ($("#" + id).val() > 1)
             $("#" + id).val(parseInt($("#" + id).val()) - 1);
     }
     //Quand scroll, afficher le button pour remonter en haut

@@ -1,0 +1,31 @@
+﻿@using System.Drawing
+@using PetitesPuces.Models
+@model PetitesPuces.Models.PPCategory
+
+<div class="item" style="text-overflow: ellipsis;" id="@("Cat" + @Model.NoCategorie)">
+    <div class="pad15" style="max-height: 150px; min-height: 150px; background-color: #2c3e50; color: white;">
+        <p><span class="lead">@Model.Description</span> <sup>(@Model.PPProduits.Count(p=>p.Disponibilité==true))</sup></p>
+        
+    </div>
+</div>
+@{
+    BDPetitesPucesDataContext ctx = new BDPetitesPucesDataContext();
+    var vendeurs = (from v in ctx.PPVendeurs
+        where v.PPProduits.Any(p =>p.Disponibilité==true &&  p.NoCategorie == Model.NoCategorie)
+        select v).ToList();
+}
+<script>
+    //tooltip
+    tippy('#@("Cat"+@Model.NoCategorie)',{
+        duration: [800, 500],
+        delay: [0,200],
+        content:`@foreach (var vendeur in vendeurs.Take(5))
+                {<a href='@Url.Action("Catalogue","Client")?Vendeur=@vendeur.NoVendeur'><h4>@vendeur.NomAffaires (@vendeur.PPProduits.Count(p=>p.Disponibilité==true && p.NoCategorie==Model.NoCategorie))</h4></a>}`,
+        size: "large",
+        theme: "google",
+        placement: "top",
+        arrow: true,
+        interactive: true,
+        allowHTML: true
+    });
+</script>

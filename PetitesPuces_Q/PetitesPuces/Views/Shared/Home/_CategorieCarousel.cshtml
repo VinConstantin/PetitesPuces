@@ -8,16 +8,24 @@
         
     </div>
 </div>
+@{
+    BDPetitesPucesDataContext ctx = new BDPetitesPucesDataContext();
+    var vendeurs = (from v in ctx.PPVendeurs
+        where v.PPProduits.Any(p =>p.Disponibilité==true &&  p.NoCategorie == Model.NoCategorie)
+        select v).ToList();
+}
 <script>
     //tooltip
     tippy('#@("Cat"+@Model.NoCategorie)',{
         duration: [800, 500],
         delay: [0,200],
-        content:"<p style='max-width:170px'>@Model.Details</p>",
+        content:`@foreach (var vendeur in vendeurs.Take(5))
+                 {<h4>@vendeur.NomAffaires (@vendeur.PPProduits.Count(p=>p.Disponibilité==true && p.NoCategorie==Model.NoCategorie))</h4>}`,
         size: "large",
         theme: "google",
-        placement: "bottom",
+        placement: "top",
         arrow: true,
-        allowHTML: true,
+        interactive: true,
+        allowHTML: true
     });
 </script>

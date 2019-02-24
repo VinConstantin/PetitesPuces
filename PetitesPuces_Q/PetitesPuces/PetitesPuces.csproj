@@ -419,6 +419,23 @@
       <LastGenOutput>BDPetitesPuces.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="XML\PPArticlesEnPanier.xml" />
+    <Content Include="XML\PPCategorie.xml" />
+    <Content Include="XML\PPClients.xml" />
+    <Content Include="XML\PPCommandes.xml" />
+    <Content Include="XML\PPDetailsCommande.xml" />
+    <Content Include="XML\PPGestionnaire.xml" />
+    <Content Include="XML\PPHistoriquePayement.xml" />
+    <Content Include="XML\PPLieu.xml" />
+    <Content Include="XML\PPPoidsLivraison.xml" />
+    <Content Include="XML\PPProduits.xml" />
+    <Content Include="XML\PPTaxeFederale.xml" />
+    <Content Include="XML\PPTaxeProvinciale.xml" />
+    <Content Include="XML\PPTypesLivraison.xml" />
+    <Content Include="XML\PPTypesPoids.xml" />
+    <Content Include="XML\PPVendeur.xml" />
+    <Content Include="XML\PPVendeurClient.xml" />
+    <Content Include="XML\script.sql" />
     <None Include="App_Browsers\qt.browser" />
     <None Include="Models\BDPetitesPuces.dbml.layout">
       <DependentUpon>BDPetitesPuces.dbml</DependentUpon>
@@ -456,14 +473,19 @@
     <Content Include="Views\Client\Catalogue.cshtml" />
     <Content Include="Views\Client\ErreurCommande.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
+    <Content Include="Views\Client\InscriptionVendeur.cshtml" />
     <Content Include="Views\Client\MonPanier.cshtml" />
     <Content Include="Views\Client\ResultatCommande.cshtml" />
+    <Content Include="Views\Client\SuccessInscription.cshtml" />
     <Content Include="Views\Courriel\Index.cshtml" />
     <Content Include="Views\Courriel\_ViewStart.cshtml" />
     <Content Include="Views\Home\Connexion.cshtml" />
+    <Content Include="Views\Home\courrielInscriptionReussite.cshtml" />
+    <Content Include="Views\Home\courrielInscriptionReussiteVendeur.cshtml" />
     <Content Include="Views\Home\courrielMDPOublie.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\modiOubliMDP.cshtml" />
+    <Content Include="Views\Shared\Client\Accueil\_CategorieCarousel.cshtml" />
     <Content Include="Views\Shared\Client\Accueil\_Commande.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_Catalogue.cshtml" />
     <Content Include="Views\Shared\Client\Catalogue\_EtoilesRating.cshtml" />
@@ -483,6 +505,7 @@
     <Content Include="Views\Shared\Client\Panier\_DetailPanier.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_ModalProduit.cshtml" />
     <Content Include="Views\Shared\Client\Panier\_ProduitsPanier.cshtml" />
+    <Content Include="Views\Shared\Client\_InscriptionVendeur.cshtml" />
     <Content Include="Views\Shared\Client\_PaniersCarousel.cshtml" />
     <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireClient.cshtml" />
     <Content Include="Views\Shared\Courriel\AjoutDestinataire\_ModalAjoutDestinataireGestionnaire.cshtml" />
@@ -514,6 +537,7 @@
     <Content Include="Views\Shared\Gestionnaire\Redevances\_ListeVendeurRedevance.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_Redevance.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\Redevances\_VendeurRedevance.cshtml" />
+    <Content Include="Views\Shared\Home\_InscriptionVendeur.cshtml" />
     <Content Include="Views\Shared\Vendeur\_RatingTooltip.cshtml" />
     <Content Include="Views\Shared\_ErrorAlert.cshtml" />
     <Content Include="Views\Shared\Gestionnaire\_GestionCategories.cshtml" />
@@ -595,7 +619,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />

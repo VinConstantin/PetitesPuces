@@ -1,4 +1,5 @@
-﻿@using PetitesPuces.Securite
+﻿@using PetitesPuces.Models
+@using PetitesPuces.Securite
 <!--
 .____                   __________        __  .__  __
 |    |    ____   ______ \______   \ _____/  |_|__|/  |_  ____   ______
@@ -68,7 +69,25 @@ __________
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Les petites puces", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @{
+                    string controller = "Home";
+                }
+                @if (SessionUtilisateur.UtilisateurCourant != null)
+                {
+                    switch (SessionUtilisateur.UtilisateurCourant.Role)
+                    {
+                        case RolesUtil.CLIENT:
+                            controller = "Client";
+                            break;
+                        case RolesUtil.ADMIN:
+                            controller = "Gestionnaire";
+                            break;
+                        case RolesUtil.VEND:
+                            controller = "Vendeur";
+                            break;
+                    }
+                }
+                @Html.ActionLink("Les petites puces", "Index", controller, new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -76,19 +95,19 @@ __________
                 </ul>
                 <ul class="nav navbar-nav pull-right">
                     @if (SessionUtilisateur.UtilisateurCourant != null)
-                    {
-                        <li>@Html.ActionLink("Bienvenue, " + SessionUtilisateur.UtilisateurCourant.Prenom + "!", "Profil", "Client")</li>
+                        {
+                        <li>@Html.ActionLink("Bienvenue, " + SessionUtilisateur.UtilisateurCourant.DisplayName + "!", controller == "Gestionnaire" ? "Index" : "Profil", controller)</li>
                         <li>
                             <a href="@Url.Action("Index", "Courriel")">
                                 <span style="vertical-align:middle" class="glyphicon glyphicon-envelope"></span>
                                 <span id="NbCourriels" class="badge badge-notify"></span>
                             </a>
                         </li>
-                        <li><a href="@Url.Action("Deconnexion", "Home")"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
+                        <li><a href="@Url.Action("Deconnexion", "Home")"><span class="glyphicon glyphicon-log-out"></span></a></li>
                     }
                     else
                     {
-                        <li><a href="@Url.Action( "Connexion", "Home")"><span class="glyphicon glyphicon-log-in"></span> Connexion</a></li>
+                        <li><a href="@Url.Action( "Connexion", "Home")"><span class="glyphicon glyphicon-log-in"></span></a></li>
                     }
 
                 </ul>

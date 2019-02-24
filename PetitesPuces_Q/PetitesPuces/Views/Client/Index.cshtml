@@ -22,7 +22,7 @@
     @if (ViewBag.Status == "ModificationReussite")
     {
         <div class="alert alert-info text-center" role="alert" style="margin: 20px;">
-            Modification profil réussite!
+            Modification du profil réussie!
         </div>
     }
     <div class="row">
@@ -47,6 +47,22 @@
                 <h5>Vous n'avez aucun panier</h5>
             </div>
         }
+        @{
+            BDPetitesPucesDataContext ctx = new BDPetitesPucesDataContext();
+            var categories = ctx.PPCategories.ToList();
+        }
+        <h2>Nos Catégories</h2>
+        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="5" id="CarouselProduits" data-interval="1000" on>
+            <div class="MultiCarousel-inner">
+                @foreach(PPCategory cat in categories)
+                {
+                    @Html.Partial("Client/Accueil/_CategorieCarousel", cat)
+                }
+
+            </div>
+            <button class="btn btn-primary leftLst"><</button>
+            <button class="btn btn-primary rightLst">></button>
+        </div>
 
         <h2>Mes commandes</h2>
         @if (Model.Commandes.Count > 0)
@@ -71,5 +87,20 @@
     }
     function afficherCommande(no) {
         window.location.href = `@Url.Action("Recu", "Client")?noCommande=${no}`;
+    }
+    function ouvrirPdf(id) {
+        $.ajax({
+            url: URLPATH +"/PDF/GenererPDF",
+            type: "get",
+            data: {
+                "id" : id
+            },
+            success: function (result) {
+                window.open(`@Url.Action("InfoCommande", "PDF")/${id}`);
+            },
+            error: function (req, status, err) {
+                $("#PLACEHOLDERModalDescription").html(" @Html.Partial("_ErrorAlert")");
+            }
+        });
     }
 </script>

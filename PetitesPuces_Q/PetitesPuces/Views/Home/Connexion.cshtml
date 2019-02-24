@@ -43,7 +43,7 @@
                                 @if (ViewBag.Status == "InscriptionReussi")
                                 {
                                     <div class="alert alert-info text-center" role="alert" style="margin: 20px;">
-                                        Inscription réussite!
+                                        Votre demande d'inscription a été envoyé. Nous vous enverrons un courriel lorsque votre demande sera traitée. 
                                     </div>
                                 }
                                 @if (ViewBag.Status == "EnregistrementReussi")
@@ -60,7 +60,7 @@
                                     <div class="form-group col-md-6 col-lg-offset-3">
 
                                        @Html.LabelFor(model => model.AdresseEmail, htmlAttributes: new { @class = "" })
-                                        @Html.EditorFor(model => model.AdresseEmail, new { id = "adresseEmail", @name = "adresseEmail", htmlAttributes = new { @PlaceHolder = "Entrez votre adresse courriel", @class = " center-block form-control", Value = ViewBag.courriel } })
+                                        @Html.EditorFor(model => model.AdresseEmail, new { id = "adresseEmail", @name = "adresseEmail", htmlAttributes = new { @PlaceHolder = "Entrez votre adresse de courriel", @class = " center-block form-control", Value = ViewBag.courriel } })
                                       
                                         @Html.ValidationMessageFor(model => model.AdresseEmail, "", new { @class = "text-danger center-block" })
                                     </div>

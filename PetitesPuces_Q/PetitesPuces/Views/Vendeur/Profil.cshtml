@@ -1,3 +1,7 @@
+@using System.Linq
+@using Microsoft.Ajax.Utilities
+@using PetitesPuces.Models
+@using PetitesPuces.ViewModels.Vendeur
 @model PetitesPuces.ViewModels.Vendeur.ModiProfilVendeur
 @{
     ViewBag.Title = "Profil";
@@ -9,10 +13,23 @@
     </div>
 </div>
 @using (Html.BeginForm())
-{
+{    
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new {@class = "text-danger"})
-    <div class="container">
+   
+
+<div class="container">
+        @if (ViewBag.Status == "ModificationReussite")
+        {
+            <div class="alert alert-info text-center" role="alert" style="margin: 25px;">
+                Modification réussite!
+            </div>
+        }
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                @Html.ActionLink("Changer mot de passe", "modificationMDP", "vendeur", new {@class = "btn btn-sm btn-primary"})
+            </div>
+        </div>
         <div class="form-row">
             <div class="form-group col-md-6">
 
@@ -48,17 +65,7 @@
                     new SelectListItem() {Text = "Choisir votre province", Value = ""},
                     new SelectListItem() {Text = "Québec", Value = "QC"},
                     new SelectListItem() {Text = "Ontario", Value = "ON"},
-                    new SelectListItem() {Text = "Alberta", Value = "AB"},
-                    new SelectListItem() {Text = "Colombie-Britanique", Value = "BC"},
-                    new SelectListItem() {Text = "Île-du-prince-Édouard", Value = "PE"},
-                    new SelectListItem() {Text = "Manitoba", Value = "MB"},
-                    new SelectListItem() {Text = "Nouveau-Brunswick", Value = "NB"},
-                    new SelectListItem() {Text = "Nouvelle-Écosse", Value = "NS"},
-                    new SelectListItem() {Text = "Saskatchewan", Value = "SK"},
-                    new SelectListItem() {Text = "Terre-Neuve-et-Labrador", Value = "NL"},
-                    new SelectListItem() {Text = "Nunavut", Value = "NU"},
-                    new SelectListItem() {Text = "Territoires du Nord-Ouest", Value = "NT"},
-                    new SelectListItem() {Text = "Yukon", Value = "YT"},
+                    new SelectListItem() {Text = "Nouveau-Brunswick", Value = "NB"}
                 }, new {@class = "form-control text-primary"})
 
             </div>
@@ -70,7 +77,7 @@
             </div>
             <div class="form-group col-md-6">
                 @Html.LabelFor(model => model.Pays, htmlAttributes: new {@class = ""})
-                @Html.EditorFor(model => model.Pays, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Pays"}})
+                @Html.EditorFor(model => model.Pays, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Pays", @Value = "Canada", @Readonly = "true"}})
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -79,43 +86,48 @@
                 </div>
                 <div class="form-group col-md-6">
                     @Html.LabelFor(model => model.Tel2, htmlAttributes: new {@class = ""})
-                    @Html.EditorFor(model => model.Tel2, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Numéro téléphone 2 (999-999-9999)"}})
+                    @Html.EditorFor(model => model.Tel2, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Numéro téléphone 2 (999-999-9999) (facultatif)"}})
                 </div>
 
             </div>
-
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.PoidsMaxLivraison, htmlAttributes: new {@class = ""})
-                    @Html.EditorFor(model => model.PoidsMaxLivraison, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Poids max pour la livraison"}})
-                </div>
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.LivraisonGratuite, htmlAttributes: new {@class = ""})
-                    @Html.EditorFor(model => model.LivraisonGratuite, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Montant min pour livraison graduit"}})
-
-                </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.PoidsMaxLivraison, htmlAttributes: new {@class = ""})
+                @Html.EditorFor(model => model.PoidsMaxLivraison, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Poids max pour la livraison"}})
+            </div>
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.LivraisonGratuite, new {@class = ""})
+                @Html.EditorFor(model => model.LivraisonGratuite, new {htmlAttributes = new {@class = "form-control", @PlaceHolder = "Montant min pour livraison graduit"}})
 
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    @Html.LabelFor(model => model.Taxes, htmlAttributes: new {@class = ""})
-                    @Html.DropDownListFor(model => model.Taxes, new List<SelectListItem>()
-                    {
-                        new SelectListItem() {Text = "Oui", Value = "true"},
-                        new SelectListItem() {Text = "Non", Value = "false"}
-                    }, new {@class = "form-control text-primary"})
-                </div>
-                
-                <div class="form-group col-md-2 colorpicker-component">
-                    <label for="backgroundcolor">Couleur de fond</label>
-                    <input type="color" id="backgroundcolor" name="backgroundcolor" value="@Model.configuration.Split(';')[1].Split(':')[1]" class="colorpicker-component form-control">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="couleurText">Couleur de text</label>
-                    <input type="color" id="couleurText" name="couleurText" class="colorpicker-component 
+
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.Taxes, new {@class = ""})
+                @Html.DropDownListFor(model => model.Taxes, new List<SelectListItem>
+                {
+                    new SelectListItem() {Text = "Oui", Value = "true"},
+                    new SelectListItem() {Text = "Non", Value = "false"}
+                }, new {@class = "form-control text-primary"})
+            </div>
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => model.AdresseCourriel, new {@class = ""})
+                @Html.EditorFor(model => model.AdresseCourriel, new {htmlAttributes = new {@class = "form-control", @Value=Model.AdresseCourriel,@Readonly="true"}})
+               
+            </div>
+
+            <div class="form-group col-md-3 ">
+                <label for="backgroundcolor">Couleur de fond</label>
+                <input type="color" id="backgroundcolor" name="backgroundcolor" value="@Model.configuration.Split(';')[1].Split(':')[1]" class="colorpicker-component form-control">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="couleurText">Couleur de text</label>
+                <input type="color" id="couleurText" name="couleurText" class="colorpicker-component 
                         form-control" value="@Model.configuration.Split(';')[0].Split(':')[1]">
-                </div>
-                <div class="form-group col-md-2">
+            </div>
+            @*   <div class="form-group col-md-2">
                     <label for="fontText">Police</label>
                     <select id="fontText" name="fontText" class="form-control text-primary">
                         <option value="" selected disabled hidden>    @Model.configuration.Split(';')[2].Split(':')[1]</option>
@@ -126,18 +138,20 @@
                         <option value="Verdana">Verdana</option>
                         <option value="Courier New">Courier New</option>
                         <option value="Lucida Console">Lucida Console</option>
+                        <option value="Comic Sans ms">Comic Sans ms</option>
                     </select>
 
-                </div>@**@
-            </div>
-          
+                </div>*@
+
+
             <div class="form-row">
-              
-                <div class="col-xs-6 form-group col-xs-offset-4">
-                    <br/> 
+                <div class="col-lg-4 form-group">
+                </div>
+                <div class="col-lg-6 form-group col-lg-offset-3">
+                    <br/>
                     <input type="submit" class="btn btn-lg btn-info " value="Modifier"/> &nbsp;
-                    @Html.ActionLink("Retour", "Index", "Vendeur", new {@class = "btn btn-lg btn-danger"})&nbsp;
-                    @Html.ActionLink("Changer mot de passe", "modificationMDP", "vendeur", new {@class = "btn btn-sm btn-primary"})
+                    @Html.ActionLink("Retour à la page d'accueil", "Index", "Vendeur", new {@class = "btn btn-lg btn-danger"})&nbsp;
+
 
                 </div>
 

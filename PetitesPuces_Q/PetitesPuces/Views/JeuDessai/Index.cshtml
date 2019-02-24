@@ -1,8 +1,9 @@
-﻿
+﻿@model string[]
 @{
-    ViewBag.Title = "  JEU D'ESSAI";
+    ViewBag.Title = "  JEU D'ESSAIS";
 }
-
+@{
+}
 <!DOCTYPE html>
 @using (Html.BeginForm())
 {
@@ -13,18 +14,119 @@
     </head>
     <body>
     <div class=" jumbotron">
-        <h1> JEU D'ESSAI</h1>
+        <h1> JEU D'ESSAIS</h1>
     </div>
-    @Html.ActionLink("Afficher le nombre d'enregistrement","Index","JeuDessai",new {@class = "btn  btn-primary btn-block center-block"})
-    
-    
-   
-    @Html.ActionLink("Supprimer les données","effacerBaseDonnee","JeuDessai",new {@class = "btn  btn-danger btn-block center-block"})
-    
-    @Html.ActionLink("Remplir la base de donnée","ajouterLesDonnees","JeuDessai",new {@class = "btn  btn-info btn-block center-block"})
-  
-    <label id="enregistrementBaseDonnee_Afficher" class="text text-success text-uppercase">  
-        @Html.Raw( ViewBag.lsMessageAfficher)
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-10  col-lg-offset-1">
+                <div class="row">
+                   
+                    @if (ViewBag.statusVider == "vider")
+                    {
+                        @Html.ActionLink("Vider les données", "effacerBaseDonnee", "JeuDessai", new
+                        {
+                            @class = "btn  btn-danger btn-block center-block"
+                        })
+                        <table class="table table-striped">
+                            <caption>Liste des tables à l'ordre du remplissage</caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nom de la table</th>
+                                <th scope="col">Nombre d'enregistrements</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                 
+                            @for (int i = 1; i <=19; i++)
+                            {
+                                <tr>
+                                    <th scope="row">
+                                        @i.ToString()
+                                    </th>
+
+                                    <td >
+                                        @ViewBag.nomTable[i-1]
+                                    </td>
+
+                                    <td>
+                                        @ViewBag.nbEnregistrement[i-1]
+                                    </td>
+                                </tr>
+                            }
+
+                            </tbody>
+                        </table>
+                    }
+                    <br/>
+                </div>
+                <div class="row">
+                    @if (ViewBag.statusVider == "remplir")
+                    {
+                        @Html.ActionLink("Remplir la base de données", "ajouterLesDonnees", "JeuDessai", new
+                        {
+                            @class = "btn  btn-info btn-block center-block"
+                        })
+                        <table class="table table-striped">
+                            <caption>Liste des tables à l'ordre du vidage</caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nom de la table</th>
+                                <th scope="col">Nombre d'enregistrements</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                 
+                            @for (int i = 1; i<=19; i++)
+                            {
+                               
+                                
+                                int compteur = 19-i;
+                               
+                                <tr>
+                                    <th scope="row">
+                                  
+                                        @(i)
+                                     
+                                       
+                                    </th>
+
+                                    <td >
+                                        @ViewBag.nomTable[compteur]
+                                    </td>
+
+                                    <td>
+                                        @ViewBag.nbEnregistrement[compteur]
+                                    </td>
+                                </tr>
+                                
+                            }
+
+                            </tbody>
+                        </table>
+                       
+                    }
+                    <br/>
+                </div>
+               
+            </div>
+         
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-lg-offset-3">
+                @Html.ActionLink("Retourner à la page d'accueil de gestionnaire", "Index","Gestionnaire", null, new {@class = "btn btn-md btn-primary btn-block"})
+
+            </div>
+          
+        </div>
+     
+    </div>
+
+
+    <label id="enregistrementBaseDonnee_Afficher" class="text text-success text-uppercase">
+        @Html.Raw(ViewBag.lsMessageAfficher)
     </label>
     </body>
     </html>
