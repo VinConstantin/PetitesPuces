@@ -4,7 +4,7 @@
         Message: Message,
         redirigerVersMessage: redirigerVersMessage,
         envoyerMessage: envoyerMessage
-    }
+    };
 
     /**
      * @param {string} objet
