@@ -48,7 +48,7 @@
 
         <br />
         @{
-            string strDateVente = Model.Produit.DateVente.HasValue ? Model.Produit.DateVente.Value.ToShortDateString() : "";
+            string strDateVente = Model.Produit.DateVente.HasValue ? Model.Produit.DateVente.Value.ToString("yyyy-MM-dd") : "";
         }
 
         <div class="input-group" style="width:100%; padding-bottom:3px">

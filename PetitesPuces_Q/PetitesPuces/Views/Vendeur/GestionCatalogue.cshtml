@@ -29,7 +29,7 @@
                 <div class="col-sm-6">
                     <div class="input-group" style="width: 100%; padding: 5px">
                         <span class="input-group-addon" style="width: 150px">Date de création</span>
-                        <input name="DateCreation" class="form-control" style="float: right" type="date" readonly value="@DateTime.Today.ToShortDateString()"/>
+                        <input name="DateCreation" class="form-control" style="float: right" type="date" readonly value="@DateTime.Today.ToString("yyyy-MM-dd")"/>
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                 <div class="col-sm-6 text-left">
                     <div class="input-group" style="width: 100%; padding: 5px">
                         <span class="input-group-addon" style="width: 150px">Nom</span>
-                        <input name="Nom" required pattern="\p{L}{2,50}" maxlength="50" class="form-control" type="text"/>
+                        <input name="Nom" required maxlength="50" class="form-control" type="text"/>
                     </div>
                 </div>
                 <div class="col-sm-6 text-left">
