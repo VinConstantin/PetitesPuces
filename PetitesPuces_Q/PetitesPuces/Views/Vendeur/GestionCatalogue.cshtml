@@ -123,34 +123,43 @@
 <h3 class="text-center col-xs-12">Mon catalogue</h3>
 
 <div class="well text-center col-xs-10 col-xs-offset-1">
+    @if (Model.Produits.Any())
+    {
     <table class="table m-0 bg-light table-hover">
         <thead>
-            <tr>
-                <th style="width:60px">
-
-                </th>
-                <th>
-                    Nom du produit
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Catégorie
-                </th>
-                <th class="prixQuantite">
-                    Quantité
-                </th>
-                <th class="prixQuantite">
-                    Prix
-                </th>
-            </tr>
+        <tr>
+            <th style="width:60px">
+    
+            </th>
+            <th>
+                Nom du produit
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Catégorie
+            </th>
+            <th class="prixQuantite">
+                Quantité
+            </th>
+            <th class="prixQuantite">
+                Prix
+            </th>
+        </tr>
         </thead>
         @foreach (var produit in Model.Produits)
         {
             @Html.Partial("Vendeur/_Produit", produit);
         }
     </table>
+    }
+    else
+    {
+        <div class="well">
+            Vous n'avez aucun produit
+        </div>
+    }
 </div>
 
 <div class="modal fade" id="ModalDescription" tabindex="-1" role="dialog" aria-labelledby="ModalDescription" aria-hidden="true">
