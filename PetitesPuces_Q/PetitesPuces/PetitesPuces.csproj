@@ -419,6 +419,23 @@
       <LastGenOutput>BDPetitesPuces.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="XML\PPArticlesEnPanier.xml" />
+    <Content Include="XML\PPCategorie.xml" />
+    <Content Include="XML\PPClients.xml" />
+    <Content Include="XML\PPCommandes.xml" />
+    <Content Include="XML\PPDetailsCommande.xml" />
+    <Content Include="XML\PPGestionnaire.xml" />
+    <Content Include="XML\PPHistoriquePayement.xml" />
+    <Content Include="XML\PPLieu.xml" />
+    <Content Include="XML\PPPoidsLivraison.xml" />
+    <Content Include="XML\PPProduits.xml" />
+    <Content Include="XML\PPTaxeFederale.xml" />
+    <Content Include="XML\PPTaxeProvinciale.xml" />
+    <Content Include="XML\PPTypesLivraison.xml" />
+    <Content Include="XML\PPTypesPoids.xml" />
+    <Content Include="XML\PPVendeur.xml" />
+    <Content Include="XML\PPVendeurClient.xml" />
+    <Content Include="XML\script.sql" />
     <None Include="App_Browsers\qt.browser" />
     <None Include="Models\BDPetitesPuces.dbml.layout">
       <DependentUpon>BDPetitesPuces.dbml</DependentUpon>
