@@ -22,11 +22,8 @@ namespace PetitesPuces.Controllers
         private CultureInfo culture = new CultureInfo("en-US");
         // GET: JeuDessai
 
-        public ActionResult Index(string status="vider")
+        public ActionResult Index(string status = "vider")
         {
-            
-            
-
             var PPArticlesEnPanier = (from val in context.PPArticlesEnPaniers
                 select val).Count();
             var PPPoidsLivraisons = (from val in context.PPPoidsLivraisons
@@ -66,18 +63,21 @@ namespace PetitesPuces.Controllers
             var PPHistoriquePaiements = (from val in context.PPHistoriquePaiements
                 select val).Count();
 
-            int[] intNbEnregistrement; intNbEnregistrement = new int[]
+            int[] intNbEnregistrement;
+            intNbEnregistrement = new int[]
                 {
                     PPCategories, PPLieu, PPMessages, PPDestinataires, PPGestionnaires, PPVendeurs,
                     PPProduits, PPClients, PPVendeursClients, PPHistoriquePaiements, PPTaxeProvinciale,
                     PPTaxeFederale, PPTypesLivraison, PPCommandes, PPTypesPoids, PPPoidsLivraisons,
                     PPArticlesEnPanier, PPDetailsCommandes, PPEvaluations
                 }
-                ; 
+                ;
             string[] strNomTable =
             {
-                "PPCategories", "PPLieu", "PPMessages", "PPDestinataires", "PPGestionnaires", "PPVendeurs", "PPProduits", "PPClients",
-                "PPVendeursClients", "PPHistoriquePaiements", "PPTaxeProvinciale", "PPTaxeFederale", "PPTypesLivraison", "PPCommandes", "PPTypesPoids", "PPPoidsLivraisons",
+                "PPCategories", "PPLieu", "PPMessages", "PPDestinataires", "PPGestionnaires", "PPVendeurs",
+                "PPProduits", "PPClients",
+                "PPVendeursClients", "PPHistoriquePaiements", "PPTaxeProvinciale", "PPTaxeFederale", "PPTypesLivraison",
+                "PPCommandes", "PPTypesPoids", "PPPoidsLivraisons",
                 "PPArticlesEnPanier", "PPDetailsCommandes", "PPEvaluations"
             };
 
@@ -114,9 +114,9 @@ namespace PetitesPuces.Controllers
                         "<br/>\n" +
                         "Dans la table PPEvaluations, il y a : [ " + PPEvaluations + " ] enregistrement(s)";
             ;*/
-          //  ViewBag.lsMessageAfficher = lsMessage;
+            //  ViewBag.lsMessageAfficher = lsMessage;
 
-          ViewBag.statusVider = status;
+            ViewBag.statusVider = status;
             return View();
         }
 
@@ -162,9 +162,8 @@ namespace PetitesPuces.Controllers
                 ViewBag.lsMessageSupprime = e.Message;
             }
 
-          
-        
-            return RedirectToAction("Index",new{status="remplir"});
+
+            return RedirectToAction("Index", new {status = "remplir"});
         }
 
         public ActionResult ajouterLesDonnees()
@@ -284,23 +283,23 @@ namespace PetitesPuces.Controllers
                         MotDePasse = unGestionnaire.Element("MotDePasse").Value
                     }).ToList();
 
-                foreach(var objG in objGestionnaire)
-                using (SqlConnection connection =
-                    new SqlConnection(
-                        WebConfigurationManager.ConnectionStrings["BD6B8_424QConnectionString"].ToString()))
-                {
-                    connection.Open();
-                    SqlCommand insert = new SqlCommand
+                foreach (var objG in objGestionnaire)
+                    using (SqlConnection connection =
+                        new SqlConnection(
+                            WebConfigurationManager.ConnectionStrings["BD6B8_424QConnectionString"].ToString()))
                     {
-                        CommandText = string.Format(
-                            "INSERT INTO PPGestionnaires (NoGestionnaire, Nom, Prenom, AdresseEmail, MotDePasse) VALUES (" +
-                            "{0}, '{1}', '{2}', '{3}', '{4}')", objG.NoGestionnaire, objG.Nom, objG.Prenom,
-                            objG.AdresseEmail, objG.MotDePasse),
-                        Connection = connection
-                    };
-                    insert.ExecuteNonQuery();
-                    connection.Close();
-                }
+                        connection.Open();
+                        SqlCommand insert = new SqlCommand
+                        {
+                            CommandText = string.Format(
+                                "INSERT INTO PPGestionnaires (NoGestionnaire, Nom, Prenom, AdresseEmail, MotDePasse) VALUES (" +
+                                "{0}, '{1}', '{2}', '{3}', '{4}')", objG.NoGestionnaire, objG.Nom, objG.Prenom,
+                                objG.AdresseEmail, objG.MotDePasse),
+                            Connection = connection
+                        };
+                        insert.ExecuteNonQuery();
+                        connection.Close();
+                    }
 
 
                 /*
@@ -721,6 +720,101 @@ namespace PetitesPuces.Controllers
                     context.PPLieus.InsertOnSubmit(objLieu);
                 }
 
+
+                /*
+                 * PPDestinataires
+                 */
+                var docDestinataires = (from unDestinataire in XDocument
+                        .Load(Server.MapPath("/XML/PPDestinataires.xml"))
+                        .Descendants("row")
+                    select new
+                    {
+                        NoMsg = unDestinataire.Element("NoMsg").Value,
+                        NoDestinataire = unDestinataire.Element("NoDestinataire").Value,
+                        EtatLu = unDestinataire.Element("EtatLu").Value,
+                        Lieu = unDestinataire.Element("Lieu").Value
+                    }).ToList();
+
+                PPDestinataire ppDestinataire;
+
+                foreach (var unDest in docDestinataires)
+                {
+                    ppDestinataire=new PPDestinataire();
+
+                    ppDestinataire.NoMsg = Convert.ToInt32(unDest.NoMsg);
+                    ppDestinataire.NoDestinataire = Convert.ToInt32(unDest.NoDestinataire);
+                    ppDestinataire.EtatLu = Convert.ToInt16(unDest.EtatLu);
+                    ppDestinataire.Lieu = Convert.ToInt16(unDest.Lieu);
+                    
+
+
+                    context.PPDestinataires.InsertOnSubmit(ppDestinataire);
+                }
+
+                /*
+                * PPMessages
+                */
+                var docMessages = (from unMessage in XDocument
+                        .Load(Server.MapPath("/XML/PPMessages.xml"))
+                        .Descendants("row")
+                    select new
+                    {
+                        NoMsg = unMessage.Element("NoMsg").Value,
+                        NoExpediteur = unMessage.Element("NoExpediteur").Value,
+                        DescMsg = unMessage.Element("DescMsg").Value,
+                        FichierJoint = unMessage.Element("FichierJoint").Value,
+                        Lieu = unMessage.Element("Lieu").Value,
+                        dateEnvoi = unMessage.Element("dateEnvoi").Value,
+                        objet = unMessage.Element("objet").Value
+                    }).ToList();
+
+                PPMessage objMessage;
+
+                foreach (var unMessages in docMessages)
+                {
+                    objMessage = new PPMessage();
+
+                    objMessage.NoMsg = Convert.ToInt32(unMessages.NoMsg);
+                    objMessage.NoExpediteur = Convert.ToInt32(unMessages.NoExpediteur);
+                    objMessage.DescMsg = unMessages.DescMsg;
+                    objMessage.FichierJoint = unMessages.FichierJoint;
+                    objMessage.Lieu = Convert.ToInt16(unMessages.Lieu);
+                    objMessage.dateEnvoi = Convert.ToDateTime(unMessages.dateEnvoi);
+                    objMessage.objet = unMessages.objet;
+
+                    context.PPMessages.InsertOnSubmit(objMessage);
+                }
+                /*
+              * PPEvaluation
+              */
+                var docEvalu = (from uneEvaluation in XDocument
+                        .Load(Server.MapPath("/XML/PPEvaluations.xml"))
+                        .Descendants("row")
+                    select new
+                    {
+                        NoClient = uneEvaluation.Element("NoClient").Value,
+                        NoProduit = uneEvaluation.Element("NoProduit").Value,
+                        Cote = uneEvaluation.Element("Cote").Value,
+                        Commentaire = uneEvaluation.Element("Commentaire").Value,
+                        DateMAJ = uneEvaluation.Element("DateMAJ").Value,
+                        DateCreation = uneEvaluation.Element("DateCreation").Value
+                    }).ToList();
+
+                PPEvaluation objEvaluation;
+
+                foreach (var uneEvalu in docEvalu)
+                {
+                    objEvaluation = new PPEvaluation();
+
+                    objEvaluation.NoClient = Convert.ToInt32(uneEvalu.NoClient);
+                    objEvaluation.NoProduit = Convert.ToInt32(uneEvalu.NoProduit);
+                    objEvaluation.Cote_ =Convert.ToDecimal( uneEvalu.Cote);
+                    objEvaluation.Commentaire_ = uneEvalu.Commentaire;
+                    objEvaluation.DateMAJ_ = Convert.ToDateTime(uneEvalu.DateMAJ);
+                    objEvaluation.DateCreation_ = Convert.ToDateTime(uneEvalu.DateCreation);
+
+                    context.PPEvaluations.InsertOnSubmit(objEvaluation);
+                }
                 try
                 {
                     context.SubmitChanges();
@@ -733,10 +827,9 @@ namespace PetitesPuces.Controllers
 
                 return RedirectToAction("Index", new {status = "vider"});
             }
-           catch (Exception e)
+            catch (Exception e)
             {
-
-                return Content("Remplissage échoué: "+ e);
+                return Content("Remplissage échoué: " + e);
             }
         }
     }
