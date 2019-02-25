@@ -13,7 +13,7 @@
 <h3 class="col-xs-12 text-center">Tous les paniers</h3>
 <div class="well text-center col-xs-10 col-xs-offset-1">
     <div class="btn-toolbar d-flex justify-content-center align-items-baseline center-block" data-toggle="buttons" role="group">
-        <strong class="text-bold mx-1">Panier existe depuis:</strong>
+        <strong class="text-bold mx-1">Paniers existants jusqu'à:</strong>
         <div class="btn-group d-flex align-items-baseline">
             <label type="button" onclick="visualiser(1)" class="btn btn-default">
                 <input type="radio" name="periodeClient" value="1" autocomplete="off" /> 1
@@ -51,26 +51,31 @@
     else
     {
         <table class="table table-hover m-0 bg-light">
-            <tr>
-                <th class="rowHead">
-                    Nom du client
-                </th>
-                <th>
-                    Date de création
-                </th>
-                <th>
-                    Nb d'items
-                </th>
-                <th>
-                    Total
-                </th>
-                <th>
-                </th>
-            </tr>
-            @foreach (var panier in Model)
-            {
-                @Html.Partial("Vendeur/_MenagePaniers", panier)
-            }
+            <thead>
+                <tr>
+                    <th class="rowHead">
+                        Client
+                    </th>
+                    <th>
+                        Date de création
+                    </th>
+                    <th class="prixQuantite">
+                        Nombre d'items
+                    </th>
+                    <th class="prixQuantite">
+                        Total
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var panier in Model)
+                {
+                    @Html.Partial("Vendeur/_MenagePaniers", panier)
+                }
+            </tbody>
         </table>
     }
 </div>
@@ -78,7 +83,7 @@
 <div class="modal fade" id="confirmationPanier" tabindex="-1" role="dialog" aria-labelledby="confirmationPanier" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div id="PLACEHOLDERModalDescription" class="modal-content">
-            
+
         </div>
     </div>
 </div>

@@ -12,7 +12,7 @@
 
 
 <div class="well text-center col-xs-10 col-xs-offset-1">
-    <button id="btnAjout" class="btn btn-primary btn-lg" data-toggle="collapse" data-target="#ajout" style="padding-top: 0px">
+    <button id="btnAjout" class="btn btn-primary btn-lg m-0" data-toggle="collapse" data-target="#ajout" style="padding: 5px">
         <span class="glyphicon glyphicon-plus"></span> Ajouter un produit
     </button>
     <br/>
@@ -48,7 +48,7 @@
                 <div class="col-sm-6 text-left">
                     <div class="input-group" style="width: 100%; padding: 5px">
                         <span class="input-group-addon" style="width: 150px">Nombre d'items</span>
-                        <input name="NombreItems" min="0" class="form-control" type="number" value="1"/>
+                        <input name="NombreItems" min="0" max="32767" class="form-control" type="number" value="1"/>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                 <div class="col-sm-6 text-left">
                     <div class="input-group" style="width: 100%; padding: 5px">
                         <span class="input-group-addon" style="width: 150px">Prix de vente</span>
-                        <input name="PrixVente" class="form-control" type="number"/>
+                        <input name="PrixVente" step="0.01" min="0" max="214748.36" class="form-control" type="number"/>
                         <span class="input-group-addon">$</span>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                 <div class="col-sm-6 text-left">
                     <div class="input-group" style="width: 100%; padding: 5px">
                         <span class="input-group-addon" style="width: 150px">Prix demandé</span>
-                        <input name="PrixDemande" required class="form-control" type="number"/>
+                        <input name="PrixDemande" step="0.01" min="0" max="214748.36" required class="form-control" type="number"/>
                         <span class="input-group-addon">$</span>
                     </div>
                 </div>
@@ -86,13 +86,13 @@
                 <div class="col-sm-6 text-left">
                     <div class="input-group" style="width: 100%; padding: 5px">
                         <span class="input-group-addon" style="width: 150px">Photo</span>
-                        <input name="Photo" class="form-control" type="file"/>
+                        <input name="Photo" class="form-control" accept=".jpg,.jpeg,.png,.gif" type="file" />
                     </div>
                 </div>
                 <div class="col-sm-6 text-left">
                     <div class="input-group" style="width: 100%; padding: 5px">
                         <span class="input-group-addon" style="width: 150px">Poids</span>
-                        <input name="Poids" required class="form-control" type="number"/>
+                        <input name="Poids" step="0.1" min="0" max="9999999.9" required class="form-control" type="number"/>
                         <span class="input-group-addon">lbs</span>
                     </div>
                 </div>
