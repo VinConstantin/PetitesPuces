@@ -111,7 +111,6 @@
         }
         
         function handleAdd(e) {
-            $('#modalAjoutCategorie').modal("show", false);
             e.preventDefault();
             const titre = $('#tbCreerTitre').val();
             const details = $('#tbCreerDetails').val();
@@ -121,15 +120,17 @@
             if (titreUnique) {
                 $.post('/Gestionnaire/Categories',
                        { NoCategorie: null, Description: titre, Details: details },
-                       majCategories);
-                $('#modalAjoutCategorie').modal('toggle');
+                    majCategories);
+                $('#modalAjoutCategorie').modal('hide');
+
+                return false;
             } else if (titre.trim() === '' && details.trim() === '') {
                 alert('Le titre et les détails ne peuvent pas demeurer vide');
+                return false;
             } else {
                 alert('Le titre de la catégorie doit être unique');
+                return false;
             }
-
-            return false;
         }
 
         function handleDel() {
