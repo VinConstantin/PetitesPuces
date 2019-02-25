@@ -7,6 +7,8 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Mvc;
 
+using ExpertPdf.HtmlToPdf;
+
 namespace PetitesPuces.Controllers
 {
     public class PDFController : Controller
@@ -73,21 +75,26 @@ namespace PetitesPuces.Controllers
                 if (commande.PPClient.NoClient != client.NoClient)
                     throw new HttpResponseException(System.Net.HttpStatusCode.Unauthorized);
             }
+
+            if (!Directory.Exists(Server.MapPath("/Recus")))
+            {
+                Directory.CreateDirectory(Server.MapPath("/Recus"));
+            }
+
             string path = Server.MapPath("/Recus/" + commande.NoCommande + ".pdf");
             
             if (System.IO.File.Exists(path))
                 return new HttpStatusCodeResult(HttpStatusCode.OK);
             
             string view = PartialView("Vendeur/_RecuImpression", commande).RenderToString();
-   
-            if (!Directory.Exists(Server.MapPath("/Recus/")))
-            {
-                Directory.CreateDirectory(Server.MapPath("/Recus"));
-            }
 
-            HtmlToPdf Renderer = new HtmlToPdf();
+            PdfConverter pdfC = new PdfConverter();
+            
+            pdfC.SavePdfFromHtmlStringToFile(view, path);
+
+            /*HtmlToPdf Renderer = new HtmlToPdf();
             var PDF = Renderer.RenderHtmlAsPdf(view);
-            PDF.TrySaveAs(path);
+            PDF.TrySaveAs(path);*/
             
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

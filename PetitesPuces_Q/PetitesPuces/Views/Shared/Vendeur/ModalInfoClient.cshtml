@@ -32,17 +32,6 @@
 <div class="modal-body">
     <p><h4>Contact</h4></p>
     <p>Adresse email : @Model.AdresseEmail</p>
-    <p>Téléphone 1 : @Model.Tel1</p>
-    @if (Model.Tel2 != null)
-    {
-        <p>Téléphone 2 : @Model.Tel2</p>
-    }
-    <hr />
-    <p><h4>Adresse</h4></p>
-    <p>Rue : @Model.Rue</p>
-    <p>Ville : @Model.Ville</p>
-    <p>Province : @Model.Province</p>
-    <p>Pays : @Model.Pays</p>
     <hr />
     <p>Nombre de visites : @Model.PPVendeursClients.Where(v => v.NoVendeur == SessionUtilisateur.UtilisateurCourant.No).Count()</p>
     <p>Dernière connexion : @Model.DateDerniereConnexion.Value.ToShortDateString()</p>

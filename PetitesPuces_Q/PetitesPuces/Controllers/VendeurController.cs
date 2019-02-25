@@ -138,7 +138,7 @@ namespace PetitesPuces.Controllers
                 var nomAffaireExiste = (from unNom in context.PPVendeurs
                     where unNom.NomAffaires == modiProfilVendeur.NomAffaires
                     select unNom);
-                if (nomAffaireExiste.Count()==0)
+                if (nomAffaireExiste.Count()==0 || modiProfilVendeur.NomAffaires==objVendeur.NomAffaires)
                 {
                     objVendeur.NomAffaires = modiProfilVendeur.NomAffaires;
                     if (modiProfilVendeur.Nom != "") objVendeur.Nom = modiProfilVendeur.Nom;
@@ -479,6 +479,7 @@ namespace PetitesPuces.Controllers
         {
             var query = from commandes in context.PPCommandes
                 where commandes.NoVendeur == NoVendeur
+                orderby commandes.DateCommande descending
                 select commandes;
 
             return query.ToList();

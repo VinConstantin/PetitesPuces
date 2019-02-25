@@ -28,7 +28,7 @@
 
         <div class="input-group" style="width:100%">
             <span class="input-group-addon" style="width:150px">Quantité</span>
-            <input name="NombreItems" min="0" class="form-control" type="number" value="@Model.Produit.NombreItems" />
+            <input name="NombreItems" min="0" max="32767" class="form-control" type="number" value="@Model.Produit.NombreItems" />
         </div>
 
         <br />
@@ -42,7 +42,7 @@
 
         <div class="input-group" style="width:100%">
             <span class="input-group-addon" style="width:150px">Prix demandé</span>
-            <input name="PrixDemande" type="number" class="form-control" step="0.01" min="0" value="@Model.Produit.PrixDemande.ToString().Replace(",", ".")">
+            <input name="PrixDemande" step="0.01" min="0" max="214748.36" required class="form-control" type="number" value="@Model.Produit.PrixDemande.ToString().Replace(",", ".")">
             <span class="input-group-addon">$</span>
         </div>
 
@@ -53,19 +53,19 @@
 
         <div class="input-group" style="width:100%; padding-bottom:3px">
             <span class="input-group-addon" style="width:150px">Prix de vente</span>
-            <input name="PrixVente" type="number" class="form-control" step="0.01" min="0" value="@Model.Produit.PrixVente.ToString().Replace(",", ".")">
+            <input name="PrixVente" step="0.01" min="0" max="214748.36" class="form-control" type="number" value="@Model.Produit.PrixVente.ToString().Replace(",", ".")">
             <span class="input-group-addon">$</span>
         </div>
         <div class="input-group" style="width:100%">
             <span class="input-group-addon" style="width:150px">Date de vente</span>
-            <input name="DateVente" type="date" class="form-control" value="@strDateVente">
+            <input name="DateVente" class="form-control" type="date" value="@strDateVente">
         </div>
 
         <br />
 
         <div class="input-group" style="width:100%">
             <span class="input-group-addon" style="width:150px">Poids</span>
-            <input name="Poids" type="number" class="form-control" step="0.1" min="0" value="@Model.Produit.Poids.ToString().Replace(",", ".")">
+            <input name="Poids" step="0.1" min="0" max="9999999.9" required class="form-control" type="number" value="@Model.Produit.Poids.ToString().Replace(",", ".")">
             <span class="input-group-addon">lbs</span>
         </div>
 
