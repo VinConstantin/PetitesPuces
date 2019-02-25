@@ -723,7 +723,7 @@ namespace PetitesPuces.Controllers
 
                 /*
                  * PPDestinataires
-                 */
+                 *
                 var docDestinataires = (from unDestinataire in XDocument
                         .Load(Server.MapPath("/XML/PPDestinataires.xml"))
                         .Descendants("row")
@@ -751,9 +751,9 @@ namespace PetitesPuces.Controllers
                     context.PPDestinataires.InsertOnSubmit(ppDestinataire);
                 }
 
-                /*
+                *
                 * PPMessages
-                */
+                *
                 var docMessages = (from unMessage in XDocument
                         .Load(Server.MapPath("/XML/PPMessages.xml"))
                         .Descendants("row")
@@ -784,7 +784,7 @@ namespace PetitesPuces.Controllers
 
                     context.PPMessages.InsertOnSubmit(objMessage);
                 }
-                /*
+                
               * PPEvaluation
               */
                 var docEvalu = (from uneEvaluation in XDocument

@@ -41,7 +41,7 @@
    <LivraisonGraduite>35</LivraisonGraduite>
    <Taxes>0</Taxes>
    <Pourcentage>0.05</Pourcentage>
-   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <Configuration>color:#FFFFFF; background-color:#000000;</Configuration>
    <DateCreation>2017-04-25</DateCreation>
    <DateMAJ>2017-08-07</DateMAJ>
    <Statut>1</Statut>
@@ -64,7 +64,7 @@
    <LivraisonGraduite>400</LivraisonGraduite>
    <Taxes>1</Taxes>
    <Pourcentage>0.20</Pourcentage>
-   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <Configuration>color:#FFFFFF; background-color:#000000;</Configuration>
    <DateCreation>2017-03-13</DateCreation>
    <DateMAJ>2017-09-18</DateMAJ>
    <Statut>0</Statut>
@@ -87,7 +87,7 @@
    <LivraisonGraduite>75</LivraisonGraduite>
    <Taxes>0</Taxes>
    <Pourcentage>0.25</Pourcentage>
-   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <Configuration>color:#FFFFFF; background-color:#000000;</Configuration>
    <DateCreation>2017-04-12</DateCreation>
    <DateMAJ>2017-08-23</DateMAJ>
    <Statut>1</Statut>
@@ -110,7 +110,7 @@
    <LivraisonGraduite>50</LivraisonGraduite>
    <Taxes>1</Taxes>
    <Pourcentage>0.03</Pourcentage>
-   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <Configuration>color:#FFFFFF; background-color:#000000;</Configuration>
    <DateCreation>2017-05-14</DateCreation>
    <DateMAJ>2017-08-06</DateMAJ>
    <Statut>0</Statut>
@@ -133,7 +133,7 @@
    <LivraisonGraduite>50</LivraisonGraduite>
    <Taxes>1</Taxes>
    <Pourcentage>0.10</Pourcentage>
-   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <Configuration>color:#FFFFFF; background-color:#000000;</Configuration>
    <DateCreation>2017-03-21</DateCreation>
    <DateMAJ>2017-12-27</DateMAJ>
    <Statut>1</Statut>
@@ -156,7 +156,7 @@
    <LivraisonGraduite>170</LivraisonGraduite>
    <Taxes>0</Taxes>
    <Pourcentage>0.35</Pourcentage>
-   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <Configuration>color:#FFFFFF; background-color:#000000;</Configuration>
    <DateCreation>2017-05-04</DateCreation>
    <DateMAJ>2017-11-30</DateMAJ>
    <Statut>1</Statut>
@@ -179,7 +179,7 @@
    <LivraisonGraduite>1000</LivraisonGraduite>
    <Taxes>1</Taxes>
    <Pourcentage>0.1</Pourcentage>
-   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <Configuration>color:#FFFFFF; background-color:#000000;</Configuration>
    <DateCreation>2018-11-30</DateCreation>
    <DateMAJ>2018-11-30</DateMAJ>
    <Statut>1</Statut>
@@ -202,7 +202,7 @@
    <LivraisonGraduite>1000</LivraisonGraduite>
    <Taxes>1</Taxes>
    <Pourcentage>0.1</Pourcentage>
-   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <Configuration>color:#FFFFFF; background-color:#000000;</Configuration>
    <DateCreation>2018-11-30</DateCreation>
    <DateMAJ>2018-11-30</DateMAJ>
    <Statut>1</Statut>
@@ -225,7 +225,7 @@
    <LivraisonGraduite>1000</LivraisonGraduite>
    <Taxes>1</Taxes>
    <Pourcentage>0.1</Pourcentage>
-   <Configuration>color:#E8ADAA; background-color:#E8ADAA;</Configuration>
+   <Configuration>color:#FFFFFF; background-color:#000000;</Configuration>
    <DateCreation>2018-11-30</DateCreation>
    <DateMAJ>2018-11-30</DateMAJ>
    <Statut>1</Statut>
