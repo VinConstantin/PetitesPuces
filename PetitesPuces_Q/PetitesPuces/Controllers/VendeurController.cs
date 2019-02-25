@@ -479,6 +479,7 @@ namespace PetitesPuces.Controllers
         {
             var query = from commandes in context.PPCommandes
                 where commandes.NoVendeur == NoVendeur
+                orderby commandes.DateCommande descending
                 select commandes;
 
             return query.ToList();

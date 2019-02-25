@@ -29,7 +29,7 @@
         </thead>
         @foreach (var article in Model.Articles)
         {
-            @Html.Partial("Vendeur/_ProduitPanier", article.PPProduit);
+            @Html.Partial("Vendeur/_ProduitPanier", article);
         }
     </table>
 </div>
